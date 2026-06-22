@@ -1,0 +1,44 @@
+{
+  "name": "@peria/adapters",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./express": {
+      "import": "./dist/express.js",
+      "types": "./dist/express.d.ts"
+    },
+    "./fastify": {
+      "import": "./dist/fastify.js",
+      "types": "./dist/fastify.d.ts"
+    },
+    "./nest": {
+      "import": "./dist/nest.js",
+      "types": "./dist/nest.d.ts"
+    },
+    "./hono": {
+      "import": "./dist/hono.js",
+      "types": "./dist/hono.d.ts"
+    },
+    "./elysia": {
+      "import": "./dist/elysia.js",
+      "types": "./dist/elysia.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"No tests yet\"",
+    "dev": "tsup --watch"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsup": "^8.3.0",
+    "typescript": "^5.7.2"
+  }
+}

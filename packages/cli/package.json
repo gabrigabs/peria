@@ -1,0 +1,27 @@
+{
+  "name": "@peria/cli",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "peria": "./bin/peria.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"No tests yet\"",
+    "dev": "tsup --watch"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.8.2",
+    "cac": "^6.7.14",
+    "chalk": "^5.3.0",
+    "@peria/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsup": "^8.3.0",
+    "typescript": "^5.7.2"
+  }
+}

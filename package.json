@@ -1,0 +1,13 @@
+{
+  "name": "peria",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "bun run --filter '*' build",
+    "typecheck": "bun run --filter '*' typecheck",
+    "test": "bun run --filter '*' test",
+    "dev": "bun run --filter '*' dev"
+  },
+  "workspaces": ["packages/*"]
+}

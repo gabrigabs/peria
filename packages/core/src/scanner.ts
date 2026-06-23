@@ -6,17 +6,19 @@
 
 import { execFile } from 'node:child_process'
 import { readFile, readdir, stat, writeFile, mkdir } from 'node:fs/promises'
-import { join, relative, basename, extname } from 'node:path'
+import { join, relative, basename, extname, resolve, isAbsolute } from 'node:path'
 import { parseMarkdown } from './parsers/markdown.js'
 import { parseOpenAPI, parseOpenAPIDetailed } from './parsers/openapi.js'
 import { parseLlms } from './parsers/llms.js'
 import { loadConfig } from './config/loader.js'
+import { nestJSAdapter } from './adapters/nestjs/index.js'
 import type { ResolvedPeriaConfig } from './types/config.js'
 import type {
   DocPageEntity,
   GraphRelation,
   OpenAPIOperation,
   PackageEntity,
+  RouteEntity,
   SchemaEntity,
   SourceFile,
 } from './types/graph.js'
@@ -46,14 +48,27 @@ const MARKDOWN_EXTENSIONS = new Set(['.md', '.mdx'])
 const TYPESCRIPT_EXTENSIONS = new Set(['.ts', '.tsx'])
 
 /**
+ * Resolve a path to absolute, handling relative paths
+ */
+function resolveAbsolutePath(cwd: string): string {
+  if (isAbsolute(cwd)) {
+    return cwd
+  }
+  return resolve(cwd)
+}
+
+/**
  * Scan a repository and produce a PeriaManifest
  */
 export async function scan(cwd: string): Promise<ScanResult> {
   const startTime = performance.now()
   const warnings: ScanWarning[] = []
 
+  // Resolve to absolute path for consistent behavior
+  const absoluteCwd = resolveAbsolutePath(cwd)
+
   // Load config
-  let config = await loadConfig(cwd).catch((err) => {
+  let config = await loadConfig(absoluteCwd).catch((err) => {
     warnings.push({
       code: 'config-error',
       message: `Failed to load config: ${err instanceof Error ? err.message : String(err)}`,
@@ -65,21 +80,52 @@ export async function scan(cwd: string): Promise<ScanResult> {
   const resolvedConfig: ResolvedPeriaConfig = (config ?? createDefaultConfig()) as ResolvedPeriaConfig
 
   // Get repo info
-  const repoInfo = await getRepoInfo(cwd)
-  const gitMetadata = await collectGitMetadata(cwd)
+  const repoInfo = await getRepoInfo(absoluteCwd)
+  const gitMetadata = await collectGitMetadata(absoluteCwd)
 
   // Scan in parallel where possible
   const [packages, sourceFiles, openapiResults, docsResults, llmsResult] = await Promise.all([
-    scanPackages(cwd),
-    scanSourceFiles(cwd, resolvedConfig),
-    scanOpenAPI(cwd, resolvedConfig, warnings),
-    scanDocs(cwd, resolvedConfig, warnings),
-    scanLlms(cwd, resolvedConfig, warnings),
+    scanPackages(absoluteCwd),
+    scanSourceFiles(absoluteCwd, resolvedConfig),
+    scanOpenAPI(absoluteCwd, resolvedConfig, warnings),
+    scanDocs(absoluteCwd, resolvedConfig, warnings),
+    scanLlms(absoluteCwd, resolvedConfig, warnings),
   ])
 
-  // Extract entities
-  const routes: never[] = [] // Phase 2 - route extraction
-  const schemas = extractSchemas(openapiResults)
+  // Extract routes using framework adapter (Phase 2)
+  const detectedFramework = await detectFramework(absoluteCwd, resolvedConfig)
+  let routes: RouteEntity[] = []
+
+  // Only try to extract routes if we have TypeScript files and tsconfig
+  const hasTsConfig = await checkTsConfig(absoluteCwd)
+  if (detectedFramework?.name === 'nestjs' && hasTsConfig) {
+    try {
+      const context = { cwd: absoluteCwd, config: resolvedConfig }
+      routes = await nestJSAdapter.extractRoutes(context)
+    } catch (err) {
+      warnings.push({
+        code: 'route-extraction-error',
+        message: `Failed to extract routes: ${err instanceof Error ? err.message : String(err)}`,
+        suggestion: 'Check that the project has valid TypeScript files and tsconfig.json',
+      })
+    }
+  }
+
+  // Also extract schemas from framework adapter if available
+  let frameworkSchemas: SchemaEntity[] = []
+  if (detectedFramework?.name === 'nestjs' && hasTsConfig) {
+    try {
+      const context = { cwd: absoluteCwd, config: resolvedConfig }
+      const extractAdapterSchemas = nestJSAdapter.extractSchemas
+      if (extractAdapterSchemas) {
+        frameworkSchemas = await extractAdapterSchemas(context)
+      }
+    } catch {
+      // Schema extraction is optional, just skip
+    }
+  }
+
+  const schemas = [...extractSchemasFromOpenAPI(openapiResults), ...frameworkSchemas]
   const openapiOps = openapiResults.map(r => r.operations).flat()
   const docsPages = docsResults.map(r => docToEntity(r.path, r.content))
 
@@ -504,7 +550,7 @@ async function scanLlms(
 /**
  * Extract schemas from OpenAPI spec
  */
-function extractSchemas(openapiResults: Array<{ operations: OpenAPIOperation[] }>): SchemaEntity[] {
+function extractSchemasFromOpenAPI(openapiResults: Array<{ operations: OpenAPIOperation[] }>): SchemaEntity[] {
   const schemas: SchemaEntity[] = []
 
   for (const { operations } of openapiResults) {
@@ -572,7 +618,7 @@ function docToEntity(path: string, parsed: Awaited<ReturnType<typeof parseMarkdo
  * Create relations between entities
  */
 function createRelations(input: {
-  routes: never[]
+  routes: RouteEntity[]
   schemas: SchemaEntity[]
   openapiOps: OpenAPIOperation[]
   docsPages: DocPageEntity[]
@@ -643,7 +689,71 @@ function createRelations(input: {
     }
   }
 
+  // Link routes to handlers (from framework adapter extraction)
+  for (const route of input.routes) {
+    if (route.handler) {
+      relations.push({
+        id: `rel:${relationId++}`,
+        sourceId: route.id,
+        targetId: route.handler.id,
+        type: 'route_implemented_by_handler',
+        confidence: route.confidence,
+        reason: `Route ${route.method} ${route.path} is implemented by ${route.handler.className}.${route.handler.name}`,
+        evidence: [{ file: route.source.file, line: route.source.line }],
+      })
+
+      // Link schemas used by handler
+      for (const schema of route.schemas) {
+        relations.push({
+          id: `rel:${relationId++}`,
+          sourceId: route.handler.id,
+          targetId: schema.id,
+          type: 'handler_uses_schema',
+          confidence: route.confidence,
+          reason: `Handler ${route.handler.name} uses schema ${schema.name}`,
+        })
+      }
+    }
+  }
+
+  // Link routes to OpenAPI operations (when path and method match)
+  for (const route of input.routes) {
+    for (const op of input.openapiOps) {
+      if (route.path === op.path && route.method === op.method) {
+        relations.push({
+          id: `rel:${relationId++}`,
+          sourceId: route.id,
+          targetId: op.id,
+          type: 'route_described_by_openapi',
+          confidence: 'high',
+          reason: `Route ${route.method} ${route.path} matches OpenAPI operation ${op.operationId || op.id}`,
+        })
+      }
+    }
+  }
+
   return relations
+}
+
+/**
+ * Check if tsconfig.json exists
+ */
+async function checkTsConfig(cwd: string): Promise<boolean> {
+  const tsConfigPaths = [
+    join(cwd, 'tsconfig.json'),
+    join(cwd, 'tsconfig.build.json'),
+    join(cwd, 'apps', 'api', 'tsconfig.json'),
+  ]
+
+  for (const path of tsConfigPaths) {
+    try {
+      await stat(path)
+      return true
+    } catch {
+      // Try next
+    }
+  }
+  return false
 }
 
 /**

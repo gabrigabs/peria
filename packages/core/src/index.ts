@@ -94,3 +94,7 @@ export { parseMarkdown as legacyParseMarkdown, parseOpenAPI as legacyParseOpenAP
 
 // Scanner (Phase 1 - new)
 export { scan, writeManifest } from './scanner.js'
+
+// Framework adapters (Phase 2)
+export { nestJSAdapter, createNestJSAdapter } from './adapters/nestjs/index.js'
+export type { FrameworkAdapter, RepoContext, FrameworkDetectionResult, ModuleEntity, EntrypointEntity } from './adapters/types.js'

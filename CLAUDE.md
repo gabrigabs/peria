@@ -123,11 +123,11 @@ Export from `packages/core/src/parsers/index.ts`
 Focus on making these work:
 
 1. ✅ CLI with `init` wizard
-2. `build` command that parses code
+2. ✅ `build` command that generates a self-wiki
 3. `serve` command for local preview
 4. Code map extraction (routes, controllers, schemas)
 5. OpenAPI integration
-6. llms.txt generation
+6. ✅ llms.txt generation from the wiki tree
 7. Embedded /docs in adapters
 
 ## What NOT to Implement Yet
@@ -143,17 +143,32 @@ Focus on making these work:
 ## MVP Limits
 
 - Config loader uses basic regex extraction for TS files
-- Full ts-morph integration is future work
-- Graph builder is stubbed
+- ts-morph is used for the initial module/export map
+- Graph generation exists for the self-wiki slice, but framework-specific relationships are still future work
 - Parsers throw "not implemented" errors
+
+## Current Self-Wiki Slice
+
+`peria build` now generates the first self-documenting wiki for this repository:
+
+- `docs/pages/*.md` contains the human-readable wiki pages
+- `docs/index.html` is a static UI that reads `docs/wiki-manifest.json` and markdown pages
+- `.eria/graph.json` stores serializable entities and claims with source/line/commit provenance
+- `llms.txt` is derived from the human wiki tree and points agents back to the wiki
+
+The current extractor covers packages, CLI commands, TypeScript modules, exported declarations, adapters, config/features, wiki UI, recent Git history, and configured AI context files. It does not yet parse framework routes, OpenAPI specs, controllers, schemas, DTOs, or doc drift.
+
+The generated pages should read like a project-specific wiki, not a generic index. `peria.config.ts` supports a `project` profile with name, tagline, audience, tone, problem, current focus, highlights, and `packageContexts`. The builder also records branch, commit, author, authored date, dirty working-tree files, and recent commits in the History page, manifest, and graph artifact.
 
 ## Key Files
 
 | File | Purpose |
 |------|---------|
 | `packages/core/src/types/config.ts` | Config types and `defineConfig` |
+| `packages/core/src/wiki/builder.ts` | Self-wiki builder and graph generation |
 | `packages/core/src/detectors/framework.ts` | Framework detection |
 | `packages/cli/src/commands/init.ts` | Init wizard |
+| `packages/cli/src/commands/build.ts` | Writes `/docs`, `.eria/graph.json`, and `llms.txt` |
 | `packages/cli/src/generators/config.ts` | Config file generator |
 | `packages/cli/src/prompts/features.ts` | Feature selection options |
 

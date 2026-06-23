@@ -5,11 +5,9 @@
 import { cancel, isCancel } from '@clack/prompts'
 import chalk from 'chalk'
 import { promptFramework } from '../prompts/framework.js'
-import type { DetectedFramework } from '../prompts/framework.js'
 import { promptEntrypoint } from '../prompts/entrypoint.js'
 import { promptDocsRoute } from '../prompts/route.js'
 import { promptFeatures, getFeatureSummary } from '../prompts/features.js'
-import type { FeatureFlags } from '../prompts/features.js'
 import { generateConfig, writeConfigFile } from '../generators/config.js'
 import { logger, step } from '../utils/logger.js'
 
@@ -27,7 +25,7 @@ export async function initCommand(cwd: string): Promise<void> {
   // Step 1: Detect and confirm framework
   step(1, 'Framework detection')
   const detectedFramework = await detectFramework(cwd)
-  const framework = await promptFramework(detectedFramework ?? undefined)
+  const framework = await promptFramework(detectedFramework?.framework)
   if (isCancel(framework)) {
     cancel('Cancelled')
     process.exit(0)

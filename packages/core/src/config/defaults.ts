@@ -32,10 +32,12 @@ export const DEFAULT_FEATURES: FeatureFlags = {
 export const DEFAULT_DOCS: DocsConfig = {
   enabled: true,
   route: '/docs',
+  outputDir: 'docs',
 }
 
 export const DEFAULT_SOURCES = {
   openapi: 'openapi.yaml',
   markdown: ['README.md', 'docs/**/*.md'],
   llms: ['llms.txt', 'llms-full.txt'],
+  context: ['CLAUDE.md', 'AGENTS.md'],
 }

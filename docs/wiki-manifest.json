@@ -1,0 +1,209 @@
+{
+  "title": "Peria Wiki",
+  "tagline": "Human-readable by default. LLM-ready by design.",
+  "generatedAt": "2026-06-23T12:57:59.422Z",
+  "commit": "08562c543b2e69e90869a033046c323a171a754d",
+  "git": {
+    "branch": "feat/self-documentation-bootstrap",
+    "commit": "08562c543b2e69e90869a033046c323a171a754d",
+    "shortCommit": "08562c5",
+    "author": "Gabriel Bezerra Rodrigues",
+    "authorEmail": "gabrielbrodrigues1@gmail.com",
+    "authoredAt": "2026-06-22T15:26:22-03:00",
+    "subject": "feat: initialize project monorepo structure with core, sdk, cli, and adapter packages",
+    "isDirty": true,
+    "changedFiles": [
+      "M .gitignore",
+      "M CLAUDE.md",
+      "M README.md",
+      "M bun.lock",
+      "M package.json",
+      "M packages/adapters/tsup.config.ts",
+      "M packages/cli/src/commands/build.ts",
+      "M packages/cli/src/commands/init.ts",
+      "M packages/cli/src/commands/serve.ts",
+      "M packages/cli/src/generators/config.ts",
+      "M packages/core/package.json",
+      "M packages/core/src/config/defaults.ts",
+      "M packages/core/src/config/loader.ts",
+      "M packages/core/src/index.ts",
+      "M packages/core/src/types/config.ts",
+      "M packages/core/src/types/entity.ts",
+      "M packages/sdk/src/types.ts",
+      "?? docs/",
+      "?? packages/adapters/src/index.ts",
+      "?? packages/core/src/types/wiki.ts",
+      "?? packages/core/src/wiki/",
+      "?? peria.config.ts"
+    ],
+    "recentCommits": [
+      {
+        "hash": "08562c5",
+        "date": "2026-06-22",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat: initialize project monorepo structure with core, sdk, cli, and adapter packages"
+      },
+      {
+        "hash": "7d3856d",
+        "date": "2026-06-22",
+        "author": "Gabriel Bezerra",
+        "subject": "Initial commit"
+      }
+    ]
+  },
+  "project": {
+    "name": "Peria",
+    "tagline": "Human-readable by default. LLM-ready by design.",
+    "description": "Peria compiles code, configuration, docs, and Git history into a living technical wiki with traceable claims.",
+    "audience": "Engineers maintaining a codebase and AI agents that need source-backed context before making changes.",
+    "tone": "Pragmatic, source-linked, and implementation-aware.",
+    "problem": "Most generated docs flatten a repo into indexes. Peria should preserve intent, ownership boundaries, and change history.",
+    "currentFocus": "Make the repository capable of documenting itself with a useful markdown wiki, visual reader, graph artifact, and agent context map.",
+    "highlights": [
+      "The human wiki in /docs is the source of truth.",
+      "The visual reader is generated from markdown instead of a parallel content model.",
+      "Agent context files point back to the same wiki tree used by humans.",
+      "Git metadata is part of the generated knowledge, not an afterthought."
+    ],
+    "packageContexts": {
+      "peria": {
+        "role": "Workspace orchestration root",
+        "audience": "Contributors running repo-wide build, typecheck, test, and release preparation commands.",
+        "responsibilities": [
+          "Coordinate Bun workspaces.",
+          "Expose root scripts that validate every package.",
+          "Carry the self-documentation config for this repository."
+        ]
+      },
+      "@peria/core": {
+        "role": "Knowledge engine",
+        "audience": "Contributors changing extraction, graph, config, or wiki generation behavior.",
+        "responsibilities": [
+          "Resolve configuration and defaults.",
+          "Extract packages, modules, exports, commands, adapters, features, context files, and Git metadata.",
+          "Generate markdown pages, manifest data, llms.txt content, and graph artifacts."
+        ]
+      },
+      "@peria/cli": {
+        "role": "Operator interface",
+        "audience": "Developers running Peria locally or wiring it into scripts.",
+        "responsibilities": [
+          "Initialize project configuration.",
+          "Build the wiki and artifacts.",
+          "Serve the generated static docs locally."
+        ]
+      },
+      "@peria/adapters": {
+        "role": "Runtime integration layer",
+        "audience": "API teams embedding generated docs in framework applications.",
+        "responsibilities": [
+          "Expose framework-specific entrypoints for Express, Fastify, NestJS, Hono, and Elysia.",
+          "Keep adapter contracts thin until generated artifacts are stable."
+        ]
+      },
+      "@peria/sdk": {
+        "role": "Programmatic API surface",
+        "audience": "Tools that need to call Peria without going through the CLI.",
+        "responsibilities": [
+          "Define SDK instance contracts.",
+          "Prepare for embedded server and graph/search access."
+        ]
+      },
+      "@peria/docs-ui": {
+        "role": "Future packaged reader UI",
+        "audience": "Users consuming generated docs in a browser.",
+        "responsibilities": [
+          "Provide the eventual reusable UI package for the generated wiki.",
+          "Remain separate from the current CLI-emitted static reader while the UX stabilizes."
+        ]
+      }
+    }
+  },
+  "pages": [
+    {
+      "title": "Peria Overview",
+      "slug": "overview",
+      "description": "Peria compiles code, configuration, docs, and Git history into a living technical wiki with traceable claims.",
+      "path": "pages/overview.md"
+    },
+    {
+      "title": "Packages",
+      "slug": "packages",
+      "description": "Workspace packages, manifests, scripts, dependencies, and package exports.",
+      "path": "pages/packages.md"
+    },
+    {
+      "title": "CLI Commands",
+      "slug": "cli",
+      "description": "Registered Peria CLI commands and their command registry provenance.",
+      "path": "pages/cli.md"
+    },
+    {
+      "title": "TypeScript Modules",
+      "slug": "modules",
+      "description": "Source files, imports, and exported declarations extracted with ts-morph.",
+      "path": "pages/modules.md"
+    },
+    {
+      "title": "Adapters",
+      "slug": "adapters",
+      "description": "Framework adapters that expose the generated docs in application runtimes.",
+      "path": "pages/adapters.md"
+    },
+    {
+      "title": "Configuration And Features",
+      "slug": "configuration",
+      "description": "Resolved config, enabled features, and config provenance.",
+      "path": "pages/configuration.md"
+    },
+    {
+      "title": "Wiki UI",
+      "slug": "wiki-ui",
+      "description": "Static visual wiki shell generated into /docs and backed by markdown pages.",
+      "path": "pages/wiki-ui.md"
+    },
+    {
+      "title": "History",
+      "slug": "history",
+      "description": "Recent Git history captured as dated provenance for the generated wiki.",
+      "path": "pages/history.md"
+    },
+    {
+      "title": "AI Context Map",
+      "slug": "ai-context",
+      "description": "A compact reading map for agents, derived from the human wiki.",
+      "path": "pages/ai-context.md"
+    }
+  ],
+  "tree": [
+    {
+      "title": "Start here",
+      "pages": [
+        "overview",
+        "ai-context"
+      ]
+    },
+    {
+      "title": "Product surface",
+      "pages": [
+        "packages",
+        "cli",
+        "configuration"
+      ]
+    },
+    {
+      "title": "Code map",
+      "pages": [
+        "modules",
+        "adapters",
+        "wiki-ui"
+      ]
+    },
+    {
+      "title": "Provenance",
+      "pages": [
+        "history"
+      ]
+    }
+  ]
+}

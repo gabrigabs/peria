@@ -52,6 +52,14 @@ The wizard will:
 bun run peria build
 ```
 
+The build generates:
+
+- `docs/pages/*.md` — human-readable wiki pages
+- `docs/index.html` — static visual wiki that reads the generated markdown
+- `docs/wiki-manifest.json` — page tree for the wiki UI
+- `.eria/graph.json` — serializable entity/claim graph with provenance
+- `llms.txt` — compact AI reading map derived from the human wiki
+
 ### 3. Integrate
 
 ```ts
@@ -74,21 +82,39 @@ setupPeriaDocs(app, { route: '/docs' })
 
 ```ts
 // peria.config.ts
-import { defineConfig } from "peria/config"
+import { defineConfig } from "@peria/core"
 
 export default defineConfig({
   framework: "nestjs",
   entrypoint: "src/main.ts",
 
+  project: {
+    name: "My API",
+    tagline: "Source-backed product and engineering knowledge.",
+    description: "A technical wiki generated from code, docs, config, and Git history.",
+    audience: "Engineers and AI agents working in this repository.",
+    tone: "Pragmatic, source-linked, and implementation-aware.",
+    problem: "Important context is spread across code, docs, config, and Git history.",
+    currentFocus: "Keep the generated wiki useful for humans first.",
+    packageContexts: {
+      "@my/api": {
+        role: "Application runtime",
+        responsibilities: ["Owns HTTP endpoints", "Connects framework adapters"]
+      }
+    }
+  },
+
   docs: {
     enabled: true,
-    route: "/docs"
+    route: "/docs",
+    outputDir: "docs"
   },
 
   sources: {
     openapi: "openapi.yaml",
     markdown: ["README.md", "docs/**/*.md"],
-    llms: ["llms.txt", "llms-full.txt"]
+    llms: ["llms.txt"],
+    context: ["CLAUDE.md", "AGENTS.md"]
   },
 
   features: {
@@ -173,9 +199,11 @@ Artifacts
 
 ### Phase 1 — MVP
 - [x] CLI setup with `init` wizard
-- [ ] Code parsing (routes, controllers, schemas)
+- [x] Initial self-wiki build (`/docs`, `.eria/graph.json`, `llms.txt`)
+- [x] Initial code map (packages, CLI commands, modules, exports, adapters, config)
+- [ ] Route/controller/schema parsing
 - [ ] OpenAPI integration
-- [ ] llms.txt generation
+- [x] llms.txt generation from the human wiki map
 - [ ] Embedded /docs in Express/Fastify
 
 ### Phase 2 — Core Features

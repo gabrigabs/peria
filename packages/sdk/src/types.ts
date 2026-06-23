@@ -7,16 +7,38 @@ export type Framework = 'nestjs' | 'express' | 'fastify' | 'hono' | 'elysia' | '
 export interface PeriaConfig {
   framework?: Framework
   entrypoint?: string
+  project?: ProjectProfile
   docs?: {
     enabled?: boolean
     route?: string
+    outputDir?: string
   }
   sources?: {
     openapi?: string
     markdown?: string[]
     llms?: string[]
+    context?: string[]
   }
   features?: FeatureFlags
+}
+
+export interface PackageContext {
+  role?: string
+  audience?: string
+  responsibilities?: string[]
+  notes?: string[]
+}
+
+export interface ProjectProfile {
+  name?: string
+  tagline?: string
+  description?: string
+  audience?: string
+  tone?: string
+  problem?: string
+  currentFocus?: string
+  highlights?: string[]
+  packageContexts?: Record<string, PackageContext>
 }
 
 export interface FeatureFlags {

@@ -21,6 +21,13 @@ export interface Claim {
 }
 
 export type EntityType =
+  | 'package'
+  | 'cli-command'
+  | 'adapter'
+  | 'feature'
+  | 'source-file'
+  | 'export'
+  | 'wiki-page'
   | 'endpoint'
   | 'service'
   | 'controller'

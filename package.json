@@ -9,5 +9,8 @@
     "test": "bun run --filter '*' test",
     "dev": "bun run --filter '*' dev"
   },
+  "devDependencies": {
+    "@peria/core": "workspace:*"
+  },
   "workspaces": ["packages/*"]
 }

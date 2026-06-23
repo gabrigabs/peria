@@ -35,5 +35,5 @@ export interface OpenAPIEndpoint {
 
 export interface LlmsSource extends SourceDocument {
   type: 'llms'
-  variant: 'full' | 'summary'
+  variant: 'full' | 'summary' | 'unknown'
 }

@@ -1,31 +1,13 @@
 /**
- * Parsers index - stubs for future implementation
+ * Parsers index - Peria parsers for code, Markdown, OpenAPI, and llms.txt
  */
 
-/**
- * Placeholder for code parser (will use ts-morph in future)
- */
+export { parseMarkdown, parseMarkdownWithUnified } from './markdown.js'
+export { parseOpenAPI, parseOpenAPIDetailed } from './openapi.js'
+export { parseLlms, parseLlmsContent } from './llms.js'
+
+// Placeholder for code parsing (deprecated - use framework adapters)
 export async function parseCode(_filepath: string): Promise<unknown> {
-  throw new Error('Code parsing not implemented yet')
-}
-
-/**
- * Placeholder for Markdown parser (will use unified/remark in future)
- */
-export async function parseMarkdown(_filepath: string): Promise<unknown> {
-  throw new Error('Markdown parsing not implemented yet')
-}
-
-/**
- * Placeholder for OpenAPI parser
- */
-export async function parseOpenAPI(_filepath: string): Promise<unknown> {
-  throw new Error('OpenAPI parsing not implemented yet')
-}
-
-/**
- * Placeholder for llms.txt parser
- */
-export async function parseLlms(_filepath: string): Promise<unknown> {
-  throw new Error('llms.txt parsing not implemented yet')
+  console.warn('parseCode is deprecated. Use framework adapters instead.')
+  return { filepath: _filepath, parsed: false }
 }

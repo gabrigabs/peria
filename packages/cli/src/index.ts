@@ -7,6 +7,7 @@ import { initCommand } from './commands/init.js'
 import { buildCommand } from './commands/build.js'
 import { serveCommand } from './commands/serve.js'
 import { checkCommand } from './commands/check.js'
+import { scanCommand } from './commands/scan.js'
 
 const cli = CAC('peria') as {
   option: (name: string, desc: string, opts?: { default?: unknown }) => void
@@ -36,6 +37,10 @@ cli.command('serve', 'Serve documentation locally').action(async (opts: { cwd: s
 
 cli.command('check', 'Check for documentation drift').action(async (opts: { cwd: string }) => {
   await checkCommand(opts.cwd)
+})
+
+cli.command('scan', 'Scan repository and generate manifest').action(async (opts: { cwd: string }) => {
+  await scanCommand(opts.cwd)
 })
 
 // Help

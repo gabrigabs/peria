@@ -25,7 +25,7 @@ This package contributes 0 source modules and 0 exported declarations to the gen
 - Scripts: `build`, `typecheck`, `test`, `dev`
 - Package exports: none
 - Internal package imports: none detected
-- External dependencies: `@peria/core`
+- External dependencies: `@peria/core`, `vitest`
 
 ## @peria/adapters
 
@@ -71,7 +71,7 @@ This package contributes 11 source modules and 19 exported declarations to the g
 
 - Directory: `packages/cli`
 - Version: 0.1.0
-- Scripts: `build`, `typecheck`, `test`, `dev`
+- Scripts: `build`, `typecheck`, `test`, `dev`, `prepublishOnly`
 - Package exports: none
 - Internal package imports: `@peria/core`
 - External dependencies: `@clack/prompts`, `@peria/core`, `@types/node`, `cac`, `chalk`, `tsup`, `typescript`
@@ -90,16 +90,16 @@ This package contributes 11 source modules and 19 exported declarations to the g
 
 **Why it matters:**
 
-This package contributes 13 source modules and 113 exported declarations to the generated knowledge graph. Its manifest lives at `packages/core/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 17 source modules and 113 exported declarations to the generated knowledge graph. Its manifest lives at `packages/core/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
 - Directory: `packages/core`
 - Version: 0.1.0
-- Scripts: `build`, `typecheck`, `test`, `dev`
+- Scripts: `build`, `typecheck`, `test`, `test:run`, `dev`
 - Package exports: `.`, `./config`, `./detectors`
 - Internal package imports: none detected
-- External dependencies: `@types/node`, `ts-morph`, `tsup`, `typescript`, `zod`
+- External dependencies: `@types/node`, `ts-morph`, `tsup`, `typescript`, `vitest`, `zod`
 
 ## @peria/docs-ui
 

@@ -30,15 +30,16 @@ Configured highlights:
 
 | Feature | State | Provenance |
 | --- | --- | --- |
-| apiReference | disabled | `peria.config.ts:91` |
-| changeMap | disabled | `peria.config.ts:95` |
-| codeMap | enabled | `peria.config.ts:90` |
-| contextPacks | enabled | `peria.config.ts:99` |
-| driftCheck | enabled | `peria.config.ts:96` |
-| embeddedDocs | enabled | `peria.config.ts:89` |
-| gitDiff | enabled | `peria.config.ts:94` |
-| github | disabled | `peria.config.ts:98` |
+| apiReference | disabled | `peria.config.ts:96` |
+| changeMap | disabled | `peria.config.ts:104` |
+| codeMap | enabled | `peria.config.ts:91` |
+| contextPacks | disabled | `peria.config.ts:98` |
+| driftCheck | enabled | `peria.config.ts:97` |
+| embeddedDocs | enabled | `peria.config.ts:90` |
+| embeddedDocsAdapters | disabled | `peria.config.ts:100` |
+| gitDiff | disabled | `peria.config.ts:103` |
+| github | disabled | `peria.config.ts:106` |
 | llms | enabled | `peria.config.ts:93` |
-| mermaid | enabled | `peria.config.ts:100` |
-| patchNotes | disabled | `peria.config.ts:97` |
+| mermaid | disabled | `peria.config.ts:99` |
+| patchNotes | disabled | `peria.config.ts:105` |
 | wiki | enabled | `peria.config.ts:92` |

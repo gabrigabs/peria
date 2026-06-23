@@ -86,17 +86,23 @@ export default defineConfig({
   },
 
   features: {
-    embeddedDocs: true,
-    codeMap: true,
-    apiReference: false,
-    wiki: true,
-    llms: true,
-    gitDiff: true,
-    changeMap: false,
-    driftCheck: true,
-    patchNotes: false,
-    github: false,
-    contextPacks: true,
-    mermaid: true,
+    // Implemented
+    embeddedDocs: true,      // CLI serve command works (adapters coming in Phase 4)
+    codeMap: true,           // Wiki builder extracts modules/exports
+    wiki: true,              // Wiki builder generates pages
+    llms: true,              // llms.txt generation works
+
+    // Coming soon
+    apiReference: false,     // OpenAPI parsing (Phase 3)
+    driftCheck: true,        // Basic diagnostics (Phase 0, task 3)
+    contextPacks: false,     // Agent context packs (Phase 6)
+    mermaid: false,          // Mermaid support (Phase 7)
+    embeddedDocsAdapters: false, // Express/Fastify/NestJS adapters (Phase 4)
+
+    // Not planned for MVP
+    gitDiff: false,          // Git diff impact analysis
+    changeMap: false,        // Semantic change map
+    patchNotes: false,       // Changelog generation
+    github: false,           // GitHub integration
   },
 })

@@ -1,6 +1,7 @@
 {
   "name": "@peria/core",
   "version": "0.1.0",
+  "description": "Core knowledge graph engine for Peria - source-backed evidence extraction for backend and API repositories.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -18,11 +19,34 @@
       "types": "./dist/detectors/index.d.ts"
     }
   },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"No tests yet\"",
+    "test": "vitest",
+    "test:run": "vitest run",
     "dev": "tsup --watch"
+  },
+  "keywords": [
+    "docs",
+    "openapi",
+    "backend",
+    "api",
+    "knowledge-graph",
+    "documentation",
+    "drift",
+    "agents"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gabrielbezerrarodrigues/peria"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
   },
   "dependencies": {
     "ts-morph": "^28.0.0",
@@ -31,6 +55,7 @@
   "devDependencies": {
     "@types/node": "^22.10.2",
     "tsup": "^8.3.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^3.0.0"
   }
 }

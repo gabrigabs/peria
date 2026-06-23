@@ -27,18 +27,20 @@ export async function buildCommand(cwd: string): Promise<void> {
   await mkdir(assetsDir, { recursive: true })
   await mkdir(artifactDir, { recursive: true })
 
-  for (const page of result.pages) {
-    await writeFile(join(docsDir, page.path), page.body, 'utf-8')
-  }
+  // Write all wiki pages in parallel
+  await Promise.all(result.pages.map((page) => writeFile(join(docsDir, page.path), page.body, 'utf-8')))
 
-  await writeJsonFile(join(docsDir, 'wiki-manifest.json'), result.manifest)
-  await writeFile(join(docsDir, 'index.html'), renderWikiHtml(result.manifest), 'utf-8')
-  await writeFile(join(assetsDir, 'wiki.css'), renderWikiCss(), 'utf-8')
-  await writeFile(join(assetsDir, 'wiki.js'), renderWikiJs(), 'utf-8')
-  await writeJsonFile(join(artifactDir, 'graph.json'), result.graph)
-  await writeJsonFile(join(artifactDir, 'manifest.json'), result.manifest)
-  await writeFile(join(artifactDir, 'ai-context.md'), result.llmsText, 'utf-8')
-  await writeFile(join(cwd, 'llms.txt'), result.llmsText, 'utf-8')
+  // Write all remaining files in parallel
+  await Promise.all([
+    writeJsonFile(join(docsDir, 'wiki-manifest.json'), result.manifest),
+    writeFile(join(docsDir, 'index.html'), renderWikiHtml(result.manifest), 'utf-8'),
+    writeFile(join(assetsDir, 'wiki.css'), renderWikiCss(), 'utf-8'),
+    writeFile(join(assetsDir, 'wiki.js'), renderWikiJs(), 'utf-8'),
+    writeJsonFile(join(artifactDir, 'graph.json'), result.graph),
+    writeJsonFile(join(artifactDir, 'manifest.json'), result.manifest),
+    writeFile(join(artifactDir, 'ai-context.md'), result.llmsText, 'utf-8'),
+    writeFile(join(cwd, 'llms.txt'), result.llmsText, 'utf-8'),
+  ])
 
   logger.success(`Generated ${result.pages.length} wiki pages in ${result.config.docs.outputDir}`)
   logger.success('Generated visual wiki UI')

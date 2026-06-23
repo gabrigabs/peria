@@ -37,18 +37,24 @@ export interface ProjectProfile {
 }
 
 export interface FeatureFlags {
+  // Implemented
   embeddedDocs?: boolean
   codeMap?: boolean
-  apiReference?: boolean
   wiki?: boolean
   llms?: boolean
-  gitDiff?: boolean
-  changeMap?: boolean
   driftCheck?: boolean
-  patchNotes?: boolean
-  github?: boolean
+
+  // Coming soon
+  apiReference?: boolean
   contextPacks?: boolean
   mermaid?: boolean
+  embeddedDocsAdapters?: boolean
+
+  // Not planned for MVP
+  gitDiff?: boolean
+  changeMap?: boolean
+  patchNotes?: boolean
+  github?: boolean
 }
 
 export interface PeriaConfig {
@@ -72,16 +78,19 @@ export interface ResolvedPeriaConfig {
 export const DEFAULT_FEATURES: Required<FeatureFlags> = {
   embeddedDocs: true,
   codeMap: true,
-  apiReference: true,
   wiki: true,
   llms: true,
-  gitDiff: true,
-  changeMap: false,
   driftCheck: true,
+
+  apiReference: false,
+  contextPacks: false,
+  mermaid: false,
+  embeddedDocsAdapters: false,
+
+  gitDiff: false,
+  changeMap: false,
   patchNotes: false,
   github: false,
-  contextPacks: false,
-  mermaid: true,
 }
 
 export const DEFAULT_DOCS: Required<DocsConfig> = {

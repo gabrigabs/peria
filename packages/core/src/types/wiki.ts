@@ -85,6 +85,7 @@ export interface WikiManifest {
   title: string
   tagline: string
   generatedAt: string
+  manifestVersion: string
   commit?: string
   git: GitMetadata
   project: Required<ProjectProfile>

@@ -51,7 +51,6 @@ async function parseConfig(content: string, filename: string, filepath: string):
 async function importConfigFile(filepath: string): Promise<PeriaConfig | null> {
   try {
     const url = pathToFileURL(filepath)
-    url.searchParams.set('t', String(Date.now()))
     const module = await import(url.href)
     return module.default ?? module
   } catch {
@@ -60,18 +59,17 @@ async function importConfigFile(filepath: string): Promise<PeriaConfig | null> {
 }
 
 /**
- * Basic config extraction for MVP
+ * Fallback extraction when dynamic import fails.
+ * Parses TypeScript config using regex patterns.
  */
 function extractBasicConfig(content: string): PeriaConfig {
   const config: PeriaConfig = {}
 
-  // Extract framework
   const framework = extractStringProperty(content, 'framework')
   if (framework) {
     config.framework = framework as PeriaConfig['framework']
   }
 
-  // Extract entrypoint
   const entrypoint = extractStringProperty(content, 'entrypoint')
   if (entrypoint) {
     config.entrypoint = entrypoint
@@ -110,13 +108,20 @@ function extractBasicConfig(content: string): PeriaConfig {
   return config
 }
 
+/**
+ * Escape regex metacharacters in a string to be safely used in a RegExp pattern
+ */
+function escapeRegexMeta(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
 function extractStringProperty(content: string, key: string): string | undefined {
-  const match = content.match(new RegExp(`${key}:\\s*['"]([^'"]+)['"]`))
+  const match = content.match(new RegExp(`${escapeRegexMeta(key)}:\\s*['"]([^'"]+)['"]`))
   return match?.[1]
 }
 
 function extractStringArrayProperty(content: string, key: string): string[] | undefined {
-  const match = content.match(new RegExp(`${key}:\\s*\\[([^\\]]*)\\]`, 's'))
+  const match = content.match(new RegExp(`${escapeRegexMeta(key)}:\\s*\\[([^\\]]*)\\]`, 's'))
   if (!match) return undefined
 
   const values = Array.from(match[1].matchAll(/['"]([^'"]+)['"]/g)).map((item) => item[1])

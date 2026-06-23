@@ -16,4 +16,4 @@ The CLI is the operator path through Peria. Commands are extracted from the CAC 
 | init | Initialize Peria in your project | implemented | `packages/cli/src/commands/init.ts` | `packages/cli/src/index.ts:25` |
 | build | Build documentation | implemented | `packages/cli/src/commands/build.ts` | `packages/cli/src/index.ts:29` |
 | serve | Serve documentation locally | implemented | `packages/cli/src/commands/serve.ts` | `packages/cli/src/index.ts:33` |
-| check | Check for documentation drift | stub | `packages/cli/src/commands/check.ts` | `packages/cli/src/index.ts:37` |
+| check | Check for documentation drift | implemented | `packages/cli/src/commands/check.ts` | `packages/cli/src/index.ts:37` |

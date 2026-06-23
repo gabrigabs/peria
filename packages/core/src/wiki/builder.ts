@@ -37,20 +37,28 @@ interface PackageJson {
 }
 
 const GRAPH_VERSION = '0.1.0'
+const MANIFEST_VERSION = '0.1.0'
 const IGNORED_DIRECTORIES = new Set(['.git', '.eria', 'dist', 'node_modules'])
 
 export async function buildWiki(cwd: string, configInput: PeriaConfig | ResolvedPeriaConfig = {}): Promise<WikiBuildResult> {
   const config = defineConfig(configInput)
   const generatedAt = new Date().toISOString()
-  const git = await collectGitMetadata(cwd)
-  const commit = git.commit
-  const packages = await collectPackages(cwd)
+
+  // Independent collection operations in parallel
+  const [git, packages, cliCommands, features, contextFiles, history] = await Promise.all([
+    collectGitMetadata(cwd),
+    collectPackages(cwd),
+    collectCliCommands(cwd),
+    collectFeatures(cwd, config),
+    collectContextFiles(cwd, config.sources.context),
+    getRecentHistory(cwd),
+  ])
+
+  // Sequential: modules need packages, adapters need modules
   const modules = await collectModules(cwd, packages)
-  const cliCommands = await collectCliCommands(cwd)
-  const features = await collectFeatures(cwd, config)
   const adapters = await collectAdapters(cwd, modules)
-  const contextFiles = await collectContextFiles(cwd, config.sources.context)
-  const history = await getRecentHistory(cwd)
+
+  const commit = git.commit
   const pages = createPages({
     config,
     generatedAt,
@@ -190,26 +198,33 @@ async function collectCliCommands(cwd: string): Promise<CliCommandSummary[]> {
   const content = await readTextFile(join(cwd, source))
   if (!content) return []
 
-  const commands: CliCommandSummary[] = []
+  // Extract command info first, then read handler files in parallel
+  const commandInfos: Array<{ name: string; description: string; line: number; handlerPath: string }> = []
   const commandPattern = /cli\.command\(['"]([^'"]+)['"],\s*['"]([^'"]+)['"]\)/g
   let match: RegExpExecArray | null
 
   while ((match = commandPattern.exec(content)) !== null) {
-    const name = match[1]
-    const handlerPath = `packages/cli/src/commands/${name}.ts`
-    const handlerContent = await readTextFile(join(cwd, handlerPath))
-
-    commands.push({
-      name,
+    commandInfos.push({
+      name: match[1],
       description: match[2],
-      source,
       line: getLineNumber(content, match.index),
-      handlerPath: handlerContent ? handlerPath : undefined,
-      status: getImplementationStatus(handlerContent),
+      handlerPath: `packages/cli/src/commands/${match[1]}.ts`,
     })
   }
 
-  return commands
+  // Read all handler files in parallel
+  const handlerContents = await Promise.all(
+    commandInfos.map((info) => readTextFile(join(cwd, info.handlerPath)))
+  )
+
+  return commandInfos.map((info, index) => ({
+    name: info.name,
+    description: info.description,
+    source,
+    line: info.line,
+    handlerPath: handlerContents[index] ? info.handlerPath : undefined,
+    status: getImplementationStatus(handlerContents[index]),
+  }))
 }
 
 async function collectFeatures(cwd: string, config: ResolvedPeriaConfig): Promise<FeatureSummary[]> {
@@ -234,37 +249,33 @@ async function collectFeatures(cwd: string, config: ResolvedPeriaConfig): Promis
 }
 
 async function collectAdapters(cwd: string, modules: ModuleSummary[]): Promise<AdapterSummary[]> {
-  const adapters: AdapterSummary[] = []
+  // Filter adapter modules and read all contents in parallel
+  const adapterModules = modules.filter(
+    (module) => module.path.startsWith('packages/adapters/src/') && basename(module.path, extname(module.path)) !== 'index'
+  )
 
-  for (const module of modules
-    .filter((module) => module.path.startsWith('packages/adapters/src/'))
-    .filter((module) => basename(module.path, extname(module.path)) !== 'index')) {
-    const content = await readTextFile(join(cwd, module.path))
+  const contents = await Promise.all(adapterModules.map((module) => readTextFile(join(cwd, module.path))))
 
-    adapters.push({
+  return adapterModules
+    .map((module, index) => ({
       name: basename(module.path, extname(module.path)),
       source: module.path,
       exports: module.exports,
-      status: content?.includes('coming soon') ? 'placeholder' : 'implemented',
-    })
-  }
-
-  return adapters.sort((left, right) => left.name.localeCompare(right.name))
+      status: (contents[index]?.includes('coming soon') ? 'placeholder' : 'implemented') as 'placeholder' | 'implemented',
+    }))
+    .sort((left, right) => left.name.localeCompare(right.name))
 }
 
 async function collectContextFiles(cwd: string, contextPaths: string[]): Promise<ContextFileSummary[]> {
-  const summaries: ContextFileSummary[] = []
+  // Read all context files in parallel
+  const paths = unique(contextPaths)
+  const contents = await Promise.all(paths.map((path) => readTextFile(join(cwd, path))))
 
-  for (const path of unique(contextPaths)) {
-    const content = await readTextFile(join(cwd, path))
-    summaries.push({
-      path,
-      exists: content !== null,
-      heading: content ? getFirstHeading(content) : undefined,
-    })
-  }
-
-  return summaries
+  return paths.map((path, index) => ({
+    path,
+    exists: contents[index] !== null,
+    heading: contents[index] ? getFirstHeading(contents[index]) : undefined,
+  }))
 }
 
 function createPages(input: {
@@ -323,6 +334,7 @@ function createManifest(config: ResolvedPeriaConfig, generatedAt: string, git: G
     title: `${config.project.name} Wiki`,
     tagline: config.project.tagline,
     generatedAt,
+    manifestVersion: MANIFEST_VERSION,
     commit: git.commit,
     git,
     project: config.project,

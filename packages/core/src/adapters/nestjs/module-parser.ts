@@ -4,6 +4,8 @@
  * Extracts module structure from NestJS @Module decorators.
  */
 
+import { existsSync } from 'node:fs'
+import { join } from 'node:path'
 import {
   Project,
   Node,
@@ -54,12 +56,14 @@ export async function extractModules(context: RepoContext): Promise<ModuleEntity
  */
 function findTsConfig(cwd: string): string | undefined {
   const candidates = [
-    `${cwd}/tsconfig.json`,
-    `${cwd}/tsconfig.build.json`,
+    join(cwd, 'tsconfig.json'),
+    join(cwd, 'tsconfig.build.json'),
   ]
 
   for (const candidate of candidates) {
-    return candidate
+    if (existsSync(candidate)) {
+      return candidate
+    }
   }
 
   return undefined

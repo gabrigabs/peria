@@ -4,6 +4,7 @@
  * Uses ts-morph to extract routes, handlers, and decorators from NestJS controllers.
  */
 
+import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import {
   Project,
@@ -88,8 +89,9 @@ function findTsConfig(cwd: string): string | undefined {
   ]
 
   for (const candidate of candidates) {
-    // Will be checked by ts-morph
-    return candidate
+    if (existsSync(candidate)) {
+      return candidate
+    }
   }
 
   return undefined
@@ -260,7 +262,9 @@ function extractMiddleware(
     if (deco.getName() === decoratorName) {
       const args = deco.getArguments()
       for (const arg of args) {
-        result.push(arg.getText())
+        const text = arg.getText()
+        // Strip quotes from string literals (e.g., 'GuardName' -> GuardName)
+        result.push(text.startsWith("'") && text.endsWith("'") ? text.slice(1, -1) : text)
       }
     }
   }
@@ -282,7 +286,9 @@ function extractClassMiddleware(
     if (deco.getName() === decoratorName) {
       const args = deco.getArguments()
       for (const arg of args) {
-        result.push(arg.getText())
+        const text = arg.getText()
+        // Strip quotes from string literals (e.g., 'GuardName' -> GuardName)
+        result.push(text.startsWith("'") && text.endsWith("'") ? text.slice(1, -1) : text)
       }
     }
   }

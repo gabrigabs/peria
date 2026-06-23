@@ -121,7 +121,11 @@ export async function scan(cwd: string): Promise<ScanResult> {
         frameworkSchemas = await extractAdapterSchemas(context)
       }
     } catch {
-      // Schema extraction is optional, just skip
+      // Schema extraction is optional - add minor warning for debugging
+      warnings.push({
+        code: 'schema-extraction-skipped',
+        message: 'Framework schema extraction was skipped (optional)',
+      })
     }
   }
 
@@ -147,7 +151,7 @@ export async function scan(cwd: string): Promise<ScanResult> {
     generatedAt: new Date().toISOString(),
 
     repo: repoInfo,
-    framework: await detectFramework(cwd, resolvedConfig),
+    framework: detectedFramework,
     openapi: buildOpenAPIMetadata(openapiResults),
     docs: buildDocsMetadata(docsResults),
     llms: buildLlmsMetadata(llmsResult),

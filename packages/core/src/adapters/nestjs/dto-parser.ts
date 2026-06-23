@@ -4,10 +4,11 @@
  * Extracts DTOs, entities, and schemas from NestJS applications.
  */
 
+import { existsSync } from 'node:fs'
+import { join } from 'node:path'
 import {
   Project,
   Node,
-  SyntaxKind,
   type ClassDeclaration,
   type InterfaceDeclaration,
   type TypeAliasDeclaration,
@@ -87,12 +88,14 @@ export async function extractSchemas(context: RepoContext): Promise<SchemaEntity
  */
 function findTsConfig(cwd: string): string | undefined {
   const candidates = [
-    `${cwd}/tsconfig.json`,
-    `${cwd}/tsconfig.build.json`,
+    join(cwd, 'tsconfig.json'),
+    join(cwd, 'tsconfig.build.json'),
   ]
 
   for (const candidate of candidates) {
-    return candidate
+    if (existsSync(candidate)) {
+      return candidate
+    }
   }
 
   return undefined

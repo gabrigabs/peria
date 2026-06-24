@@ -13,15 +13,15 @@
  */
 
 export interface PeriaNestOptions {
-  route?: string
-  docsPath?: string
+  route?: string;
+  docsPath?: string;
 }
 
 export interface NestApplication {
-  use: (path: string, handler: unknown) => void
+  use: (path: string, handler: unknown) => void;
 }
 
 export function setupPeriaDocs(_app: NestApplication, options?: PeriaNestOptions): void {
-  console.log('Peria NestJS adapter - coming soon')
-  console.log('Route:', options?.route ?? '/docs')
+  console.log('Peria NestJS adapter - coming soon');
+  console.log('Route:', options?.route ?? '/docs');
 }

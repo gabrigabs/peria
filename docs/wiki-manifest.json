@@ -189,32 +189,19 @@
   "tree": [
     {
       "title": "Start here",
-      "pages": [
-        "overview",
-        "ai-context"
-      ]
+      "pages": ["overview", "ai-context"]
     },
     {
       "title": "Product surface",
-      "pages": [
-        "packages",
-        "cli",
-        "configuration"
-      ]
+      "pages": ["packages", "cli", "configuration"]
     },
     {
       "title": "Code map",
-      "pages": [
-        "modules",
-        "adapters",
-        "wiki-ui"
-      ]
+      "pages": ["modules", "adapters", "wiki-ui"]
     },
     {
       "title": "Provenance",
-      "pages": [
-        "history"
-      ]
+      "pages": ["history"]
     }
   ]
 }

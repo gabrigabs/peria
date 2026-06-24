@@ -2,5 +2,5 @@
  * Peria SDK - Main exports
  */
 
-export type { PeriaOptions, PeriaInstance } from './types.js'
-export { createServer } from './server/embed.js'
+export { createServer } from './server/embed.js';
+export type { PeriaInstance, PeriaOptions } from './types.js';

@@ -2,26 +2,26 @@
  * Config file generator
  */
 
-import { writeFile } from 'node:fs/promises'
-import type { FeatureFlags } from '../prompts/features.js'
-import type { DetectedFramework } from '../prompts/framework.js'
+import { writeFile } from 'node:fs/promises';
+import type { FeatureFlags } from '../prompts/features.js';
+import type { DetectedFramework } from '../prompts/framework.js';
 
 interface GeneratedConfig {
-  framework: DetectedFramework
-  entrypoint: string
-  docsRoute: string
-  features: FeatureFlags
+  framework: DetectedFramework;
+  entrypoint: string;
+  docsRoute: string;
+  features: FeatureFlags;
 }
 
 function formatFeatures(features: FeatureFlags): string {
   const entries = Object.entries(features)
     .filter(([, value]) => value !== undefined)
     .map(([key, value]) => `    ${key}: ${value}`)
-    .join(',\n')
+    .join(',\n');
 
   return `features: {
 ${entries}
-  }`
+  }`;
 }
 
 export async function generateConfig(options: GeneratedConfig): Promise<string> {
@@ -55,13 +55,13 @@ export default defineConfig({
 
   ${formatFeatures(options.features)}
 })
-`
+`;
 
-  return config
+  return config;
 }
 
 export async function writeConfigFile(cwd: string, content: string): Promise<string> {
-  const filepath = `${cwd}/peria.config.ts`
-  await writeFile(filepath, content, 'utf-8')
-  return filepath
+  const filepath = `${cwd}/peria.config.ts`;
+  await writeFile(filepath, content, 'utf-8');
+  return filepath;
 }

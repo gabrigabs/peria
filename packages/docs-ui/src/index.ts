@@ -9,11 +9,11 @@ export const docsUI = {
   name: '@peria/docs-ui',
   version: '0.1.0',
   status: 'planned',
-}
+};
 
 /**
  * Render the documentation UI
  */
 export function renderDocs(): string {
-  return 'Docs UI - coming soon'
+  return 'Docs UI - coming soon';
 }

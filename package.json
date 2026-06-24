@@ -5,13 +5,17 @@
   "type": "module",
   "scripts": {
     "build": "bun run --filter '*' build",
+    "lint": "biome check --write",
     "typecheck": "bun run --filter '*' typecheck",
     "test": "bun run --filter '*' test",
     "dev": "bun run --filter '*' dev"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.1",
     "@peria/core": "workspace:*",
     "vitest": "^4.1.9"
   },
-  "workspaces": ["packages/*"]
+  "workspaces": [
+    "packages/*"
+  ]
 }

@@ -2,99 +2,122 @@
  * Peria Core - Main exports
  */
 
-// Types
-export type { PeriaConfig, FeatureFlags, DocsConfig, SourcesConfig, ProjectProfile, PackageContext, Framework } from './types/config.js'
-export type { ResolvedPeriaConfig } from './types/config.js'
-export type { DetectedFramework, FrameworkInfo } from './types/framework.js'
-export type { SourceDocument, SourceType, MarkdownSource, OpenAPISource, LlmsSource } from './types/source.js'
-export type { Entity, EntityType, Claim, Provenance, KnowledgeGraph } from './types/entity.js'
+// Framework adapters (Phase 2)
+export { createNestJSAdapter, nestJSAdapter } from './adapters/nestjs/index.js';
 export type {
-  PackageSummary,
-  ModuleSummary,
-  ExportSummary,
-  CliCommandSummary,
-  FeatureSummary,
-  AdapterSummary,
-  ContextFileSummary,
-  WikiPage,
-  WikiManifest,
-  KnowledgeGraphArtifact,
-  WikiBuildResult,
-} from './types/wiki.js'
-
+  EntrypointEntity,
+  FrameworkAdapter,
+  FrameworkDetectionResult,
+  ModuleEntity,
+  RepoContext,
+} from './adapters/types.js';
+export { DEFAULT_ENTRYPOINT_CANDIDATES } from './config/defaults.js';
+export { configExists, loadConfig } from './config/loader.js';
+export {
+  detectEntrypoint,
+  getEntrypointOptions,
+  scanForEntrypoints,
+} from './detectors/entrypoint.js';
+// Detectors
+export { detectFramework, getFrameworkOptions } from './detectors/framework.js';
+// Legacy parser exports for backward compatibility
+export {
+  parseCode,
+  parseLlms as legacyParseLlms,
+  parseMarkdown as legacyParseMarkdown,
+  parseOpenAPI as legacyParseOpenAPI,
+} from './parsers/index.js';
+export { parseLlms, parseLlmsContent } from './parsers/llms.js';
+// Parsers (Phase 1 - now implemented)
+export { parseMarkdown, parseMarkdownWithUnified } from './parsers/markdown.js';
+export { parseOpenAPI, parseOpenAPIDetailed } from './parsers/openapi.js';
+// Scanner (Phase 1 - new)
+export { scan, writeManifest } from './scanner.js';
+// Types
+export type {
+  DocsConfig,
+  FeatureFlags,
+  Framework,
+  PackageContext,
+  PeriaConfig,
+  ProjectProfile,
+  ResolvedPeriaConfig,
+  SourcesConfig,
+} from './types/config.js';
+// Config
+export { DEFAULT_DOCS, DEFAULT_FEATURES, DEFAULT_PROJECT, defineConfig } from './types/config.js';
+export type { Claim, Entity, EntityType, KnowledgeGraph, Provenance } from './types/entity.js';
+export type { DetectedFramework, FrameworkInfo } from './types/framework.js';
 // Graph types (Phase 1)
 export type {
+  AgentContextFile,
   Confidence,
+  DocPageEntity,
+  DriftFinding,
+  ExportSummary as SourceExportSummary,
   ExtractionMethod,
-  HttpMethod,
-  RelationType,
-  SourceRef,
+  FrameworkDetection,
+  GitChange,
+  GraphRelation,
+  HandlerEntity,
   Heading,
-  RouteMention,
-  SchemaReference,
-  SchemaProperty,
+  HttpMethod,
+  OpenAPIOperation,
   OpenAPIParameter,
   OpenAPIRequestBody,
   OpenAPIResponse,
-  HandlerEntity,
-  SchemaEntity,
-  OpenAPIOperation,
-  RouteEntity,
-  DocPageEntity,
-  AgentContextFile,
   PackageEntity,
+  RelationType,
+  RouteEntity,
+  RouteMention,
+  SchemaEntity,
+  SchemaProperty,
+  SchemaReference,
   SourceFile,
-  ExportSummary as SourceExportSummary,
-  GitChange,
-  GraphRelation,
-  DriftFinding,
-  FrameworkDetection,
-} from './types/graph.js'
-
+  SourceRef,
+} from './types/graph.js';
 // Manifest types (Phase 1)
 export type {
+  CompactManifest,
+  DocsMetadata,
+  FrameworkMetadata,
+  GitMetadata,
+  LlmsMetadata,
+  OpenAPIMetadata,
   PeriaManifest,
   RepoInfo,
-  GitMetadata,
-  FrameworkMetadata,
-  OpenAPIMetadata,
-  DocsMetadata,
-  LlmsMetadata,
-  ScanStats,
-  ScanResult,
-  ScanWarning,
   ScanOptions,
+  ScanResult,
+  ScanStats,
+  ScanWarning,
   SerializedManifest,
-  CompactManifest,
-} from './types/manifest.js'
-
+} from './types/manifest.js';
 // Manifest helpers
-export { MANIFEST_VERSION, PERIA_VERSION, toCompactManifest, isValidManifest } from './types/manifest.js'
-
-// Config
-export { defineConfig, DEFAULT_FEATURES, DEFAULT_DOCS, DEFAULT_PROJECT } from './types/config.js'
-export { loadConfig, configExists } from './config/loader.js'
-export { DEFAULT_ENTRYPOINT_CANDIDATES } from './config/defaults.js'
-
-// Detectors
-export { detectFramework, getFrameworkOptions } from './detectors/framework.js'
-export { detectEntrypoint, getEntrypointOptions, scanForEntrypoints } from './detectors/entrypoint.js'
-
+export {
+  isValidManifest,
+  MANIFEST_VERSION,
+  PERIA_VERSION,
+  toCompactManifest,
+} from './types/manifest.js';
+export type {
+  LlmsSource,
+  MarkdownSource,
+  OpenAPISource,
+  SourceDocument,
+  SourceType,
+} from './types/source.js';
+export type {
+  AdapterSummary,
+  CliCommandSummary,
+  ContextFileSummary,
+  ExportSummary,
+  FeatureSummary,
+  KnowledgeGraphArtifact,
+  ModuleSummary,
+  PackageSummary,
+  WikiBuildResult,
+  WikiManifest,
+  WikiPage,
+} from './types/wiki.js';
 // Wiki builder
-export { buildWiki } from './wiki/builder.js'
-
-// Parsers (Phase 1 - now implemented)
-export { parseMarkdown, parseMarkdownWithUnified } from './parsers/markdown.js'
-export { parseOpenAPI, parseOpenAPIDetailed } from './parsers/openapi.js'
-export { parseLlms, parseLlmsContent } from './parsers/llms.js'
-
-// Legacy parser exports for backward compatibility
-export { parseCode } from './parsers/index.js'
-export { parseMarkdown as legacyParseMarkdown, parseOpenAPI as legacyParseOpenAPI, parseLlms as legacyParseLlms } from './parsers/index.js'
-
-// Scanner (Phase 1 - new)
-export { scan, writeManifest } from './scanner.js'
-
-// Framework adapters (Phase 2)
-export { nestJSAdapter, createNestJSAdapter } from './adapters/nestjs/index.js'
-export type { FrameworkAdapter, RepoContext, FrameworkDetectionResult, ModuleEntity, EntrypointEntity } from './adapters/types.js'
+export { buildWiki } from './wiki/builder.js';

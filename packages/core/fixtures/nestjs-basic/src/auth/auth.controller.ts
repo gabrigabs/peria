@@ -1,5 +1,5 @@
-import { Controller, Post, Body, Get, Headers, UnauthorizedException } from '@nestjs/common'
-import { AuthService, LoginResponse, TokenPayload } from './auth.service'
+import { Body, Controller, Get, Headers, Post, UnauthorizedException } from '@nestjs/common';
+import type { AuthService, LoginResponse, TokenPayload } from './auth.service';
 
 /**
  * Auth controller - handles authentication endpoints
@@ -13,7 +13,7 @@ export class AuthController {
    */
   @Post('login')
   async login(@Body() body: { email: string; password: string }): Promise<LoginResponse> {
-    return this.authService.login(body.email, body.password)
+    return this.authService.login(body.email, body.password);
   }
 
   /**
@@ -21,11 +21,11 @@ export class AuthController {
    */
   @Post('logout')
   async logout(@Headers('authorization') auth: string): Promise<{ success: boolean }> {
-    const token = auth?.replace('Bearer ', '')
+    const token = auth?.replace('Bearer ', '');
     if (!token) {
-      throw new UnauthorizedException('No token provided')
+      throw new UnauthorizedException('No token provided');
     }
-    return this.authService.logout(token)
+    return this.authService.logout(token);
   }
 
   /**
@@ -33,11 +33,11 @@ export class AuthController {
    */
   @Get('verify')
   verify(@Headers('authorization') auth: string): TokenPayload {
-    const token = auth?.replace('Bearer ', '')
+    const token = auth?.replace('Bearer ', '');
     if (!token) {
-      throw new UnauthorizedException('No token provided')
+      throw new UnauthorizedException('No token provided');
     }
-    return this.authService.verifyToken(token)
+    return this.authService.verifyToken(token);
   }
 
   /**
@@ -45,6 +45,6 @@ export class AuthController {
    */
   @Post('refresh')
   async refresh(@Body() body: { refreshToken: string }): Promise<LoginResponse> {
-    return this.authService.refreshToken(body.refreshToken)
+    return this.authService.refreshToken(body.refreshToken);
   }
 }

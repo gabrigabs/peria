@@ -12,17 +12,17 @@
  */
 
 export interface PeriaDocsOptions {
-  route?: string
-  docsPath?: string
+  route?: string;
+  docsPath?: string;
 }
 
 export function periaDocs(options?: PeriaDocsOptions): unknown {
   return (_req: unknown, res: unknown) => {
-    const response = res as { json: (data: unknown) => void }
+    const response = res as { json: (data: unknown) => void };
     response.json({
       message: 'Peria docs endpoint',
       route: options?.route ?? '/docs',
       status: 'coming soon',
-    })
-  }
+    });
+  };
 }

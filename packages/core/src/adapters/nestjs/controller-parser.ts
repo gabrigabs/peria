@@ -4,20 +4,22 @@
  * Uses ts-morph to extract routes, handlers, and decorators from NestJS controllers.
  */
 
-import { join } from 'node:path'
 import {
-  Node,
-  SyntaxKind,
   type ClassDeclaration,
-  type MethodDeclaration,
   type Decorator,
+  type MethodDeclaration,
+  Node,
   type SourceFile,
-  type ParameterDeclaration,
-  type ClassDeclaration as TsMorphClass,
-} from 'ts-morph'
-import { findTsConfig, createTsMorphProject } from './utils.js'
-import type { RouteEntity, HandlerEntity, HttpMethod, SchemaEntity, Confidence } from '../../types/graph.js'
-import type { RepoContext } from '../types.js'
+} from 'ts-morph';
+import type {
+  Confidence,
+  HandlerEntity,
+  HttpMethod,
+  RouteEntity,
+  SchemaEntity,
+} from '../../types/graph.js';
+import type { RepoContext } from '../types.js';
+import { createTsMorphProject } from './utils.js';
 
 /**
  * HTTP method decorators
@@ -30,105 +32,92 @@ const HTTP_METHODS: Record<string, HttpMethod> = {
   Delete: 'DELETE',
   Head: 'HEAD',
   Options: 'OPTIONS',
-}
+};
 
 /**
  * Parameter decorators
  */
-const PARAM_DECORATORS = ['Param', 'Query', 'Body', 'Headers', 'Cookies', 'Ip', 'Session']
+const PARAM_DECORATORS = ['Param', 'Query', 'Body', 'Headers', 'Cookies', 'Ip', 'Session'];
 
 /**
- * Middleware decorators
+ * Middleware decorators (reserved for future use)
  */
-const MIDDLEWARE_DECORATORS = ['UseGuards', 'UsePipes', 'UseInterceptors', 'UseFilters', 'UseCors']
+// const _MIDDLEWARE_DECORATORS = [
+//   'UseGuards',
+//   'UsePipes',
+//   'UseInterceptors',
+//   'UseFilters',
+//   'UseCors',
+// ];
 
 /**
  * Extract all routes from NestJS controllers
  */
 export async function extractRoutes(context: RepoContext): Promise<RouteEntity[]> {
-  const { cwd } = context
-  const routes: RouteEntity[] = []
+  const { cwd } = context;
+  const routes: RouteEntity[] = [];
 
   // Create a ts-morph project
-  const { sourceFiles } = createTsMorphProject(cwd)
+  const { sourceFiles } = createTsMorphProject(cwd);
 
   for (const sourceFile of sourceFiles) {
-    const fileRoutes = extractRoutesFromFile(sourceFile)
-    routes.push(...fileRoutes)
+    const fileRoutes = extractRoutesFromFile(sourceFile);
+    routes.push(...fileRoutes);
   }
 
-  return routes
-}
-
-/**
- * Find tsconfig.json in the project
- */
-function findTsConfig(cwd: string): string | undefined {
-  const candidates = [
-    join(cwd, 'tsconfig.json'),
-    join(cwd, 'tsconfig.build.json'),
-    join(cwd, 'apps', 'api', 'tsconfig.json'),
-  ]
-
-  for (const candidate of candidates) {
-    if (existsSync(candidate)) {
-      return candidate
-    }
-  }
-
-  return undefined
+  return routes;
 }
 
 /**
  * Extract routes from a single source file
  */
 function extractRoutesFromFile(sourceFile: SourceFile): RouteEntity[] {
-  const routes: RouteEntity[] = []
-  const filePath = sourceFile.getFilePath()
+  const routes: RouteEntity[] = [];
+  const filePath = sourceFile.getFilePath();
 
   // Get all classes
-  const classes = sourceFile.getClasses()
+  const classes = sourceFile.getClasses();
 
   for (const classDecl of classes) {
     // Check if this is a controller
-    const controllerDeco = classDecl.getDecorator('Controller')
-    if (!controllerDeco) continue
+    const controllerDeco = classDecl.getDecorator('Controller');
+    if (!controllerDeco) continue;
 
     // Extract controller prefix
-    const controllerPrefix = extractControllerPath(controllerDeco)
-    const className = classDecl.getName()
+    const controllerPrefix = extractControllerPath(controllerDeco);
+    const className = classDecl.getName();
 
-    if (!className) continue
+    if (!className) continue;
 
     // Extract class-level decorators (these apply to all methods)
-    const classGuards = extractClassMiddleware(classDecl, 'UseGuards')
-    const classPipes = extractClassMiddleware(classDecl, 'UsePipes')
-    const classInterceptors = extractClassMiddleware(classDecl, 'UseInterceptors')
+    const classGuards = extractClassMiddleware(classDecl, 'UseGuards');
+    const classPipes = extractClassMiddleware(classDecl, 'UsePipes');
+    const classInterceptors = extractClassMiddleware(classDecl, 'UseInterceptors');
 
     // Get all methods
-    const methods = classDecl.getMethods()
+    const methods = classDecl.getMethods();
 
     for (const method of methods) {
       // Find HTTP method decorator
-      const httpMethodDeco = findHttpMethodDecorator(method)
-      if (!httpMethodDeco) continue
+      const httpMethodDeco = findHttpMethodDecorator(method);
+      if (!httpMethodDeco) continue;
 
-      const httpMethod = getHttpMethod(httpMethodDeco)
-      const routePath = extractRoutePath(httpMethodDeco)
-      const fullPath = combinePaths(controllerPrefix, routePath)
+      const httpMethod = getHttpMethod(httpMethodDeco);
+      const routePath = extractRoutePath(httpMethodDeco);
+      const fullPath = combinePaths(controllerPrefix, routePath);
 
       // Extract method decorators (merge with class-level)
-      const methodGuards = extractMiddleware(method, 'UseGuards')
-      const methodPipes = extractMiddleware(method, 'UsePipes')
-      const methodInterceptors = extractMiddleware(method, 'UseInterceptors')
+      const methodGuards = extractMiddleware(method, 'UseGuards');
+      const methodPipes = extractMiddleware(method, 'UsePipes');
+      const methodInterceptors = extractMiddleware(method, 'UseInterceptors');
 
       // Merge class and method decorators
-      const guards = [...classGuards, ...methodGuards]
-      const pipes = [...classPipes, ...methodPipes]
-      const interceptors = [...classInterceptors, ...methodInterceptors]
+      const guards = [...classGuards, ...methodGuards];
+      const pipes = [...classPipes, ...methodPipes];
+      const interceptors = [...classInterceptors, ...methodInterceptors];
 
       // Extract parameters
-      const parameters = extractParameters(method)
+      const parameters = extractParameters(method);
 
       // Create route entity
       const route = createRouteEntity({
@@ -142,77 +131,77 @@ function extractRoutesFromFile(sourceFile: SourceFile): RouteEntity[] {
         pipes,
         interceptors,
         parameters,
-      })
+      });
 
-      routes.push(route)
+      routes.push(route);
     }
   }
 
-  return routes
+  return routes;
 }
 
 /**
  * Extract the path from a @Controller decorator
  */
 function extractControllerPath(decorator: Decorator): string {
-  const args = decorator.getArguments()
-  if (args.length === 0) return ''
+  const args = decorator.getArguments();
+  if (args.length === 0) return '';
 
-  const firstArg = args[0]
+  const firstArg = args[0];
   if (Node.isStringLiteral(firstArg)) {
-    return firstArg.getText().slice(1, -1) // Remove quotes
+    return firstArg.getText().slice(1, -1); // Remove quotes
   }
 
   if (Node.isObjectLiteralExpression(firstArg)) {
-    const pathProp = firstArg.getProperty('path')
+    const pathProp = firstArg.getProperty('path');
     if (pathProp && Node.isPropertyAssignment(pathProp)) {
-      const value = pathProp.getInitializer()
+      const value = pathProp.getInitializer();
       if (Node.isStringLiteral(value)) {
-        return value.getText().slice(1, -1)
+        return value.getText().slice(1, -1);
       }
     }
   }
 
-  return ''
+  return '';
 }
 
 /**
  * Find HTTP method decorator on a method
  */
 function findHttpMethodDecorator(method: MethodDeclaration): Decorator | undefined {
-  const decorators = method.getDecorators()
+  const decorators = method.getDecorators();
 
   for (const deco of decorators) {
-    const name = deco.getName()
+    const name = deco.getName();
     if (HTTP_METHODS[name]) {
-      return deco
+      return deco;
     }
   }
 
-  return undefined
+  return undefined;
 }
 
 /**
  * Get HTTP method from decorator name
  */
 function getHttpMethod(decorator: Decorator): HttpMethod {
-  const name = decorator.getName()
-  return HTTP_METHODS[name] || 'GET'
+  const name = decorator.getName();
+  return HTTP_METHODS[name] || 'GET';
 }
 
 /**
  * Extract route path from HTTP method decorator
  */
 function extractRoutePath(decorator: Decorator): string {
-  const args = decorator.getArguments()
-  if (args.length === 0) return ''
+  const args = decorator.getArguments();
+  if (args.length === 0) return '';
 
-  const firstArg = args[0]
+  const firstArg = args[0];
   if (Node.isStringLiteral(firstArg)) {
-    return firstArg.getText().slice(1, -1)
+    return firstArg.getText().slice(1, -1);
   }
 
-  return ''
+  return '';
 }
 
 /**
@@ -220,62 +209,56 @@ function extractRoutePath(decorator: Decorator): string {
  */
 function combinePaths(prefix: string, route: string): string {
   // Remove leading/trailing slashes
-  const cleanPrefix = prefix.replace(/^\/|\/$/g, '')
-  const cleanRoute = route.replace(/^\/|\/$/g, '')
+  const cleanPrefix = prefix.replace(/^\/|\/$/g, '');
+  const cleanRoute = route.replace(/^\/|\/$/g, '');
 
-  if (!cleanPrefix && !cleanRoute) return '/'
-  if (!cleanPrefix) return `/${cleanRoute}`
-  if (!cleanRoute) return `/${cleanPrefix}`
+  if (!cleanPrefix && !cleanRoute) return '/';
+  if (!cleanPrefix) return `/${cleanRoute}`;
+  if (!cleanRoute) return `/${cleanPrefix}`;
 
-  return `/${cleanPrefix}/${cleanRoute}`
+  return `/${cleanPrefix}/${cleanRoute}`;
 }
 
 /**
  * Extract middleware from method decorators
  */
-function extractMiddleware(
-  method: MethodDeclaration,
-  decoratorName: string
-): string[] {
-  const decorators = method.getDecorators()
-  const result: string[] = []
+function extractMiddleware(method: MethodDeclaration, decoratorName: string): string[] {
+  const decorators = method.getDecorators();
+  const result: string[] = [];
 
   for (const deco of decorators) {
     if (deco.getName() === decoratorName) {
-      const args = deco.getArguments()
+      const args = deco.getArguments();
       for (const arg of args) {
-        const text = arg.getText()
+        const text = arg.getText();
         // Strip quotes from string literals (e.g., 'GuardName' -> GuardName)
-        result.push(text.startsWith("'") && text.endsWith("'") ? text.slice(1, -1) : text)
+        result.push(text.startsWith("'") && text.endsWith("'") ? text.slice(1, -1) : text);
       }
     }
   }
 
-  return result
+  return result;
 }
 
 /**
  * Extract middleware from class decorators
  */
-function extractClassMiddleware(
-  classDecl: ClassDeclaration,
-  decoratorName: string
-): string[] {
-  const decorators = classDecl.getDecorators()
-  const result: string[] = []
+function extractClassMiddleware(classDecl: ClassDeclaration, decoratorName: string): string[] {
+  const decorators = classDecl.getDecorators();
+  const result: string[] = [];
 
   for (const deco of decorators) {
     if (deco.getName() === decoratorName) {
-      const args = deco.getArguments()
+      const args = deco.getArguments();
       for (const arg of args) {
-        const text = arg.getText()
+        const text = arg.getText();
         // Strip quotes from string literals (e.g., 'GuardName' -> GuardName)
-        result.push(text.startsWith("'") && text.endsWith("'") ? text.slice(1, -1) : text)
+        result.push(text.startsWith("'") && text.endsWith("'") ? text.slice(1, -1) : text);
       }
     }
   }
 
-  return result
+  return result;
 }
 
 /**
@@ -284,38 +267,42 @@ function extractClassMiddleware(
 function extractParameters(
   method: MethodDeclaration
 ): Array<{ name: string; type: 'path' | 'query' | 'body' | 'header' | 'cookie'; schema?: string }> {
-  const parameters: Array<{ name: string; type: 'path' | 'query' | 'body' | 'header' | 'cookie'; schema?: string }> = []
-  const params = method.getParameters()
+  const parameters: Array<{
+    name: string;
+    type: 'path' | 'query' | 'body' | 'header' | 'cookie';
+    schema?: string;
+  }> = [];
+  const params = method.getParameters();
 
   for (const param of params) {
-    const decorators = param.getDecorators()
+    const decorators = param.getDecorators();
 
     for (const deco of decorators) {
-      const decoName = deco.getName()
+      const decoName = deco.getName();
 
       if (PARAM_DECORATORS.includes(decoName)) {
-        const args = deco.getArguments()
-        const paramName = param.getName()
-        const type = getParamType(decoName)
+        const args = deco.getArguments();
+        const paramName = param.getName();
+        const type = getParamType(decoName);
 
         // Get the type annotation if available
-        const typeNode = param.getTypeNode()
-        let schema: string | undefined
+        const typeNode = param.getTypeNode();
+        let schema: string | undefined;
 
         if (typeNode) {
-          schema = typeNode.getText()
+          schema = typeNode.getText();
         }
 
         parameters.push({
           name: args.length > 0 ? extractStringArg(args[0]) : paramName,
           type,
           schema,
-        })
+        });
       }
     }
   }
 
-  return parameters
+  return parameters;
 }
 
 /**
@@ -324,17 +311,17 @@ function extractParameters(
 function getParamType(decoratorName: string): 'path' | 'query' | 'body' | 'header' | 'cookie' {
   switch (decoratorName) {
     case 'Param':
-      return 'path'
+      return 'path';
     case 'Query':
-      return 'query'
+      return 'query';
     case 'Body':
-      return 'body'
+      return 'body';
     case 'Headers':
-      return 'header'
+      return 'header';
     case 'Cookies':
-      return 'cookie'
+      return 'cookie';
     default:
-      return 'query'
+      return 'query';
   }
 }
 
@@ -343,27 +330,42 @@ function getParamType(decoratorName: string): 'path' | 'query' | 'body' | 'heade
  */
 function extractStringArg(arg: Node): string {
   if (Node.isStringLiteral(arg)) {
-    return arg.getText().slice(1, -1)
+    return arg.getText().slice(1, -1);
   }
-  return ''
+  return '';
 }
 
 /**
  * Create a RouteEntity from extracted data
  */
 function createRouteEntity(data: {
-  path: string
-  method: HttpMethod
-  className: string
-  methodName: string
-  filePath: string
-  line: number
-  guards: string[]
-  pipes: string[]
-  interceptors: string[]
-  parameters: Array<{ name: string; type: 'path' | 'query' | 'body' | 'header' | 'cookie'; schema?: string }>
+  path: string;
+  method: HttpMethod;
+  className: string;
+  methodName: string;
+  filePath: string;
+  line: number;
+  guards: string[];
+  pipes: string[];
+  interceptors: string[];
+  parameters: Array<{
+    name: string;
+    type: 'path' | 'query' | 'body' | 'header' | 'cookie';
+    schema?: string;
+  }>;
 }): RouteEntity {
-  const { path, method, className, methodName, filePath, line, guards, pipes, interceptors, parameters } = data
+  const {
+    path,
+    method,
+    className,
+    methodName,
+    filePath,
+    line,
+    guards,
+    pipes,
+    interceptors,
+    parameters,
+  } = data;
 
   const handler: HandlerEntity = {
     id: `handler:${className}.${methodName}`,
@@ -373,16 +375,16 @@ function createRouteEntity(data: {
     className,
     methodName,
     decorators: [...guards, ...pipes, ...interceptors],
-  }
+  };
 
   // Convert parameters to schema entities
-  const schemas: SchemaEntity[] = parameters.map((param, idx) => ({
+  const schemas: SchemaEntity[] = parameters.map((param, _idx) => ({
     id: `param:${className}.${methodName}:${param.name}`,
     name: param.name,
     type: param.type as SchemaEntity['type'],
     description: `Parameter extracted from @${param.type === 'path' ? 'Param' : param.type === 'query' ? 'Query' : 'Body'} decorator`,
     source: { file: filePath, line },
-  }))
+  }));
 
   return {
     id: `route:${method}:${path}`,
@@ -395,5 +397,5 @@ function createRouteEntity(data: {
     source: { file: filePath, line },
     confidence: 'high' as Confidence,
     extractionMethod: 'ast',
-  }
+  };
 }

@@ -12,12 +12,12 @@
  */
 
 export interface PeriaDocsOptions {
-  routePrefix?: string
-  docsPath?: string
+  routePrefix?: string;
+  docsPath?: string;
 }
 
 export interface FastifyInstance {
-  get: (route: string, handler: () => Promise<unknown>) => void
+  get: (route: string, handler: () => Promise<unknown>) => void;
 }
 
 export function periaDocs(options?: PeriaDocsOptions) {
@@ -27,7 +27,7 @@ export function periaDocs(options?: PeriaDocsOptions) {
         message: 'Peria docs endpoint',
         route: options?.routePrefix ?? '/docs',
         status: 'coming soon',
-      }
-    })
-  }
+      };
+    });
+  };
 }

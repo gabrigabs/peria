@@ -1,20 +1,20 @@
 import {
+  Body,
   Controller,
+  Delete,
   Get,
+  Headers,
+  Param,
+  Patch,
   Post,
   Put,
-  Patch,
-  Delete,
-  Param,
   Query,
-  Body,
   UseGuards,
-  Headers,
-} from '@nestjs/common'
-import { UsersService } from './users.service'
-import { CreateUserDto } from './dto/create-user.dto'
-import { UpdateUserDto } from './dto/update-user.dto'
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
+} from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import type { CreateUserDto } from './dto/create-user.dto';
+import type { UpdateUserDto } from './dto/update-user.dto';
+import type { UsersService } from './users.service';
 
 /**
  * Users controller - handles user CRUD operations
@@ -29,7 +29,7 @@ export class UsersController {
    */
   @Get()
   findAll(@Query('limit') limit?: string, @Query('offset') offset?: string) {
-    return this.usersService.findAll({ limit, offset })
+    return this.usersService.findAll({ limit, offset });
   }
 
   /**
@@ -37,7 +37,7 @@ export class UsersController {
    */
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id)
+    return this.usersService.findOne(id);
   }
 
   /**
@@ -45,7 +45,7 @@ export class UsersController {
    */
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto)
+    return this.usersService.create(createUserDto);
   }
 
   /**
@@ -53,7 +53,7 @@ export class UsersController {
    */
   @Put(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto)
+    return this.usersService.update(id, updateUserDto);
   }
 
   /**
@@ -61,7 +61,7 @@ export class UsersController {
    */
   @Patch(':id')
   patch(@Param('id') id: string, @Body() updateUserDto: Partial<UpdateUserDto>) {
-    return this.usersService.update(id, updateUserDto)
+    return this.usersService.update(id, updateUserDto);
   }
 
   /**
@@ -69,7 +69,7 @@ export class UsersController {
    */
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.usersService.remove(id)
+    return this.usersService.remove(id);
   }
 
   /**
@@ -77,6 +77,6 @@ export class UsersController {
    */
   @Get(':id/preferences')
   getPreferences(@Param('id') id: string, @Headers('x-theme') theme?: string) {
-    return this.usersService.getPreferences(id, theme)
+    return this.usersService.getPreferences(id, theme);
   }
 }

@@ -3,21 +3,21 @@
  */
 
 export interface Provenance {
-  source: string
-  line?: number
-  commit?: string
-  issue?: number
-  pr?: number
+  source: string;
+  line?: number;
+  commit?: string;
+  issue?: number;
+  pr?: number;
 }
 
 export interface Claim {
-  id: string
-  subject: string
-  predicate: string
-  object: string
-  confidence: 'high' | 'medium' | 'low'
-  provenance: Provenance
-  timestamp?: string
+  id: string;
+  subject: string;
+  predicate: string;
+  object: string;
+  confidence: 'high' | 'medium' | 'low';
+  provenance: Provenance;
+  timestamp?: string;
 }
 
 export type EntityType =
@@ -41,27 +41,35 @@ export type EntityType =
   | 'adr'
   | 'issue'
   | 'pr'
-  | 'release'
+  | 'release';
 
 export interface Entity {
-  id: string
-  name: string
-  type: EntityType
-  path?: string
-  description?: string
-  claims: Claim[]
-  relations: EntityRelation[]
-  metadata?: Record<string, unknown>
+  id: string;
+  name: string;
+  type: EntityType;
+  path?: string;
+  description?: string;
+  claims: Claim[];
+  relations: EntityRelation[];
+  metadata?: Record<string, unknown>;
 }
 
 export interface EntityRelation {
-  targetId: string
-  relation: 'implements' | 'uses' | 'depends_on' | 'relates_to' | 'documented_in' | 'changed_by' | 'deprecates' | 'supersedes'
+  targetId: string;
+  relation:
+    | 'implements'
+    | 'uses'
+    | 'depends_on'
+    | 'relates_to'
+    | 'documented_in'
+    | 'changed_by'
+    | 'deprecates'
+    | 'supersedes';
 }
 
 export interface KnowledgeGraph {
-  entities: Map<string, Entity>
-  claims: Claim[]
-  version: string
-  generatedAt: string
+  entities: Map<string, Entity>;
+  claims: Claim[];
+  version: string;
+  generatedAt: string;
 }

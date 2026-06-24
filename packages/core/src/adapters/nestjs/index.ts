@@ -4,11 +4,11 @@
  * Framework adapter for extracting routes, modules, and schemas from NestJS applications.
  */
 
-import type { FrameworkAdapter, RepoContext } from '../types.js'
-import { detectNestJS } from './detector.js'
-import { extractRoutes } from './controller-parser.js'
-import { extractSchemas } from './dto-parser.js'
-import { extractModules } from './module-parser.js'
+import type { FrameworkAdapter, RepoContext } from '../types.js';
+import { extractRoutes } from './controller-parser.js';
+import { detectNestJS } from './detector.js';
+import { extractSchemas } from './dto-parser.js';
+import { extractModules } from './module-parser.js';
 
 /**
  * NestJS Framework Adapter
@@ -19,25 +19,25 @@ export const nestJSAdapter: FrameworkAdapter = {
   name: 'nestjs',
 
   async detect(context: RepoContext) {
-    return detectNestJS(context)
+    return detectNestJS(context);
   },
 
   async extractRoutes(context: RepoContext) {
-    return extractRoutes(context)
+    return extractRoutes(context);
   },
 
   async extractSchemas(context: RepoContext) {
-    return extractSchemas(context)
+    return extractSchemas(context);
   },
 
   async extractModules(context: RepoContext) {
-    return extractModules(context)
+    return extractModules(context);
   },
-}
+};
 
 /**
  * Factory function to create a NestJS adapter instance
  */
 export function createNestJSAdapter(): FrameworkAdapter {
-  return nestJSAdapter
+  return nestJSAdapter;
 }

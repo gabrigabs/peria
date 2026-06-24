@@ -10,199 +10,202 @@
  */
 
 import type {
+  AgentContextFile,
   Confidence,
+  DocPageEntity,
+  DriftFinding,
   FrameworkDetection,
   GitChange,
   GraphRelation,
+  OpenAPIOperation,
+  PackageEntity,
   RouteEntity,
   SchemaEntity,
-  OpenAPIOperation,
-  DocPageEntity,
   SourceFile,
-  PackageEntity,
-  AgentContextFile,
-  DriftFinding,
-} from './graph.js'
+} from './graph.js';
 
-export const MANIFEST_VERSION = '0.1.0'
-export const PERIA_VERSION = '0.1.0'
+export const MANIFEST_VERSION = '0.1.0';
+export const PERIA_VERSION = '0.1.0';
 
 /**
  * Repository metadata
  */
 export interface RepoInfo {
-  name: string
-  root: string
-  commit: string
-  branch: string
-  isDirty: boolean
+  name: string;
+  root: string;
+  commit: string;
+  branch: string;
+  isDirty: boolean;
 }
 
 /**
  * Git metadata for the scan
  */
 export interface GitMetadata {
-  lastCommit: string
-  shortCommit: string
-  branch: string
-  isDirty: boolean
-  changedFiles: string[]
-  recentChanges: Pick<GitChange, 'id' | 'path' | 'type' | 'commit' | 'author' | 'date' | 'subject'>[]
+  lastCommit: string;
+  shortCommit: string;
+  branch: string;
+  isDirty: boolean;
+  changedFiles: string[];
+  recentChanges: Pick<
+    GitChange,
+    'id' | 'path' | 'type' | 'commit' | 'author' | 'date' | 'subject'
+  >[];
 }
 
 /**
  * Framework metadata
  */
 export interface FrameworkMetadata {
-  name: 'nestjs' | 'express' | 'fastify' | 'hono' | 'elysia' | 'other'
-  confidence: Confidence
-  entrypoint?: string
-  evidence: string[]
+  name: 'nestjs' | 'express' | 'fastify' | 'hono' | 'elysia' | 'other';
+  confidence: Confidence;
+  entrypoint?: string;
+  evidence: string[];
 }
 
 /**
  * OpenAPI metadata
  */
 export interface OpenAPIMetadata {
-  path: string
-  version?: string
-  title?: string
-  description?: string
-  paths: string[]
-  schemas: string[]
-  operationsCount: number
-  confidence: Confidence
+  path: string;
+  version?: string;
+  title?: string;
+  description?: string;
+  paths: string[];
+  schemas: string[];
+  operationsCount: number;
+  confidence: Confidence;
 }
 
 /**
  * Markdown documentation metadata
  */
 export interface DocsMetadata {
-  paths: string[]
-  pagesCount: number
-  totalHeadings: number
-  totalRouteMentions: number
-  totalSchemaRefs: number
+  paths: string[];
+  pagesCount: number;
+  totalHeadings: number;
+  totalRouteMentions: number;
+  totalSchemaRefs: number;
 }
 
 /**
  * llms.txt metadata
  */
 export interface LlmsMetadata {
-  path: string
-  variant: 'full' | 'summary'
-  pageCount: number
-  exists: boolean
+  path: string;
+  variant: 'full' | 'summary';
+  pageCount: number;
+  exists: boolean;
 }
 
 /**
  * Scan statistics
  */
 export interface ScanStats {
-  startTime: string
-  endTime: string
-  durationMs: number
-  filesScanned: number
-  packagesScanned: number
+  startTime: string;
+  endTime: string;
+  durationMs: number;
+  filesScanned: number;
+  packagesScanned: number;
 }
 
 /**
  * The main Peria manifest - the portable output of `peria scan`
  */
 export interface PeriaManifest {
-  manifestVersion: string
-  periaVersion: string
-  generatedAt: string
+  manifestVersion: string;
+  periaVersion: string;
+  generatedAt: string;
 
-  repo: RepoInfo
-  framework?: FrameworkMetadata
-  openapi?: OpenAPIMetadata
-  docs?: DocsMetadata
-  llms?: LlmsMetadata
+  repo: RepoInfo;
+  framework?: FrameworkMetadata;
+  openapi?: OpenAPIMetadata;
+  docs?: DocsMetadata;
+  llms?: LlmsMetadata;
 
   // Core entities
-  routes: RouteEntity[]
-  schemas: SchemaEntity[]
-  openapiOps: OpenAPIOperation[]
-  docsPages: DocPageEntity[]
-  sourceFiles: SourceFile[]
-  packages: PackageEntity[]
-  agentContext: AgentContextFile[]
+  routes: RouteEntity[];
+  schemas: SchemaEntity[];
+  openapiOps: OpenAPIOperation[];
+  docsPages: DocPageEntity[];
+  sourceFiles: SourceFile[];
+  packages: PackageEntity[];
+  agentContext: AgentContextFile[];
 
   // Relations between entities
-  relations: GraphRelation[]
+  relations: GraphRelation[];
 
   // Git changes detected
-  git: GitMetadata
+  git: GitMetadata;
 
   // Drift findings from the last scan
-  drift: DriftFinding[]
+  drift: DriftFinding[];
 
   // Statistics
-  stats: ScanStats
+  stats: ScanStats;
 }
 
 /**
  * Result of running `peria scan`
  */
 export interface ScanResult {
-  manifest: PeriaManifest
-  warnings: ScanWarning[]
+  manifest: PeriaManifest;
+  warnings: ScanWarning[];
 }
 
 /**
  * Warning during scan (non-fatal issues)
  */
 export interface ScanWarning {
-  code: string
-  message: string
-  file?: string
-  suggestion?: string
+  code: string;
+  message: string;
+  file?: string;
+  suggestion?: string;
 }
 
 /**
  * Scan options
  */
 export interface ScanOptions {
-  cwd: string
+  cwd: string;
   config?: {
     sources?: {
-      openapi?: string
-      markdown?: string[]
-      llms?: string[]
-      context?: string[]
-    }
+      openapi?: string;
+      markdown?: string[];
+      llms?: string[];
+      context?: string[];
+    };
     features?: {
-      embeddedDocs?: boolean
-      apiReference?: boolean
-      contextPacks?: boolean
-    }
-  }
-  framework?: FrameworkDetection
-  gitCommit?: string
-  includeContent?: boolean
+      embeddedDocs?: boolean;
+      apiReference?: boolean;
+      contextPacks?: boolean;
+    };
+  };
+  framework?: FrameworkDetection;
+  gitCommit?: string;
+  includeContent?: boolean;
 }
 
 /**
  * Serialized manifest (for .peria/manifest.json)
  */
-export type SerializedManifest = PeriaManifest
+export type SerializedManifest = PeriaManifest;
 
 /**
  * Compact manifest for quick inspection
  */
 export interface CompactManifest {
-  manifestVersion: string
-  periaVersion: string
-  generatedAt: string
-  repo: Pick<RepoInfo, 'name' | 'branch' | 'commit'>
-  routesCount: number
-  schemasCount: number
-  docsPagesCount: number
-  openapiOpsCount: number
-  relationsCount: number
-  driftCount: number
-  isDirty: boolean
+  manifestVersion: string;
+  periaVersion: string;
+  generatedAt: string;
+  repo: Pick<RepoInfo, 'name' | 'branch' | 'commit'>;
+  routesCount: number;
+  schemasCount: number;
+  docsPagesCount: number;
+  openapiOpsCount: number;
+  relationsCount: number;
+  driftCount: number;
+  isDirty: boolean;
 }
 
 /**
@@ -225,15 +228,15 @@ export function toCompactManifest(manifest: PeriaManifest): CompactManifest {
     relationsCount: manifest.relations.length,
     driftCount: manifest.drift.length,
     isDirty: manifest.repo.isDirty,
-  }
+  };
 }
 
 /**
  * Helper to validate manifest structure
  */
 export function isValidManifest(obj: unknown): obj is PeriaManifest {
-  if (!obj || typeof obj !== 'object') return false
-  const manifest = obj as Record<string, unknown>
+  if (!obj || typeof obj !== 'object') return false;
+  const manifest = obj as Record<string, unknown>;
 
   return (
     typeof manifest.manifestVersion === 'string' &&
@@ -247,5 +250,5 @@ export function isValidManifest(obj: unknown): obj is PeriaManifest {
     Array.isArray(manifest.relations) &&
     Array.isArray(manifest.drift) &&
     typeof manifest.stats === 'object'
-  )
+  );
 }

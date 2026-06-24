@@ -12,9 +12,7 @@
   "framework": {
     "name": "other",
     "confidence": "low",
-    "evidence": [
-      "No framework detected from package.json"
-    ]
+    "evidence": ["No framework detected from package.json"]
   },
   "docs": {
     "paths": [
@@ -1685,9 +1683,7 @@
       "id": "file:packages/core/tsup.config.ts",
       "path": "packages/core/tsup.config.ts",
       "module": "packages/core/tsup.config.ts",
-      "imports": [
-        "tsup"
-      ],
+      "imports": ["tsup"],
       "source": {
         "file": "packages/core/tsup.config.ts"
       },
@@ -1697,9 +1693,7 @@
       "id": "file:packages/core/vitest.config.ts",
       "path": "packages/core/vitest.config.ts",
       "module": "packages/core/vitest.config.ts",
-      "imports": [
-        "vitest/config"
-      ],
+      "imports": ["vitest/config"],
       "source": {
         "file": "packages/core/vitest.config.ts"
       },
@@ -1709,10 +1703,7 @@
       "id": "file:packages/core/src/parsers/llms.ts",
       "path": "packages/core/src/parsers/llms.ts",
       "module": "packages/core/src/parsers/llms.ts",
-      "imports": [
-        "node:fs/promises",
-        "node:fs/promises"
-      ],
+      "imports": ["node:fs/promises", "node:fs/promises"],
       "source": {
         "file": "packages/core/src/parsers/llms.ts"
       },
@@ -1722,11 +1713,7 @@
       "id": "file:packages/core/src/parsers/markdown.ts",
       "path": "packages/core/src/parsers/markdown.ts",
       "module": "packages/core/src/parsers/markdown.ts",
-      "imports": [
-        "unified",
-        "remark-parse",
-        "remark-frontmatter"
-      ],
+      "imports": ["unified", "remark-parse", "remark-frontmatter"],
       "source": {
         "file": "packages/core/src/parsers/markdown.ts"
       },
@@ -1736,11 +1723,7 @@
       "id": "file:packages/core/src/parsers/openapi.ts",
       "path": "packages/core/src/parsers/openapi.ts",
       "module": "packages/core/src/parsers/openapi.ts",
-      "imports": [
-        "@apidevtools/swagger-parser",
-        "node:fs/promises",
-        "node:path"
-      ],
+      "imports": ["@apidevtools/swagger-parser", "node:fs/promises", "node:path"],
       "source": {
         "file": "packages/core/src/parsers/openapi.ts"
       },
@@ -1840,11 +1823,7 @@
       "id": "file:packages/core/src/config/loader.ts",
       "path": "packages/core/src/config/loader.ts",
       "module": "packages/core/src/config/loader.ts",
-      "imports": [
-        "node:fs/promises",
-        "node:path",
-        "node:url"
-      ],
+      "imports": ["node:fs/promises", "node:path", "node:url"],
       "source": {
         "file": "packages/core/src/config/loader.ts"
       },
@@ -1854,12 +1833,7 @@
       "id": "file:packages/core/src/wiki/builder.ts",
       "path": "packages/core/src/wiki/builder.ts",
       "module": "packages/core/src/wiki/builder.ts",
-      "imports": [
-        "node:child_process",
-        "node:fs/promises",
-        "node:path",
-        "ts-morph"
-      ],
+      "imports": ["node:child_process", "node:fs/promises", "node:path", "ts-morph"],
       "source": {
         "file": "packages/core/src/wiki/builder.ts"
       },
@@ -1869,11 +1843,7 @@
       "id": "file:packages/core/src/__tests__/framework.test.ts",
       "path": "packages/core/src/__tests__/framework.test.ts",
       "module": "packages/core/src/__tests__/framework.test.ts",
-      "imports": [
-        "vitest",
-        "node:fs/promises",
-        "node:path"
-      ],
+      "imports": ["vitest", "node:fs/promises", "node:path"],
       "source": {
         "file": "packages/core/src/__tests__/framework.test.ts"
       },
@@ -1883,11 +1853,7 @@
       "id": "file:packages/core/src/__tests__/entrypoint.test.ts",
       "path": "packages/core/src/__tests__/entrypoint.test.ts",
       "module": "packages/core/src/__tests__/entrypoint.test.ts",
-      "imports": [
-        "vitest",
-        "node:fs/promises",
-        "node:path"
-      ],
+      "imports": ["vitest", "node:fs/promises", "node:path"],
       "source": {
         "file": "packages/core/src/__tests__/entrypoint.test.ts"
       },
@@ -1897,9 +1863,7 @@
       "id": "file:packages/core/src/__tests__/markdown-parser.test.ts",
       "path": "packages/core/src/__tests__/markdown-parser.test.ts",
       "module": "packages/core/src/__tests__/markdown-parser.test.ts",
-      "imports": [
-        "vitest"
-      ],
+      "imports": ["vitest"],
       "source": {
         "file": "packages/core/src/__tests__/markdown-parser.test.ts"
       },
@@ -1909,9 +1873,7 @@
       "id": "file:packages/core/src/__tests__/featureFlags.test.ts",
       "path": "packages/core/src/__tests__/featureFlags.test.ts",
       "module": "packages/core/src/__tests__/featureFlags.test.ts",
-      "imports": [
-        "vitest"
-      ],
+      "imports": ["vitest"],
       "source": {
         "file": "packages/core/src/__tests__/featureFlags.test.ts"
       },
@@ -1921,9 +1883,7 @@
       "id": "file:packages/core/src/__tests__/graph.test.ts",
       "path": "packages/core/src/__tests__/graph.test.ts",
       "module": "packages/core/src/__tests__/graph.test.ts",
-      "imports": [
-        "vitest"
-      ],
+      "imports": ["vitest"],
       "source": {
         "file": "packages/core/src/__tests__/graph.test.ts"
       },
@@ -1933,11 +1893,7 @@
       "id": "file:packages/core/src/__tests__/openapi-parser.test.ts",
       "path": "packages/core/src/__tests__/openapi-parser.test.ts",
       "module": "packages/core/src/__tests__/openapi-parser.test.ts",
-      "imports": [
-        "vitest",
-        "node:fs/promises",
-        "node:path"
-      ],
+      "imports": ["vitest", "node:fs/promises", "node:path"],
       "source": {
         "file": "packages/core/src/__tests__/openapi-parser.test.ts"
       },
@@ -1947,11 +1903,7 @@
       "id": "file:packages/core/src/__tests__/config.test.ts",
       "path": "packages/core/src/__tests__/config.test.ts",
       "module": "packages/core/src/__tests__/config.test.ts",
-      "imports": [
-        "vitest",
-        "node:fs/promises",
-        "node:path"
-      ],
+      "imports": ["vitest", "node:fs/promises", "node:path"],
       "source": {
         "file": "packages/core/src/__tests__/config.test.ts"
       },
@@ -1961,11 +1913,7 @@
       "id": "file:packages/core/src/__tests__/scanner.test.ts",
       "path": "packages/core/src/__tests__/scanner.test.ts",
       "module": "packages/core/src/__tests__/scanner.test.ts",
-      "imports": [
-        "vitest",
-        "node:fs/promises",
-        "node:path"
-      ],
+      "imports": ["vitest", "node:fs/promises", "node:path"],
       "source": {
         "file": "packages/core/src/__tests__/scanner.test.ts"
       },
@@ -1975,11 +1923,7 @@
       "id": "file:packages/core/src/__tests__/llms-parser.test.ts",
       "path": "packages/core/src/__tests__/llms-parser.test.ts",
       "module": "packages/core/src/__tests__/llms-parser.test.ts",
-      "imports": [
-        "vitest",
-        "node:fs/promises",
-        "node:path"
-      ],
+      "imports": ["vitest", "node:fs/promises", "node:path"],
       "source": {
         "file": "packages/core/src/__tests__/llms-parser.test.ts"
       },
@@ -1999,10 +1943,7 @@
       "id": "file:packages/core/src/detectors/entrypoint.ts",
       "path": "packages/core/src/detectors/entrypoint.ts",
       "module": "packages/core/src/detectors/entrypoint.ts",
-      "imports": [
-        "node:fs/promises",
-        "node:path"
-      ],
+      "imports": ["node:fs/promises", "node:path"],
       "source": {
         "file": "packages/core/src/detectors/entrypoint.ts"
       },
@@ -2012,10 +1953,7 @@
       "id": "file:packages/core/src/detectors/framework.ts",
       "path": "packages/core/src/detectors/framework.ts",
       "module": "packages/core/src/detectors/framework.ts",
-      "imports": [
-        "node:fs/promises",
-        "node:path"
-      ],
+      "imports": ["node:fs/promises", "node:path"],
       "source": {
         "file": "packages/core/src/detectors/framework.ts"
       },
@@ -2035,11 +1973,7 @@
       "id": "file:packages/core/src/scanner.ts",
       "path": "packages/core/src/scanner.ts",
       "module": "packages/core/src/scanner.ts",
-      "imports": [
-        "node:child_process",
-        "node:fs/promises",
-        "node:path"
-      ],
+      "imports": ["node:child_process", "node:fs/promises", "node:path"],
       "source": {
         "file": "packages/core/src/scanner.ts"
       },
@@ -2049,9 +1983,7 @@
       "id": "file:packages/docs-ui/tsup.config.ts",
       "path": "packages/docs-ui/tsup.config.ts",
       "module": "packages/docs-ui/tsup.config.ts",
-      "imports": [
-        "tsup"
-      ],
+      "imports": ["tsup"],
       "source": {
         "file": "packages/docs-ui/tsup.config.ts"
       },
@@ -2071,9 +2003,7 @@
       "id": "file:packages/cli/tsup.config.ts",
       "path": "packages/cli/tsup.config.ts",
       "module": "packages/cli/tsup.config.ts",
-      "imports": [
-        "tsup"
-      ],
+      "imports": ["tsup"],
       "source": {
         "file": "packages/cli/tsup.config.ts"
       },
@@ -2083,9 +2013,7 @@
       "id": "file:packages/cli/src/utils/logger.ts",
       "path": "packages/cli/src/utils/logger.ts",
       "module": "packages/cli/src/utils/logger.ts",
-      "imports": [
-        "chalk"
-      ],
+      "imports": ["chalk"],
       "source": {
         "file": "packages/cli/src/utils/logger.ts"
       },
@@ -2095,9 +2023,7 @@
       "id": "file:packages/cli/src/prompts/entrypoint.ts",
       "path": "packages/cli/src/prompts/entrypoint.ts",
       "module": "packages/cli/src/prompts/entrypoint.ts",
-      "imports": [
-        "@clack/prompts"
-      ],
+      "imports": ["@clack/prompts"],
       "source": {
         "file": "packages/cli/src/prompts/entrypoint.ts"
       },
@@ -2107,9 +2033,7 @@
       "id": "file:packages/cli/src/prompts/features.ts",
       "path": "packages/cli/src/prompts/features.ts",
       "module": "packages/cli/src/prompts/features.ts",
-      "imports": [
-        "@clack/prompts"
-      ],
+      "imports": ["@clack/prompts"],
       "source": {
         "file": "packages/cli/src/prompts/features.ts"
       },
@@ -2119,9 +2043,7 @@
       "id": "file:packages/cli/src/prompts/framework.ts",
       "path": "packages/cli/src/prompts/framework.ts",
       "module": "packages/cli/src/prompts/framework.ts",
-      "imports": [
-        "@clack/prompts"
-      ],
+      "imports": ["@clack/prompts"],
       "source": {
         "file": "packages/cli/src/prompts/framework.ts"
       },
@@ -2131,9 +2053,7 @@
       "id": "file:packages/cli/src/prompts/route.ts",
       "path": "packages/cli/src/prompts/route.ts",
       "module": "packages/cli/src/prompts/route.ts",
-      "imports": [
-        "@clack/prompts"
-      ],
+      "imports": ["@clack/prompts"],
       "source": {
         "file": "packages/cli/src/prompts/route.ts"
       },
@@ -2143,10 +2063,7 @@
       "id": "file:packages/cli/src/commands/init.ts",
       "path": "packages/cli/src/commands/init.ts",
       "module": "packages/cli/src/commands/init.ts",
-      "imports": [
-        "@clack/prompts",
-        "chalk"
-      ],
+      "imports": ["@clack/prompts", "chalk"],
       "source": {
         "file": "packages/cli/src/commands/init.ts"
       },
@@ -2156,10 +2073,7 @@
       "id": "file:packages/cli/src/commands/scan.ts",
       "path": "packages/cli/src/commands/scan.ts",
       "module": "packages/cli/src/commands/scan.ts",
-      "imports": [
-        "node:fs/promises",
-        "node:path"
-      ],
+      "imports": ["node:fs/promises", "node:path"],
       "source": {
         "file": "packages/cli/src/commands/scan.ts"
       },
@@ -2169,11 +2083,7 @@
       "id": "file:packages/cli/src/commands/serve.ts",
       "path": "packages/cli/src/commands/serve.ts",
       "module": "packages/cli/src/commands/serve.ts",
-      "imports": [
-        "node:http",
-        "node:fs/promises",
-        "node:path"
-      ],
+      "imports": ["node:http", "node:fs/promises", "node:path"],
       "source": {
         "file": "packages/cli/src/commands/serve.ts"
       },
@@ -2183,12 +2093,7 @@
       "id": "file:packages/cli/src/commands/check.ts",
       "path": "packages/cli/src/commands/check.ts",
       "module": "packages/cli/src/commands/check.ts",
-      "imports": [
-        "node:child_process",
-        "node:fs/promises",
-        "node:path",
-        "node:util"
-      ],
+      "imports": ["node:child_process", "node:fs/promises", "node:path", "node:util"],
       "source": {
         "file": "packages/cli/src/commands/check.ts"
       },
@@ -2198,10 +2103,7 @@
       "id": "file:packages/cli/src/commands/build.ts",
       "path": "packages/cli/src/commands/build.ts",
       "module": "packages/cli/src/commands/build.ts",
-      "imports": [
-        "node:fs/promises",
-        "node:path"
-      ],
+      "imports": ["node:fs/promises", "node:path"],
       "source": {
         "file": "packages/cli/src/commands/build.ts"
       },
@@ -2211,9 +2113,7 @@
       "id": "file:packages/cli/src/index.ts",
       "path": "packages/cli/src/index.ts",
       "module": "packages/cli/src/index.ts",
-      "imports": [
-        "cac"
-      ],
+      "imports": ["cac"],
       "source": {
         "file": "packages/cli/src/index.ts"
       },
@@ -2223,9 +2123,7 @@
       "id": "file:packages/cli/src/generators/config.ts",
       "path": "packages/cli/src/generators/config.ts",
       "module": "packages/cli/src/generators/config.ts",
-      "imports": [
-        "node:fs/promises"
-      ],
+      "imports": ["node:fs/promises"],
       "source": {
         "file": "packages/cli/src/generators/config.ts"
       },
@@ -2235,9 +2133,7 @@
       "id": "file:packages/adapters/tsup.config.ts",
       "path": "packages/adapters/tsup.config.ts",
       "module": "packages/adapters/tsup.config.ts",
-      "imports": [
-        "tsup"
-      ],
+      "imports": ["tsup"],
       "source": {
         "file": "packages/adapters/tsup.config.ts"
       },
@@ -2247,9 +2143,7 @@
       "id": "file:packages/adapters/src/express.ts",
       "path": "packages/adapters/src/express.ts",
       "module": "packages/adapters/src/express.ts",
-      "imports": [
-        "express"
-      ],
+      "imports": ["express"],
       "source": {
         "file": "packages/adapters/src/express.ts"
       },
@@ -2259,9 +2153,7 @@
       "id": "file:packages/adapters/src/hono.ts",
       "path": "packages/adapters/src/hono.ts",
       "module": "packages/adapters/src/hono.ts",
-      "imports": [
-        "hono"
-      ],
+      "imports": ["hono"],
       "source": {
         "file": "packages/adapters/src/hono.ts"
       },
@@ -2271,9 +2163,7 @@
       "id": "file:packages/adapters/src/fastify.ts",
       "path": "packages/adapters/src/fastify.ts",
       "module": "packages/adapters/src/fastify.ts",
-      "imports": [
-        "fastify"
-      ],
+      "imports": ["fastify"],
       "source": {
         "file": "packages/adapters/src/fastify.ts"
       },
@@ -2303,9 +2193,7 @@
       "id": "file:packages/adapters/src/elysia.ts",
       "path": "packages/adapters/src/elysia.ts",
       "module": "packages/adapters/src/elysia.ts",
-      "imports": [
-        "elysia"
-      ],
+      "imports": ["elysia"],
       "source": {
         "file": "packages/adapters/src/elysia.ts"
       },
@@ -2315,9 +2203,7 @@
       "id": "file:packages/sdk/tsup.config.ts",
       "path": "packages/sdk/tsup.config.ts",
       "module": "packages/sdk/tsup.config.ts",
-      "imports": [
-        "tsup"
-      ],
+      "imports": ["tsup"],
       "source": {
         "file": "packages/sdk/tsup.config.ts"
       },
@@ -2368,10 +2254,7 @@
         "dev": "bun run --filter '*' dev"
       },
       "dependencies": [],
-      "devDependencies": [
-        "@peria/core",
-        "vitest"
-      ],
+      "devDependencies": ["@peria/core", "vitest"],
       "exports": [],
       "source": {
         "file": "package.json"
@@ -2401,17 +2284,8 @@
         "unified",
         "@apidevtools/swagger-parser"
       ],
-      "devDependencies": [
-        "@types/node",
-        "tsup",
-        "typescript",
-        "vitest"
-      ],
-      "exports": [
-        ".",
-        "./config",
-        "./detectors"
-      ],
+      "devDependencies": ["@types/node", "tsup", "typescript", "vitest"],
+      "exports": [".", "./config", "./detectors"],
       "types": "./dist/index.d.ts",
       "source": {
         "file": "packages/core/package.json"
@@ -2431,11 +2305,7 @@
         "dev": "tsup --watch"
       },
       "dependencies": [],
-      "devDependencies": [
-        "@types/node",
-        "tsup",
-        "typescript"
-      ],
+      "devDependencies": ["@types/node", "tsup", "typescript"],
       "exports": [],
       "types": "./dist/index.d.ts",
       "source": {
@@ -2457,17 +2327,8 @@
         "dev": "tsup --watch",
         "prepublishOnly": "bun run build"
       },
-      "dependencies": [
-        "@clack/prompts",
-        "cac",
-        "chalk",
-        "@peria/core"
-      ],
-      "devDependencies": [
-        "@types/node",
-        "tsup",
-        "typescript"
-      ],
+      "dependencies": ["@clack/prompts", "cac", "chalk", "@peria/core"],
+      "devDependencies": ["@types/node", "tsup", "typescript"],
       "exports": [],
       "types": "./dist/index.d.ts",
       "source": {
@@ -2488,19 +2349,8 @@
         "dev": "tsup --watch"
       },
       "dependencies": [],
-      "devDependencies": [
-        "@types/node",
-        "tsup",
-        "typescript"
-      ],
-      "exports": [
-        ".",
-        "./express",
-        "./fastify",
-        "./nest",
-        "./hono",
-        "./elysia"
-      ],
+      "devDependencies": ["@types/node", "tsup", "typescript"],
+      "exports": [".", "./express", "./fastify", "./nest", "./hono", "./elysia"],
       "types": "./dist/index.d.ts",
       "source": {
         "file": "packages/adapters/package.json"
@@ -2520,14 +2370,8 @@
         "dev": "tsup --watch"
       },
       "dependencies": [],
-      "devDependencies": [
-        "@types/node",
-        "tsup",
-        "typescript"
-      ],
-      "exports": [
-        "."
-      ],
+      "devDependencies": ["@types/node", "tsup", "typescript"],
+      "exports": ["."],
       "types": "./dist/index.d.ts",
       "source": {
         "file": "packages/sdk/package.json"

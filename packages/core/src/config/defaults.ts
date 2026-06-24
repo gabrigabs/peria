@@ -2,7 +2,7 @@
  * Default configuration values
  */
 
-import type { FeatureFlags, DocsConfig } from '../types/config.js'
+import type { DocsConfig, FeatureFlags } from '../types/config.js';
 
 export const DEFAULT_ENTRYPOINT_CANDIDATES = [
   'src/main.ts',
@@ -12,7 +12,7 @@ export const DEFAULT_ENTRYPOINT_CANDIDATES = [
   'src/server.ts',
   'src/app.ts',
   'src/app/index.ts',
-]
+];
 
 export const DEFAULT_FEATURES: FeatureFlags = {
   embeddedDocs: true,
@@ -27,17 +27,17 @@ export const DEFAULT_FEATURES: FeatureFlags = {
   github: false,
   contextPacks: false,
   mermaid: true,
-}
+};
 
 export const DEFAULT_DOCS: DocsConfig = {
   enabled: true,
   route: '/docs',
   outputDir: 'docs',
-}
+};
 
 export const DEFAULT_SOURCES = {
   openapi: 'openapi.yaml',
   markdown: ['README.md', 'docs/**/*.md'],
   llms: ['llms.txt', 'llms-full.txt'],
   context: ['CLAUDE.md', 'AGENTS.md'],
-}
+};

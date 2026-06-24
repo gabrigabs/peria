@@ -12,17 +12,17 @@
  */
 
 export interface PeriaDocsOptions {
-  prefix?: string
-  docsPath?: string
+  prefix?: string;
+  docsPath?: string;
 }
 
 export interface ElysiaInstance {
-  group: (prefix: string, callback: (group: ElysiaGroup) => ElysiaInstance) => ElysiaInstance
-  get: (path: string, handler: () => unknown) => ElysiaInstance
+  group: (prefix: string, callback: (group: ElysiaGroup) => ElysiaInstance) => ElysiaInstance;
+  get: (path: string, handler: () => unknown) => ElysiaInstance;
 }
 
 export interface ElysiaGroup {
-  get: (path: string, handler: () => unknown) => ElysiaGroup
+  get: (path: string, handler: () => unknown) => ElysiaGroup;
 }
 
 export function periaDocs(options?: PeriaDocsOptions) {
@@ -32,8 +32,8 @@ export function periaDocs(options?: PeriaDocsOptions) {
         message: 'Peria docs endpoint',
         route: options?.prefix ?? '/docs',
         status: 'coming soon',
-      }))
-      return app
-    })
-  }
+      }));
+      return app;
+    });
+  };
 }

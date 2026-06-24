@@ -12,11 +12,11 @@
  */
 
 export interface PeriaDocsOptions {
-  docsPath?: string
+  docsPath?: string;
 }
 
 export interface HonoContext {
-  json: (data: unknown) => Response
+  json: (data: unknown) => Response;
 }
 
 export function periaDocs(_options?: PeriaDocsOptions) {
@@ -25,6 +25,6 @@ export function periaDocs(_options?: PeriaDocsOptions) {
       message: 'Peria docs endpoint',
       route: '/docs',
       status: 'coming soon',
-    })
-  }
+    });
+  };
 }

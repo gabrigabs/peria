@@ -47,6 +47,10 @@ export async function scanCommand(cwd: string): Promise<void> {
     console.log(`  Version: ${result.manifest.openapi.version || 'unknown'}`);
     console.log(`  Paths: ${result.manifest.openapi.paths.length}`);
     console.log(`  Schemas: ${result.manifest.openapi.schemas.length}`);
+
+    if (result.manifest.openapi.enrichedPath) {
+      console.log(`  Enriched: ${result.manifest.openapi.enrichedPath}`);
+    }
   }
 
   if (result.manifest.llms?.exists) {

@@ -9,6 +9,11 @@ import { mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { basename, extname, isAbsolute, join, relative, resolve } from 'node:path';
 import { nestJSAdapter } from './adapters/nestjs/index.js';
 import { loadConfig } from './config/loader.js';
+import {
+  matchRoutesToOpenAPI,
+  type RouteOpenAPIMatch,
+  summarizeMatching,
+} from './matcher/index.js';
 import { parseLlms } from './parsers/llms.js';
 import { parseMarkdown } from './parsers/markdown.js';
 import { parseOpenAPI, parseOpenAPIDetailed } from './parsers/openapi.js';
@@ -133,6 +138,97 @@ export async function scan(cwd: string): Promise<ScanResult> {
   const openapiOps = openapiResults.flatMap((r) => r.operations);
   const docsPages = docsResults.map((r) => docToEntity(r.path, r.content));
 
+  // Phase 3: Match routes to OpenAPI operations
+  let matchingResult = null;
+  if (routes.length > 0 && openapiOps.length > 0) {
+    try {
+      matchingResult = await matchRoutesToOpenAPI(routes, openapiOps);
+
+      // Log matching summary if there are unmatched
+      if (
+        matchingResult.stats.unmatchedRoutes > 0 ||
+        matchingResult.stats.unmatchedOperations > 0
+      ) {
+        warnings.push({
+          code: 'openapi-mismatch',
+          message: `OpenAPI matching: ${matchingResult.stats.unmatchedRoutes} routes without spec, ${matchingResult.stats.unmatchedOperations} operations without routes`,
+          suggestion: summarizeMatching(matchingResult),
+        });
+      }
+    } catch (err) {
+      warnings.push({
+        code: 'openapi-matching-error',
+        message: `Failed to match routes to OpenAPI: ${err instanceof Error ? err.message : String(err)}`,
+      });
+    }
+  }
+
+  // Phase 3: Generate enriched OpenAPI with Peria metadata
+  let enrichedOpenAPIPath: string | undefined;
+  if (openapiOps.length > 0 && resolvedConfig.features.apiReference) {
+    try {
+      const { generateEnrichedOpenAPI, saveEnrichedOpenAPI } = await import(
+        './generators/enriched-openapi.js'
+      );
+
+      // Build route-to-schema and route-to-docs maps
+      const routeToSchemaMap = new Map<string, SchemaEntity[]>();
+      const routeToDocsMap = new Map<string, string[]>();
+      const routeToModuleMap = new Map<string, string>();
+
+      for (const route of routes) {
+        const schemas = route.schemas;
+        routeToSchemaMap.set(route.id, schemas);
+
+        // Build docs map from route mentions (only docs that mention this specific route)
+        const routeMentions = docsPages.flatMap((dp) =>
+          dp.routeMentions.filter((rm) => rm.path === route.path).map(() => dp.path)
+        );
+        routeToDocsMap.set(route.id, [...new Set(routeMentions)]); // Dedupe
+
+        // Build module map from handler
+        if (route.handler?.className) {
+          routeToModuleMap.set(route.id, route.handler.className);
+        }
+      }
+
+      const emptyResult = {
+        matches: [] as RouteOpenAPIMatch[],
+        unmatchedRoutes: [] as RouteEntity[],
+        unmatchedOperations: [] as OpenAPIOperation[],
+        stats: {
+          totalRoutes: 0,
+          totalOperations: 0,
+          exactMatches: 0,
+          operationIdMatches: 0,
+          fuzzyMatches: 0,
+          unmatchedRoutes: 0,
+          unmatchedOperations: 0,
+        },
+      };
+      const { enrichedOperations } = generateEnrichedOpenAPI(
+        openapiOps,
+        matchingResult ?? emptyResult,
+        routeToSchemaMap,
+        routeToDocsMap,
+        routeToModuleMap
+      );
+
+      // Save enriched OpenAPI to .peria directory
+      const manifestDir = join(absoluteCwd, '.peria');
+      await mkdir(manifestDir, { recursive: true });
+      const enrichedPath = join(manifestDir, 'openapi.enriched.json');
+      await saveEnrichedOpenAPI(enrichedOperations, enrichedPath);
+
+      enrichedOpenAPIPath = 'openapi.enriched.json';
+    } catch (err) {
+      warnings.push({
+        code: 'enriched-openapi-error',
+        message: `Failed to generate enriched OpenAPI: ${err instanceof Error ? err.message : String(err)}`,
+      });
+    }
+  }
+
   // Create relations
   const relations = createRelations({
     routes,
@@ -152,7 +248,7 @@ export async function scan(cwd: string): Promise<ScanResult> {
 
     repo: repoInfo,
     framework: detectedFramework,
-    openapi: buildOpenAPIMetadata(openapiResults),
+    openapi: buildOpenAPIMetadata(openapiResults, enrichedOpenAPIPath),
     docs: buildDocsMetadata(docsResults),
     llms: buildLlmsMetadata(llmsResult),
 
@@ -217,7 +313,8 @@ function createDefaultConfig(): ResolvedPeriaConfig {
       wiki: true,
       llms: true,
       driftCheck: true,
-      apiReference: false,
+      // Phase 3: API reference now enabled by default
+      apiReference: true,
       contextPacks: false,
       mermaid: false,
       embeddedDocsAdapters: false,
@@ -837,7 +934,8 @@ function buildOpenAPIMetadata(
       metadata?: { title?: string; description?: string; paths?: string[]; schemas?: string[] };
     };
     operations: OpenAPIOperation[];
-  }>
+  }>,
+  enrichedPath?: string
 ): OpenAPIMetadata | undefined {
   if (results.length === 0) return undefined;
 
@@ -851,6 +949,7 @@ function buildOpenAPIMetadata(
     schemas: first.spec.metadata?.schemas || [],
     operationsCount: first.operations.length,
     confidence: 'high',
+    enrichedPath,
   };
 }
 

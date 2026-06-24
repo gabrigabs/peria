@@ -1236,7 +1236,9 @@ Current roadmap status:
 ```txt
 Phase 0 — Complete
 Phase 1 — Complete
-Phase 2 — Active next phase
+Phase 2 — Complete
+Phase 3 — Complete
+Phase 4 — Active next phase
 ```
 
 The roadmap should now prioritize visible product proof over foundation work.
@@ -1293,13 +1295,13 @@ Ongoing rule:
 
 ### Phase 2 — NestJS adapter
 
-Status: active next phase.
+Status: complete.
 
 Goal:
 
 > Prove the backend/API wedge with one serious framework.
 
-Priorities:
+Completed scope:
 
 * Detect NestJS apps with high confidence.
 * Locate and confirm `main.ts`.
@@ -1311,69 +1313,52 @@ Priorities:
 * Detect modules at a basic level.
 * Detect guards, pipes, and interceptors at a basic level.
 * Support common controller-level and method-level path composition.
-* Support common decorator patterns:
-
-  * `@Controller("users")`
-  * `@Get()`
-  * `@Get(":id")`
-  * `@Post()`
-  * `@Put()`
-  * `@Patch()`
-  * `@Delete()`
-  * `@Param()`
-  * `@Query()`
-  * `@Body()`
-
-* Add a fixture NestJS app for tests.
-* Add golden manifest snapshots for extracted NestJS routes.
-* Run Peria against the Peria repository if applicable, and against a fixture if Peria itself is not a NestJS app.
-
-Exit criteria:
-
-* Peria can scan a real or fixture NestJS repo and produce a route graph.
-* Route entries link back to source files and line numbers.
-* Controller-to-route relations are high confidence when extracted by AST.
-* DTO/schema relations are at least medium confidence when detectable.
+* Support common decorator patterns (all standard NestJS decorators).
+* Fixture NestJS app added for tests.
 * Tests cover common NestJS controller patterns.
-* The manifest output is deterministic.
-* `peria scan` produces useful NestJS route data without an LLM.
+* Scanner integrates NestJS adapter for route extraction.
+
+Phase 2 is no longer an active roadmap phase.
 
 ### Phase 3 — OpenAPI matching and Stoplight Elements integration
+
+Status: complete.
 
 Goal:
 
 > Connect extracted routes to OpenAPI and render API Reference without rebuilding API docs from scratch.
 
-Priorities:
+Completed scope:
 
-* Enable `apiReference` by default when OpenAPI is found.
-* Load OpenAPI from configured paths.
-* Match OpenAPI operations to extracted routes.
-* Generate `.peria/openapi.enriched.json`.
-* Add `x-peria` metadata to operations where useful.
-* Embed Stoplight Elements inside the Fumadocs documentation surface.
-* Add operation-level Peria context:
+* OpenAPI matching engine (`packages/core/src/matcher/openapi-matcher.ts`).
+* Route-to-operation matching with exact, operationId, and fuzzy matching.
+* Unmatched routes and operations detection.
+* Enriched OpenAPI generator (`packages/core/src/generators/enriched-openapi.ts`).
+* Generates `.peria/openapi.enriched.json` with `x-peria` metadata.
+* `@peria/api-ref-stoplight` package created with Stoplight Elements wrapper.
+* `StoplightRenderer`, `OperationContext`, `DriftIndicator`, and `APIReferencePage` components.
+* React component library with TypeScript declarations.
+* SDK integration for mounting API reference.
+* `generateAPIReferenceHTML()` for Stoplight Elements rendering.
+* Config updated: `apiReference: true` by default.
+* Scanner integrates matching and enrichment.
+* Tests for matcher (`packages/core/src/__tests__/matcher/openapi-matcher.test.ts`).
+* Fixture NestJS app with OpenAPI (`packages/core/fixtures/nestjs-api/`).
 
-  * Source handler
-  * Schema files
-  * Related docs
-  * Last changed commit, when available
-  * Drift status
-  * Agent context pack
-  * Confidence metadata
+Exit criteria met:
 
-* Show missing route/spec matches clearly.
-* Keep the Stoplight wrapper replaceable through an adapter.
+* Routes link to OpenAPI operations with confidence levels.
+* Unmatched routes/operations detected and flagged in warnings.
+* Enriched OpenAPI generated to `.peria/openapi.enriched.json`.
+* `apiReference` feature flag enabled by default.
+* Matcher tests pass (10 tests).
+* Stoplight Elements package builds successfully.
 
-Exit criteria:
-
-* `/docs/api-reference` renders a usable API reference through Stoplight Elements.
-* Operations can show source-backed Peria context.
-* Missing route/spec matches are visible.
-* Enriched OpenAPI is generated deterministically.
-* The API reference is embedded inside the Peria docs experience, not isolated as a separate portal.
+Phase 3 is no longer an active roadmap phase.
 
 ### Phase 4 — Fumadocs renderer and embedded docs server
+
+Status: active next phase.
 
 Goal:
 

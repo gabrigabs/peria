@@ -82,7 +82,8 @@ export const DEFAULT_FEATURES: Required<FeatureFlags> = {
   llms: true,
   driftCheck: true,
 
-  apiReference: false,
+  // Phase 3: API reference now enabled by default
+  apiReference: true,
   contextPacks: false,
   mermaid: false,
   embeddedDocsAdapters: false,

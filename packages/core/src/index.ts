@@ -20,6 +20,16 @@ export {
 } from './detectors/entrypoint.js';
 // Detectors
 export { detectFramework, getFrameworkOptions } from './detectors/framework.js';
+export type { EnrichedOpenAPIOperation, OperationPeriaMetadata } from './generators/index.js';
+// Generators (Phase 3)
+export {
+  generateEnrichedOpenAPI,
+  saveEnrichedOpenAPI,
+  summarizeEnrichment,
+} from './generators/index.js';
+export type { MatchingResult, MatchType, RouteOpenAPIMatch } from './matcher/index.js';
+// Matcher (Phase 3)
+export { matchRoutesToOpenAPI, summarizeMatching } from './matcher/index.js';
 // Legacy parser exports for backward compatibility
 export {
   parseCode,

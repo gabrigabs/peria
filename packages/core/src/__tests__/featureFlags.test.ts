@@ -12,10 +12,11 @@ describe('DEFAULT_FEATURES', () => {
     expect(DEFAULT_FEATURES.wiki).toBe(true);
     expect(DEFAULT_FEATURES.llms).toBe(true);
     expect(DEFAULT_FEATURES.driftCheck).toBe(true);
+    // Phase 3: apiReference is now enabled by default
+    expect(DEFAULT_FEATURES.apiReference).toBe(true);
   });
 
   it('has correct unimplemented feature flags as false', () => {
-    expect(DEFAULT_FEATURES.apiReference).toBe(false);
     expect(DEFAULT_FEATURES.contextPacks).toBe(false);
     expect(DEFAULT_FEATURES.mermaid).toBe(false);
     expect(DEFAULT_FEATURES.embeddedDocsAdapters).toBe(false);

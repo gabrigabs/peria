@@ -75,6 +75,8 @@ export interface OpenAPIMetadata {
   schemas: string[];
   operationsCount: number;
   confidence: Confidence;
+  /** Phase 3: Path to enriched OpenAPI with Peria metadata */
+  enrichedPath?: string;
 }
 
 /**

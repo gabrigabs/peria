@@ -4,10 +4,7 @@
  * Extracts DTOs, entities, and schemas from NestJS applications.
  */
 
-import { existsSync } from 'node:fs'
-import { join } from 'node:path'
 import {
-  Project,
   Node,
   type ClassDeclaration,
   type InterfaceDeclaration,
@@ -15,6 +12,7 @@ import {
   type PropertySignature,
   type SourceFile,
 } from 'ts-morph'
+import { createTsMorphProject } from './utils.js'
 import type { SchemaEntity } from '../../types/graph.js'
 import type { RepoContext } from '../types.js'
 
@@ -56,24 +54,7 @@ export async function extractSchemas(context: RepoContext): Promise<SchemaEntity
   const schemas: SchemaEntity[] = []
 
   // Create a ts-morph project
-  const project = new Project({
-    skipAddingFilesFromTsConfig: true,
-  })
-
-  // Add all TypeScript files from the cwd
-  const tsConfigPath = findTsConfig(cwd)
-  if (tsConfigPath) {
-    project.addSourceFilesFromTsConfig(tsConfigPath)
-  } else {
-    // Fallback: add files manually
-    project.addSourceFiles(`${cwd}/**/*.ts`)
-  }
-
-  // Get all source files
-  const sourceFiles = project.getSourceFiles()
-    .filter(sf => sf.getFilePath().startsWith(cwd))
-    .filter(sf => !sf.getFilePath().includes('node_modules'))
-    .filter(sf => !sf.getFilePath().includes('.d.ts'))
+  const { sourceFiles } = createTsMorphProject(cwd)
 
   for (const sourceFile of sourceFiles) {
     const fileSchemas = extractSchemasFromFile(sourceFile)
@@ -81,24 +62,6 @@ export async function extractSchemas(context: RepoContext): Promise<SchemaEntity
   }
 
   return schemas
-}
-
-/**
- * Find tsconfig.json in the project
- */
-function findTsConfig(cwd: string): string | undefined {
-  const candidates = [
-    join(cwd, 'tsconfig.json'),
-    join(cwd, 'tsconfig.build.json'),
-  ]
-
-  for (const candidate of candidates) {
-    if (existsSync(candidate)) {
-      return candidate
-    }
-  }
-
-  return undefined
 }
 
 /**
@@ -186,18 +149,14 @@ function isDtoClass(name: string, classDecl: ClassDeclaration): boolean {
 }
 
 /**
- * Check if interface is likely a DTO
- */
-function isDtoInterface(name: string): boolean {
-  return DTO_PATTERNS.some(pattern => pattern.test(name))
-}
-
-/**
- * Check if type alias is likely a DTO
+ * Check if type is likely a DTO (for interfaces and type aliases)
  */
 function isDtoType(name: string): boolean {
   return DTO_PATTERNS.some(pattern => pattern.test(name))
 }
+
+// Alias for semantic clarity when checking interfaces
+const isDtoInterface = isDtoType
 
 /**
  * Extract schema from class

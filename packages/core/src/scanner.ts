@@ -92,15 +92,19 @@ export async function scan(cwd: string): Promise<ScanResult> {
     scanLlms(absoluteCwd, resolvedConfig, warnings),
   ])
 
-  // Extract routes using framework adapter (Phase 2)
+  // Extract routes and schemas using framework adapter (Phase 2)
   const detectedFramework = await detectFramework(absoluteCwd, resolvedConfig)
-  let routes: RouteEntity[] = []
-
-  // Only try to extract routes if we have TypeScript files and tsconfig
   const hasTsConfig = await checkTsConfig(absoluteCwd)
-  if (detectedFramework?.name === 'nestjs' && hasTsConfig) {
+  const isNestJS = detectedFramework?.name === 'nestjs' && hasTsConfig
+
+  let routes: RouteEntity[] = []
+  let frameworkSchemas: SchemaEntity[] = []
+
+  if (isNestJS) {
+    const context = { cwd: absoluteCwd, config: resolvedConfig }
+
+    // Extract routes
     try {
-      const context = { cwd: absoluteCwd, config: resolvedConfig }
       routes = await nestJSAdapter.extractRoutes(context)
     } catch (err) {
       warnings.push({
@@ -109,19 +113,14 @@ export async function scan(cwd: string): Promise<ScanResult> {
         suggestion: 'Check that the project has valid TypeScript files and tsconfig.json',
       })
     }
-  }
 
-  // Also extract schemas from framework adapter if available
-  let frameworkSchemas: SchemaEntity[] = []
-  if (detectedFramework?.name === 'nestjs' && hasTsConfig) {
+    // Extract schemas (optional)
     try {
-      const context = { cwd: absoluteCwd, config: resolvedConfig }
       const extractAdapterSchemas = nestJSAdapter.extractSchemas
       if (extractAdapterSchemas) {
         frameworkSchemas = await extractAdapterSchemas(context)
       }
     } catch {
-      // Schema extraction is optional - add minor warning for debugging
       warnings.push({
         code: 'schema-extraction-skipped',
         message: 'Framework schema extraction was skipped (optional)',

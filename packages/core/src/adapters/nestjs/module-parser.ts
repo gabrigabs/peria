@@ -4,15 +4,12 @@
  * Extracts module structure from NestJS @Module decorators.
  */
 
-import { existsSync } from 'node:fs'
-import { join } from 'node:path'
 import {
-  Project,
   Node,
-  SyntaxKind,
   type ClassDeclaration,
   type SourceFile,
 } from 'ts-morph'
+import { createTsMorphProject } from './utils.js'
 import type { ModuleEntity } from '../types.js'
 import type { RepoContext } from '../types.js'
 
@@ -24,24 +21,7 @@ export async function extractModules(context: RepoContext): Promise<ModuleEntity
   const modules: ModuleEntity[] = []
 
   // Create a ts-morph project
-  const project = new Project({
-    skipAddingFilesFromTsConfig: true,
-  })
-
-  // Add all TypeScript files from the cwd
-  const tsConfigPath = findTsConfig(cwd)
-  if (tsConfigPath) {
-    project.addSourceFilesFromTsConfig(tsConfigPath)
-  } else {
-    // Fallback: add files manually
-    project.addSourceFiles(`${cwd}/**/*.ts`)
-  }
-
-  // Get all source files
-  const sourceFiles = project.getSourceFiles()
-    .filter(sf => sf.getFilePath().startsWith(cwd))
-    .filter(sf => !sf.getFilePath().includes('node_modules'))
-    .filter(sf => !sf.getFilePath().includes('.d.ts'))
+  const { sourceFiles } = createTsMorphProject(cwd)
 
   for (const sourceFile of sourceFiles) {
     const fileModules = extractModulesFromFile(sourceFile)
@@ -49,24 +29,6 @@ export async function extractModules(context: RepoContext): Promise<ModuleEntity
   }
 
   return modules
-}
-
-/**
- * Find tsconfig.json in the project
- */
-function findTsConfig(cwd: string): string | undefined {
-  const candidates = [
-    join(cwd, 'tsconfig.json'),
-    join(cwd, 'tsconfig.build.json'),
-  ]
-
-  for (const candidate of candidates) {
-    if (existsSync(candidate)) {
-      return candidate
-    }
-  }
-
-  return undefined
 }
 
 /**

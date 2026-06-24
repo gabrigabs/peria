@@ -4,10 +4,8 @@
  * Uses ts-morph to extract routes, handlers, and decorators from NestJS controllers.
  */
 
-import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import {
-  Project,
   Node,
   SyntaxKind,
   type ClassDeclaration,
@@ -17,6 +15,7 @@ import {
   type ParameterDeclaration,
   type ClassDeclaration as TsMorphClass,
 } from 'ts-morph'
+import { findTsConfig, createTsMorphProject } from './utils.js'
 import type { RouteEntity, HandlerEntity, HttpMethod, SchemaEntity, Confidence } from '../../types/graph.js'
 import type { RepoContext } from '../types.js'
 
@@ -51,24 +50,7 @@ export async function extractRoutes(context: RepoContext): Promise<RouteEntity[]
   const routes: RouteEntity[] = []
 
   // Create a ts-morph project
-  const project = new Project({
-    skipAddingFilesFromTsConfig: true,
-  })
-
-  // Add all TypeScript files from the cwd
-  const tsConfigPath = findTsConfig(cwd)
-  if (tsConfigPath) {
-    project.addSourceFilesFromTsConfig(tsConfigPath)
-  } else {
-    // Fallback: add files manually
-    project.addSourceFiles(`${cwd}/**/*.ts`)
-  }
-
-  // Get all source files
-  const sourceFiles = project.getSourceFiles()
-    .filter(sf => sf.getFilePath().startsWith(cwd))
-    .filter(sf => !sf.getFilePath().includes('node_modules'))
-    .filter(sf => !sf.getFilePath().includes('.d.ts'))
+  const { sourceFiles } = createTsMorphProject(cwd)
 
   for (const sourceFile of sourceFiles) {
     const fileRoutes = extractRoutesFromFile(sourceFile)

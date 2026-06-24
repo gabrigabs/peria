@@ -4,6 +4,7 @@
 
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { mkdir, writeFile } from 'node:fs/promises';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { nestJSAdapter } from '../adapters/nestjs/index.js';
 import type { RepoContext } from '../adapters/types.js';
@@ -238,6 +239,59 @@ describe('NestJS Adapter', () => {
         expect(createDto.properties.length).toBeGreaterThan(0);
         expect(createDto.properties.some((p) => p.name === 'email')).toBe(true);
       }
+    });
+
+    it('should set high confidence for DTOs in .dto.ts files', async () => {
+      const extractSchemas = nestJSAdapter.extractSchemas;
+      if (!extractSchemas) {
+        expect(true).toBe(true);
+        return;
+      }
+
+      const schemas = await extractSchemas(context);
+      const createDto = schemas.find((s) => s.name === 'CreateUserDto');
+      const updateDto = schemas.find((s) => s.name === 'UpdateUserDto');
+
+      // DTOs in .dto.ts files should have high confidence
+      expect(createDto?.confidence).toBe('high');
+      expect(updateDto?.confidence).toBe('high');
+      expect(createDto?.extractionMethod).toBe('ast');
+      expect(updateDto?.extractionMethod).toBe('ast');
+    });
+
+    it('should set medium confidence for DTOs by naming pattern only', async () => {
+      const extractSchemas = nestJSAdapter.extractSchemas;
+      if (!extractSchemas) {
+        expect(true).toBe(true);
+        return;
+      }
+
+      // Create a temporary fixture with a DTO by naming pattern only (not in a schema file)
+      const tempDir = join(FIXTURE_PATH, 'temp', 'dto-by-name');
+      await mkdir(tempDir, { recursive: true });
+
+      // Create a file that matches DTO naming pattern but NOT schema patterns (.dto.ts, .entity.ts, .schema.ts, .model.ts)
+      await writeFile(
+        join(tempDir, 'data.ts'),
+        `
+export class CreateUserDto {
+  email: string;
+  name: string;
+}
+        `
+      );
+
+      const tempContext = {
+        ...context,
+        cwd: tempDir,
+      };
+
+      const schemas = await extractSchemas(tempContext);
+      const createDto = schemas.find((s) => s.name === 'CreateUserDto');
+
+      // DTOs by naming pattern only (not in schema files) should have medium confidence
+      expect(createDto?.confidence).toBe('medium');
+      expect(createDto?.extractionMethod).toBe('heuristic');
     });
   });
 });

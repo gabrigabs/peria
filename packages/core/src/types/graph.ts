@@ -115,6 +115,8 @@ export interface SchemaEntity {
   required?: string[];
   enum?: unknown[];
   description?: string;
+  confidence?: Confidence;
+  extractionMethod?: ExtractionMethod;
 }
 
 // Schema property

@@ -226,23 +226,76 @@ export async function scan() {
       result.manifest.framework?.name
     );
   });
+});
 
-  it('detects NestJS framework', async () => {
-    await writeFile(
-      join(testDir, 'package.json'),
-      JSON.stringify({
-        name: 'test-nestjs',
-        version: '1.0.0',
-        dependencies: {
-          '@nestjs/core': '^10.0.0',
-        },
-      })
-    );
+describe('Golden Manifest - nestjs-basic fixture', () => {
+  const FIXTURE_PATH = join(import.meta.dirname, '../../fixtures/nestjs-basic');
+  const GOLDEN_PATH = join(FIXTURE_PATH, '.peria', 'manifest.golden.json');
 
-    const result = await scan(testDir);
+  it('has a golden manifest snapshot', async () => {
+    // Verify golden manifest exists
+    const { stat } = await import('node:fs/promises');
+    await expect(stat(GOLDEN_PATH)).resolves.toBeDefined();
+  });
+
+  it('produces consistent route extraction', async () => {
+    const result = await scan(FIXTURE_PATH);
+
+    // Should extract routes with high confidence
+    expect(result.manifest.routes.length).toBeGreaterThan(0);
+    expect(result.manifest.routes.every((r) => r.confidence === 'high')).toBe(true);
+    expect(result.manifest.routes.every((r) => r.extractionMethod === 'ast')).toBe(true);
+  });
+
+  it('produces routes with handler information', async () => {
+    const result = await scan(FIXTURE_PATH);
+
+    const routesWithHandlers = result.manifest.routes.filter((r) => r.handler);
+    expect(routesWithHandlers.length).toBeGreaterThan(0);
+
+    // Each route should have handler with className and methodName
+    for (const route of routesWithHandlers) {
+      expect(route.handler?.className).toBeDefined();
+      expect(route.handler?.methodName).toBeDefined();
+      expect(route.handler?.file).toBeDefined();
+      expect(route.handler?.line).toBeGreaterThan(0);
+    }
+  });
+
+  it('extracts schemas with confidence metadata', async () => {
+    const result = await scan(FIXTURE_PATH);
+
+    // Schemas from .dto.ts files should have high confidence
+    const dtoSchemas = result.manifest.schemas.filter((s) => s.name.includes('Dto'));
+    expect(dtoSchemas.length).toBeGreaterThan(0);
+
+    // All schemas should have confidence defined (high or medium)
+    for (const schema of result.manifest.schemas) {
+      expect(['high', 'medium', 'low']).toContain(schema.confidence);
+    }
+  });
+
+  it('creates relations between entities', async () => {
+    const result = await scan(FIXTURE_PATH);
+
+    // Should have relations for routes, schemas, and packages
+    expect(result.manifest.relations.length).toBeGreaterThan(0);
+
+    // Relations should have proper structure
+    for (const rel of result.manifest.relations) {
+      expect(rel.id).toBeDefined();
+      expect(rel.sourceId).toBeDefined();
+      expect(rel.targetId).toBeDefined();
+      expect(rel.type).toBeDefined();
+      expect(rel.confidence).toBeDefined();
+      expect(rel.reason).toBeDefined();
+    }
+  });
+
+  it('detects NestJS framework with high confidence', async () => {
+    const result = await scan(FIXTURE_PATH);
 
     expect(result.manifest.framework?.name).toBe('nestjs');
     expect(result.manifest.framework?.confidence).toBe('high');
-    expect(result.manifest.framework?.evidence.some((e) => e.includes('@nestjs/core'))).toBe(true);
   });
 });

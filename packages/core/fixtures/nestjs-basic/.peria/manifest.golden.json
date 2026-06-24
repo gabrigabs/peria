@@ -1,0 +1,1155 @@
+{
+  "manifestVersion": "0.1.0",
+  "periaVersion": "0.1.0",
+  "generatedAt": "2026-06-24T15:02:42.962Z",
+  "repo": {
+    "name": "nestjs-basic",
+    "root": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic",
+    "commit": "7aa56c22fae7da60d23dac1d0307df05329056bb",
+    "branch": "feat/self-documentation-bootstrap",
+    "isDirty": true
+  },
+  "framework": {
+    "name": "nestjs",
+    "confidence": "high",
+    "entrypoint": "src/index.ts",
+    "evidence": [
+      "Found @nestjs/core in dependencies"
+    ]
+  },
+  "docs": {
+    "paths": [],
+    "pagesCount": 0,
+    "totalHeadings": 0,
+    "totalRouteMentions": 0,
+    "totalSchemaRefs": 0
+  },
+  "llms": {
+    "path": "",
+    "variant": "summary",
+    "pageCount": 0,
+    "exists": false
+  },
+  "routes": [
+    {
+      "id": "route:POST:/auth/login",
+      "path": "/auth/login",
+      "method": "POST",
+      "handler": {
+        "id": "handler:AuthController.login",
+        "name": "login",
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts",
+        "line": 14,
+        "className": "AuthController",
+        "methodName": "login",
+        "decorators": []
+      },
+      "schemas": [
+        {
+          "id": "param:AuthController.login:body",
+          "name": "body",
+          "type": "body",
+          "description": "Parameter extracted from @Body decorator",
+          "source": {
+            "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts",
+            "line": 14
+          }
+        }
+      ],
+      "middleware": [],
+      "guards": [],
+      "source": {
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts",
+        "line": 14
+      },
+      "confidence": "high",
+      "extractionMethod": "ast"
+    },
+    {
+      "id": "route:POST:/auth/logout",
+      "path": "/auth/logout",
+      "method": "POST",
+      "handler": {
+        "id": "handler:AuthController.logout",
+        "name": "logout",
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts",
+        "line": 22,
+        "className": "AuthController",
+        "methodName": "logout",
+        "decorators": []
+      },
+      "schemas": [
+        {
+          "id": "param:AuthController.logout:authorization",
+          "name": "authorization",
+          "type": "header",
+          "description": "Parameter extracted from @Body decorator",
+          "source": {
+            "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts",
+            "line": 22
+          }
+        }
+      ],
+      "middleware": [],
+      "guards": [],
+      "source": {
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts",
+        "line": 22
+      },
+      "confidence": "high",
+      "extractionMethod": "ast"
+    },
+    {
+      "id": "route:GET:/auth/verify",
+      "path": "/auth/verify",
+      "method": "GET",
+      "handler": {
+        "id": "handler:AuthController.verify",
+        "name": "verify",
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts",
+        "line": 34,
+        "className": "AuthController",
+        "methodName": "verify",
+        "decorators": []
+      },
+      "schemas": [
+        {
+          "id": "param:AuthController.verify:authorization",
+          "name": "authorization",
+          "type": "header",
+          "description": "Parameter extracted from @Body decorator",
+          "source": {
+            "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts",
+            "line": 34
+          }
+        }
+      ],
+      "middleware": [],
+      "guards": [],
+      "source": {
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts",
+        "line": 34
+      },
+      "confidence": "high",
+      "extractionMethod": "ast"
+    },
+    {
+      "id": "route:POST:/auth/refresh",
+      "path": "/auth/refresh",
+      "method": "POST",
+      "handler": {
+        "id": "handler:AuthController.refresh",
+        "name": "refresh",
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts",
+        "line": 46,
+        "className": "AuthController",
+        "methodName": "refresh",
+        "decorators": []
+      },
+      "schemas": [
+        {
+          "id": "param:AuthController.refresh:body",
+          "name": "body",
+          "type": "body",
+          "description": "Parameter extracted from @Body decorator",
+          "source": {
+            "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts",
+            "line": 46
+          }
+        }
+      ],
+      "middleware": [],
+      "guards": [],
+      "source": {
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts",
+        "line": 46
+      },
+      "confidence": "high",
+      "extractionMethod": "ast"
+    },
+    {
+      "id": "route:GET:/users",
+      "path": "/users",
+      "method": "GET",
+      "handler": {
+        "id": "handler:UsersController.findAll",
+        "name": "findAll",
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+        "line": 30,
+        "className": "UsersController",
+        "methodName": "findAll",
+        "decorators": [
+          "JwtAuthGuard"
+        ]
+      },
+      "schemas": [
+        {
+          "id": "param:UsersController.findAll:limit",
+          "name": "limit",
+          "type": "query",
+          "description": "Parameter extracted from @Query decorator",
+          "source": {
+            "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+            "line": 30
+          }
+        },
+        {
+          "id": "param:UsersController.findAll:offset",
+          "name": "offset",
+          "type": "query",
+          "description": "Parameter extracted from @Query decorator",
+          "source": {
+            "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+            "line": 30
+          }
+        }
+      ],
+      "middleware": [],
+      "guards": [
+        "JwtAuthGuard"
+      ],
+      "source": {
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+        "line": 30
+      },
+      "confidence": "high",
+      "extractionMethod": "ast"
+    },
+    {
+      "id": "route:GET:/users/:id",
+      "path": "/users/:id",
+      "method": "GET",
+      "handler": {
+        "id": "handler:UsersController.findOne",
+        "name": "findOne",
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+        "line": 38,
+        "className": "UsersController",
+        "methodName": "findOne",
+        "decorators": [
+          "JwtAuthGuard"
+        ]
+      },
+      "schemas": [
+        {
+          "id": "param:UsersController.findOne:id",
+          "name": "id",
+          "type": "path",
+          "description": "Parameter extracted from @Param decorator",
+          "source": {
+            "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+            "line": 38
+          }
+        }
+      ],
+      "middleware": [],
+      "guards": [
+        "JwtAuthGuard"
+      ],
+      "source": {
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+        "line": 38
+      },
+      "confidence": "high",
+      "extractionMethod": "ast"
+    },
+    {
+      "id": "route:POST:/users",
+      "path": "/users",
+      "method": "POST",
+      "handler": {
+        "id": "handler:UsersController.create",
+        "name": "create",
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+        "line": 46,
+        "className": "UsersController",
+        "methodName": "create",
+        "decorators": [
+          "JwtAuthGuard"
+        ]
+      },
+      "schemas": [
+        {
+          "id": "param:UsersController.create:createUserDto",
+          "name": "createUserDto",
+          "type": "body",
+          "description": "Parameter extracted from @Body decorator",
+          "source": {
+            "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+            "line": 46
+          }
+        }
+      ],
+      "middleware": [],
+      "guards": [
+        "JwtAuthGuard"
+      ],
+      "source": {
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+        "line": 46
+      },
+      "confidence": "high",
+      "extractionMethod": "ast"
+    },
+    {
+      "id": "route:PUT:/users/:id",
+      "path": "/users/:id",
+      "method": "PUT",
+      "handler": {
+        "id": "handler:UsersController.update",
+        "name": "update",
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+        "line": 54,
+        "className": "UsersController",
+        "methodName": "update",
+        "decorators": [
+          "JwtAuthGuard"
+        ]
+      },
+      "schemas": [
+        {
+          "id": "param:UsersController.update:id",
+          "name": "id",
+          "type": "path",
+          "description": "Parameter extracted from @Param decorator",
+          "source": {
+            "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+            "line": 54
+          }
+        },
+        {
+          "id": "param:UsersController.update:updateUserDto",
+          "name": "updateUserDto",
+          "type": "body",
+          "description": "Parameter extracted from @Body decorator",
+          "source": {
+            "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+            "line": 54
+          }
+        }
+      ],
+      "middleware": [],
+      "guards": [
+        "JwtAuthGuard"
+      ],
+      "source": {
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+        "line": 54
+      },
+      "confidence": "high",
+      "extractionMethod": "ast"
+    },
+    {
+      "id": "route:PATCH:/users/:id",
+      "path": "/users/:id",
+      "method": "PATCH",
+      "handler": {
+        "id": "handler:UsersController.patch",
+        "name": "patch",
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+        "line": 62,
+        "className": "UsersController",
+        "methodName": "patch",
+        "decorators": [
+          "JwtAuthGuard"
+        ]
+      },
+      "schemas": [
+        {
+          "id": "param:UsersController.patch:id",
+          "name": "id",
+          "type": "path",
+          "description": "Parameter extracted from @Param decorator",
+          "source": {
+            "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+            "line": 62
+          }
+        },
+        {
+          "id": "param:UsersController.patch:updateUserDto",
+          "name": "updateUserDto",
+          "type": "body",
+          "description": "Parameter extracted from @Body decorator",
+          "source": {
+            "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+            "line": 62
+          }
+        }
+      ],
+      "middleware": [],
+      "guards": [
+        "JwtAuthGuard"
+      ],
+      "source": {
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+        "line": 62
+      },
+      "confidence": "high",
+      "extractionMethod": "ast"
+    },
+    {
+      "id": "route:DELETE:/users/:id",
+      "path": "/users/:id",
+      "method": "DELETE",
+      "handler": {
+        "id": "handler:UsersController.remove",
+        "name": "remove",
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+        "line": 70,
+        "className": "UsersController",
+        "methodName": "remove",
+        "decorators": [
+          "JwtAuthGuard"
+        ]
+      },
+      "schemas": [
+        {
+          "id": "param:UsersController.remove:id",
+          "name": "id",
+          "type": "path",
+          "description": "Parameter extracted from @Param decorator",
+          "source": {
+            "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+            "line": 70
+          }
+        }
+      ],
+      "middleware": [],
+      "guards": [
+        "JwtAuthGuard"
+      ],
+      "source": {
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+        "line": 70
+      },
+      "confidence": "high",
+      "extractionMethod": "ast"
+    },
+    {
+      "id": "route:GET:/users/:id/preferences",
+      "path": "/users/:id/preferences",
+      "method": "GET",
+      "handler": {
+        "id": "handler:UsersController.getPreferences",
+        "name": "getPreferences",
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+        "line": 78,
+        "className": "UsersController",
+        "methodName": "getPreferences",
+        "decorators": [
+          "JwtAuthGuard"
+        ]
+      },
+      "schemas": [
+        {
+          "id": "param:UsersController.getPreferences:id",
+          "name": "id",
+          "type": "path",
+          "description": "Parameter extracted from @Param decorator",
+          "source": {
+            "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+            "line": 78
+          }
+        },
+        {
+          "id": "param:UsersController.getPreferences:x-theme",
+          "name": "x-theme",
+          "type": "header",
+          "description": "Parameter extracted from @Body decorator",
+          "source": {
+            "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+            "line": 78
+          }
+        }
+      ],
+      "middleware": [],
+      "guards": [
+        "JwtAuthGuard"
+      ],
+      "source": {
+        "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+        "line": 78
+      },
+      "confidence": "high",
+      "extractionMethod": "ast"
+    }
+  ],
+  "schemas": [
+    {
+      "id": "schema:AuthService",
+      "name": "AuthService",
+      "type": "body",
+      "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/auth/auth.service.ts",
+      "line": 16,
+      "properties": [
+        {
+          "name": "tokens",
+          "type": "Map<string, TokenPayload>",
+          "required": true
+        }
+      ],
+      "required": [
+        "tokens"
+      ],
+      "confidence": "high",
+      "extractionMethod": "ast"
+    },
+    {
+      "id": "schema:UsersService",
+      "name": "UsersService",
+      "type": "body",
+      "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.service.ts",
+      "line": 17,
+      "properties": [
+        {
+          "name": "users",
+          "type": "User[]",
+          "required": true
+        }
+      ],
+      "required": [
+        "users"
+      ],
+      "confidence": "high",
+      "extractionMethod": "ast"
+    },
+    {
+      "id": "schema:JwtAuthGuard",
+      "name": "JwtAuthGuard",
+      "type": "body",
+      "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/auth/guards/jwt-auth.guard.ts",
+      "line": 14,
+      "properties": [],
+      "required": [],
+      "description": "JWT Auth Guard\n\nSimplified guard for testing Peria adapter extraction",
+      "confidence": "high",
+      "extractionMethod": "ast"
+    },
+    {
+      "id": "schema:CreateUserDto",
+      "name": "CreateUserDto",
+      "type": "body",
+      "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/dto/create-user.dto.ts",
+      "line": 4,
+      "properties": [
+        {
+          "name": "email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "password",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "age",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "isActive",
+          "type": "boolean",
+          "required": false
+        }
+      ],
+      "required": [
+        "email",
+        "name"
+      ],
+      "description": "DTO for creating a new user",
+      "confidence": "high",
+      "extractionMethod": "ast"
+    },
+    {
+      "id": "schema:UpdateUserDto",
+      "name": "UpdateUserDto",
+      "type": "body",
+      "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/dto/update-user.dto.ts",
+      "line": 4,
+      "properties": [
+        {
+          "name": "email",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "password",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "age",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "isActive",
+          "type": "boolean",
+          "required": false
+        }
+      ],
+      "required": [],
+      "description": "DTO for updating an existing user",
+      "confidence": "high",
+      "extractionMethod": "ast"
+    }
+  ],
+  "openapiOps": [],
+  "docsPages": [],
+  "sourceFiles": [
+    {
+      "id": "file:temp/dto-by-name/user.model.ts",
+      "path": "temp/dto-by-name/user.model.ts",
+      "module": "temp/dto-by-name/user.model.ts",
+      "imports": [],
+      "source": {
+        "file": "temp/dto-by-name/user.model.ts"
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "file:temp/dto-by-name/data.ts",
+      "path": "temp/dto-by-name/data.ts",
+      "module": "temp/dto-by-name/data.ts",
+      "imports": [],
+      "source": {
+        "file": "temp/dto-by-name/data.ts"
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "file:src/main.ts",
+      "path": "src/main.ts",
+      "module": "src/main.ts",
+      "imports": [
+        "@nestjs/core"
+      ],
+      "source": {
+        "file": "src/main.ts"
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "file:src/auth/auth.controller.ts",
+      "path": "src/auth/auth.controller.ts",
+      "module": "src/auth/auth.controller.ts",
+      "imports": [
+        "@nestjs/common"
+      ],
+      "source": {
+        "file": "src/auth/auth.controller.ts"
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "file:src/auth/auth.service.ts",
+      "path": "src/auth/auth.service.ts",
+      "module": "src/auth/auth.service.ts",
+      "imports": [
+        "@nestjs/common"
+      ],
+      "source": {
+        "file": "src/auth/auth.service.ts"
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "file:src/auth/auth.module.ts",
+      "path": "src/auth/auth.module.ts",
+      "module": "src/auth/auth.module.ts",
+      "imports": [
+        "@nestjs/common"
+      ],
+      "source": {
+        "file": "src/auth/auth.module.ts"
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "file:src/auth/guards/jwt-auth.guard.ts",
+      "path": "src/auth/guards/jwt-auth.guard.ts",
+      "module": "src/auth/guards/jwt-auth.guard.ts",
+      "imports": [
+        "express"
+      ],
+      "source": {
+        "file": "src/auth/guards/jwt-auth.guard.ts"
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "file:src/app.module.ts",
+      "path": "src/app.module.ts",
+      "module": "src/app.module.ts",
+      "imports": [
+        "@nestjs/common"
+      ],
+      "source": {
+        "file": "src/app.module.ts"
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "file:src/users/dto/update-user.dto.ts",
+      "path": "src/users/dto/update-user.dto.ts",
+      "module": "src/users/dto/update-user.dto.ts",
+      "imports": [],
+      "source": {
+        "file": "src/users/dto/update-user.dto.ts"
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "file:src/users/dto/create-user.dto.ts",
+      "path": "src/users/dto/create-user.dto.ts",
+      "module": "src/users/dto/create-user.dto.ts",
+      "imports": [],
+      "source": {
+        "file": "src/users/dto/create-user.dto.ts"
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "file:src/users/users.service.ts",
+      "path": "src/users/users.service.ts",
+      "module": "src/users/users.service.ts",
+      "imports": [
+        "@nestjs/common"
+      ],
+      "source": {
+        "file": "src/users/users.service.ts"
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "file:src/users/users.controller.ts",
+      "path": "src/users/users.controller.ts",
+      "module": "src/users/users.controller.ts",
+      "imports": [],
+      "source": {
+        "file": "src/users/users.controller.ts"
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "file:src/users/users.module.ts",
+      "path": "src/users/users.module.ts",
+      "module": "src/users/users.module.ts",
+      "imports": [
+        "@nestjs/common"
+      ],
+      "source": {
+        "file": "src/users/users.module.ts"
+      },
+      "confidence": "high"
+    }
+  ],
+  "packages": [
+    {
+      "id": "package:nestjs-basic-fixture",
+      "name": "nestjs-basic-fixture",
+      "version": "1.0.0",
+      "directory": "package.json",
+      "manifestPath": "package.json",
+      "description": "Minimal NestJS app for testing Peria adapters",
+      "scripts": {
+        "start": "nest start",
+        "start:dev": "nest start --watch",
+        "build": "nest build"
+      },
+      "dependencies": [
+        "@nestjs/common",
+        "@nestjs/core",
+        "@nestjs/platform-express",
+        "reflect-metadata",
+        "rxjs"
+      ],
+      "devDependencies": [
+        "@nestjs/cli",
+        "@types/node",
+        "typescript"
+      ],
+      "exports": [],
+      "source": {
+        "file": "package.json"
+      },
+      "confidence": "high"
+    }
+  ],
+  "agentContext": [],
+  "relations": [
+    {
+      "id": "rel:0",
+      "sourceId": "route:POST:/auth/login",
+      "targetId": "handler:AuthController.login",
+      "type": "route_implemented_by_handler",
+      "confidence": "high",
+      "reason": "Route POST /auth/login is implemented by AuthController.login",
+      "evidence": [
+        {
+          "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "id": "rel:1",
+      "sourceId": "handler:AuthController.login",
+      "targetId": "param:AuthController.login:body",
+      "type": "handler_uses_schema",
+      "confidence": "high",
+      "reason": "Handler login uses schema body"
+    },
+    {
+      "id": "rel:2",
+      "sourceId": "route:POST:/auth/logout",
+      "targetId": "handler:AuthController.logout",
+      "type": "route_implemented_by_handler",
+      "confidence": "high",
+      "reason": "Route POST /auth/logout is implemented by AuthController.logout",
+      "evidence": [
+        {
+          "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "id": "rel:3",
+      "sourceId": "handler:AuthController.logout",
+      "targetId": "param:AuthController.logout:authorization",
+      "type": "handler_uses_schema",
+      "confidence": "high",
+      "reason": "Handler logout uses schema authorization"
+    },
+    {
+      "id": "rel:4",
+      "sourceId": "route:GET:/auth/verify",
+      "targetId": "handler:AuthController.verify",
+      "type": "route_implemented_by_handler",
+      "confidence": "high",
+      "reason": "Route GET /auth/verify is implemented by AuthController.verify",
+      "evidence": [
+        {
+          "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts",
+          "line": 34
+        }
+      ]
+    },
+    {
+      "id": "rel:5",
+      "sourceId": "handler:AuthController.verify",
+      "targetId": "param:AuthController.verify:authorization",
+      "type": "handler_uses_schema",
+      "confidence": "high",
+      "reason": "Handler verify uses schema authorization"
+    },
+    {
+      "id": "rel:6",
+      "sourceId": "route:POST:/auth/refresh",
+      "targetId": "handler:AuthController.refresh",
+      "type": "route_implemented_by_handler",
+      "confidence": "high",
+      "reason": "Route POST /auth/refresh is implemented by AuthController.refresh",
+      "evidence": [
+        {
+          "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts",
+          "line": 46
+        }
+      ]
+    },
+    {
+      "id": "rel:7",
+      "sourceId": "handler:AuthController.refresh",
+      "targetId": "param:AuthController.refresh:body",
+      "type": "handler_uses_schema",
+      "confidence": "high",
+      "reason": "Handler refresh uses schema body"
+    },
+    {
+      "id": "rel:8",
+      "sourceId": "route:GET:/users",
+      "targetId": "handler:UsersController.findAll",
+      "type": "route_implemented_by_handler",
+      "confidence": "high",
+      "reason": "Route GET /users is implemented by UsersController.findAll",
+      "evidence": [
+        {
+          "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+          "line": 30
+        }
+      ]
+    },
+    {
+      "id": "rel:9",
+      "sourceId": "handler:UsersController.findAll",
+      "targetId": "param:UsersController.findAll:limit",
+      "type": "handler_uses_schema",
+      "confidence": "high",
+      "reason": "Handler findAll uses schema limit"
+    },
+    {
+      "id": "rel:10",
+      "sourceId": "handler:UsersController.findAll",
+      "targetId": "param:UsersController.findAll:offset",
+      "type": "handler_uses_schema",
+      "confidence": "high",
+      "reason": "Handler findAll uses schema offset"
+    },
+    {
+      "id": "rel:11",
+      "sourceId": "route:GET:/users/:id",
+      "targetId": "handler:UsersController.findOne",
+      "type": "route_implemented_by_handler",
+      "confidence": "high",
+      "reason": "Route GET /users/:id is implemented by UsersController.findOne",
+      "evidence": [
+        {
+          "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+          "line": 38
+        }
+      ]
+    },
+    {
+      "id": "rel:12",
+      "sourceId": "handler:UsersController.findOne",
+      "targetId": "param:UsersController.findOne:id",
+      "type": "handler_uses_schema",
+      "confidence": "high",
+      "reason": "Handler findOne uses schema id"
+    },
+    {
+      "id": "rel:13",
+      "sourceId": "route:POST:/users",
+      "targetId": "handler:UsersController.create",
+      "type": "route_implemented_by_handler",
+      "confidence": "high",
+      "reason": "Route POST /users is implemented by UsersController.create",
+      "evidence": [
+        {
+          "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+          "line": 46
+        }
+      ]
+    },
+    {
+      "id": "rel:14",
+      "sourceId": "handler:UsersController.create",
+      "targetId": "param:UsersController.create:createUserDto",
+      "type": "handler_uses_schema",
+      "confidence": "high",
+      "reason": "Handler create uses schema createUserDto"
+    },
+    {
+      "id": "rel:15",
+      "sourceId": "route:PUT:/users/:id",
+      "targetId": "handler:UsersController.update",
+      "type": "route_implemented_by_handler",
+      "confidence": "high",
+      "reason": "Route PUT /users/:id is implemented by UsersController.update",
+      "evidence": [
+        {
+          "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+          "line": 54
+        }
+      ]
+    },
+    {
+      "id": "rel:16",
+      "sourceId": "handler:UsersController.update",
+      "targetId": "param:UsersController.update:id",
+      "type": "handler_uses_schema",
+      "confidence": "high",
+      "reason": "Handler update uses schema id"
+    },
+    {
+      "id": "rel:17",
+      "sourceId": "handler:UsersController.update",
+      "targetId": "param:UsersController.update:updateUserDto",
+      "type": "handler_uses_schema",
+      "confidence": "high",
+      "reason": "Handler update uses schema updateUserDto"
+    },
+    {
+      "id": "rel:18",
+      "sourceId": "route:PATCH:/users/:id",
+      "targetId": "handler:UsersController.patch",
+      "type": "route_implemented_by_handler",
+      "confidence": "high",
+      "reason": "Route PATCH /users/:id is implemented by UsersController.patch",
+      "evidence": [
+        {
+          "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+          "line": 62
+        }
+      ]
+    },
+    {
+      "id": "rel:19",
+      "sourceId": "handler:UsersController.patch",
+      "targetId": "param:UsersController.patch:id",
+      "type": "handler_uses_schema",
+      "confidence": "high",
+      "reason": "Handler patch uses schema id"
+    },
+    {
+      "id": "rel:20",
+      "sourceId": "handler:UsersController.patch",
+      "targetId": "param:UsersController.patch:updateUserDto",
+      "type": "handler_uses_schema",
+      "confidence": "high",
+      "reason": "Handler patch uses schema updateUserDto"
+    },
+    {
+      "id": "rel:21",
+      "sourceId": "route:DELETE:/users/:id",
+      "targetId": "handler:UsersController.remove",
+      "type": "route_implemented_by_handler",
+      "confidence": "high",
+      "reason": "Route DELETE /users/:id is implemented by UsersController.remove",
+      "evidence": [
+        {
+          "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+          "line": 70
+        }
+      ]
+    },
+    {
+      "id": "rel:22",
+      "sourceId": "handler:UsersController.remove",
+      "targetId": "param:UsersController.remove:id",
+      "type": "handler_uses_schema",
+      "confidence": "high",
+      "reason": "Handler remove uses schema id"
+    },
+    {
+      "id": "rel:23",
+      "sourceId": "route:GET:/users/:id/preferences",
+      "targetId": "handler:UsersController.getPreferences",
+      "type": "route_implemented_by_handler",
+      "confidence": "high",
+      "reason": "Route GET /users/:id/preferences is implemented by UsersController.getPreferences",
+      "evidence": [
+        {
+          "file": "/Users/gabrielbezerrarodrigues/dev/peria/packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
+          "line": 78
+        }
+      ]
+    },
+    {
+      "id": "rel:24",
+      "sourceId": "handler:UsersController.getPreferences",
+      "targetId": "param:UsersController.getPreferences:id",
+      "type": "handler_uses_schema",
+      "confidence": "high",
+      "reason": "Handler getPreferences uses schema id"
+    },
+    {
+      "id": "rel:25",
+      "sourceId": "handler:UsersController.getPreferences",
+      "targetId": "param:UsersController.getPreferences:x-theme",
+      "type": "handler_uses_schema",
+      "confidence": "high",
+      "reason": "Handler getPreferences uses schema x-theme"
+    }
+  ],
+  "git": {
+    "lastCommit": "7aa56c22fae7da60d23dac1d0307df05329056bb",
+    "shortCommit": "7aa56c2",
+    "branch": "feat/self-documentation-bootstrap",
+    "isDirty": true,
+    "changedFiles": [
+      "sconfig.json",
+      "../../src/__tests__/nestjs-parser.test.ts",
+      "../../src/__tests__/scanner.test.ts",
+      "../../src/adapters/nestjs/dto-parser.ts",
+      "../../src/types/graph.ts",
+      ".peria/",
+      "temp/"
+    ],
+    "recentChanges": [
+      {
+        "id": "7aa56c2",
+        "path": "",
+        "type": "modified",
+        "commit": "7aa56c2",
+        "subject": "feat: add biome linting, fix type errors, and complete self-documentation feature"
+      },
+      {
+        "id": "f700f95",
+        "path": "",
+        "type": "modified",
+        "commit": "f700f95",
+        "subject": "refactor(core): Extract shared NestJS adapter utilities"
+      },
+      {
+        "id": "2704e31",
+        "path": "",
+        "type": "modified",
+        "commit": "2704e31",
+        "subject": "fix(core): Resolve bugs in NestJS adapter and scanner"
+      },
+      {
+        "id": "593b003",
+        "path": "",
+        "type": "modified",
+        "commit": "593b003",
+        "subject": "feat(core): Phase 2 - NestJS adapter for route extraction"
+      },
+      {
+        "id": "61ee6f2",
+        "path": "",
+        "type": "modified",
+        "commit": "61ee6f2",
+        "subject": "feat: implement repository scanning engine and parsers for OpenAPI, Markdown, and LLMs metadata"
+      },
+      {
+        "id": "daed83c",
+        "path": "",
+        "type": "modified",
+        "commit": "daed83c",
+        "subject": "feat: implement self-documenting wiki generation and add Vitest test suite for core logic"
+      },
+      {
+        "id": "cc40d72",
+        "path": "",
+        "type": "modified",
+        "commit": "cc40d72",
+        "subject": "feat: add self-documenting wiki generation"
+      },
+      {
+        "id": "08562c5",
+        "path": "",
+        "type": "modified",
+        "commit": "08562c5",
+        "subject": "feat: initialize project monorepo structure with core, sdk, cli, and adapter packages"
+      },
+      {
+        "id": "7d3856d",
+        "path": "",
+        "type": "modified",
+        "commit": "7d3856d",
+        "subject": "Initial commit"
+      }
+    ]
+  },
+  "drift": [],
+  "stats": {
+    "startTime": "1970-01-01T00:00:00.368Z",
+    "endTime": "1970-01-01T00:00:00.463Z",
+    "durationMs": 95,
+    "filesScanned": 13,
+    "packagesScanned": 1
+  }
+}

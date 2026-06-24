@@ -11,7 +11,7 @@ import {
   type SourceFile,
   type TypeAliasDeclaration,
 } from 'ts-morph';
-import type { SchemaEntity } from '../../types/graph.js';
+import type { Confidence, ExtractionMethod, SchemaEntity } from '../../types/graph.js';
 import type { RepoContext } from '../types.js';
 import { createTsMorphProject } from './utils.js';
 
@@ -35,7 +35,87 @@ const ENTITY_PATTERNS = [/[Ee]ntity$/, /[Ee]ntities$/];
 /**
  * Patterns that suggest a file contains schemas
  */
-const SCHEMA_PATTERNS = [/\.dto\.ts$/, /\.entity\.ts$/, /\.schema\.ts$/, /\.model\.ts$/];
+const SCHEMA_PATTERNS = [/dto\.ts$/, /entity\.ts$/, /schema\.ts$/, /model\.ts$/];
+
+/**
+ * Detection method for a schema
+ */
+interface SchemaDetection {
+  isSchema: boolean;
+  isEntity: boolean;
+  confidence: Confidence;
+  extractionMethod: ExtractionMethod;
+}
+
+/**
+ * Check if a class should be treated as a schema and with what confidence
+ */
+function detectClassSchema(
+  className: string,
+  classDecl: ClassDeclaration,
+  matchesFilePattern: boolean
+): SchemaDetection {
+  const hasFilePattern = matchesFilePattern;
+  const hasDecorator = classDecl.getDecorators().some((deco) => {
+    const name = deco.getName();
+    return name === 'Dto' || name === 'Entity' || name === 'Injectable' || name.startsWith('Is');
+  });
+  const matchesNamePattern =
+    DTO_PATTERNS.some((p) => p.test(className)) || ENTITY_PATTERNS.some((p) => p.test(className));
+
+  const isSchema = hasFilePattern || hasDecorator || matchesNamePattern;
+  const isEntity = hasFilePattern || ENTITY_PATTERNS.some((p) => p.test(className));
+
+  // Confidence: high if file pattern or decorator, medium if only naming pattern
+  const confidence: Confidence =
+    hasFilePattern || hasDecorator ? 'high' : matchesNamePattern ? 'medium' : 'low';
+
+  const extractionMethod: ExtractionMethod = hasFilePattern
+    ? 'ast'
+    : hasDecorator
+      ? 'ast'
+      : matchesNamePattern
+        ? 'heuristic'
+        : 'heuristic';
+
+  return { isSchema, isEntity, confidence, extractionMethod };
+}
+
+/**
+ * Check if an interface should be treated as a schema
+ */
+function detectInterfaceSchema(ifaceName: string, matchesFilePattern: boolean): SchemaDetection {
+  const hasFilePattern = matchesFilePattern;
+  const matchesNamePattern =
+    DTO_PATTERNS.some((p) => p.test(ifaceName)) || ENTITY_PATTERNS.some((p) => p.test(ifaceName));
+
+  const isSchema = hasFilePattern || matchesNamePattern;
+  const isEntity = hasFilePattern || ENTITY_PATTERNS.some((p) => p.test(ifaceName));
+
+  const confidence: Confidence = hasFilePattern ? 'high' : matchesNamePattern ? 'medium' : 'low';
+
+  const extractionMethod: ExtractionMethod = hasFilePattern ? 'ast' : 'heuristic';
+
+  return { isSchema, isEntity, confidence, extractionMethod };
+}
+
+/**
+ * Check if a type alias should be treated as a schema
+ */
+function detectTypeSchema(typeName: string, matchesFilePattern: boolean): SchemaDetection {
+  const hasFilePattern = matchesFilePattern;
+  const matchesNamePattern =
+    DTO_PATTERNS.some((p) => p.test(typeName)) || ENTITY_PATTERNS.some((p) => p.test(typeName));
+
+  const isSchema = hasFilePattern || matchesNamePattern;
+  const isEntity = hasFilePattern || ENTITY_PATTERNS.some((p) => p.test(typeName));
+
+  const confidence: Confidence = hasFilePattern ? 'high' : matchesNamePattern ? 'medium' : 'low';
+
+  const extractionMethod: ExtractionMethod = hasFilePattern ? 'ast' : 'heuristic';
+
+  return { isSchema, isEntity, confidence, extractionMethod };
+}
 
 /**
  * Extract all DTOs and schemas from NestJS application
@@ -72,12 +152,10 @@ function extractSchemasFromFile(sourceFile: SourceFile): SchemaEntity[] {
     const className = classDecl.getName();
     if (!className) continue;
 
-    // Check if it's likely a DTO or entity
-    const isDto = matchesSchemaPattern || isDtoClass(className, classDecl);
-    const isEntity = matchesSchemaPattern || ENTITY_PATTERNS.some((p) => p.test(className));
+    const detection = detectClassSchema(className, classDecl, matchesSchemaPattern);
 
-    if (isDto || isEntity) {
-      const schema = extractSchemaFromClass(classDecl, filePath, className);
+    if (detection.isSchema) {
+      const schema = extractSchemaFromClass(classDecl, filePath, className, detection);
       schemas.push(schema);
     }
   }
@@ -89,11 +167,10 @@ function extractSchemasFromFile(sourceFile: SourceFile): SchemaEntity[] {
     const ifaceName = iface.getName();
     if (!ifaceName) continue;
 
-    const isDto = matchesSchemaPattern || isDtoInterface(ifaceName);
-    const isEntity = matchesSchemaPattern || ENTITY_PATTERNS.some((p) => p.test(ifaceName));
+    const detection = detectInterfaceSchema(ifaceName, matchesSchemaPattern);
 
-    if (isDto || isEntity) {
-      const schema = extractSchemaFromInterface(iface, filePath, ifaceName);
+    if (detection.isSchema) {
+      const schema = extractSchemaFromInterface(iface, filePath, ifaceName, detection);
       schemas.push(schema);
     }
   }
@@ -105,11 +182,10 @@ function extractSchemasFromFile(sourceFile: SourceFile): SchemaEntity[] {
     const typeName = typeAlias.getName();
     if (!typeName) continue;
 
-    const isDto = matchesSchemaPattern || isDtoType(typeName);
-    const isEntity = matchesSchemaPattern || ENTITY_PATTERNS.some((p) => p.test(typeName));
+    const detection = detectTypeSchema(typeName, matchesSchemaPattern);
 
-    if (isDto || isEntity) {
-      const schema = extractSchemaFromTypeAlias(typeAlias, filePath, typeName);
+    if (detection.isSchema) {
+      const schema = extractSchemaFromTypeAlias(typeAlias, filePath, typeName, detection);
       schemas.push(schema);
     }
   }
@@ -118,44 +194,13 @@ function extractSchemasFromFile(sourceFile: SourceFile): SchemaEntity[] {
 }
 
 /**
- * Check if class is likely a DTO based on decorators or naming
- */
-function isDtoClass(name: string, classDecl: ClassDeclaration): boolean {
-  // Check for IsOptional, IsString, etc. from class-validator
-  const decorators = classDecl.getDecorators();
-  for (const deco of decorators) {
-    const decoName = deco.getName();
-    if (
-      decoName === 'Dto' ||
-      decoName === 'Entity' ||
-      decoName.startsWith('Is') ||
-      decoName === 'Injectable'
-    ) {
-      return true;
-    }
-  }
-
-  // Check naming patterns
-  return DTO_PATTERNS.some((pattern) => pattern.test(name));
-}
-
-/**
- * Check if type is likely a DTO (for interfaces and type aliases)
- */
-function isDtoType(name: string): boolean {
-  return DTO_PATTERNS.some((pattern) => pattern.test(name));
-}
-
-// Alias for semantic clarity when checking interfaces
-const isDtoInterface = isDtoType;
-
-/**
  * Extract schema from class
  */
 function extractSchemaFromClass(
   classDecl: ClassDeclaration,
   filePath: string,
-  name: string
+  name: string,
+  detection: SchemaDetection
 ): SchemaEntity {
   const line = classDecl.getStartLineNumber();
   const properties = extractProperties(classDecl);
@@ -173,6 +218,8 @@ function extractSchemaFromClass(
     })),
     required: properties.filter((p) => !p.optional).map((p) => p.name),
     description: extractJsDoc(classDecl),
+    confidence: detection.confidence,
+    extractionMethod: detection.extractionMethod,
   };
 }
 
@@ -182,7 +229,8 @@ function extractSchemaFromClass(
 function extractSchemaFromInterface(
   iface: InterfaceDeclaration,
   filePath: string,
-  name: string
+  name: string,
+  detection: SchemaDetection
 ): SchemaEntity {
   const line = iface.getStartLineNumber();
   const properties = extractInterfaceProperties(iface);
@@ -200,6 +248,8 @@ function extractSchemaFromInterface(
     })),
     required: properties.filter((p) => !p.optional).map((p) => p.name),
     description: extractJsDoc(iface),
+    confidence: detection.confidence,
+    extractionMethod: detection.extractionMethod,
   };
 }
 
@@ -209,7 +259,8 @@ function extractSchemaFromInterface(
 function extractSchemaFromTypeAlias(
   typeAlias: TypeAliasDeclaration,
   filePath: string,
-  name: string
+  name: string,
+  detection: SchemaDetection
 ): SchemaEntity {
   const line = typeAlias.getStartLineNumber();
 
@@ -220,6 +271,8 @@ function extractSchemaFromTypeAlias(
     file: filePath,
     line,
     description: extractJsDoc(typeAlias),
+    confidence: detection.confidence,
+    extractionMethod: detection.extractionMethod,
   };
 }
 

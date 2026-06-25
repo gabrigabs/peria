@@ -6,50 +6,22 @@
  */
 
 import { execFile } from 'node:child_process';
-import { mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
-import { basename, extname, isAbsolute, join, relative, resolve } from 'node:path';
+import { mkdir, readdir, writeFile } from 'node:fs/promises';
+import { basename, isAbsolute, join, relative, resolve } from 'node:path';
 import { nestJSAdapter } from '../adapters/nestjs/index.js';
 import { loadConfig } from '../config/loader.js';
-import {
-  matchRoutesToOpenAPI,
-  type RouteOpenAPIMatch,
-  summarizeMatching,
-} from '../matcher/index.js';
-import { parseLlms } from '../parsers/llms.js';
-import { parseMarkdown } from '../parsers/markdown.js';
-import { parseOpenAPI, parseOpenAPIDetailed } from '../parsers/openapi.js';
+import { matchRoutesToOpenAPI, summarizeMatching } from '../matcher/index.js';
+import { scanPackages } from './packages.js';
+import { scanSourceFiles } from './source-files.js';
+import { scanOpenAPI } from './openapi.js';
+import { scanDocs, docToEntity } from './markdown.js';
+import { scanLlms } from './llms.js';
+import { detectFramework, checkTsConfig } from './framework.js';
+import { createRelations } from './relations.js';
+import { buildOpenAPIMetadata, buildDocsMetadata, buildLlmsMetadata } from './manifest.js';
 import type { ResolvedPeriaConfig } from '../types/config.js';
-import type {
-  DocPageEntity,
-  GraphRelation,
-  OpenAPIOperation,
-  PackageEntity,
-  RouteEntity,
-  SchemaEntity,
-  SourceFile,
-} from '../types/graph.js';
-import type {
-  DocsMetadata,
-  FrameworkMetadata,
-  GitMetadata,
-  LlmsMetadata,
-  OpenAPIMetadata,
-  PeriaManifest,
-  RepoInfo,
-  ScanResult,
-  ScanWarning,
-} from '../types/manifest.js';
-
-// Re-export scanner modules
-export * from './packages.js';
-export * from './source-files.js';
-export * from './openapi.js';
-export * from './markdown.js';
-export * from './llms.js';
-export * from './git.js';
-export * from './framework.js';
-export * from './relations.js';
-export * from './manifest.js';
+import type { OpenAPIOperation, RouteEntity, SchemaEntity } from '../types/graph.js';
+import type { GitMetadata, PeriaManifest, RepoInfo, ScanResult, ScanWarning } from '../types/manifest.js';
 
 const IGNORED_DIRECTORIES = new Set([
   '.git',
@@ -60,9 +32,6 @@ const IGNORED_DIRECTORIES = new Set([
   '.next',
   'coverage',
 ]);
-
-const MARKDOWN_EXTENSIONS = new Set(['.md', '.mdx']);
-const TYPESCRIPT_EXTENSIONS = new Set(['.ts', '.tsx']);
 
 /**
  * Resolve a path to absolute, handling relative paths
@@ -117,16 +86,101 @@ export function runGit(cwd: string, args: string[]): Promise<string | null> {
 }
 
 /**
+ * Collect Git metadata
+ */
+async function collectGitMetadata(cwd: string): Promise<GitMetadata> {
+  const [lastCommit, shortCommit, branch, status, recentCommits] = await Promise.all([
+    runGit(cwd, ['rev-parse', 'HEAD']),
+    runGit(cwd, ['rev-parse', '--short', 'HEAD']),
+    runGit(cwd, ['branch', '--show-current']),
+    runGit(cwd, ['status', '--short']),
+    runGit(cwd, ['log', '--oneline', '-20']),
+  ]);
+
+  const changedFiles = (status || '')
+    .split('\n')
+    .filter(Boolean)
+    .map((line) => line.slice(3));
+
+  const recentChanges = (recentCommits || '')
+    .split('\n')
+    .filter(Boolean)
+    .map((line) => {
+      const [hash, ...subjectParts] = line.split(' ');
+      return {
+        id: hash,
+        path: '',
+        type: 'modified' as const,
+        commit: hash,
+        subject: subjectParts.join(' '),
+      };
+    });
+
+  return {
+    lastCommit: lastCommit || 'unknown',
+    shortCommit: shortCommit || 'unknown',
+    branch: branch || 'unknown',
+    isDirty: changedFiles.length > 0,
+    changedFiles,
+    recentChanges,
+  };
+}
+
+/**
+ * Extract schemas from OpenAPI results
+ */
+function extractSchemasFromOpenAPI(
+  openapiResults: Array<{ operations: OpenAPIOperation[] }>
+): SchemaEntity[] {
+  const schemas: SchemaEntity[] = [];
+
+  for (const { operations } of openapiResults) {
+    for (const op of operations) {
+      if (op.requestBody?.schema) {
+        schemas.push({
+          id: `schema:${op.requestBody.schema}`,
+          name: op.requestBody.schema,
+          type: 'request',
+          openapiRef: `#/components/schemas/${op.requestBody.schema}`,
+        });
+      }
+
+      for (const response of op.responses || []) {
+        if (response.schema) {
+          schemas.push({
+            id: `schema:${response.schema}`,
+            name: response.schema,
+            type: 'response',
+            openapiRef: `#/components/schemas/${response.schema}`,
+          });
+        }
+      }
+
+      for (const param of op.parameters || []) {
+        if (param.schema) {
+          schemas.push({
+            id: `param:${op.id}:${param.name}`,
+            name: param.name,
+            type: 'parameter',
+            description: param.description,
+          });
+        }
+      }
+    }
+  }
+
+  return schemas;
+}
+
+/**
  * Scan a repository and produce a PeriaManifest
  */
 export async function scan(cwd: string): Promise<ScanResult> {
   const startTime = performance.now();
   const warnings: ScanWarning[] = [];
 
-  // Resolve to absolute path for consistent behavior
   const absoluteCwd = resolveAbsolutePath(cwd);
 
-  // Load config
   const config = await loadConfig(absoluteCwd).catch((err) => {
     warnings.push({
       code: 'config-error',
@@ -136,14 +190,11 @@ export async function scan(cwd: string): Promise<ScanResult> {
     return null;
   });
 
-  const resolvedConfig: ResolvedPeriaConfig = (config ??
-    createDefaultConfig()) as ResolvedPeriaConfig;
+  const resolvedConfig: ResolvedPeriaConfig = (config ?? createDefaultConfig()) as ResolvedPeriaConfig;
 
-  // Get repo info
   const repoInfo = await getRepoInfo(absoluteCwd);
   const gitMetadata = await collectGitMetadata(absoluteCwd);
 
-  // Scan in parallel where possible
   const [packages, sourceFiles, openapiResults, docsResults, llmsResult] = await Promise.all([
     scanPackages(absoluteCwd),
     scanSourceFiles(absoluteCwd, resolvedConfig),
@@ -152,7 +203,6 @@ export async function scan(cwd: string): Promise<ScanResult> {
     scanLlms(absoluteCwd, resolvedConfig, warnings),
   ]);
 
-  // Extract routes and schemas using framework adapter (Phase 2)
   const detectedFramework = await detectFramework(absoluteCwd, resolvedConfig);
   const hasTsConfig = await checkTsConfig(absoluteCwd);
   const isNestJS = detectedFramework?.name === 'nestjs' && hasTsConfig;
@@ -163,7 +213,6 @@ export async function scan(cwd: string): Promise<ScanResult> {
   if (isNestJS) {
     const context = { cwd: absoluteCwd, config: resolvedConfig };
 
-    // Extract routes
     try {
       routes = await nestJSAdapter.extractRoutes(context);
     } catch (err) {
@@ -174,7 +223,6 @@ export async function scan(cwd: string): Promise<ScanResult> {
       });
     }
 
-    // Extract schemas (optional)
     try {
       const extractAdapterSchemas = nestJSAdapter.extractSchemas;
       if (extractAdapterSchemas) {
@@ -192,13 +240,10 @@ export async function scan(cwd: string): Promise<ScanResult> {
   const openapiOps = openapiResults.flatMap((r) => r.operations);
   const docsPages = docsResults.map((r) => docToEntity(r.path, r.content));
 
-  // Phase 3: Match routes to OpenAPI operations
-  let matchingResult = null;
   if (routes.length > 0 && openapiOps.length > 0) {
     try {
-      matchingResult = await matchRoutesToOpenAPI(routes, openapiOps);
+      const matchingResult = await matchRoutesToOpenAPI(routes, openapiOps);
 
-      // Log matching summary if there are unmatched
       if (
         matchingResult.stats.unmatchedRoutes > 0 ||
         matchingResult.stats.unmatchedOperations > 0
@@ -217,7 +262,6 @@ export async function scan(cwd: string): Promise<ScanResult> {
     }
   }
 
-  // Create relations
   const relations = createRelations({
     routes,
     schemas,
@@ -227,7 +271,6 @@ export async function scan(cwd: string): Promise<ScanResult> {
     sourceFiles,
   });
 
-  // Build manifest
   const endTime = performance.now();
   const manifest: PeriaManifest = {
     manifestVersion: '0.1.0',
@@ -266,9 +309,6 @@ export async function scan(cwd: string): Promise<ScanResult> {
   return { manifest, warnings };
 }
 
-/**
- * Create default configuration
- */
 function createDefaultConfig(): ResolvedPeriaConfig {
   return {
     framework: 'other' as const,
@@ -313,9 +353,6 @@ function createDefaultConfig(): ResolvedPeriaConfig {
   };
 }
 
-/**
- * Get repository information
- */
 async function getRepoInfo(cwd: string): Promise<RepoInfo> {
   const [commit, branch, status] = await Promise.all([
     runGit(cwd, ['rev-parse', 'HEAD']),
@@ -332,30 +369,6 @@ async function getRepoInfo(cwd: string): Promise<RepoInfo> {
   };
 }
 
-/**
- * Check if tsconfig.json exists
- */
-async function checkTsConfig(cwd: string): Promise<boolean> {
-  const tsConfigPaths = [
-    join(cwd, 'tsconfig.json'),
-    join(cwd, 'tsconfig.build.json'),
-    join(cwd, 'apps', 'api', 'tsconfig.json'),
-  ];
-
-  for (const path of tsConfigPaths) {
-    try {
-      await stat(path);
-      return true;
-    } catch {
-      // Try next
-    }
-  }
-  return false;
-}
-
-/**
- * Write manifest to file
- */
 export async function writeManifest(cwd: string, manifest: PeriaManifest): Promise<string> {
   const manifestDir = join(cwd, '.peria');
   await mkdir(manifestDir, { recursive: true });

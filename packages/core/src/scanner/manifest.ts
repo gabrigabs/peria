@@ -7,61 +7,13 @@ import type {
   LlmsMetadata,
   OpenAPIMetadata,
   PeriaManifest,
-  RepoInfo,
-  ScanWarning,
 } from '../types/manifest.js';
 import type { OpenAPIOperation } from '../types/graph.js';
 
 /**
- * Extract schemas from OpenAPI spec
- */
-function extractSchemasFromOpenAPI(
-  openapiResults: Array<{ operations: OpenAPIOperation[] }>
-): Array<{ name: string; type: 'request' | 'response' | 'parameter'; openapiRef?: string }> {
-  const schemas: Array<{ name: string; type: 'request' | 'response' | 'parameter'; openapiRef?: string }> = [];
-
-  for (const { operations } of openapiResults) {
-    for (const op of operations) {
-      // Extract from request body
-      if (op.requestBody?.schema) {
-        schemas.push({
-          name: op.requestBody.schema,
-          type: 'request',
-          openapiRef: `#/components/schemas/${op.requestBody.schema}`,
-        });
-      }
-
-      // Extract from responses
-      for (const response of op.responses || []) {
-        if (response.schema) {
-          schemas.push({
-            name: response.schema,
-            type: 'response',
-            openapiRef: `#/components/schemas/${response.schema}`,
-          });
-        }
-      }
-
-      // Extract from parameters
-      for (const param of op.parameters || []) {
-        if (param.schema) {
-          schemas.push({
-            name: param.name,
-            type: 'parameter',
-            description: param.description,
-          });
-        }
-      }
-    }
-  }
-
-  return schemas;
-}
-
-/**
  * Build OpenAPI metadata
  */
-function buildOpenAPIMetadata(
+export function buildOpenAPIMetadata(
   results: Array<{
     path: string;
     spec: {
@@ -91,7 +43,7 @@ function buildOpenAPIMetadata(
 /**
  * Build docs metadata
  */
-function buildDocsMetadata(
+export function buildDocsMetadata(
   results: Array<{
     path: string;
     content: {
@@ -118,11 +70,11 @@ function buildDocsMetadata(
 /**
  * Build llms metadata
  */
-function buildLlmsMetadata(result: Awaited<ReturnType<any>>): LlmsMetadata {
-  const metadata = result.metadata as { pageCount?: number; exists?: boolean } | undefined;
+export function buildLlmsMetadata(result: { path: string; variant: string; metadata?: { pageCount?: number; exists?: boolean } }): LlmsMetadata {
+  const metadata = result.metadata;
   return {
     path: result.path,
-    variant: result.variant === 'unknown' ? 'summary' : result.variant,
+    variant: result.variant === 'unknown' ? 'summary' : (result.variant as 'full' | 'summary'),
     pageCount: metadata?.pageCount || 0,
     exists: metadata?.exists ?? false,
   };
@@ -132,8 +84,7 @@ function buildLlmsMetadata(result: Awaited<ReturnType<any>>): LlmsMetadata {
  * Write manifest to file
  */
 export async function writeManifest(cwd: string, manifest: PeriaManifest): Promise<string> {
-  const { writeFile } = await import('node:fs/promises');
-  const { mkdir } = await import('node:fs/promises');
+  const { writeFile, mkdir } = await import('node:fs/promises');
   const { join } = await import('node:path');
 
   const manifestDir = join(cwd, '.peria');

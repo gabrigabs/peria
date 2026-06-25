@@ -1,5 +1,5 @@
 {
-  "name": "@peria/api-ref-stoplight",
+  "name": "@peria/api-reference",
   "version": "0.1.0",
   "description": "Stoplight Elements integration for Peria API reference",
   "type": "module",

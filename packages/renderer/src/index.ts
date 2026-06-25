@@ -39,6 +39,9 @@ export {
   generateStaticDocs,
   type StaticDocsOptions,
 } from './static.js';
+// Wiki renderer
+export { renderWikiAssets, renderWikiHtml, renderWikiCss, renderWikiJs, type RenderOptions, type RenderedAssets } from './renderer.js';
+export type { WikiManifest, WikiPage, KnowledgeGraphArtifact } from '@peria/core';
 // Types
 export type {
   Confidence,

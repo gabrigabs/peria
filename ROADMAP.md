@@ -246,7 +246,7 @@ Suggested package naming:
 | `@peria/sdk`      | Embedded server and framework integration helpers |
 | `@peria/docs-ui`  | Shared docs UI components if kept                |
 | `@peria/renderer-fumadocs` | Fumadocs renderer adapter              |
-| `@peria/api-ref-stoplight` | Stoplight Elements API reference adapter |
+| `@peria/api-reference` | Stoplight Elements API reference adapter |
 | `@peria/types`    | Shared public types if needed later               |
 
 Initial CLI usage should be possible through:
@@ -682,7 +682,7 @@ They are renderer adapters:
 
 ```txt
 @peria/renderer-fumadocs
-@peria/api-ref-stoplight
+@peria/api-reference
 @peria/ui
 ```
 
@@ -1335,7 +1335,7 @@ Completed scope:
 * Unmatched routes and operations detection.
 * Enriched OpenAPI generator (`packages/core/src/generators/enriched-openapi.ts`).
 * Generates `.peria/openapi.enriched.json` with `x-peria` metadata.
-* `@peria/api-ref-stoplight` package created with Stoplight Elements wrapper.
+* `@peria/api-reference` package created with Stoplight Elements wrapper.
 * `StoplightRenderer`, `OperationContext`, `DriftIndicator`, and `APIReferencePage` components.
 * React component library with TypeScript declarations.
 * SDK integration for mounting API reference.

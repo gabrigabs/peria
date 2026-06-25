@@ -9,9 +9,9 @@
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
-    "./api-ref-stoplight": {
-      "import": "@peria/api-ref-stoplight/dist/index.js",
-      "types": "@peria/api-ref-stoplight/dist/index.d.ts"
+    "./api-reference": {
+      "import": "@peria/api-reference/dist/index.js",
+      "types": "@peria/api-reference/dist/index.d.ts"
     }
   },
   "scripts": {
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@fastify/static": "^6.0.0",
-    "@peria/api-ref-stoplight": "workspace:*",
+    "@peria/api-reference": "workspace:*",
     "@peria/core": "workspace:*",
     "express": "^4.18.0"
   },

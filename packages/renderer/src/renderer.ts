@@ -1,12 +1,12 @@
 /**
  * Wiki Renderer - Main Entry Point
- * 
+ *
  * Orchestrates the rendering of wiki assets.
  */
 
-import type { WikiManifest, WikiPage, KnowledgeGraphArtifact } from '@peria/core';
-import { renderWikiHtml } from './html.js';
+import type { KnowledgeGraphArtifact, WikiManifest, WikiPage } from '@peria/core';
 import { renderWikiCss } from './css.js';
+import { renderWikiHtml } from './html.js';
 import { renderWikiJs } from './js.js';
 
 export interface RenderOptions {
@@ -33,4 +33,4 @@ export function renderWikiAssets(options: RenderOptions): RenderedAssets {
   };
 }
 
-export { renderWikiHtml, renderWikiCss, renderWikiJs };
+export { renderWikiCss, renderWikiHtml, renderWikiJs };

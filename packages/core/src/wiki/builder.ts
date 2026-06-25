@@ -6,27 +6,22 @@
  * llms-text builds llms.txt, builder orchestrates.
  */
 
-import { defineConfig } from '../types/config.js';
 import type { PeriaConfig, ResolvedPeriaConfig } from '../types/config.js';
-import type {
-  WikiBuildResult,
-  WikiManifest,
-} from '../types/wiki.js';
-
+import { defineConfig } from '../types/config.js';
+import type { GitMetadata, WikiBuildResult, WikiManifest } from '../types/wiki.js';
+import { collectAdapters } from './collectors/adapters.js';
+import { collectCliCommands } from './collectors/cli.js';
+import { collectContextFiles } from './collectors/context.js';
+import { collectFeatures } from './collectors/features.js';
 // Import collectors
 import { collectGitMetadata } from './collectors/git.js';
-import { collectPackages } from './collectors/packages.js';
-import { collectModules } from './collectors/modules.js';
-import { collectCliCommands } from './collectors/cli.js';
-import { collectFeatures } from './collectors/features.js';
-import { collectAdapters } from './collectors/adapters.js';
-import { collectContextFiles } from './collectors/context.js';
 import { getRecentHistory } from './collectors/history.js';
-
-// Import page and graph builders
-import { createPages } from './pages.js';
+import { collectModules } from './collectors/modules.js';
+import { collectPackages } from './collectors/packages.js';
 import { createGraph } from './graph.js';
 import { createLlmsText } from './llms-text.js';
+// Import page and graph builders
+import { createPages } from './pages.js';
 
 const MANIFEST_VERSION = '0.1.0';
 
@@ -101,7 +96,7 @@ export async function buildWiki(
 function createManifest(
   config: ResolvedPeriaConfig,
   generatedAt: string,
-  git: { commit?: string | null; branch?: string | null },
+  git: GitMetadata,
   pages: Array<{ title: string; slug: string; description: string; path: string }>
 ): WikiManifest {
   return {
@@ -110,7 +105,7 @@ function createManifest(
     generatedAt,
     manifestVersion: MANIFEST_VERSION,
     commit: git.commit ?? undefined,
-    git: git as any,
+    git,
     project: config.project,
     pages: pages.map((page) => ({
       title: page.title,

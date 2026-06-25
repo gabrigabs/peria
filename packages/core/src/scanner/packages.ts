@@ -3,7 +3,7 @@
  */
 
 import { readFile } from 'node:fs/promises';
-import { basename, dirname, join } from 'node:path';
+import { join } from 'node:path';
 import type { PackageEntity } from '../types/graph.js';
 import { findFiles } from './index.js';
 

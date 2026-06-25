@@ -71,22 +71,27 @@ function relative(from: string, to: string): string {
   // Simple relative implementation for Node.js compatibility
   const fromParts = from.replace(/\\/g, '/').split('/');
   const toParts = to.replace(/\\/g, '/').split('/');
-  
+
   let commonLength = 0;
-  while (commonLength < fromParts.length && 
-         commonLength < toParts.length && 
-         fromParts[commonLength] === toParts[commonLength]) {
+  while (
+    commonLength < fromParts.length &&
+    commonLength < toParts.length &&
+    fromParts[commonLength] === toParts[commonLength]
+  ) {
     commonLength++;
   }
-  
+
   const upCount = fromParts.length - commonLength;
   const ups = Array(upCount).fill('..');
   const downs = toParts.slice(commonLength);
-  
+
   return [...ups, ...downs].join('/');
 }
 
-export async function collectModules(cwd: string, packages: PackageSummary[]): Promise<ModuleSummary[]> {
+export async function collectModules(
+  cwd: string,
+  packages: PackageSummary[]
+): Promise<ModuleSummary[]> {
   const tsFiles = await findTypeScriptFiles(cwd);
   const project = new Project({
     compilerOptions: {

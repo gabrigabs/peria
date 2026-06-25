@@ -61,7 +61,9 @@ export async function buildCommand(cwd: string): Promise<void> {
         logger.success(`Generated enriched OpenAPI: ${enrichedPath}`);
       }
     } catch (err) {
-      logger.warning(`Failed to generate enriched OpenAPI: ${err instanceof Error ? err.message : String(err)}`);
+      logger.warning(
+        `Failed to generate enriched OpenAPI: ${err instanceof Error ? err.message : String(err)}`
+      );
     }
   }
 

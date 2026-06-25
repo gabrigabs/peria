@@ -2,8 +2,8 @@
  * Adapters Collector - Collects adapter information
  */
 
-import { basename, extname, join } from 'node:path';
 import { readFile } from 'node:fs/promises';
+import { basename, extname, join } from 'node:path';
 import type { AdapterSummary, ModuleSummary } from '../types/wiki.js';
 
 async function readTextFile(path: string): Promise<string | null> {
@@ -14,7 +14,10 @@ async function readTextFile(path: string): Promise<string | null> {
   }
 }
 
-export async function collectAdapters(cwd: string, modules: ModuleSummary[]): Promise<AdapterSummary[]> {
+export async function collectAdapters(
+  cwd: string,
+  modules: ModuleSummary[]
+): Promise<AdapterSummary[]> {
   // Filter adapter modules and read all contents in parallel
   const adapterModules = modules.filter(
     (module) =>

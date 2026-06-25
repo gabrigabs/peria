@@ -8,7 +8,6 @@ import { parseMarkdown } from '../parsers/markdown.js';
 import type { ResolvedPeriaConfig } from '../types/config.js';
 import type { DocPageEntity } from '../types/graph.js';
 import type { ScanWarning } from '../types/manifest.js';
-import { findFiles } from './index.js';
 
 const IGNORED_DIRECTORIES = new Set([
   '.git',

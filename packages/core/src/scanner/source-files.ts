@@ -6,7 +6,6 @@ import { readdir, readFile } from 'node:fs/promises';
 import { extname, join, relative } from 'node:path';
 import type { ResolvedPeriaConfig } from '../types/config.js';
 import type { SourceFile } from '../types/graph.js';
-import { findFiles } from './index.js';
 
 const IGNORED_DIRECTORIES = new Set([
   '.git',
@@ -68,7 +67,10 @@ async function findTypeScriptFiles(cwd: string): Promise<string[]> {
 /**
  * Scan TypeScript source files
  */
-export async function scanSourceFiles(cwd: string, _config: ResolvedPeriaConfig): Promise<SourceFile[]> {
+export async function scanSourceFiles(
+  cwd: string,
+  _config: ResolvedPeriaConfig
+): Promise<SourceFile[]> {
   const files: SourceFile[] = [];
   const tsFiles = await findTypeScriptFiles(cwd);
 

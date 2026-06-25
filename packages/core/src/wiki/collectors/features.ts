@@ -3,8 +3,8 @@
  */
 
 import { readFile } from 'node:fs/promises';
-import type { FeatureSummary } from '../types/wiki.js';
 import type { ResolvedPeriaConfig } from '../types/config.js';
+import type { FeatureSummary } from '../types/wiki.js';
 
 async function readTextFile(path: string): Promise<string | null> {
   try {
@@ -59,5 +59,5 @@ export async function collectFeatures(
 }
 
 function join(cwd: string, ...paths: string[]): string {
-  return cwd.replace(/\\/g, '/').replace(/\/$/, '') + '/' + paths.join('/').replace(/\/+/g, '/');
+  return `${cwd.replace(/\\/g, '/').replace(/\/$/, '')}/${paths.join('/').replace(/\/+/g, '/')}`;
 }

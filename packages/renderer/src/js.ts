@@ -1,6 +1,6 @@
 /**
  * Wiki JavaScript Generator
- * 
+ *
  * Generates the client-side JavaScript for the wiki UI.
  */
 
@@ -15,10 +15,10 @@ function escapeHtml(value: string): string {
 function inline(value: string): string {
   return escapeHtml(value)
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/\`([^\`]+)\`/g, '<code>$1</code>');
+    .replace(/`([^`]+)`/g, '<code>$1</code>');
 }
 
-function markdownToHtml(markdown: string): string {
+function _markdownToHtml(markdown: string): string {
   const lines = markdown.split('\n');
   const html: string[] = [];
   let index = 0;
@@ -26,14 +26,14 @@ function markdownToHtml(markdown: string): string {
   while (index < lines.length) {
     const line = lines[index];
 
-    if (line.startsWith('\`\`\`')) {
+    if (line.startsWith('```')) {
       const code: string[] = [];
       index += 1;
-      while (index < lines.length && !lines[index].startsWith('\`\`\`')) {
+      while (index < lines.length && !lines[index].startsWith('```')) {
         code.push(lines[index]);
         index += 1;
       }
-      html.push('<pre><code>' + escapeHtml(code.join('\n')) + '</code></pre>');
+      html.push(`<pre><code>${escapeHtml(code.join('\n'))}</code></pre>`);
       index += 1;
       continue;
     }
@@ -50,37 +50,37 @@ function markdownToHtml(markdown: string): string {
     }
 
     if (line.startsWith('### ')) {
-      html.push('<h3>' + inline(line.slice(4)) + '</h3>');
+      html.push(`<h3>${inline(line.slice(4))}</h3>`);
     } else if (line.startsWith('## ')) {
-      html.push('<h2>' + inline(line.slice(3)) + '</h2>');
+      html.push(`<h2>${inline(line.slice(3))}</h2>`);
     } else if (line.startsWith('# ')) {
-      html.push('<h1>' + inline(line.slice(2)) + '</h1>');
+      html.push(`<h1>${inline(line.slice(2))}</h1>`);
     } else if (line.startsWith('> ')) {
       const quotes: string[] = [];
       while (index < lines.length && lines[index].startsWith('> ')) {
-        quotes.push('<p>' + inline(lines[index].slice(2)) + '</p>');
+        quotes.push(`<p>${inline(lines[index].slice(2))}</p>`);
         index += 1;
       }
-      html.push('<blockquote>' + quotes.join('') + '</blockquote>');
+      html.push(`<blockquote>${quotes.join('')}</blockquote>`);
       continue;
     } else if (line.startsWith('- ')) {
       const items: string[] = [];
       while (index < lines.length && lines[index].startsWith('- ')) {
-        items.push('<li>' + inline(lines[index].slice(2)) + '</li>');
+        items.push(`<li>${inline(lines[index].slice(2))}</li>`);
         index += 1;
       }
-      html.push('<ul>' + items.join('') + '</ul>');
+      html.push(`<ul>${items.join('')}</ul>`);
       continue;
     } else if (/^\d+\.\s/.test(line)) {
       const items: string[] = [];
       while (index < lines.length && /^\d+\.\s/.test(lines[index])) {
-        items.push('<li>' + inline(lines[index].replace(/^\d+\.\s/, '')) + '</li>');
+        items.push(`<li>${inline(lines[index].replace(/^\d+\.\s/, ''))}</li>`);
         index += 1;
       }
-      html.push('<ol>' + items.join('') + '</ol>');
+      html.push(`<ol>${items.join('')}</ol>`);
       continue;
     } else if (line.trim()) {
-      html.push('<p>' + inline(line) + '</p>');
+      html.push(`<p>${inline(line)}</p>`);
     }
 
     index += 1;
@@ -90,11 +90,19 @@ function markdownToHtml(markdown: string): string {
 }
 
 function renderTable(lines: string[]): string {
-  const rows = lines.map((line) => line.split('|').slice(1, -1).map((cell) => inline(cell.trim())));
+  const rows = lines.map((line) =>
+    line
+      .split('|')
+      .slice(1, -1)
+      .map((cell) => inline(cell.trim()))
+  );
   const header = rows.shift() || [];
-  const head = '<thead><tr>' + header.map((cell) => '<th>' + cell + '</th>').join('') + '</tr></thead>';
-  const body = '<tbody>' + rows.map((row) => '<tr>' + row.map((cell) => '<td>' + cell + '</td>').join('') + '</tr>').join('') + '</tbody>';
-  return '<table>' + head + body + '</table>';
+  const head = `<thead><tr>${header.map((cell) => `<th>${cell}</th>`).join('')}</tr></thead>`;
+  const body =
+    '<tbody>' +
+    rows.map((row) => `<tr>${row.map((cell) => `<td>${cell}</td>`).join('')}</tr>`).join('') +
+    '</tbody>';
+  return `<table>${head}${body}</table>`;
 }
 
 /**

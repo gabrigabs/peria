@@ -6,6 +6,7 @@
  * Supports markdown parsing, syntax highlighting, and navigation.
  */
 
+export type { KnowledgeGraphArtifact, WikiManifest, WikiPage } from '@peria/core';
 // Configuration
 export {
   createRendererConfig,
@@ -24,6 +25,15 @@ export {
 } from './manifest.js';
 // Markdown utilities
 export { type MarkdownOptions, parseMarkdown, renderMarkdownToHtml } from './markdown.js';
+// Wiki renderer
+export {
+  type RenderedAssets,
+  type RenderOptions,
+  renderWikiAssets,
+  renderWikiCss,
+  renderWikiHtml,
+  renderWikiJs,
+} from './renderer.js';
 // Search index
 export {
   generateSearchIndex,
@@ -39,9 +49,6 @@ export {
   generateStaticDocs,
   type StaticDocsOptions,
 } from './static.js';
-// Wiki renderer
-export { renderWikiAssets, renderWikiHtml, renderWikiCss, renderWikiJs, type RenderOptions, type RenderedAssets } from './renderer.js';
-export type { WikiManifest, WikiPage, KnowledgeGraphArtifact } from '@peria/core';
 // Types
 export type {
   Confidence,

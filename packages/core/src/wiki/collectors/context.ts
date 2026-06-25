@@ -38,5 +38,5 @@ export async function collectContextFiles(
 }
 
 function join(cwd: string, ...paths: string[]): string {
-  return cwd.replace(/\\/g, '/').replace(/\/$/, '') + '/' + paths.join('/').replace(/\/+/g, '/');
+  return `${cwd.replace(/\\/g, '/').replace(/\/$/, '')}/${paths.join('/').replace(/\/+/g, '/')}`;
 }

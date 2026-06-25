@@ -7,9 +7,9 @@
 
 import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
-import type { RouteEntity, SchemaEntity } from '../types/graph.js';
-import type { ScanResult } from '../types/manifest.js';
 import { generateEnrichedOpenAPI, saveEnrichedOpenAPI } from '../generators/enriched-openapi.js';
+import type { SchemaEntity } from '../types/graph.js';
+import type { ScanResult } from '../types/manifest.js';
 
 export interface BuildEnrichedOpenAPIOptions {
   cwd: string;
@@ -28,7 +28,7 @@ export interface BuildEnrichedOpenAPIResult {
 
 /**
  * Build enriched OpenAPI as a separate step
- * 
+ *
  * This function generates enriched OpenAPI by adding Peria metadata
  * (handler info, docs, schemas) to each OpenAPI operation.
  */
@@ -37,7 +37,7 @@ export async function buildEnrichedOpenAPI(
 ): Promise<BuildEnrichedOpenAPIResult> {
   const { cwd, scanResult } = options;
   const { manifest } = scanResult;
-  
+
   const { routes, openapiOps, docsPages } = manifest;
 
   // Only generate if there are OpenAPI operations
@@ -76,7 +76,20 @@ export async function buildEnrichedOpenAPI(
   // Generate enriched OpenAPI
   const { enrichedOperations, stats } = generateEnrichedOpenAPI(
     openapiOps,
-    { matches: [], unmatchedRoutes: [], unmatchedOperations: [], stats: { totalRoutes: 0, totalOperations: 0, exactMatches: 0, operationIdMatches: 0, fuzzyMatches: 0, unmatchedRoutes: 0, unmatchedOperations: 0 } },
+    {
+      matches: [],
+      unmatchedRoutes: [],
+      unmatchedOperations: [],
+      stats: {
+        totalRoutes: 0,
+        totalOperations: 0,
+        exactMatches: 0,
+        operationIdMatches: 0,
+        fuzzyMatches: 0,
+        unmatchedRoutes: 0,
+        unmatchedOperations: 0,
+      },
+    },
     routeToSchemaMap,
     routeToDocsMap,
     routeToModuleMap

@@ -7,10 +7,10 @@ import type {
   AdapterSummary,
   CliCommandSummary,
   ContextFileSummary,
-  GitMetadata,
-  PackageSummary,
-  ModuleSummary,
   FeatureSummary,
+  GitMetadata,
+  ModuleSummary,
+  PackageSummary,
   WikiPage,
 } from '../types/wiki.js';
 

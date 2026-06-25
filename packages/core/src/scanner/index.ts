@@ -11,17 +11,23 @@ import { basename, isAbsolute, join, relative, resolve } from 'node:path';
 import { nestJSAdapter } from '../adapters/nestjs/index.js';
 import { loadConfig } from '../config/loader.js';
 import { matchRoutesToOpenAPI, summarizeMatching } from '../matcher/index.js';
-import { scanPackages } from './packages.js';
-import { scanSourceFiles } from './source-files.js';
-import { scanOpenAPI } from './openapi.js';
-import { scanDocs, docToEntity } from './markdown.js';
-import { scanLlms } from './llms.js';
-import { detectFramework, checkTsConfig } from './framework.js';
-import { createRelations } from './relations.js';
-import { buildOpenAPIMetadata, buildDocsMetadata, buildLlmsMetadata } from './manifest.js';
 import type { ResolvedPeriaConfig } from '../types/config.js';
 import type { OpenAPIOperation, RouteEntity, SchemaEntity } from '../types/graph.js';
-import type { GitMetadata, PeriaManifest, RepoInfo, ScanResult, ScanWarning } from '../types/manifest.js';
+import type {
+  GitMetadata,
+  PeriaManifest,
+  RepoInfo,
+  ScanResult,
+  ScanWarning,
+} from '../types/manifest.js';
+import { checkTsConfig, detectFramework } from './framework.js';
+import { scanLlms } from './llms.js';
+import { buildDocsMetadata, buildLlmsMetadata, buildOpenAPIMetadata } from './manifest.js';
+import { docToEntity, scanDocs } from './markdown.js';
+import { scanOpenAPI } from './openapi.js';
+import { scanPackages } from './packages.js';
+import { createRelations } from './relations.js';
+import { scanSourceFiles } from './source-files.js';
 
 const IGNORED_DIRECTORIES = new Set([
   '.git',
@@ -190,7 +196,8 @@ export async function scan(cwd: string): Promise<ScanResult> {
     return null;
   });
 
-  const resolvedConfig: ResolvedPeriaConfig = (config ?? createDefaultConfig()) as ResolvedPeriaConfig;
+  const resolvedConfig: ResolvedPeriaConfig = (config ??
+    createDefaultConfig()) as ResolvedPeriaConfig;
 
   const repoInfo = await getRepoInfo(absoluteCwd);
   const gitMetadata = await collectGitMetadata(absoluteCwd);

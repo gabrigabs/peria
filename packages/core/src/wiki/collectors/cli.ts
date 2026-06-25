@@ -67,5 +67,5 @@ export async function collectCliCommands(cwd: string): Promise<CliCommandSummary
 
 function join(cwd: string, ...paths: string[]): string {
   // Simple join implementation
-  return cwd.replace(/\\/g, '/').replace(/\/$/, '') + '/' + paths.join('/').replace(/\/+/g, '/');
+  return `${cwd.replace(/\\/g, '/').replace(/\/$/, '')}/${paths.join('/').replace(/\/+/g, '/')}`;
 }

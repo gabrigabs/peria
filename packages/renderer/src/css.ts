@@ -1,6 +1,6 @@
 /**
  * Wiki CSS Generator
- * 
+ *
  * Generates the CSS for the wiki UI.
  */
 

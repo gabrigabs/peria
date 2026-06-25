@@ -2,13 +2,13 @@
  * Manifest Scanner - Builds manifest metadata
  */
 
+import type { OpenAPIOperation } from '../types/graph.js';
 import type {
   DocsMetadata,
   LlmsMetadata,
   OpenAPIMetadata,
   PeriaManifest,
 } from '../types/manifest.js';
-import type { OpenAPIOperation } from '../types/graph.js';
 
 /**
  * Build OpenAPI metadata
@@ -70,7 +70,11 @@ export function buildDocsMetadata(
 /**
  * Build llms metadata
  */
-export function buildLlmsMetadata(result: { path: string; variant: string; metadata?: { pageCount?: number; exists?: boolean } }): LlmsMetadata {
+export function buildLlmsMetadata(result: {
+  path: string;
+  variant: string;
+  metadata?: { pageCount?: number; exists?: boolean };
+}): LlmsMetadata {
   const metadata = result.metadata;
   return {
     path: result.path,

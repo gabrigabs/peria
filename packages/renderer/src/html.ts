@@ -1,6 +1,6 @@
 /**
  * Wiki HTML Shell Generator
- * 
+ *
  * Generates the static HTML shell for the wiki UI.
  */
 

@@ -3,7 +3,7 @@
  */
 
 import { readFile } from 'node:fs/promises';
-import type { CliCommandSummary } from '../types/wiki.js';
+import type { CliCommandSummary } from '../../types/wiki.js';
 
 async function readTextFile(path: string): Promise<string | null> {
   try {

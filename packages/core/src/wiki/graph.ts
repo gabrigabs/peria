@@ -2,19 +2,15 @@
  * Wiki Graph - Builds the knowledge graph
  */
 
+import type { Claim, Entity, EntityRelation, EntityType, Provenance } from '../types/entity.js';
 import type {
   AdapterSummary,
-  Claim,
   CliCommandSummary,
-  Entity,
-  EntityRelation,
-  EntityType,
   FeatureSummary,
   GitMetadata,
   KnowledgeGraphArtifact,
   ModuleSummary,
   PackageSummary,
-  Provenance,
   WikiPage,
 } from '../types/wiki.js';
 

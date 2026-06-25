@@ -17,6 +17,10 @@
     "./detectors": {
       "import": "./dist/detectors/index.js",
       "types": "./dist/detectors/index.d.ts"
+    },
+    "./build": {
+      "import": "./dist/build/index.js",
+      "types": "./dist/build/index.d.ts"
     }
   },
   "files": [

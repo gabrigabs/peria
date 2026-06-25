@@ -4,7 +4,7 @@
 
 import { readFile } from 'node:fs/promises';
 import { basename, extname, join } from 'node:path';
-import type { AdapterSummary, ModuleSummary } from '../types/wiki.js';
+import type { AdapterSummary, ModuleSummary } from '../../types/wiki.js';
 
 async function readTextFile(path: string): Promise<string | null> {
   try {

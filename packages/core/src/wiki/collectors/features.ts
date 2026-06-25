@@ -3,8 +3,8 @@
  */
 
 import { readFile } from 'node:fs/promises';
-import type { ResolvedPeriaConfig } from '../types/config.js';
-import type { FeatureSummary } from '../types/wiki.js';
+import type { ResolvedPeriaConfig } from '../../types/config.js';
+import type { FeatureSummary } from '../../types/wiki.js';
 
 async function readTextFile(path: string): Promise<string | null> {
   try {

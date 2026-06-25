@@ -5,7 +5,6 @@
  * - load config
  * - call buildWiki
  * - call renderer
- * - call build steps (enriched OpenAPI)
  * - write files
  * - log output
  */
@@ -13,7 +12,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { buildWiki, loadConfig } from '@peria/core';
-import { buildEnrichedOpenAPI } from '@peria/core/build';
 import { renderWikiAssets } from '@peria/renderer';
 import { logger } from '../utils/logger.js';
 
@@ -47,25 +45,6 @@ export async function buildCommand(cwd: string): Promise<void> {
     graph: result.graph,
     llmsText: result.llmsText,
   });
-
-  // Generate enriched OpenAPI as a separate build step
-  let enrichedPath: string | undefined;
-  if (result.openapiOps.length > 0 && config?.features?.apiReference) {
-    try {
-      const enrichedResult = await buildEnrichedOpenAPI({
-        cwd,
-        scanResult: { manifest: result.manifest, warnings: [] },
-      });
-      enrichedPath = enrichedResult.path;
-      if (enrichedPath) {
-        logger.success(`Generated enriched OpenAPI: ${enrichedPath}`);
-      }
-    } catch (err) {
-      logger.warning(
-        `Failed to generate enriched OpenAPI: ${err instanceof Error ? err.message : String(err)}`
-      );
-    }
-  }
 
   // Write all remaining files in parallel
   await Promise.all([

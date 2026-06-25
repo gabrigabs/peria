@@ -5,7 +5,7 @@
 import { readdir } from 'node:fs/promises';
 import { join, sep } from 'node:path';
 import { Project } from 'ts-morph';
-import type { ExportKind, ModuleSummary, PackageSummary } from '../types/wiki.js';
+import type { ExportKind, ExportSummary, ModuleSummary, PackageSummary } from '../../types/wiki.js';
 
 const IGNORED_DIRECTORIES = new Set(['.git', '.eria', 'dist', 'node_modules']);
 
@@ -129,7 +129,9 @@ export async function collectModules(
       path: filePath,
       packageName: getPackageNameForPath(filePath, packages),
       imports,
-      exports: exports.sort((left, right) => left.name.localeCompare(right.name)),
+      exports: exports.sort((left: ExportSummary, right: ExportSummary) =>
+        left.name.localeCompare(right.name)
+      ),
     });
   }
 

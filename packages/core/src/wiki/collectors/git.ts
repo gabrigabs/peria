@@ -3,7 +3,7 @@
  */
 
 import { execFile } from 'node:child_process';
-import type { GitMetadata } from '../types/wiki.js';
+import type { GitMetadata } from '../../types/wiki.js';
 
 function runGit(cwd: string, args: string[]): Promise<string | null> {
   return new Promise((resolve) => {

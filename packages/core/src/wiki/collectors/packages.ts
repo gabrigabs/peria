@@ -4,7 +4,7 @@
 
 import { readdir, readFile } from 'node:fs/promises';
 import { dirname, join, sep } from 'node:path';
-import type { PackageSummary } from '../types/wiki.js';
+import type { PackageSummary } from '../../types/wiki.js';
 
 interface PackageJson {
   name?: string;

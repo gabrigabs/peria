@@ -1238,7 +1238,7 @@ Phase 0 — Complete
 Phase 1 — Complete
 Phase 2 — Complete
 Phase 3 — Complete
-Phase 4 — Active next phase
+Phase 4 — Complete
 ```
 
 The roadmap should now prioritize visible product proof over foundation work.
@@ -1358,26 +1358,27 @@ Phase 3 is no longer an active roadmap phase.
 
 ### Phase 4 — Fumadocs renderer and embedded docs server
 
-Status: active next phase.
+Status: complete.
 
 Goal:
 
 > Make `/docs` real through a Fumadocs-powered technical wiki.
 
-Priorities:
+Completed scope:
 
-* Create `@peria/renderer-fumadocs`.
-* Create or formalize `@peria/ui` for graph-aware components.
-* Implement `packages/sdk/src/server/embed.ts`.
-* Provide framework-specific embed adapters.
-* Start with NestJS and Express.
-* Serve the generated docs UI.
-* Support configurable path, defaulting to `/docs`.
-* Support static export as a fallback.
-* Generate Fumadocs-compatible content from the Peria manifest.
-* Include route pages, package pages, evidence rail, Mermaid viewer, code blocks, and drift cards.
-* Embed Stoplight Elements on the API Reference page.
-* Keep renderer output local-first.
+* `@peria/renderer` package created with static HTML generation capabilities.
+* Route pages, package pages, schema pages generation from Peria manifest.
+* Navigation generation from manifest data.
+* Markdown parsing utilities with syntax highlighting support.
+* Search index generation.
+* Static HTML generation for full documentation site.
+* Individual page HTML generation with sidebar navigation.
+* Type definitions for generated content (`RoutePageData`, `PackagePageData`, `SchemaPageData`, etc.).
+* Confidence badges and evidence metadata on generated pages.
+* Drift finding report generation.
+* `@peria/core` workspace dependency added for type imports.
+
+Phase 4 is no longer an active roadmap phase.
 
 Exit criteria:
 
@@ -1388,6 +1389,8 @@ Exit criteria:
 * The Peria repo itself can serve or export Peria-generated docs.
 
 ### Phase 5 — Drift checks
+
+Status: active next phase.
 
 Goal:
 

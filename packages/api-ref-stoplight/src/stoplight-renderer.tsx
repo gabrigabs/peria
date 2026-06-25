@@ -5,8 +5,8 @@
  * enriched with Peria metadata (handler info, source links, drift status).
  */
 
-import type React from 'react';
 import { API } from '@stoplight/elements-core';
+import type React from 'react';
 
 // Import styles - users should import @stoplight/elements/styles in their app
 // import '@stoplight/elements/styles.css';

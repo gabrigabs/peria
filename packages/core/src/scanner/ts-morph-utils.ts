@@ -7,6 +7,7 @@
 import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { Project, type SourceFile } from 'ts-morph';
+import { ModuleKind, ModuleResolutionKind, ScriptTarget } from 'typescript';
 import type { ExportSummary } from '../types/graph.js';
 
 const IGNORED_DIRECTORIES = new Set([
@@ -101,9 +102,9 @@ export function createScannerProject(_cwd: string): Project {
     compilerOptions: {
       allowJs: false,
       declaration: true,
-      target: 99, // Latest
-      module: 99,
-      moduleResolution: 100,
+      target: ScriptTarget.Latest,
+      module: ModuleKind.ESNext,
+      moduleResolution: ModuleResolutionKind.NodeJs,
     },
   });
 }

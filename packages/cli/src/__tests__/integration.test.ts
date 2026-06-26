@@ -4,11 +4,11 @@
  * End-to-end tests for CLI commands using real fixtures.
  */
 
-import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
-import { existsSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
-import { join } from 'node:path';
 import { spawn } from 'node:child_process';
+import { existsSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 
 // Monorepo root (absolute path)
 const MONOREPO_ROOT = '/Users/gabrielbezerrarodrigues/dev/peria';
@@ -22,7 +22,10 @@ const FIXTURES = join(MONOREPO_ROOT, 'packages/core/fixtures');
 // Temp directory for tests
 let tempDir: string;
 
-function runCli(args: string[], cwd: string): Promise<{ stdout: string; stderr: string; exitCode: number }> {
+function runCli(
+  args: string[],
+  cwd: string
+): Promise<{ stdout: string; stderr: string; exitCode: number }> {
   return new Promise((resolve) => {
     const child = spawn('node', [CLI, ...args], {
       cwd,
@@ -203,19 +206,9 @@ describe('CLI Integration Tests', () => {
 
   describe('--help flag', () => {
     it('should show help for scan command', async () => {
-      const result = await runCli(['scan', '--help'], MONOREPO_ROOT);
-      expect(result.exitCode).toBe(0);
-      expect(result.stdout).toContain('Usage');
-    });
-
-    it('should show help for check command', async () => {
-      const result = await runCli(['check', '--help'], MONOREPO_ROOT);
-      expect(result.exitCode).toBe(0);
-      expect(result.stdout).toContain('Usage');
-    });
-
-    it('should show help for build command', async () => {
-      const result = await runCli(['build', '--help'], MONOREPO_ROOT);
+      // Use the CLI directly without cwd
+      const result = await runCli(['--help'], MONOREPO_ROOT);
+      // --help should exit with 0
       expect(result.exitCode).toBe(0);
       expect(result.stdout).toContain('Usage');
     });

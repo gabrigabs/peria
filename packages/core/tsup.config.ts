@@ -7,4 +7,6 @@ export default defineConfig({
   splitting: false,
   sourcemap: true,
   clean: true,
+  // ts-morph uses dynamic require internally, so we keep it external
+  external: ['ts-morph', 'typescript'],
 });

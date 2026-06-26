@@ -69,10 +69,7 @@ export const runRoutesUndocumentedCheck: AuditCheck = {
       }
 
       // Skip non-trivial routes (HEAD/OPTIONS on root paths are usually framework defaults)
-      if (
-        (route.method === 'HEAD' || route.method === 'OPTIONS') &&
-        route.path.match(/^\/?$/)
-      ) {
+      if ((route.method === 'HEAD' || route.method === 'OPTIONS') && route.path.match(/^\/?$/)) {
         continue;
       }
 

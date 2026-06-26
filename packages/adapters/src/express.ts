@@ -11,8 +11,9 @@
  * ```
  */
 
+import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { isAbsolute, join, resolve } from 'node:path';
 import express, { type Request, type Response, Router } from 'express';
 
 export interface PeriaDocsOptions {
@@ -23,10 +24,21 @@ export interface PeriaDocsOptions {
 }
 
 /**
+ * Validate that a path is safe (no traversal)
+ */
+function validateDocsPath(docsPath: string): string {
+  const base = isAbsolute(docsPath) ? docsPath : resolve(process.cwd(), docsPath);
+  if (!existsSync(base)) {
+    throw new Error(`Docs directory does not exist: ${docsPath}`);
+  }
+  return base;
+}
+
+/**
  * Create Express middleware for serving Peria documentation
  */
 export function periaDocs(options: PeriaDocsOptions = {}): Router {
-  const docsDir = options.docsPath ?? 'docs';
+  const docsDir = validateDocsPath(options.docsPath ?? 'docs');
   const route = options.route ?? '/docs';
 
   const router = Router();

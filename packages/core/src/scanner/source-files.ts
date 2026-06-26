@@ -13,11 +13,11 @@ import type { ResolvedPeriaConfig } from '../types/config.js';
 import type { SourceFile } from '../types/graph.js';
 import {
   createScannerProject,
+  deriveModuleName,
   extractExports,
   extractImports,
   findTypeScriptFiles,
   hasDecorators,
-  deriveModuleName,
 } from './ts-morph-utils.js';
 
 const IGNORED_EXTENSIONS = new Set(['.d.ts', '.test.ts', '.spec.ts']);
@@ -63,7 +63,10 @@ export async function scanSourceFiles(
 
   // Process each source file
   for (const sourceFile of project.getSourceFiles()) {
-    const filePath = sourceFile.getFilePath().replace(cwd + '/', '').replace(cwd, '.');
+    const filePath = sourceFile
+      .getFilePath()
+      .replace(cwd + '/', '')
+      .replace(cwd, '.');
 
     if (!shouldScan(filePath)) continue;
 

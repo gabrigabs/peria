@@ -4,15 +4,13 @@ This map is extracted with `ts-morph`. It is grouped by package so the reader ca
 
 ## @peria/adapters
 
-@peria/adapters contains 7 mapped modules and 24 exported declarations. Highest-signal files: `packages/adapters/src/index.ts`, `packages/adapters/src/elysia.ts`, `packages/adapters/src/fastify.ts`. External libraries visible in source imports: `node:fs`, `node:os`, `node:path`, `vitest`, `express`, `node:fs/promises`, `@fastify/static`, `fastify`, `@nestjs/core`.
+@peria/adapters contains 5 mapped modules and 17 exported declarations. Highest-signal files: `packages/adapters/src/index.ts`, `packages/adapters/src/fastify.ts`, `packages/adapters/src/nest.ts`. External libraries visible in source imports: `node:fs`, `node:os`, `node:path`, `vitest`, `express`, `node:fs/promises`, `@fastify/static`, `fastify`, `@nestjs/core`.
 
 | Module | Exports | Imports |
 | --- | --- | --- |
 | `packages/adapters/src/__tests__/smoke.test.ts` | none | `node:fs`, `node:os`, `node:path`, `vitest` |
-| `packages/adapters/src/elysia.ts` | ElysiaGroup (interface:24), ElysiaInstance (interface:19), periaDocs (function:28), PeriaDocsOptions (interface:14) | none |
 | `packages/adapters/src/express.ts` | periaDocs (function:40), PeriaDocsOptions (interface:19) | `express`, `node:fs`, `node:fs/promises`, `node:path` |
 | `packages/adapters/src/fastify.ts` | FastifyInstance (interface:120), periaDocs (function:31), PeriaDocsOptions (interface:21) | `@fastify/static`, `fastify`, `node:fs/promises`, `node:path` |
-| `packages/adapters/src/hono.ts` | HonoContext (interface:18), periaDocs (function:22), PeriaDocsOptions (interface:14) | none |
 | `packages/adapters/src/index.ts` | expressPeriaDocs (function:40), ExpressPeriaDocsOptions (interface:19), FastifyInstance (interface:120), fastifyPeriaDocs (function:31), FastifyPeriaDocsOptions (interface:21), NestApplication (class:13), periaDocs (function:40), PeriaNestOptions (interface:22), setupPeriaDocs (function:32) | none |
 | `packages/adapters/src/nest.ts` | NestApplication (class:13), PeriaNestOptions (interface:22), setupPeriaDocs (function:32) | `@nestjs/core`, `express`, `node:fs/promises`, `node:path` |
 
@@ -171,14 +169,6 @@ This map is extracted with `ts-morph`. It is grouped by package so the reader ca
 | `packages/core/src/wiki/index.ts` | buildWiki (function:28), collectAdapters (function:17), collectCliCommands (function:26), collectContextFiles (function:25), collectFeatures (function:37), collectGitMetadata (function:34), collectModules (function:91), collectPackages (function:40), createGraph (function:31), createLlmsText (function:7), createPage (function:37), createPages (function:54), getRecentHistory (function:19) | none |
 | `packages/core/src/wiki/llms-text.ts` | createLlmsText (function:7) | `../types/wiki.js` |
 | `packages/core/src/wiki/pages.ts` | createPage (function:37), createPages (function:54) | `../types/config.js`, `../types/wiki.js` |
-
-## @peria/docs-ui
-
-@peria/docs-ui contains 1 mapped modules and 2 exported declarations. Highest-signal files: `packages/docs-ui/src/index.ts`. No external source imports detected.
-
-| Module | Exports | Imports |
-| --- | --- | --- |
-| `packages/docs-ui/src/index.ts` | docsUI (variable:8), renderDocs (function:17) | none |
 
 ## @peria/renderer
 

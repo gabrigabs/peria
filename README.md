@@ -171,7 +171,6 @@ export default defineConfig({
 | [`packages/adapters`](packages/adapters/) | Express, Fastify, NestJS middleware |
 | [`packages/sdk`](packages/sdk/) | Programmatic API |
 | [`packages/renderer`](packages/renderer/) | Wiki UI renderer |
-| [`packages/docs-ui`](packages/docs-ui/) | Docs UI components |
 | [`packages/api-reference`](packages/api-reference/) | Stoplight Elements integration |
 
 ---

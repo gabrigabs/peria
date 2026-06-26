@@ -1,6 +1,6 @@
 # @peria/adapters
 
-Framework adapters for Peria - support for NestJS, Express, Fastify, Hono, and Elysia.
+Framework adapters for Peria - support for NestJS, Express, and Fastify.
 
 ## Installation
 
@@ -11,24 +11,24 @@ npm install @peria/adapters
 ## Usage
 
 ```typescript
-import { createNestJSAdapter } from '@peria/adapters/nest';
-import { createExpressAdapter } from '@peria/adapters/express';
+import express from 'express';
+import { periaDocs } from '@peria/adapters/express';
 
-const adapter = createNestJSAdapter({
-  entrypoint: './src/main.ts',
-});
+const app = express();
+app.use('/docs', periaDocs({ docsPath: 'docs' }));
+```
 
-const routes = await adapter.extractRoutes(context);
+```typescript
+import { setupPeriaDocs } from '@peria/adapters/nest';
+
+setupPeriaDocs(app, { route: '/docs', docsPath: 'docs' });
 ```
 
 ## Supported Frameworks
 
-- **NestJS** - `createNestJSAdapter`
-- **Express** - `createExpressAdapter`
-- **Fastify** - `createFastifyAdapter`
-- **Hono** - `createHonoAdapter`
-- **Elysia** - `createElysiaAdapter`
-
+- **NestJS** - `setupPeriaDocs`
+- **Express** - `periaDocs`
+- **Fastify** - `periaDocs`
 ## License
 
 MIT

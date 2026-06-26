@@ -25,7 +25,6 @@ The monorepo uses scoped packages (`@peria/*`):
 | Renderer | `@peria/renderer` | Dependency |
 | Adapters | `@peria/adapters` | Future |
 | SDK | `@peria/sdk` | Future |
-| Docs UI | `@peria/docs-ui` | Future |
 
 ## Step 1: Reserve the @peria Organization (One-time)
 
@@ -206,7 +205,7 @@ As of Phase 8 completion:
 - Build works ✅
 - CLI binary works ✅
 - Core, renderer, and CLI are the publishable packages for the first npm release ✅
-- Adapters, SDK, and Docs UI remain future package targets
+- SDK and API Reference remain future package targets
 
 To publish when ready:
 ```sh

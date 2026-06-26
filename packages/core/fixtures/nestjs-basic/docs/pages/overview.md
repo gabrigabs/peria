@@ -22,10 +22,10 @@ Engineers and AI coding agents who need reliable codebase context.
 
 ## Current Snapshot
 
-- Generated at: 2026-06-26T16:50:41.696Z
+- Generated at: 2026-06-26T19:34:59.561Z
 - Git branch: feat/self-documentation-bootstrap
-- Git commit: d7924b07b5fb81410bbe5fff69d885f82384a376
-- Working tree: 47 changed files
+- Git commit: d0a5f2266d97a31e0c775cc8a67e92a44c5b6d46
+- Working tree: 37 changed files
 - Packages documented: 1
 - TypeScript modules mapped: 0
 - CLI commands documented: 0 (0 implemented handlers)

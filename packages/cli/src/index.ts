@@ -89,7 +89,7 @@ cli
 cli.help();
 
 // Version
-cli.version('0.1.0');
+cli.version('0.1.2');
 
 // Parse
 cli.parse();

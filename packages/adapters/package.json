@@ -24,14 +24,6 @@
     "./nest": {
       "types": "./dist/nest.d.ts",
       "import": "./dist/nest.js"
-    },
-    "./hono": {
-      "types": "./dist/hono.d.ts",
-      "import": "./dist/hono.js"
-    },
-    "./elysia": {
-      "types": "./dist/elysia.d.ts",
-      "import": "./dist/elysia.js"
     }
   },
   "scripts": {
@@ -52,5 +44,8 @@
     "tsup": "^8.3.0",
     "typescript": "^5.7.2",
     "vitest": "^4.1.9"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

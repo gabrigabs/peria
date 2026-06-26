@@ -23,14 +23,14 @@ Engineers maintaining a codebase and AI agents that need source-backed context b
 
 ## Current Snapshot
 
-- Generated at: 2026-06-26T16:50:12.738Z
+- Generated at: 2026-06-26T19:34:44.442Z
 - Git branch: feat/self-documentation-bootstrap
-- Git commit: d7924b07b5fb81410bbe5fff69d885f82384a376
-- Working tree: 47 changed files
-- Packages documented: 8
-- TypeScript modules mapped: 159
+- Git commit: d0a5f2266d97a31e0c775cc8a67e92a44c5b6d46
+- Working tree: 28 changed files
+- Packages documented: 7
+- TypeScript modules mapped: 156
 - CLI commands documented: 3 (3 implemented handlers)
-- Adapters documented: 6 (2 placeholders)
+- Adapters documented: 4 (0 placeholders)
 - Feature flags documented: 13
 
 ## Wiki Tree Pattern

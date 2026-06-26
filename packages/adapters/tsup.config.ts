@@ -6,8 +6,6 @@ export default defineConfig({
     express: 'src/express.ts',
     fastify: 'src/fastify.ts',
     nest: 'src/nest.ts',
-    hono: 'src/hono.ts',
-    elysia: 'src/elysia.ts',
   },
   format: ['esm'],
   dts: true,

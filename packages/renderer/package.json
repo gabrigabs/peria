@@ -1,6 +1,6 @@
 {
   "name": "@peria/renderer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Documentation renderer for Peria with support for static HTML generation",
   "type": "module",
   "main": "./dist/index.js",
@@ -30,5 +30,8 @@
     "tsup": "^8.3.0",
     "typescript": "^5.7.2"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
 }

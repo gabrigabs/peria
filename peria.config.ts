@@ -55,7 +55,7 @@ export default defineConfig({
         role: 'Runtime integration layer',
         audience: 'API teams embedding generated docs in framework applications.',
         responsibilities: [
-          'Expose framework-specific entrypoints for Express, Fastify, NestJS, Hono, and Elysia.',
+          'Expose framework-specific entrypoints for Express, Fastify, and NestJS.',
           'Keep adapter contracts thin until generated artifacts are stable.',
         ],
       },
@@ -65,14 +65,6 @@ export default defineConfig({
         responsibilities: [
           'Define SDK instance contracts.',
           'Prepare for embedded server and graph/search access.',
-        ],
-      },
-      '@peria/docs-ui': {
-        role: 'Future packaged reader UI',
-        audience: 'Users consuming generated docs in a browser.',
-        responsibilities: [
-          'Provide the eventual reusable UI package for the generated wiki.',
-          'Remain separate from the current CLI-emitted static reader while the UX stabilizes.',
         ],
       },
     },

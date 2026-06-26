@@ -112,7 +112,7 @@ export function createPages(input: {
       'Wiki UI',
       'Static visual wiki shell generated into /docs and backed by markdown pages.',
       renderWikiUi(input.config),
-      ['packages/docs-ui/src/index.ts', 'packages/cli/src/commands/build.ts']
+      ['packages/renderer/src/index.ts', 'packages/cli/src/commands/build.ts']
     ),
     createPage(
       'history',

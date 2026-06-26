@@ -1,11 +1,11 @@
 {
   "manifestVersion": "0.1.0",
   "periaVersion": "0.1.0",
-  "generatedAt": "2026-06-26T16:50:06.203Z",
+  "generatedAt": "2026-06-26T19:34:35.485Z",
   "repo": {
     "name": "peria",
     "root": "/Users/gabrielbezerrarodrigues/dev/peria",
-    "commit": "d7924b07b5fb81410bbe5fff69d885f82384a376",
+    "commit": "d0a5f2266d97a31e0c775cc8a67e92a44c5b6d46",
     "branch": "feat/self-documentation-bootstrap",
     "isDirty": true
   },
@@ -385,7 +385,7 @@
         }
       ],
       "sourceRefs": [],
-      "content": "# CLAUDE.md\n\nThis file contains instructions for Claude Code working with Peria.\n\n## Project Overview\n\n**Peria** is a living technical wiki for codebases — an open-source CLI and SDK that extracts context from code and generates documentation automatically.\n\n**Positioning:** Human-readable by default. LLM-ready by design.\n\n**Core thesis:** Peria helps humans understand codebases and generates reliable context for AI agents.\n\n## Project Structure\n\n```\nperia/\n├── packages/\n│   ├── core/        # Engine principal — types, config, detectors\n│   ├── cli/         # Command-line interface\n│   ├── sdk/         # SDK para uso programático\n│   ├── adapters/    # Express, Fastify, NestJS, Hono, Elysia adapters\n│   └── docs-ui/      # UI da documentação (planejado)\n├── package.json      # Root workspace\n├── tsconfig.base.json\n└── README.md\n```\n\n## Commands\n\n```bash\n# Install dependencies\nbun install\n\n# Typecheck all packages\nbun run typecheck\n\n# Build all packages\nbun run build\n\n# Watch mode for development\nbun run dev\n\n# Test (placeholder)\nbun run test\n```\n\n## Adding a New CLI Command\n\n1. Create the command file in `packages/cli/src/commands/`:\n\n```typescript\n// packages/cli/src/commands/mycommand.ts\nimport { logger } from '../utils/logger.js'\n\nexport async function myCommand(cwd: string): Promise<void> {\n  logger.info('My command running...')\n}\n```\n\n2. Register the command in `packages/cli/src/index.ts`:\n\n```typescript\nimport { myCommand } from './commands/mycommand.js'\n\ncli.command('mycommand', 'Description').action(async (opts) => {\n  await myCommand(opts.cwd)\n})\n```\n\n3. Add prompts if needed in `packages/cli/src/prompts/`\n\n## Adding a New Adapter\n\n1. Create the adapter file in `packages/adapters/src/`:\n\n```typescript\n// packages/adapters/src/myframework.ts\nimport type { MyFrameworkApp } from 'my-framework'\n\nexport interface PeriaDocsOptions {\n  route?: string\n  docsPath?: string\n}\n\nexport function periaDocs(options?: PeriaDocsOptions) {\n  return (app: MyFrameworkApp) => {\n    // Implementation\n  }\n}\n```\n\n2. Export from adapters package index\n\n3. Add to `packages/adapters/package.json` exports\n\n4. Update `packages/adapters/tsup.config.ts` entry\n\n## Adding a New Parser/Feature\n\nParsers live in `packages/core/src/parsers/`:\n\n```typescript\n// packages/core/src/parsers/myparser.ts\nexport async function parseMyFormat(\n  filepath: string,\n  options?: ParseOptions\n): Promise<ParsedResult> {\n  // Implementation\n}\n```\n\nExport from `packages/core/src/parsers/index.ts`\n\n## Node.js / Bun Compatibility\n\n- All packages use ESM (`\"type\": \"module\"`)\n- Use `.js` extension in imports (TypeScript handles resolution)\n- Bun is primary runtime, but keep Node.js >= 20 compatible\n- Test with `node` after `bun run build`\n\n## MVP Scope — What to Implement\n\nFocus on making these work:\n\n1. ✅ CLI with `init` wizard\n2. ✅ `build` command that generates a self-wiki\n3. `serve` command for local preview\n4. Code map extraction (routes, controllers, schemas)\n5. OpenAPI integration\n6. ✅ llms.txt generation from the wiki tree\n7. Embedded /docs in adapters\n\n## What NOT to Implement Yet\n\n- Vector DB or embeddings\n- GitHub App\n- SaaS or hosting\n- Complex dashboard\n- Production-ready UI\n- Advanced search\n- Multi-user support\n\n## MVP Limits\n\n- Config loader uses basic regex extraction for TS files\n- ts-morph is used for the initial module/export map\n- Graph generation exists for the self-wiki slice, but framework-specific relationships are still future work\n- Parsers throw \"not implemented\" errors\n\n## Current Self-Wiki Slice\n\n`peria build` now generates the first self-documenting wiki for this repository:\n\n- `docs/pages/*.md` contains the human-readable wiki pages\n- `docs/index.html` is a static UI that reads `docs/wiki-manifest.json` and markdown pages\n- `.eria/graph.json` stores serializable entities and claims with source/line/commit provenance\n- `llms.txt` is derived from the human wiki tree and points agents back to the wiki\n\nThe current extractor covers packages, CLI commands, TypeScript modules, exported declarations, adapters, config/features, wiki UI, recent Git history, and configured AI context files. It does not yet parse framework routes, OpenAPI specs, controllers, schemas, DTOs, or doc drift.\n\nThe generated pages should read like a project-specific wiki, not a generic index. `peria.config.ts` supports a `project` profile with name, tagline, audience, tone, problem, current focus, highlights, and `packageContexts`. The builder also records branch, commit, author, authored date, dirty working-tree files, and recent commits in the History page, manifest, and graph artifact.\n\n## Key Files\n\n| File | Purpose |\n|------|---------|\n| `packages/core/src/types/config.ts` | Config types and `defineConfig` |\n| `packages/core/src/wiki/builder.ts` | Self-wiki builder and graph generation |\n| `packages/core/src/detectors/framework.ts` | Framework detection |\n| `packages/cli/src/commands/init.ts` | Init wizard |\n| `packages/cli/src/commands/build.ts` | Writes `/docs`, `.eria/graph.json`, and `llms.txt` |\n| `packages/cli/src/generators/config.ts` | Config file generator |\n| `packages/cli/src/prompts/features.ts` | Feature selection options |\n\n## Design Principles\n\n1. **Human-first** — Wiki pages are canonical, llms.txt is derived\n2. **Source truth** — All info traces back to source files\n3. **Zero config default** — Auto-detect what we can\n4. **Local-first** — Works offline, GitHub is additive\n\n## TypeScript Settings\n\nStrict mode is enforced. Key settings in `tsconfig.base.json`:\n\n- `strict: true`\n- `noUnusedLocals: true`\n- `noUnusedParameters: true`\n- `noImplicitReturns: true`\n- `moduleResolution: bundler`\n",
+      "content": "# CLAUDE.md\n\nThis file contains instructions for Claude Code working with Peria.\n\n## Project Overview\n\n**Peria** is a living technical wiki for codebases — an open-source CLI and SDK that extracts context from code and generates documentation automatically.\n\n**Positioning:** Human-readable by default. LLM-ready by design.\n\n**Core thesis:** Peria helps humans understand codebases and generates reliable context for AI agents.\n\n## Project Structure\n\n```\nperia/\n├── packages/\n│   ├── core/        # Engine principal — types, config, detectors\n│   ├── cli/         # Command-line interface\n│   ├── sdk/         # SDK para uso programático\n│   ├── adapters/    # Express, Fastify, NestJS adapters\n│   └── renderer/    # Static wiki renderer\n├── package.json      # Root workspace\n├── tsconfig.base.json\n└── README.md\n```\n\n## Commands\n\n```bash\n# Install dependencies\nbun install\n\n# Typecheck all packages\nbun run typecheck\n\n# Build all packages\nbun run build\n\n# Watch mode for development\nbun run dev\n\n# Test (placeholder)\nbun run test\n```\n\n## Adding a New CLI Command\n\n1. Create the command file in `packages/cli/src/commands/`:\n\n```typescript\n// packages/cli/src/commands/mycommand.ts\nimport { logger } from '../utils/logger.js'\n\nexport async function myCommand(cwd: string): Promise<void> {\n  logger.info('My command running...')\n}\n```\n\n2. Register the command in `packages/cli/src/index.ts`:\n\n```typescript\nimport { myCommand } from './commands/mycommand.js'\n\ncli.command('mycommand', 'Description').action(async (opts) => {\n  await myCommand(opts.cwd)\n})\n```\n\n3. Add prompts if needed in `packages/cli/src/prompts/`\n\n## Adding a New Adapter\n\n1. Create the adapter file in `packages/adapters/src/`:\n\n```typescript\n// packages/adapters/src/myframework.ts\nimport type { MyFrameworkApp } from 'my-framework'\n\nexport interface PeriaDocsOptions {\n  route?: string\n  docsPath?: string\n}\n\nexport function periaDocs(options?: PeriaDocsOptions) {\n  return (app: MyFrameworkApp) => {\n    // Implementation\n  }\n}\n```\n\n2. Export from adapters package index\n\n3. Add to `packages/adapters/package.json` exports\n\n4. Update `packages/adapters/tsup.config.ts` entry\n\n## Adding a New Parser/Feature\n\nParsers live in `packages/core/src/parsers/`:\n\n```typescript\n// packages/core/src/parsers/myparser.ts\nexport async function parseMyFormat(\n  filepath: string,\n  options?: ParseOptions\n): Promise<ParsedResult> {\n  // Implementation\n}\n```\n\nExport from `packages/core/src/parsers/index.ts`\n\n## Node.js / Bun Compatibility\n\n- All packages use ESM (`\"type\": \"module\"`)\n- Use `.js` extension in imports (TypeScript handles resolution)\n- Bun is primary runtime, but keep Node.js >= 20 compatible\n- Test with `node` after `bun run build`\n\n## MVP Scope — What to Implement\n\nFocus on making these work:\n\n1. ✅ CLI with `init` wizard\n2. ✅ `build` command that generates a self-wiki\n3. `serve` command for local preview\n4. Code map extraction (routes, controllers, schemas)\n5. OpenAPI integration\n6. ✅ llms.txt generation from the wiki tree\n7. Embedded /docs in adapters\n\n## What NOT to Implement Yet\n\n- Vector DB or embeddings\n- GitHub App\n- SaaS or hosting\n- Complex dashboard\n- Production-ready UI\n- Advanced search\n- Multi-user support\n\n## MVP Limits\n\n- Config loader uses basic regex extraction for TS files\n- ts-morph is used for the initial module/export map\n- Graph generation exists for the self-wiki slice, but framework-specific relationships are still future work\n- Parsers throw \"not implemented\" errors\n\n## Current Self-Wiki Slice\n\n`peria build` now generates the first self-documenting wiki for this repository:\n\n- `docs/pages/*.md` contains the human-readable wiki pages\n- `docs/index.html` is a static UI that reads `docs/wiki-manifest.json` and markdown pages\n- `.eria/graph.json` stores serializable entities and claims with source/line/commit provenance\n- `llms.txt` is derived from the human wiki tree and points agents back to the wiki\n\nThe current extractor covers packages, CLI commands, TypeScript modules, exported declarations, adapters, config/features, wiki UI, recent Git history, and configured AI context files. It does not yet parse framework routes, OpenAPI specs, controllers, schemas, DTOs, or doc drift.\n\nThe generated pages should read like a project-specific wiki, not a generic index. `peria.config.ts` supports a `project` profile with name, tagline, audience, tone, problem, current focus, highlights, and `packageContexts`. The builder also records branch, commit, author, authored date, dirty working-tree files, and recent commits in the History page, manifest, and graph artifact.\n\n## Key Files\n\n| File | Purpose |\n|------|---------|\n| `packages/core/src/types/config.ts` | Config types and `defineConfig` |\n| `packages/core/src/wiki/builder.ts` | Self-wiki builder and graph generation |\n| `packages/core/src/detectors/framework.ts` | Framework detection |\n| `packages/cli/src/commands/init.ts` | Init wizard |\n| `packages/cli/src/commands/build.ts` | Writes `/docs`, `.eria/graph.json`, and `llms.txt` |\n| `packages/cli/src/generators/config.ts` | Config file generator |\n| `packages/cli/src/prompts/features.ts` | Feature selection options |\n\n## Design Principles\n\n1. **Human-first** — Wiki pages are canonical, llms.txt is derived\n2. **Source truth** — All info traces back to source files\n3. **Zero config default** — Auto-detect what we can\n4. **Local-first** — Works offline, GitHub is additive\n\n## TypeScript Settings\n\nStrict mode is enforced. Key settings in `tsconfig.base.json`:\n\n- `strict: true`\n- `noUnusedLocals: true`\n- `noUnusedParameters: true`\n- `noImplicitReturns: true`\n- `moduleResolution: bundler`\n",
       "source": {
         "file": "CLAUDE.md"
       },
@@ -489,7 +489,7 @@
       ],
       "schemaRefs": [],
       "sourceRefs": [],
-      "content": "# Contributing to Peria\n\nThank you for your interest in contributing to Peria! This guide covers everything you need to know.\n\n---\n\n## Development Setup\n\n```bash\n# Clone and install\ngit clone https://github.com/your-fork/peria.git\ncd peria\nbun install\n\n# Build all packages\nbun run build\n\n# Type check\nbun run typecheck\n```\n\n---\n\n## Workflow\n\n1. **Fork & branch** — Create a feature branch from `main`\n2. **Implement** — Write code following our conventions\n3. **Test** — Add tests for new functionality\n4. **Document** — Update docs if behavior changed\n5. **PR** — Submit with clear description\n\n---\n\n## Commit Messages\n\nFollow [Conventional Commits](https://www.conventionalcommits.org/):\n\n```\nfeat: add GitHub integration for PR sync\nfix: resolve race condition in config loader\ndocs: update README with new adapters\nrefactor: extract framework detection into separate module\ntest: add tests for entrypoint detection\nchore: update dependencies\n```\n\n---\n\n## Code Style\n\n- **Explicit over implicit** — Clear naming, no magic\n- **Small functions** — Single responsibility, max ~50 lines\n- **Async/await** — Over callbacks\n- **Strict TypeScript** — No `any`, proper types\n\n### File Naming\n\n| Type | Convention | Example |\n|------|-----------|---------|\n| Files | kebab-case | `code-map.ts`, `github-client.ts` |\n| Types/Classes | PascalCase | `Entity`, `Claim`, `ConfigLoader` |\n| Functions/Variables | camelCase | `extractEntities`, `currentVersion` |\n| Constants | SCREAMING_SNAKE | `DEFAULT_FEATURES`, `MAX_RETRIES` |\n\n---\n\n## Tech Stack\n\n- **Runtime:** Bun, Node.js >= 20\n- **Language:** TypeScript strict mode\n- **Package Manager:** Bun workspaces\n- **Build:** tsup\n- **CLI Framework:** CAC + @clack/prompts\n\n---\n\n## Validation Checklist\n\nBefore submitting, verify:\n\n- [ ] TypeScript compiles (`bun run typecheck`)\n- [ ] All packages build (`bun run build`)\n- [ ] New features have tests\n- [ ] CLI commands have `--help` text\n- [ ] Error messages are actionable\n- [ ] No hardcoded values (use config)\n- [ ] Conventional commits used\n\n---\n\n## Important Rules\n\n### DO\n\n- Keep functions small and focused\n- Document complex logic\n- Add JSDoc for public APIs\n- Handle errors gracefully with actionable messages\n\n### DON'T\n\n- Use `any` type without a comment explaining why\n- Add dependencies without justification\n- Leave TODO comments without linking to an issue\n\n---\n\n## Packages\n\n| Package | Purpose |\n|---------|---------|\n| `packages/core` | Types, config, detectors |\n| `packages/cli` | CLI commands |\n| `packages/sdk` | Programmatic SDK |\n| `packages/adapters` | Framework adapters |\n| `packages/docs-ui` | Documentation UI |\n\n---\n\n## Questions?\n\nOpen an issue for bugs, feature requests, or questions.\n",
+      "content": "# Contributing to Peria\n\nThank you for your interest in contributing to Peria! This guide covers everything you need to know.\n\n---\n\n## Development Setup\n\n```bash\n# Clone and install\ngit clone https://github.com/your-fork/peria.git\ncd peria\nbun install\n\n# Build all packages\nbun run build\n\n# Type check\nbun run typecheck\n```\n\n---\n\n## Workflow\n\n1. **Fork & branch** — Create a feature branch from `main`\n2. **Implement** — Write code following our conventions\n3. **Test** — Add tests for new functionality\n4. **Document** — Update docs if behavior changed\n5. **PR** — Submit with clear description\n\n---\n\n## Commit Messages\n\nFollow [Conventional Commits](https://www.conventionalcommits.org/):\n\n```\nfeat: add GitHub integration for PR sync\nfix: resolve race condition in config loader\ndocs: update README with new adapters\nrefactor: extract framework detection into separate module\ntest: add tests for entrypoint detection\nchore: update dependencies\n```\n\n---\n\n## Code Style\n\n- **Explicit over implicit** — Clear naming, no magic\n- **Small functions** — Single responsibility, max ~50 lines\n- **Async/await** — Over callbacks\n- **Strict TypeScript** — No `any`, proper types\n\n### File Naming\n\n| Type | Convention | Example |\n|------|-----------|---------|\n| Files | kebab-case | `code-map.ts`, `github-client.ts` |\n| Types/Classes | PascalCase | `Entity`, `Claim`, `ConfigLoader` |\n| Functions/Variables | camelCase | `extractEntities`, `currentVersion` |\n| Constants | SCREAMING_SNAKE | `DEFAULT_FEATURES`, `MAX_RETRIES` |\n\n---\n\n## Tech Stack\n\n- **Runtime:** Bun, Node.js >= 20\n- **Language:** TypeScript strict mode\n- **Package Manager:** Bun workspaces\n- **Build:** tsup\n- **CLI Framework:** CAC + @clack/prompts\n\n---\n\n## Validation Checklist\n\nBefore submitting, verify:\n\n- [ ] TypeScript compiles (`bun run typecheck`)\n- [ ] All packages build (`bun run build`)\n- [ ] New features have tests\n- [ ] CLI commands have `--help` text\n- [ ] Error messages are actionable\n- [ ] No hardcoded values (use config)\n- [ ] Conventional commits used\n\n---\n\n## Important Rules\n\n### DO\n\n- Keep functions small and focused\n- Document complex logic\n- Add JSDoc for public APIs\n- Handle errors gracefully with actionable messages\n\n### DON'T\n\n- Use `any` type without a comment explaining why\n- Add dependencies without justification\n- Leave TODO comments without linking to an issue\n\n---\n\n## Packages\n\n| Package | Purpose |\n|---------|---------|\n| `packages/core` | Types, config, detectors |\n| `packages/cli` | CLI commands |\n| `packages/sdk` | Programmatic SDK |\n| `packages/adapters` | Framework adapters |\n| `packages/renderer` | Documentation renderer |\n\n---\n\n## Questions?\n\nOpen an issue for bugs, feature requests, or questions.\n",
       "source": {
         "file": "CONTRIBUTING.md"
       },
@@ -722,7 +722,7 @@
       ],
       "schemaRefs": [],
       "sourceRefs": [],
-      "content": "# Publishing Peria to npm\n\nThis guide covers publishing Peria packages to the npm registry.\n\n## Prerequisites\n\n1. **npm account** - Create one at [npmjs.com](https://www.npmjs.com)\n2. **2FA enabled** - Required for publishing. Enable in npm account settings.\n3. **npm login** - Logged in locally:\n   ```sh\n   npm login\n   ```\n4. **Ownership verification** - Either:\n   - Your npm username/org owns the package name, OR\n   - You're added as a maintainer to the existing package\n\n## Package Names\n\nThe monorepo uses scoped packages (`@peria/*`):\n\n| Package | Full Name | Status |\n|---------|-----------|--------|\n| CLI | `@peria/cli` | Primary install target |\n| Core | `@peria/core` | Dependency |\n| Renderer | `@peria/renderer` | Dependency |\n| Adapters | `@peria/adapters` | Future |\n| SDK | `@peria/sdk` | Future |\n| Docs UI | `@peria/docs-ui` | Future |\n\n## Step 1: Reserve the @peria Organization (One-time)\n\n1. Go to [npmjs.com/org/create](https://www.npmjs.com/org/create)\n2. Create organization: `peria`\n3. Choose plan (free tier works for public packages)\n4. Add yourself as a member\n\n## Step 2: Verify Package Names Available\n\nCheck if the package names are available:\n\n```sh\nnpm view @peria/cli 2>&1 | head -5\nnpm view @peria/core 2>&1 | head -5\nnpm view @peria/renderer 2>&1 | head -5\n```\n\nIf they don't exist, you'll be the first publisher.\n\n## Step 3: Build Before Publishing\n\nAlways publish from a clean build:\n\n```sh\n# Clean and rebuild\nbun run build\n\n# Verify the package contents\nls packages/cli/dist/\nls packages/core/dist/\nls packages/renderer/dist/\n```\n\n## Step 4: Publish @peria/core First\n\nCore must be published before renderer and CLI (both depend on it):\n\n```sh\ncd packages/core\n\n# Dry run (optional) - see what would be published\nnpm pack --dry-run\n\n# Publish\nnpm publish --access public\n\n# Verify\nnpm view @peria/core\n```\n\n## Step 5: Publish @peria/renderer\n\nRenderer must be published before CLI (CLI depends on it):\n\n```sh\ncd packages/renderer\n\n# Version must match core and CLI\n\n# Dry run\nnpm pack --dry-run\n\n# Publish\nnpm publish --access public\n\n# Verify\nnpm view @peria/renderer\n```\n\n## Step 6: Publish @peria/cli\n\n```sh\ncd packages/cli\n\n# Version must match core and renderer\n\n# Dry run\nnpm pack --dry-run\n\n# Publish\nnpm publish --access public\n\n# Verify\nnpm view @peria/cli\n```\n\n## Step 7: Test the Installation\n\nFrom a fresh directory:\n\n```sh\n# Test CLI installation\nnpx @peria/cli --help\n\n# Or with npm\nnpm install -D @peria/cli\nnpx peria --help\n```\n\n## Versioning Strategy\n\nFor experimental releases, use:\n\n```\n0.0.1  - First experimental\n0.0.x  - Bug fixes\n0.1.0  - First minor release with features\n0.x.0  - Breaking changes\n```\n\n## npm Scripts Available\n\n```sh\n# Build (used by prepublishOnly)\nbun run build\n\n# Or manually\nnpm run prepublishOnly\n```\n\n## Common Issues\n\n### \"You do not have permission to publish\"\n\n- Not logged in: `npm login`\n- Package owned by someone else: choose different name\n- 2FA not enabled on npm account\n\n### \"E400 Bad Request\"\n\n- Scoped package needs `--access public`\n- Package version already published: bump version\n\n### \"You cannot publish over the previously published versions\"\n\n- Can't re-publish same version\n- Bump version in package.json first\n\n## Post-Publish Checklist\n\n- [ ] Verify on npmjs.com\n- [ ] Test `npx @peria/cli --help`\n- [ ] Update README with install instructions\n- [ ] Announce (optional)\n\n## Continuous Publishing (Future CI)\n\nFor automated releases via GitHub Actions:\n\n```yaml\n# .github/workflows/publish.yml\nname: Publish\n\non:\n  release:\n    types: [published]\n\njobs:\n  publish:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: oven-sh/setup-bun@v2\n      - run: bun install\n      - run: bun run build\n      - run: npm publish --access public\n        env:\n          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}\n```\n\nThen in GitHub Settings > Secrets, add `NPM_TOKEN` with an npm automation token.\n\n## Current Status\n\nAs of Phase 8 completion:\n- Package metadata is prepared ✅\n- Build works ✅\n- CLI binary works ✅\n- Core, renderer, and CLI are the publishable packages for the first npm release ✅\n- Adapters, SDK, and Docs UI remain future package targets\n\nTo publish when ready:\n```sh\nbun run build\nnpm pack --pack-destination /tmp packages/core packages/renderer packages/cli\n# Test tarball installation\ncd /tmp && npm install peria-core-*.tgz peria-renderer-*.tgz peria-cli-*.tgz\nnpx peria --help\n# If tests pass, publish:\ncd packages/core && npm publish --access public\ncd packages/renderer && npm publish --access public\ncd packages/cli && npm publish --access public\n```\n",
+      "content": "# Publishing Peria to npm\n\nThis guide covers publishing Peria packages to the npm registry.\n\n## Prerequisites\n\n1. **npm account** - Create one at [npmjs.com](https://www.npmjs.com)\n2. **2FA enabled** - Required for publishing. Enable in npm account settings.\n3. **npm login** - Logged in locally:\n   ```sh\n   npm login\n   ```\n4. **Ownership verification** - Either:\n   - Your npm username/org owns the package name, OR\n   - You're added as a maintainer to the existing package\n\n## Package Names\n\nThe monorepo uses scoped packages (`@peria/*`):\n\n| Package | Full Name | Status |\n|---------|-----------|--------|\n| CLI | `@peria/cli` | Primary install target |\n| Core | `@peria/core` | Dependency |\n| Renderer | `@peria/renderer` | Dependency |\n| Adapters | `@peria/adapters` | Future |\n| SDK | `@peria/sdk` | Future |\n\n## Step 1: Reserve the @peria Organization (One-time)\n\n1. Go to [npmjs.com/org/create](https://www.npmjs.com/org/create)\n2. Create organization: `peria`\n3. Choose plan (free tier works for public packages)\n4. Add yourself as a member\n\n## Step 2: Verify Package Names Available\n\nCheck if the package names are available:\n\n```sh\nnpm view @peria/cli 2>&1 | head -5\nnpm view @peria/core 2>&1 | head -5\nnpm view @peria/renderer 2>&1 | head -5\n```\n\nIf they don't exist, you'll be the first publisher.\n\n## Step 3: Build Before Publishing\n\nAlways publish from a clean build:\n\n```sh\n# Clean and rebuild\nbun run build\n\n# Verify the package contents\nls packages/cli/dist/\nls packages/core/dist/\nls packages/renderer/dist/\n```\n\n## Step 4: Publish @peria/core First\n\nCore must be published before renderer and CLI (both depend on it):\n\n```sh\ncd packages/core\n\n# Dry run (optional) - see what would be published\nnpm pack --dry-run\n\n# Publish\nnpm publish --access public\n\n# Verify\nnpm view @peria/core\n```\n\n## Step 5: Publish @peria/renderer\n\nRenderer must be published before CLI (CLI depends on it):\n\n```sh\ncd packages/renderer\n\n# Version must match core and CLI\n\n# Dry run\nnpm pack --dry-run\n\n# Publish\nnpm publish --access public\n\n# Verify\nnpm view @peria/renderer\n```\n\n## Step 6: Publish @peria/cli\n\n```sh\ncd packages/cli\n\n# Version must match core and renderer\n\n# Dry run\nnpm pack --dry-run\n\n# Publish\nnpm publish --access public\n\n# Verify\nnpm view @peria/cli\n```\n\n## Step 7: Test the Installation\n\nFrom a fresh directory:\n\n```sh\n# Test CLI installation\nnpx @peria/cli --help\n\n# Or with npm\nnpm install -D @peria/cli\nnpx peria --help\n```\n\n## Versioning Strategy\n\nFor experimental releases, use:\n\n```\n0.0.1  - First experimental\n0.0.x  - Bug fixes\n0.1.0  - First minor release with features\n0.x.0  - Breaking changes\n```\n\n## npm Scripts Available\n\n```sh\n# Build (used by prepublishOnly)\nbun run build\n\n# Or manually\nnpm run prepublishOnly\n```\n\n## Common Issues\n\n### \"You do not have permission to publish\"\n\n- Not logged in: `npm login`\n- Package owned by someone else: choose different name\n- 2FA not enabled on npm account\n\n### \"E400 Bad Request\"\n\n- Scoped package needs `--access public`\n- Package version already published: bump version\n\n### \"You cannot publish over the previously published versions\"\n\n- Can't re-publish same version\n- Bump version in package.json first\n\n## Post-Publish Checklist\n\n- [ ] Verify on npmjs.com\n- [ ] Test `npx @peria/cli --help`\n- [ ] Update README with install instructions\n- [ ] Announce (optional)\n\n## Continuous Publishing (Future CI)\n\nFor automated releases via GitHub Actions:\n\n```yaml\n# .github/workflows/publish.yml\nname: Publish\n\non:\n  release:\n    types: [published]\n\njobs:\n  publish:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: oven-sh/setup-bun@v2\n      - run: bun install\n      - run: bun run build\n      - run: npm publish --access public\n        env:\n          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}\n```\n\nThen in GitHub Settings > Secrets, add `NPM_TOKEN` with an npm automation token.\n\n## Current Status\n\nAs of Phase 8 completion:\n- Package metadata is prepared ✅\n- Build works ✅\n- CLI binary works ✅\n- Core, renderer, and CLI are the publishable packages for the first npm release ✅\n- SDK and API Reference remain future package targets\n\nTo publish when ready:\n```sh\nbun run build\nnpm pack --pack-destination /tmp packages/core packages/renderer packages/cli\n# Test tarball installation\ncd /tmp && npm install peria-core-*.tgz peria-renderer-*.tgz peria-cli-*.tgz\nnpx peria --help\n# If tests pass, publish:\ncd packages/core && npm publish --access public\ncd packages/renderer && npm publish --access public\ncd packages/cli && npm publish --access public\n```\n",
       "source": {
         "file": "PUBLISHING.md"
       },
@@ -835,7 +835,7 @@
       ],
       "schemaRefs": [],
       "sourceRefs": [],
-      "content": "# Peria\n\n> Human-readable by default. LLM-ready by design.\n\n**Peria** turns your backend codebase into a living technical wiki. Scan routes, schemas, and packages → generate docs, diagrams, and agent context → detect drift automatically.\n\n**Origin:** *peritia*, Latin for practical knowledge and expertise.\n\n---\n\n## Status\n\n### CLI Commands ✅\n\n| Command | Description |\n|---------|-------------|\n| `peria scan` | Scan codebase for packages, routes, schemas, OpenAPI specs |\n| `peria build` | Generate wiki pages, llms.txt, graph |\n| `peria check` | Audit for drift with 10 checks (`--json` for CI) |\n| `peria context` | Generate context packs for agents |\n| `peria diagram` | Generate Mermaid diagrams |\n\n### Framework Adapters ✅\n\nAll adapters serve static files + manifest + llms.txt:\n\n| Adapter | Status |\n|---------|--------|\n| Express | ✅ Works |\n| Fastify | ✅ Works |\n| NestJS | ✅ Works |\n| Hono | 🔜 Coming soon |\n| Elysia | 🔜 Coming soon |\n\n### Self-Documentation ✅\n\nPeria uses itself to document Peria:\n\n- **153 TypeScript modules** extracted with ts-morph\n- **10 audit checks** for drift detection\n- **21 CLI tests** (smoke + integration)\n- Docs generated at `docs/pages/`\n\n---\n\n## Quick Start\n\n### 1. Install\n\n```bash\nnpm install -D @peria/cli\n```\n\n### 2. Scan & Build\n\n```bash\nperia scan\nperia build\n```\n\nThis generates:\n\n- `docs/pages/` — wiki pages\n- `docs/index.html` — visual wiki UI\n- `docs/wiki-manifest.json` — page tree\n- `.peria/manifest.json` — full graph data\n- `.peria/graph.json` — entity relationships\n- `.peria/ai-context.md` — AI context file\n- `.peria/context/` — agent context packs\n- `.peria/diagrams/` — Mermaid diagrams\n- `llms.txt` — compact AI reading map\n\n### 3. Integrate\n\n```ts\n// Express\nimport { periaDocs } from '@peria/adapters/express'\napp.use('/docs', periaDocs())\n\n// Fastify\nimport { periaDocs } from '@peria/adapters/fastify'\nawait app.register(periaDocs, { routePrefix: '/docs' })\n\n// NestJS\nimport { setupPeriaDocs } from '@peria/adapters/nest'\nsetupPeriaDocs(app, { route: '/docs' })\n```\n\n### 4. Check for Drift\n\n```bash\nperia check\n\n# JSON output for CI\nperia check --json | jq .\n\n# Only errors\nperia check --json --severity error\n```\n\n---\n\n## Drift Checks\n\nPeria runs 10 audit checks:\n\n| Check | Description |\n|-------|-------------|\n| `route-openapi` | Routes without OpenAPI (error) |\n| `docs-routes` | Docs referencing non-existent routes |\n| `manifest-state` | Stale manifest detection |\n| `package-exports` | Package export drift |\n| `stale-pages` | Generated pages out of sync |\n| `stale-openapi` | OpenAPI spec changes |\n| `git-diff` | Git changes affecting docs |\n| `schema-coverage` | Undefined schema references |\n| `openapi-docs` | OpenAPI ops without docs |\n| `routes-undocumented` | Routes without documentation |\n\n---\n\n## Configuration\n\n```ts\n// peria.config.ts\nimport { defineConfig } from \"@peria/core\"\n\nexport default defineConfig({\n  framework: \"nestjs\",\n  entrypoint: \"src/main.ts\",\n\n  project: {\n    name: \"My API\",\n    tagline: \"Source-backed engineering knowledge.\",\n  },\n\n  docs: {\n    enabled: true,\n    route: \"/docs\",\n    outputDir: \"docs\"\n  },\n\n  sources: {\n    openapi: \"openapi.yaml\",\n    markdown: [\"README.md\", \"docs/**/*.md\"],\n  },\n\n  features: {\n    embeddedDocs: true,\n    codeMap: true,\n    apiReference: true,\n    wiki: true,\n    llms: true,\n    gitDiff: false,\n    driftCheck: true,\n    mermaid: true,\n    github: false,\n    contextPacks: true,\n  }\n})\n```\n\n---\n\n## Packages\n\n| Package | Description |\n|---------|-------------|\n| [`packages/core`](packages/core/) | Engine — types, config, scanners, parsers, generators |\n| [`packages/cli`](packages/cli/) | CLI commands |\n| [`packages/adapters`](packages/adapters/) | Express, Fastify, NestJS middleware |\n| [`packages/sdk`](packages/sdk/) | Programmatic API |\n| [`packages/renderer`](packages/renderer/) | Wiki UI renderer |\n| [`packages/docs-ui`](packages/docs-ui/) | Docs UI components |\n| [`packages/api-reference`](packages/api-reference/) | Stoplight Elements integration |\n\n---\n\n## Architecture\n\n```\nSources (Code, OpenAPI, Markdown)\n    │\n    ▼\nScanner (packages, routes, schemas, modules)\n    │\n    ▼\nManifest (.peria/manifest.json)\n    │\n    ▼\nGenerators\n├── Wiki pages (Markdown)\n├── llms.txt (LLM consumption)\n├── Context Packs (task-optimized)\n└── Mermaid Diagrams\n    │\n    ▼\nAdapters (serve docs at /docs)\n```\n\n---\n\n## License\n\nMIT — see [LICENSE](LICENSE)\n",
+      "content": "# Peria\n\n> Human-readable by default. LLM-ready by design.\n\n**Peria** turns your backend codebase into a living technical wiki. Scan routes, schemas, and packages → generate docs, diagrams, and agent context → detect drift automatically.\n\n**Origin:** *peritia*, Latin for practical knowledge and expertise.\n\n---\n\n## Status\n\n### CLI Commands ✅\n\n| Command | Description |\n|---------|-------------|\n| `peria scan` | Scan codebase for packages, routes, schemas, OpenAPI specs |\n| `peria build` | Generate wiki pages, llms.txt, graph |\n| `peria check` | Audit for drift with 10 checks (`--json` for CI) |\n| `peria context` | Generate context packs for agents |\n| `peria diagram` | Generate Mermaid diagrams |\n\n### Framework Adapters ✅\n\nAll adapters serve static files + manifest + llms.txt:\n\n| Adapter | Status |\n|---------|--------|\n| Express | ✅ Works |\n| Fastify | ✅ Works |\n| NestJS | ✅ Works |\n| Hono | 🔜 Coming soon |\n| Elysia | 🔜 Coming soon |\n\n### Self-Documentation ✅\n\nPeria uses itself to document Peria:\n\n- **153 TypeScript modules** extracted with ts-morph\n- **10 audit checks** for drift detection\n- **21 CLI tests** (smoke + integration)\n- Docs generated at `docs/pages/`\n\n---\n\n## Quick Start\n\n### 1. Install\n\n```bash\nnpm install -D @peria/cli\n```\n\n### 2. Scan & Build\n\n```bash\nperia scan\nperia build\n```\n\nThis generates:\n\n- `docs/pages/` — wiki pages\n- `docs/index.html` — visual wiki UI\n- `docs/wiki-manifest.json` — page tree\n- `.peria/manifest.json` — full graph data\n- `.peria/graph.json` — entity relationships\n- `.peria/ai-context.md` — AI context file\n- `.peria/context/` — agent context packs\n- `.peria/diagrams/` — Mermaid diagrams\n- `llms.txt` — compact AI reading map\n\n### 3. Integrate\n\n```ts\n// Express\nimport { periaDocs } from '@peria/adapters/express'\napp.use('/docs', periaDocs())\n\n// Fastify\nimport { periaDocs } from '@peria/adapters/fastify'\nawait app.register(periaDocs, { routePrefix: '/docs' })\n\n// NestJS\nimport { setupPeriaDocs } from '@peria/adapters/nest'\nsetupPeriaDocs(app, { route: '/docs' })\n```\n\n### 4. Check for Drift\n\n```bash\nperia check\n\n# JSON output for CI\nperia check --json | jq .\n\n# Only errors\nperia check --json --severity error\n```\n\n---\n\n## Drift Checks\n\nPeria runs 10 audit checks:\n\n| Check | Description |\n|-------|-------------|\n| `route-openapi` | Routes without OpenAPI (error) |\n| `docs-routes` | Docs referencing non-existent routes |\n| `manifest-state` | Stale manifest detection |\n| `package-exports` | Package export drift |\n| `stale-pages` | Generated pages out of sync |\n| `stale-openapi` | OpenAPI spec changes |\n| `git-diff` | Git changes affecting docs |\n| `schema-coverage` | Undefined schema references |\n| `openapi-docs` | OpenAPI ops without docs |\n| `routes-undocumented` | Routes without documentation |\n\n---\n\n## Configuration\n\n```ts\n// peria.config.ts\nimport { defineConfig } from \"@peria/core\"\n\nexport default defineConfig({\n  framework: \"nestjs\",\n  entrypoint: \"src/main.ts\",\n\n  project: {\n    name: \"My API\",\n    tagline: \"Source-backed engineering knowledge.\",\n  },\n\n  docs: {\n    enabled: true,\n    route: \"/docs\",\n    outputDir: \"docs\"\n  },\n\n  sources: {\n    openapi: \"openapi.yaml\",\n    markdown: [\"README.md\", \"docs/**/*.md\"],\n  },\n\n  features: {\n    embeddedDocs: true,\n    codeMap: true,\n    apiReference: true,\n    wiki: true,\n    llms: true,\n    gitDiff: false,\n    driftCheck: true,\n    mermaid: true,\n    github: false,\n    contextPacks: true,\n  }\n})\n```\n\n---\n\n## Packages\n\n| Package | Description |\n|---------|-------------|\n| [`packages/core`](packages/core/) | Engine — types, config, scanners, parsers, generators |\n| [`packages/cli`](packages/cli/) | CLI commands |\n| [`packages/adapters`](packages/adapters/) | Express, Fastify, NestJS middleware |\n| [`packages/sdk`](packages/sdk/) | Programmatic API |\n| [`packages/renderer`](packages/renderer/) | Wiki UI renderer |\n| [`packages/api-reference`](packages/api-reference/) | Stoplight Elements integration |\n\n---\n\n## Architecture\n\n```\nSources (Code, OpenAPI, Markdown)\n    │\n    ▼\nScanner (packages, routes, schemas, modules)\n    │\n    ▼\nManifest (.peria/manifest.json)\n    │\n    ▼\nGenerators\n├── Wiki pages (Markdown)\n├── llms.txt (LLM consumption)\n├── Context Packs (task-optimized)\n└── Mermaid Diagrams\n    │\n    ▼\nAdapters (serve docs at /docs)\n```\n\n---\n\n## License\n\nMIT — see [LICENSE](LICENSE)\n",
       "source": {
         "file": "README.md"
       },
@@ -2076,7 +2076,7 @@
       ],
       "schemaRefs": [],
       "sourceRefs": [],
-      "content": "# Peria Overview\n\n> Human-readable by default. LLM-ready by design.\n\nPeria compiles code, configuration, docs, and Git history into a living technical wiki with traceable claims.\n\n## Product Thesis\n\nMost generated docs flatten a repo into indexes. Peria should preserve intent, ownership boundaries, and change history.\n\nCurrent focus: Make the repository capable of documenting itself with a useful markdown wiki, visual reader, graph artifact, and agent context map.\n\n## For Whom\n\nEngineers maintaining a codebase and AI agents that need source-backed context before making changes.\n\n## Editorial Notes\n\n- The human wiki in /docs is the source of truth.\n- The visual reader is generated from markdown instead of a parallel content model.\n- Agent context files point back to the same wiki tree used by humans.\n- Git metadata is part of the generated knowledge, not an afterthought.\n\n## Current Snapshot\n\n- Generated at: 2026-06-26T16:48:08.020Z\n- Git branch: feat/self-documentation-bootstrap\n- Git commit: d7924b07b5fb81410bbe5fff69d885f82384a376\n- Working tree: 47 changed files\n- Packages documented: 8\n- TypeScript modules mapped: 159\n- CLI commands documented: 3 (3 implemented handlers)\n- Adapters documented: 6 (2 placeholders)\n- Feature flags documented: 13\n\n## Wiki Tree Pattern\n\nThe generated markdown is the canonical knowledge layer. The visual site reads these markdown files, and `llms.txt` points agents back to the same pages instead of maintaining a separate AI-only truth.\n\n## How To Use This Wiki\n\n- Start with this overview for product intent and current maturity.\n- Read Packages and CLI Commands to understand the public surface.\n- Read TypeScript Modules and Adapters when changing code paths.\n- Read Configuration And Features before changing defaults.\n- Read History to connect generated claims to branch, author, commit, and working-tree state.\n",
+      "content": "# Peria Overview\n\n> Human-readable by default. LLM-ready by design.\n\nPeria compiles code, configuration, docs, and Git history into a living technical wiki with traceable claims.\n\n## Product Thesis\n\nMost generated docs flatten a repo into indexes. Peria should preserve intent, ownership boundaries, and change history.\n\nCurrent focus: Make the repository capable of documenting itself with a useful markdown wiki, visual reader, graph artifact, and agent context map.\n\n## For Whom\n\nEngineers maintaining a codebase and AI agents that need source-backed context before making changes.\n\n## Editorial Notes\n\n- The human wiki in /docs is the source of truth.\n- The visual reader is generated from markdown instead of a parallel content model.\n- Agent context files point back to the same wiki tree used by humans.\n- Git metadata is part of the generated knowledge, not an afterthought.\n\n## Current Snapshot\n\n- Generated at: 2026-06-26T16:50:12.738Z\n- Git branch: feat/self-documentation-bootstrap\n- Git commit: d7924b07b5fb81410bbe5fff69d885f82384a376\n- Working tree: 47 changed files\n- Packages documented: 8\n- TypeScript modules mapped: 159\n- CLI commands documented: 3 (3 implemented handlers)\n- Adapters documented: 6 (2 placeholders)\n- Feature flags documented: 13\n\n## Wiki Tree Pattern\n\nThe generated markdown is the canonical knowledge layer. The visual site reads these markdown files, and `llms.txt` points agents back to the same pages instead of maintaining a separate AI-only truth.\n\n## How To Use This Wiki\n\n- Start with this overview for product intent and current maturity.\n- Read Packages and CLI Commands to understand the public surface.\n- Read TypeScript Modules and Adapters when changing code paths.\n- Read Configuration And Features before changing defaults.\n- Read History to connect generated claims to branch, author, commit, and working-tree state.\n",
       "source": {
         "file": "docs/pages/overview.md"
       },
@@ -2237,13 +2237,13 @@
       ],
       "routeMentions": [
         {
-          "path": "/src/main",
-          "context": "t adapter = createNestJSAdapter({   entrypoint: './src/main.ts', });  const routes = await adapter.extractRou"
+          "path": "/docs",
+          "context": "apters/express';  const app = express(); app.use('/docs', periaDocs({ docsPath: 'docs' })); ```  ```types"
         }
       ],
       "schemaRefs": [],
       "sourceRefs": [],
-      "content": "# @peria/adapters\n\nFramework adapters for Peria - support for NestJS, Express, Fastify, Hono, and Elysia.\n\n## Installation\n\n```bash\nnpm install @peria/adapters\n```\n\n## Usage\n\n```typescript\nimport { createNestJSAdapter } from '@peria/adapters/nest';\nimport { createExpressAdapter } from '@peria/adapters/express';\n\nconst adapter = createNestJSAdapter({\n  entrypoint: './src/main.ts',\n});\n\nconst routes = await adapter.extractRoutes(context);\n```\n\n## Supported Frameworks\n\n- **NestJS** - `createNestJSAdapter`\n- **Express** - `createExpressAdapter`\n- **Fastify** - `createFastifyAdapter`\n- **Hono** - `createHonoAdapter`\n- **Elysia** - `createElysiaAdapter`\n\n## License\n\nMIT\n",
+      "content": "# @peria/adapters\n\nFramework adapters for Peria - support for NestJS, Express, and Fastify.\n\n## Installation\n\n```bash\nnpm install @peria/adapters\n```\n\n## Usage\n\n```typescript\nimport express from 'express';\nimport { periaDocs } from '@peria/adapters/express';\n\nconst app = express();\napp.use('/docs', periaDocs({ docsPath: 'docs' }));\n```\n\n```typescript\nimport { setupPeriaDocs } from '@peria/adapters/nest';\n\nsetupPeriaDocs(app, { route: '/docs', docsPath: 'docs' });\n```\n\n## Supported Frameworks\n\n- **NestJS** - `setupPeriaDocs`\n- **Express** - `periaDocs`\n- **Fastify** - `periaDocs`\n## License\n\nMIT\n",
       "source": {
         "file": "packages/adapters/README.md"
       },
@@ -2801,7 +2801,7 @@
       "routeMentions": [],
       "schemaRefs": [],
       "sourceRefs": [],
-      "content": "# Peria Overview\n\n> Human-readable by default. LLM-ready by design.\n\nPeria turns codebase knowledge into a traceable technical wiki.\n\n## Product Thesis\n\nCodebases lose practical knowledge when architecture, commands, docs, and Git history live in separate places.\n\nCurrent focus: Build a local-first self-documenting wiki pipeline before adding hosted integrations.\n\n## For Whom\n\nEngineers and AI coding agents who need reliable codebase context.\n\n## Editorial Notes\n\n- Markdown wiki pages are the canonical artifact.\n- llms.txt is a compact reading map derived from the human wiki.\n- Every generated claim should trace back to source files, line numbers, and Git context.\n\n## Current Snapshot\n\n- Generated at: 2026-06-26T16:48:28.620Z\n- Git branch: feat/self-documentation-bootstrap\n- Git commit: d7924b07b5fb81410bbe5fff69d885f82384a376\n- Working tree: 47 changed files\n- Packages documented: 1\n- TypeScript modules mapped: 0\n- CLI commands documented: 0 (0 implemented handlers)\n- Adapters documented: 0 (0 placeholders)\n- Feature flags documented: 13\n\n## Wiki Tree Pattern\n\nThe generated markdown is the canonical knowledge layer. The visual site reads these markdown files, and `llms.txt` points agents back to the same pages instead of maintaining a separate AI-only truth.\n\n## How To Use This Wiki\n\n- Start with this overview for product intent and current maturity.\n- Read Packages and CLI Commands to understand the public surface.\n- Read TypeScript Modules and Adapters when changing code paths.\n- Read Configuration And Features before changing defaults.\n- Read History to connect generated claims to branch, author, commit, and working-tree state.\n",
+      "content": "# Peria Overview\n\n> Human-readable by default. LLM-ready by design.\n\nPeria turns codebase knowledge into a traceable technical wiki.\n\n## Product Thesis\n\nCodebases lose practical knowledge when architecture, commands, docs, and Git history live in separate places.\n\nCurrent focus: Build a local-first self-documenting wiki pipeline before adding hosted integrations.\n\n## For Whom\n\nEngineers and AI coding agents who need reliable codebase context.\n\n## Editorial Notes\n\n- Markdown wiki pages are the canonical artifact.\n- llms.txt is a compact reading map derived from the human wiki.\n- Every generated claim should trace back to source files, line numbers, and Git context.\n\n## Current Snapshot\n\n- Generated at: 2026-06-26T16:50:41.696Z\n- Git branch: feat/self-documentation-bootstrap\n- Git commit: d7924b07b5fb81410bbe5fff69d885f82384a376\n- Working tree: 47 changed files\n- Packages documented: 1\n- TypeScript modules mapped: 0\n- CLI commands documented: 0 (0 implemented handlers)\n- Adapters documented: 0 (0 placeholders)\n- Feature flags documented: 13\n\n## Wiki Tree Pattern\n\nThe generated markdown is the canonical knowledge layer. The visual site reads these markdown files, and `llms.txt` points agents back to the same pages instead of maintaining a separate AI-only truth.\n\n## How To Use This Wiki\n\n- Start with this overview for product intent and current maturity.\n- Read Packages and CLI Commands to understand the public surface.\n- Read TypeScript Modules and Adapters when changing code paths.\n- Read Configuration And Features before changing defaults.\n- Read History to connect generated claims to branch, author, commit, and working-tree state.\n",
       "source": {
         "file": "packages/core/fixtures/nestjs-basic/docs/pages/overview.md"
       },
@@ -3045,25 +3045,6 @@
       "confidence": "high"
     },
     {
-      "id": "file:packages/docs-ui/tsup.config.ts",
-      "path": "packages/docs-ui/tsup.config.ts",
-      "module": "Peria/packages/docs-ui/tsup.config",
-      "exports": [
-        {
-          "name": "default",
-          "kind": "other",
-          "line": 3
-        }
-      ],
-      "imports": [],
-      "hasDecorators": false,
-      "source": {
-        "file": "packages/docs-ui/tsup.config.ts",
-        "line": 1
-      },
-      "confidence": "high"
-    },
-    {
       "id": "file:packages/renderer/tsup.config.ts",
       "path": "packages/renderer/tsup.config.ts",
       "module": "Peria/packages/renderer/tsup.config",
@@ -3097,40 +3078,6 @@
       "hasDecorators": false,
       "source": {
         "file": "packages/sdk/tsup.config.ts",
-        "line": 1
-      },
-      "confidence": "high"
-    },
-    {
-      "id": "file:packages/adapters/src/elysia.ts",
-      "path": "packages/adapters/src/elysia.ts",
-      "module": "Peria/elysia",
-      "exports": [
-        {
-          "name": "periaDocs",
-          "kind": "function",
-          "line": 28
-        },
-        {
-          "name": "PeriaDocsOptions",
-          "kind": "interface",
-          "line": 14
-        },
-        {
-          "name": "ElysiaInstance",
-          "kind": "interface",
-          "line": 19
-        },
-        {
-          "name": "ElysiaGroup",
-          "kind": "interface",
-          "line": 24
-        }
-      ],
-      "imports": [],
-      "hasDecorators": false,
-      "source": {
-        "file": "packages/adapters/src/elysia.ts",
         "line": 1
       },
       "confidence": "high"
@@ -3184,35 +3131,6 @@
       "hasDecorators": false,
       "source": {
         "file": "packages/adapters/src/fastify.ts",
-        "line": 1
-      },
-      "confidence": "high"
-    },
-    {
-      "id": "file:packages/adapters/src/hono.ts",
-      "path": "packages/adapters/src/hono.ts",
-      "module": "Peria/hono",
-      "exports": [
-        {
-          "name": "periaDocs",
-          "kind": "function",
-          "line": 22
-        },
-        {
-          "name": "PeriaDocsOptions",
-          "kind": "interface",
-          "line": 14
-        },
-        {
-          "name": "HonoContext",
-          "kind": "interface",
-          "line": 18
-        }
-      ],
-      "imports": [],
-      "hasDecorators": false,
-      "source": {
-        "file": "packages/adapters/src/hono.ts",
         "line": 1
       },
       "confidence": "high"
@@ -4168,30 +4086,6 @@
       "hasDecorators": false,
       "source": {
         "file": "packages/core/src/scanner.ts",
-        "line": 1
-      },
-      "confidence": "high"
-    },
-    {
-      "id": "file:packages/docs-ui/src/index.ts",
-      "path": "packages/docs-ui/src/index.ts",
-      "module": "Peria/index",
-      "exports": [
-        {
-          "name": "renderDocs",
-          "kind": "function",
-          "line": 17
-        },
-        {
-          "name": "docsUI",
-          "kind": "variable",
-          "line": 8
-        }
-      ],
-      "imports": [],
-      "hasDecorators": false,
-      "source": {
-        "file": "packages/docs-ui/src/index.ts",
         "line": 1
       },
       "confidence": "high"
@@ -9030,9 +8924,7 @@
         ".",
         "./express",
         "./fastify",
-        "./nest",
-        "./hono",
-        "./elysia"
+        "./nest"
       ],
       "types": "./dist/index.d.ts",
       "source": {
@@ -9073,7 +8965,7 @@
     {
       "id": "package:@peria/cli",
       "name": "@peria/cli",
-      "version": "0.1.0",
+      "version": "0.1.2",
       "directory": "packages/cli",
       "manifestPath": "packages/cli/package.json",
       "description": "Local-first source-backed knowledge graph CLI for backend and API repositories.",
@@ -9177,14 +9069,14 @@
         "dev": "tsup --watch"
       },
       "dependencies": [
-        "ts-morph",
-        "zod",
-        "remark",
-        "remark-parse",
-        "remark-frontmatter",
-        "unified",
         "@apidevtools/swagger-parser",
-        "typescript"
+        "remark",
+        "remark-frontmatter",
+        "remark-parse",
+        "ts-morph",
+        "typescript",
+        "unified",
+        "zod"
       ],
       "devDependencies": [
         "@types/node",
@@ -9204,34 +9096,9 @@
       "confidence": "high"
     },
     {
-      "id": "package:@peria/docs-ui",
-      "name": "@peria/docs-ui",
-      "version": "0.1.0",
-      "directory": "packages/docs-ui",
-      "manifestPath": "packages/docs-ui/package.json",
-      "scripts": {
-        "build": "tsup",
-        "typecheck": "tsc --noEmit",
-        "test": "echo \"No tests yet\"",
-        "dev": "tsup --watch"
-      },
-      "dependencies": [],
-      "devDependencies": [
-        "@types/node",
-        "tsup",
-        "typescript"
-      ],
-      "exports": [],
-      "types": "./dist/index.d.ts",
-      "source": {
-        "file": "packages/docs-ui/package.json"
-      },
-      "confidence": "high"
-    },
-    {
       "id": "package:@peria/renderer",
       "name": "@peria/renderer",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "directory": "packages/renderer",
       "manifestPath": "packages/renderer/package.json",
       "description": "Documentation renderer for Peria with support for static HTML generation",
@@ -10522,10 +10389,10 @@
     {
       "id": "rel:152",
       "sourceId": "doc:packages/adapters/README.md",
-      "targetId": "route:ANY:/src/main",
+      "targetId": "route:ANY:/docs",
       "type": "doc_page_references_route",
       "confidence": "medium",
-      "reason": "Doc page mentions  /src/main"
+      "reason": "Doc page mentions  /docs"
     },
     {
       "id": "rel:153",
@@ -10882,21 +10749,13 @@
     {
       "id": "rel:197",
       "sourceId": "package:@peria/adapters",
-      "targetId": "file:packages/adapters/src/elysia.ts",
-      "type": "package_exports_module",
-      "confidence": "high",
-      "reason": "File packages/adapters/src/elysia.ts belongs to package @peria/adapters"
-    },
-    {
-      "id": "rel:198",
-      "sourceId": "package:@peria/adapters",
       "targetId": "file:packages/adapters/src/express.ts",
       "type": "package_exports_module",
       "confidence": "high",
       "reason": "File packages/adapters/src/express.ts belongs to package @peria/adapters"
     },
     {
-      "id": "rel:199",
+      "id": "rel:198",
       "sourceId": "package:@peria/adapters",
       "targetId": "file:packages/adapters/src/fastify.ts",
       "type": "package_exports_module",
@@ -10904,15 +10763,7 @@
       "reason": "File packages/adapters/src/fastify.ts belongs to package @peria/adapters"
     },
     {
-      "id": "rel:200",
-      "sourceId": "package:@peria/adapters",
-      "targetId": "file:packages/adapters/src/hono.ts",
-      "type": "package_exports_module",
-      "confidence": "high",
-      "reason": "File packages/adapters/src/hono.ts belongs to package @peria/adapters"
-    },
-    {
-      "id": "rel:201",
+      "id": "rel:199",
       "sourceId": "package:@peria/adapters",
       "targetId": "file:packages/adapters/src/index.ts",
       "type": "package_exports_module",
@@ -10920,7 +10771,7 @@
       "reason": "File packages/adapters/src/index.ts belongs to package @peria/adapters"
     },
     {
-      "id": "rel:202",
+      "id": "rel:200",
       "sourceId": "package:@peria/adapters",
       "targetId": "file:packages/adapters/src/nest.ts",
       "type": "package_exports_module",
@@ -10928,7 +10779,7 @@
       "reason": "File packages/adapters/src/nest.ts belongs to package @peria/adapters"
     },
     {
-      "id": "rel:203",
+      "id": "rel:201",
       "sourceId": "package:@peria/api-reference",
       "targetId": "file:packages/api-reference/src/index.ts",
       "type": "package_exports_module",
@@ -10936,7 +10787,7 @@
       "reason": "File packages/api-reference/src/index.ts belongs to package @peria/api-reference"
     },
     {
-      "id": "rel:204",
+      "id": "rel:202",
       "sourceId": "package:@peria/cli",
       "targetId": "file:packages/cli/tsup.config.ts",
       "type": "package_exports_module",
@@ -10944,7 +10795,7 @@
       "reason": "File packages/cli/tsup.config.ts belongs to package @peria/cli"
     },
     {
-      "id": "rel:205",
+      "id": "rel:203",
       "sourceId": "package:@peria/cli",
       "targetId": "file:packages/cli/src/index.ts",
       "type": "package_exports_module",
@@ -10952,7 +10803,7 @@
       "reason": "File packages/cli/src/index.ts belongs to package @peria/cli"
     },
     {
-      "id": "rel:206",
+      "id": "rel:204",
       "sourceId": "package:@peria/cli",
       "targetId": "file:packages/cli/src/commands/build.ts",
       "type": "package_exports_module",
@@ -10960,7 +10811,7 @@
       "reason": "File packages/cli/src/commands/build.ts belongs to package @peria/cli"
     },
     {
-      "id": "rel:207",
+      "id": "rel:205",
       "sourceId": "package:@peria/cli",
       "targetId": "file:packages/cli/src/commands/check.ts",
       "type": "package_exports_module",
@@ -10968,7 +10819,7 @@
       "reason": "File packages/cli/src/commands/check.ts belongs to package @peria/cli"
     },
     {
-      "id": "rel:208",
+      "id": "rel:206",
       "sourceId": "package:@peria/cli",
       "targetId": "file:packages/cli/src/commands/context.ts",
       "type": "package_exports_module",
@@ -10976,7 +10827,7 @@
       "reason": "File packages/cli/src/commands/context.ts belongs to package @peria/cli"
     },
     {
-      "id": "rel:209",
+      "id": "rel:207",
       "sourceId": "package:@peria/cli",
       "targetId": "file:packages/cli/src/commands/diagram.ts",
       "type": "package_exports_module",
@@ -10984,7 +10835,7 @@
       "reason": "File packages/cli/src/commands/diagram.ts belongs to package @peria/cli"
     },
     {
-      "id": "rel:210",
+      "id": "rel:208",
       "sourceId": "package:@peria/cli",
       "targetId": "file:packages/cli/src/commands/init.ts",
       "type": "package_exports_module",
@@ -10992,7 +10843,7 @@
       "reason": "File packages/cli/src/commands/init.ts belongs to package @peria/cli"
     },
     {
-      "id": "rel:211",
+      "id": "rel:209",
       "sourceId": "package:@peria/cli",
       "targetId": "file:packages/cli/src/commands/scan.ts",
       "type": "package_exports_module",
@@ -11000,7 +10851,7 @@
       "reason": "File packages/cli/src/commands/scan.ts belongs to package @peria/cli"
     },
     {
-      "id": "rel:212",
+      "id": "rel:210",
       "sourceId": "package:@peria/cli",
       "targetId": "file:packages/cli/src/commands/serve.ts",
       "type": "package_exports_module",
@@ -11008,7 +10859,7 @@
       "reason": "File packages/cli/src/commands/serve.ts belongs to package @peria/cli"
     },
     {
-      "id": "rel:213",
+      "id": "rel:211",
       "sourceId": "package:@peria/cli",
       "targetId": "file:packages/cli/src/generators/config.ts",
       "type": "package_exports_module",
@@ -11016,7 +10867,7 @@
       "reason": "File packages/cli/src/generators/config.ts belongs to package @peria/cli"
     },
     {
-      "id": "rel:214",
+      "id": "rel:212",
       "sourceId": "package:@peria/cli",
       "targetId": "file:packages/cli/src/prompts/entrypoint.ts",
       "type": "package_exports_module",
@@ -11024,7 +10875,7 @@
       "reason": "File packages/cli/src/prompts/entrypoint.ts belongs to package @peria/cli"
     },
     {
-      "id": "rel:215",
+      "id": "rel:213",
       "sourceId": "package:@peria/cli",
       "targetId": "file:packages/cli/src/prompts/features.ts",
       "type": "package_exports_module",
@@ -11032,7 +10883,7 @@
       "reason": "File packages/cli/src/prompts/features.ts belongs to package @peria/cli"
     },
     {
-      "id": "rel:216",
+      "id": "rel:214",
       "sourceId": "package:@peria/cli",
       "targetId": "file:packages/cli/src/prompts/framework.ts",
       "type": "package_exports_module",
@@ -11040,7 +10891,7 @@
       "reason": "File packages/cli/src/prompts/framework.ts belongs to package @peria/cli"
     },
     {
-      "id": "rel:217",
+      "id": "rel:215",
       "sourceId": "package:@peria/cli",
       "targetId": "file:packages/cli/src/prompts/route.ts",
       "type": "package_exports_module",
@@ -11048,7 +10899,7 @@
       "reason": "File packages/cli/src/prompts/route.ts belongs to package @peria/cli"
     },
     {
-      "id": "rel:218",
+      "id": "rel:216",
       "sourceId": "package:@peria/cli",
       "targetId": "file:packages/cli/src/utils/logger.ts",
       "type": "package_exports_module",
@@ -11056,7 +10907,7 @@
       "reason": "File packages/cli/src/utils/logger.ts belongs to package @peria/cli"
     },
     {
-      "id": "rel:219",
+      "id": "rel:217",
       "sourceId": "package:@peria/cli",
       "targetId": "file:packages/cli/src/utils/manifest.ts",
       "type": "package_exports_module",
@@ -11064,7 +10915,7 @@
       "reason": "File packages/cli/src/utils/manifest.ts belongs to package @peria/cli"
     },
     {
-      "id": "rel:220",
+      "id": "rel:218",
       "sourceId": "package:nestjs-api-fixture",
       "targetId": "file:packages/core/fixtures/nestjs-api/src/app.module.ts",
       "type": "package_exports_module",
@@ -11072,7 +10923,7 @@
       "reason": "File packages/core/fixtures/nestjs-api/src/app.module.ts belongs to package nestjs-api-fixture"
     },
     {
-      "id": "rel:221",
+      "id": "rel:219",
       "sourceId": "package:nestjs-api-fixture",
       "targetId": "file:packages/core/fixtures/nestjs-api/src/main.ts",
       "type": "package_exports_module",
@@ -11080,7 +10931,7 @@
       "reason": "File packages/core/fixtures/nestjs-api/src/main.ts belongs to package nestjs-api-fixture"
     },
     {
-      "id": "rel:222",
+      "id": "rel:220",
       "sourceId": "package:nestjs-api-fixture",
       "targetId": "file:packages/core/fixtures/nestjs-api/src/users/users.controller.ts",
       "type": "package_exports_module",
@@ -11088,7 +10939,7 @@
       "reason": "File packages/core/fixtures/nestjs-api/src/users/users.controller.ts belongs to package nestjs-api-fixture"
     },
     {
-      "id": "rel:223",
+      "id": "rel:221",
       "sourceId": "package:nestjs-api-fixture",
       "targetId": "file:packages/core/fixtures/nestjs-api/src/users/users.module.ts",
       "type": "package_exports_module",
@@ -11096,7 +10947,7 @@
       "reason": "File packages/core/fixtures/nestjs-api/src/users/users.module.ts belongs to package nestjs-api-fixture"
     },
     {
-      "id": "rel:224",
+      "id": "rel:222",
       "sourceId": "package:nestjs-api-fixture",
       "targetId": "file:packages/core/fixtures/nestjs-api/src/users/dto/approve-user-request.dto.ts",
       "type": "package_exports_module",
@@ -11104,7 +10955,7 @@
       "reason": "File packages/core/fixtures/nestjs-api/src/users/dto/approve-user-request.dto.ts belongs to package nestjs-api-fixture"
     },
     {
-      "id": "rel:225",
+      "id": "rel:223",
       "sourceId": "package:nestjs-basic-fixture",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/app.module.ts",
       "type": "package_exports_module",
@@ -11112,7 +10963,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/app.module.ts belongs to package nestjs-basic-fixture"
     },
     {
-      "id": "rel:226",
+      "id": "rel:224",
       "sourceId": "package:nestjs-basic-fixture",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/main.ts",
       "type": "package_exports_module",
@@ -11120,7 +10971,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/main.ts belongs to package nestjs-basic-fixture"
     },
     {
-      "id": "rel:227",
+      "id": "rel:225",
       "sourceId": "package:nestjs-basic-fixture",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts",
       "type": "package_exports_module",
@@ -11128,7 +10979,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts belongs to package nestjs-basic-fixture"
     },
     {
-      "id": "rel:228",
+      "id": "rel:226",
       "sourceId": "package:nestjs-basic-fixture",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/auth/auth.module.ts",
       "type": "package_exports_module",
@@ -11136,7 +10987,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/auth/auth.module.ts belongs to package nestjs-basic-fixture"
     },
     {
-      "id": "rel:229",
+      "id": "rel:227",
       "sourceId": "package:nestjs-basic-fixture",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/auth/auth.service.ts",
       "type": "package_exports_module",
@@ -11144,7 +10995,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/auth/auth.service.ts belongs to package nestjs-basic-fixture"
     },
     {
-      "id": "rel:230",
+      "id": "rel:228",
       "sourceId": "package:nestjs-basic-fixture",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
       "type": "package_exports_module",
@@ -11152,7 +11003,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/users/users.controller.ts belongs to package nestjs-basic-fixture"
     },
     {
-      "id": "rel:231",
+      "id": "rel:229",
       "sourceId": "package:nestjs-basic-fixture",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/users/users.module.ts",
       "type": "package_exports_module",
@@ -11160,7 +11011,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/users/users.module.ts belongs to package nestjs-basic-fixture"
     },
     {
-      "id": "rel:232",
+      "id": "rel:230",
       "sourceId": "package:nestjs-basic-fixture",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/users/users.service.ts",
       "type": "package_exports_module",
@@ -11168,7 +11019,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/users/users.service.ts belongs to package nestjs-basic-fixture"
     },
     {
-      "id": "rel:233",
+      "id": "rel:231",
       "sourceId": "package:nestjs-basic-fixture",
       "targetId": "file:packages/core/fixtures/nestjs-basic/temp/dto-by-name/data.ts",
       "type": "package_exports_module",
@@ -11176,7 +11027,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/temp/dto-by-name/data.ts belongs to package nestjs-basic-fixture"
     },
     {
-      "id": "rel:234",
+      "id": "rel:232",
       "sourceId": "package:nestjs-basic-fixture",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/auth/guards/jwt-auth.guard.ts",
       "type": "package_exports_module",
@@ -11184,7 +11035,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/auth/guards/jwt-auth.guard.ts belongs to package nestjs-basic-fixture"
     },
     {
-      "id": "rel:235",
+      "id": "rel:233",
       "sourceId": "package:nestjs-basic-fixture",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/users/dto/create-user.dto.ts",
       "type": "package_exports_module",
@@ -11192,7 +11043,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/users/dto/create-user.dto.ts belongs to package nestjs-basic-fixture"
     },
     {
-      "id": "rel:236",
+      "id": "rel:234",
       "sourceId": "package:nestjs-basic-fixture",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/users/dto/update-user.dto.ts",
       "type": "package_exports_module",
@@ -11200,7 +11051,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/users/dto/update-user.dto.ts belongs to package nestjs-basic-fixture"
     },
     {
-      "id": "rel:237",
+      "id": "rel:235",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/tsup.config.ts",
       "type": "package_exports_module",
@@ -11208,7 +11059,7 @@
       "reason": "File packages/core/tsup.config.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:238",
+      "id": "rel:236",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/vitest.config.ts",
       "type": "package_exports_module",
@@ -11216,7 +11067,7 @@
       "reason": "File packages/core/vitest.config.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:239",
+      "id": "rel:237",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/index.ts",
       "type": "package_exports_module",
@@ -11224,7 +11075,7 @@
       "reason": "File packages/core/src/index.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:240",
+      "id": "rel:238",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/scanner.ts",
       "type": "package_exports_module",
@@ -11232,7 +11083,7 @@
       "reason": "File packages/core/src/scanner.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:241",
+      "id": "rel:239",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/adapters/index.ts",
       "type": "package_exports_module",
@@ -11240,7 +11091,7 @@
       "reason": "File packages/core/src/adapters/index.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:242",
+      "id": "rel:240",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/adapters/types.ts",
       "type": "package_exports_module",
@@ -11248,7 +11099,7 @@
       "reason": "File packages/core/src/adapters/types.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:243",
+      "id": "rel:241",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/audit/docs-routes.ts",
       "type": "package_exports_module",
@@ -11256,7 +11107,7 @@
       "reason": "File packages/core/src/audit/docs-routes.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:244",
+      "id": "rel:242",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/audit/git-diff.ts",
       "type": "package_exports_module",
@@ -11264,7 +11115,7 @@
       "reason": "File packages/core/src/audit/git-diff.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:245",
+      "id": "rel:243",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/audit/index.ts",
       "type": "package_exports_module",
@@ -11272,7 +11123,7 @@
       "reason": "File packages/core/src/audit/index.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:246",
+      "id": "rel:244",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/audit/manifest-state.ts",
       "type": "package_exports_module",
@@ -11280,7 +11131,7 @@
       "reason": "File packages/core/src/audit/manifest-state.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:247",
+      "id": "rel:245",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/audit/openapi-docs.ts",
       "type": "package_exports_module",
@@ -11288,7 +11139,7 @@
       "reason": "File packages/core/src/audit/openapi-docs.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:248",
+      "id": "rel:246",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/audit/package-exports.ts",
       "type": "package_exports_module",
@@ -11296,7 +11147,7 @@
       "reason": "File packages/core/src/audit/package-exports.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:249",
+      "id": "rel:247",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/audit/route-openapi.ts",
       "type": "package_exports_module",
@@ -11304,7 +11155,7 @@
       "reason": "File packages/core/src/audit/route-openapi.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:250",
+      "id": "rel:248",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/audit/routes-undocumented.ts",
       "type": "package_exports_module",
@@ -11312,7 +11163,7 @@
       "reason": "File packages/core/src/audit/routes-undocumented.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:251",
+      "id": "rel:249",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/audit/schema-coverage.ts",
       "type": "package_exports_module",
@@ -11320,7 +11171,7 @@
       "reason": "File packages/core/src/audit/schema-coverage.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:252",
+      "id": "rel:250",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/audit/stale-openapi.ts",
       "type": "package_exports_module",
@@ -11328,7 +11179,7 @@
       "reason": "File packages/core/src/audit/stale-openapi.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:253",
+      "id": "rel:251",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/audit/stale-pages.ts",
       "type": "package_exports_module",
@@ -11336,7 +11187,7 @@
       "reason": "File packages/core/src/audit/stale-pages.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:254",
+      "id": "rel:252",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/audit/types.ts",
       "type": "package_exports_module",
@@ -11344,7 +11195,7 @@
       "reason": "File packages/core/src/audit/types.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:255",
+      "id": "rel:253",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/config/defaults.ts",
       "type": "package_exports_module",
@@ -11352,7 +11203,7 @@
       "reason": "File packages/core/src/config/defaults.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:256",
+      "id": "rel:254",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/config/loader.ts",
       "type": "package_exports_module",
@@ -11360,7 +11211,7 @@
       "reason": "File packages/core/src/config/loader.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:257",
+      "id": "rel:255",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/context-packs/diff-context.ts",
       "type": "package_exports_module",
@@ -11368,7 +11219,7 @@
       "reason": "File packages/core/src/context-packs/diff-context.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:258",
+      "id": "rel:256",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/context-packs/generator.ts",
       "type": "package_exports_module",
@@ -11376,7 +11227,7 @@
       "reason": "File packages/core/src/context-packs/generator.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:259",
+      "id": "rel:257",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/context-packs/index.ts",
       "type": "package_exports_module",
@@ -11384,7 +11235,7 @@
       "reason": "File packages/core/src/context-packs/index.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:260",
+      "id": "rel:258",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/context-packs/package-context.ts",
       "type": "package_exports_module",
@@ -11392,7 +11243,7 @@
       "reason": "File packages/core/src/context-packs/package-context.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:261",
+      "id": "rel:259",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/context-packs/route-context.ts",
       "type": "package_exports_module",
@@ -11400,7 +11251,7 @@
       "reason": "File packages/core/src/context-packs/route-context.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:262",
+      "id": "rel:260",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/context-packs/task-context.ts",
       "type": "package_exports_module",
@@ -11408,7 +11259,7 @@
       "reason": "File packages/core/src/context-packs/task-context.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:263",
+      "id": "rel:261",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/context-packs/types.ts",
       "type": "package_exports_module",
@@ -11416,7 +11267,7 @@
       "reason": "File packages/core/src/context-packs/types.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:264",
+      "id": "rel:262",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/context-packs/utils.ts",
       "type": "package_exports_module",
@@ -11424,7 +11275,7 @@
       "reason": "File packages/core/src/context-packs/utils.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:265",
+      "id": "rel:263",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/detectors/entrypoint.ts",
       "type": "package_exports_module",
@@ -11432,7 +11283,7 @@
       "reason": "File packages/core/src/detectors/entrypoint.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:266",
+      "id": "rel:264",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/detectors/framework.ts",
       "type": "package_exports_module",
@@ -11440,7 +11291,7 @@
       "reason": "File packages/core/src/detectors/framework.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:267",
+      "id": "rel:265",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/detectors/index.ts",
       "type": "package_exports_module",
@@ -11448,7 +11299,7 @@
       "reason": "File packages/core/src/detectors/index.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:268",
+      "id": "rel:266",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/generators/enriched-openapi.ts",
       "type": "package_exports_module",
@@ -11456,7 +11307,7 @@
       "reason": "File packages/core/src/generators/enriched-openapi.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:269",
+      "id": "rel:267",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/generators/index.ts",
       "type": "package_exports_module",
@@ -11464,7 +11315,7 @@
       "reason": "File packages/core/src/generators/index.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:270",
+      "id": "rel:268",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/matcher/index.ts",
       "type": "package_exports_module",
@@ -11472,7 +11323,7 @@
       "reason": "File packages/core/src/matcher/index.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:271",
+      "id": "rel:269",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/matcher/openapi-matcher.ts",
       "type": "package_exports_module",
@@ -11480,7 +11331,7 @@
       "reason": "File packages/core/src/matcher/openapi-matcher.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:272",
+      "id": "rel:270",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/mermaid/generator.ts",
       "type": "package_exports_module",
@@ -11488,7 +11339,7 @@
       "reason": "File packages/core/src/mermaid/generator.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:273",
+      "id": "rel:271",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/mermaid/index.ts",
       "type": "package_exports_module",
@@ -11496,7 +11347,7 @@
       "reason": "File packages/core/src/mermaid/index.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:274",
+      "id": "rel:272",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/mermaid/package-deps.ts",
       "type": "package_exports_module",
@@ -11504,7 +11355,7 @@
       "reason": "File packages/core/src/mermaid/package-deps.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:275",
+      "id": "rel:273",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/mermaid/route-flow.ts",
       "type": "package_exports_module",
@@ -11512,7 +11363,7 @@
       "reason": "File packages/core/src/mermaid/route-flow.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:276",
+      "id": "rel:274",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/mermaid/schema.ts",
       "type": "package_exports_module",
@@ -11520,7 +11371,7 @@
       "reason": "File packages/core/src/mermaid/schema.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:277",
+      "id": "rel:275",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/mermaid/types.ts",
       "type": "package_exports_module",
@@ -11528,7 +11379,7 @@
       "reason": "File packages/core/src/mermaid/types.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:278",
+      "id": "rel:276",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/parsers/index.ts",
       "type": "package_exports_module",
@@ -11536,7 +11387,7 @@
       "reason": "File packages/core/src/parsers/index.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:279",
+      "id": "rel:277",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/parsers/llms.ts",
       "type": "package_exports_module",
@@ -11544,7 +11395,7 @@
       "reason": "File packages/core/src/parsers/llms.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:280",
+      "id": "rel:278",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/parsers/markdown.ts",
       "type": "package_exports_module",
@@ -11552,7 +11403,7 @@
       "reason": "File packages/core/src/parsers/markdown.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:281",
+      "id": "rel:279",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/parsers/openapi.ts",
       "type": "package_exports_module",
@@ -11560,7 +11411,7 @@
       "reason": "File packages/core/src/parsers/openapi.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:282",
+      "id": "rel:280",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/scanner/framework.ts",
       "type": "package_exports_module",
@@ -11568,7 +11419,7 @@
       "reason": "File packages/core/src/scanner/framework.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:283",
+      "id": "rel:281",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/scanner/git.ts",
       "type": "package_exports_module",
@@ -11576,7 +11427,7 @@
       "reason": "File packages/core/src/scanner/git.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:284",
+      "id": "rel:282",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/scanner/index.ts",
       "type": "package_exports_module",
@@ -11584,7 +11435,7 @@
       "reason": "File packages/core/src/scanner/index.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:285",
+      "id": "rel:283",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/scanner/llms.ts",
       "type": "package_exports_module",
@@ -11592,7 +11443,7 @@
       "reason": "File packages/core/src/scanner/llms.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:286",
+      "id": "rel:284",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/scanner/manifest.ts",
       "type": "package_exports_module",
@@ -11600,7 +11451,7 @@
       "reason": "File packages/core/src/scanner/manifest.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:287",
+      "id": "rel:285",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/scanner/markdown.ts",
       "type": "package_exports_module",
@@ -11608,7 +11459,7 @@
       "reason": "File packages/core/src/scanner/markdown.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:288",
+      "id": "rel:286",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/scanner/openapi.ts",
       "type": "package_exports_module",
@@ -11616,7 +11467,7 @@
       "reason": "File packages/core/src/scanner/openapi.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:289",
+      "id": "rel:287",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/scanner/packages.ts",
       "type": "package_exports_module",
@@ -11624,7 +11475,7 @@
       "reason": "File packages/core/src/scanner/packages.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:290",
+      "id": "rel:288",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/scanner/relations.ts",
       "type": "package_exports_module",
@@ -11632,7 +11483,7 @@
       "reason": "File packages/core/src/scanner/relations.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:291",
+      "id": "rel:289",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/scanner/source-files.ts",
       "type": "package_exports_module",
@@ -11640,7 +11491,7 @@
       "reason": "File packages/core/src/scanner/source-files.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:292",
+      "id": "rel:290",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/scanner/ts-morph-utils.ts",
       "type": "package_exports_module",
@@ -11648,7 +11499,7 @@
       "reason": "File packages/core/src/scanner/ts-morph-utils.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:293",
+      "id": "rel:291",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/types/config.ts",
       "type": "package_exports_module",
@@ -11656,7 +11507,7 @@
       "reason": "File packages/core/src/types/config.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:294",
+      "id": "rel:292",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/types/entity.ts",
       "type": "package_exports_module",
@@ -11664,7 +11515,7 @@
       "reason": "File packages/core/src/types/entity.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:295",
+      "id": "rel:293",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/types/framework.ts",
       "type": "package_exports_module",
@@ -11672,7 +11523,7 @@
       "reason": "File packages/core/src/types/framework.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:296",
+      "id": "rel:294",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/types/graph.ts",
       "type": "package_exports_module",
@@ -11680,7 +11531,7 @@
       "reason": "File packages/core/src/types/graph.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:297",
+      "id": "rel:295",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/types/manifest.ts",
       "type": "package_exports_module",
@@ -11688,7 +11539,7 @@
       "reason": "File packages/core/src/types/manifest.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:298",
+      "id": "rel:296",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/types/source.ts",
       "type": "package_exports_module",
@@ -11696,7 +11547,7 @@
       "reason": "File packages/core/src/types/source.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:299",
+      "id": "rel:297",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/types/wiki.ts",
       "type": "package_exports_module",
@@ -11704,7 +11555,7 @@
       "reason": "File packages/core/src/types/wiki.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:300",
+      "id": "rel:298",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/wiki/builder.ts",
       "type": "package_exports_module",
@@ -11712,7 +11563,7 @@
       "reason": "File packages/core/src/wiki/builder.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:301",
+      "id": "rel:299",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/wiki/graph.ts",
       "type": "package_exports_module",
@@ -11720,7 +11571,7 @@
       "reason": "File packages/core/src/wiki/graph.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:302",
+      "id": "rel:300",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/wiki/index.ts",
       "type": "package_exports_module",
@@ -11728,7 +11579,7 @@
       "reason": "File packages/core/src/wiki/index.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:303",
+      "id": "rel:301",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/wiki/llms-text.ts",
       "type": "package_exports_module",
@@ -11736,7 +11587,7 @@
       "reason": "File packages/core/src/wiki/llms-text.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:304",
+      "id": "rel:302",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/wiki/pages.ts",
       "type": "package_exports_module",
@@ -11744,7 +11595,7 @@
       "reason": "File packages/core/src/wiki/pages.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:305",
+      "id": "rel:303",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/fixtures/nestjs-api/src/app.module.ts",
       "type": "package_exports_module",
@@ -11752,7 +11603,7 @@
       "reason": "File packages/core/fixtures/nestjs-api/src/app.module.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:306",
+      "id": "rel:304",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/fixtures/nestjs-api/src/main.ts",
       "type": "package_exports_module",
@@ -11760,7 +11611,7 @@
       "reason": "File packages/core/fixtures/nestjs-api/src/main.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:307",
+      "id": "rel:305",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/app.module.ts",
       "type": "package_exports_module",
@@ -11768,7 +11619,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/app.module.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:308",
+      "id": "rel:306",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/main.ts",
       "type": "package_exports_module",
@@ -11776,7 +11627,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/main.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:309",
+      "id": "rel:307",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/adapters/nestjs/controller-parser.ts",
       "type": "package_exports_module",
@@ -11784,7 +11635,7 @@
       "reason": "File packages/core/src/adapters/nestjs/controller-parser.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:310",
+      "id": "rel:308",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/adapters/nestjs/detector.ts",
       "type": "package_exports_module",
@@ -11792,7 +11643,7 @@
       "reason": "File packages/core/src/adapters/nestjs/detector.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:311",
+      "id": "rel:309",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/adapters/nestjs/dto-parser.ts",
       "type": "package_exports_module",
@@ -11800,7 +11651,7 @@
       "reason": "File packages/core/src/adapters/nestjs/dto-parser.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:312",
+      "id": "rel:310",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/adapters/nestjs/index.ts",
       "type": "package_exports_module",
@@ -11808,7 +11659,7 @@
       "reason": "File packages/core/src/adapters/nestjs/index.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:313",
+      "id": "rel:311",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/adapters/nestjs/module-parser.ts",
       "type": "package_exports_module",
@@ -11816,7 +11667,7 @@
       "reason": "File packages/core/src/adapters/nestjs/module-parser.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:314",
+      "id": "rel:312",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/adapters/nestjs/utils.ts",
       "type": "package_exports_module",
@@ -11824,7 +11675,7 @@
       "reason": "File packages/core/src/adapters/nestjs/utils.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:315",
+      "id": "rel:313",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/audit/reporters/cli.ts",
       "type": "package_exports_module",
@@ -11832,7 +11683,7 @@
       "reason": "File packages/core/src/audit/reporters/cli.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:316",
+      "id": "rel:314",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/audit/reporters/json.ts",
       "type": "package_exports_module",
@@ -11840,7 +11691,7 @@
       "reason": "File packages/core/src/audit/reporters/json.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:317",
+      "id": "rel:315",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/wiki/collectors/adapters.ts",
       "type": "package_exports_module",
@@ -11848,7 +11699,7 @@
       "reason": "File packages/core/src/wiki/collectors/adapters.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:318",
+      "id": "rel:316",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/wiki/collectors/cli.ts",
       "type": "package_exports_module",
@@ -11856,7 +11707,7 @@
       "reason": "File packages/core/src/wiki/collectors/cli.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:319",
+      "id": "rel:317",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/wiki/collectors/context.ts",
       "type": "package_exports_module",
@@ -11864,7 +11715,7 @@
       "reason": "File packages/core/src/wiki/collectors/context.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:320",
+      "id": "rel:318",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/wiki/collectors/features.ts",
       "type": "package_exports_module",
@@ -11872,7 +11723,7 @@
       "reason": "File packages/core/src/wiki/collectors/features.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:321",
+      "id": "rel:319",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/wiki/collectors/git.ts",
       "type": "package_exports_module",
@@ -11880,7 +11731,7 @@
       "reason": "File packages/core/src/wiki/collectors/git.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:322",
+      "id": "rel:320",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/wiki/collectors/history.ts",
       "type": "package_exports_module",
@@ -11888,7 +11739,7 @@
       "reason": "File packages/core/src/wiki/collectors/history.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:323",
+      "id": "rel:321",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/wiki/collectors/modules.ts",
       "type": "package_exports_module",
@@ -11896,7 +11747,7 @@
       "reason": "File packages/core/src/wiki/collectors/modules.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:324",
+      "id": "rel:322",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/src/wiki/collectors/packages.ts",
       "type": "package_exports_module",
@@ -11904,7 +11755,7 @@
       "reason": "File packages/core/src/wiki/collectors/packages.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:325",
+      "id": "rel:323",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/fixtures/nestjs-api/src/users/users.controller.ts",
       "type": "package_exports_module",
@@ -11912,7 +11763,7 @@
       "reason": "File packages/core/fixtures/nestjs-api/src/users/users.controller.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:326",
+      "id": "rel:324",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/fixtures/nestjs-api/src/users/users.module.ts",
       "type": "package_exports_module",
@@ -11920,7 +11771,7 @@
       "reason": "File packages/core/fixtures/nestjs-api/src/users/users.module.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:327",
+      "id": "rel:325",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts",
       "type": "package_exports_module",
@@ -11928,7 +11779,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:328",
+      "id": "rel:326",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/auth/auth.module.ts",
       "type": "package_exports_module",
@@ -11936,7 +11787,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/auth/auth.module.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:329",
+      "id": "rel:327",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/auth/auth.service.ts",
       "type": "package_exports_module",
@@ -11944,7 +11795,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/auth/auth.service.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:330",
+      "id": "rel:328",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/users/users.controller.ts",
       "type": "package_exports_module",
@@ -11952,7 +11803,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/users/users.controller.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:331",
+      "id": "rel:329",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/users/users.module.ts",
       "type": "package_exports_module",
@@ -11960,7 +11811,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/users/users.module.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:332",
+      "id": "rel:330",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/users/users.service.ts",
       "type": "package_exports_module",
@@ -11968,7 +11819,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/users/users.service.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:333",
+      "id": "rel:331",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/fixtures/nestjs-basic/temp/dto-by-name/data.ts",
       "type": "package_exports_module",
@@ -11976,7 +11827,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/temp/dto-by-name/data.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:334",
+      "id": "rel:332",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/fixtures/nestjs-api/src/users/dto/approve-user-request.dto.ts",
       "type": "package_exports_module",
@@ -11984,7 +11835,7 @@
       "reason": "File packages/core/fixtures/nestjs-api/src/users/dto/approve-user-request.dto.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:335",
+      "id": "rel:333",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/auth/guards/jwt-auth.guard.ts",
       "type": "package_exports_module",
@@ -11992,7 +11843,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/auth/guards/jwt-auth.guard.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:336",
+      "id": "rel:334",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/users/dto/create-user.dto.ts",
       "type": "package_exports_module",
@@ -12000,7 +11851,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/users/dto/create-user.dto.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:337",
+      "id": "rel:335",
       "sourceId": "package:@peria/core",
       "targetId": "file:packages/core/fixtures/nestjs-basic/src/users/dto/update-user.dto.ts",
       "type": "package_exports_module",
@@ -12008,23 +11859,7 @@
       "reason": "File packages/core/fixtures/nestjs-basic/src/users/dto/update-user.dto.ts belongs to package @peria/core"
     },
     {
-      "id": "rel:338",
-      "sourceId": "package:@peria/docs-ui",
-      "targetId": "file:packages/docs-ui/tsup.config.ts",
-      "type": "package_exports_module",
-      "confidence": "high",
-      "reason": "File packages/docs-ui/tsup.config.ts belongs to package @peria/docs-ui"
-    },
-    {
-      "id": "rel:339",
-      "sourceId": "package:@peria/docs-ui",
-      "targetId": "file:packages/docs-ui/src/index.ts",
-      "type": "package_exports_module",
-      "confidence": "high",
-      "reason": "File packages/docs-ui/src/index.ts belongs to package @peria/docs-ui"
-    },
-    {
-      "id": "rel:340",
+      "id": "rel:336",
       "sourceId": "package:@peria/renderer",
       "targetId": "file:packages/renderer/tsup.config.ts",
       "type": "package_exports_module",
@@ -12032,7 +11867,7 @@
       "reason": "File packages/renderer/tsup.config.ts belongs to package @peria/renderer"
     },
     {
-      "id": "rel:341",
+      "id": "rel:337",
       "sourceId": "package:@peria/renderer",
       "targetId": "file:packages/renderer/src/config.ts",
       "type": "package_exports_module",
@@ -12040,7 +11875,7 @@
       "reason": "File packages/renderer/src/config.ts belongs to package @peria/renderer"
     },
     {
-      "id": "rel:342",
+      "id": "rel:338",
       "sourceId": "package:@peria/renderer",
       "targetId": "file:packages/renderer/src/content.ts",
       "type": "package_exports_module",
@@ -12048,7 +11883,7 @@
       "reason": "File packages/renderer/src/content.ts belongs to package @peria/renderer"
     },
     {
-      "id": "rel:343",
+      "id": "rel:339",
       "sourceId": "package:@peria/renderer",
       "targetId": "file:packages/renderer/src/css.ts",
       "type": "package_exports_module",
@@ -12056,7 +11891,7 @@
       "reason": "File packages/renderer/src/css.ts belongs to package @peria/renderer"
     },
     {
-      "id": "rel:344",
+      "id": "rel:340",
       "sourceId": "package:@peria/renderer",
       "targetId": "file:packages/renderer/src/html.ts",
       "type": "package_exports_module",
@@ -12064,7 +11899,7 @@
       "reason": "File packages/renderer/src/html.ts belongs to package @peria/renderer"
     },
     {
-      "id": "rel:345",
+      "id": "rel:341",
       "sourceId": "package:@peria/renderer",
       "targetId": "file:packages/renderer/src/index.ts",
       "type": "package_exports_module",
@@ -12072,7 +11907,7 @@
       "reason": "File packages/renderer/src/index.ts belongs to package @peria/renderer"
     },
     {
-      "id": "rel:346",
+      "id": "rel:342",
       "sourceId": "package:@peria/renderer",
       "targetId": "file:packages/renderer/src/js.ts",
       "type": "package_exports_module",
@@ -12080,7 +11915,7 @@
       "reason": "File packages/renderer/src/js.ts belongs to package @peria/renderer"
     },
     {
-      "id": "rel:347",
+      "id": "rel:343",
       "sourceId": "package:@peria/renderer",
       "targetId": "file:packages/renderer/src/manifest.ts",
       "type": "package_exports_module",
@@ -12088,7 +11923,7 @@
       "reason": "File packages/renderer/src/manifest.ts belongs to package @peria/renderer"
     },
     {
-      "id": "rel:348",
+      "id": "rel:344",
       "sourceId": "package:@peria/renderer",
       "targetId": "file:packages/renderer/src/markdown.ts",
       "type": "package_exports_module",
@@ -12096,7 +11931,7 @@
       "reason": "File packages/renderer/src/markdown.ts belongs to package @peria/renderer"
     },
     {
-      "id": "rel:349",
+      "id": "rel:345",
       "sourceId": "package:@peria/renderer",
       "targetId": "file:packages/renderer/src/renderer.ts",
       "type": "package_exports_module",
@@ -12104,7 +11939,7 @@
       "reason": "File packages/renderer/src/renderer.ts belongs to package @peria/renderer"
     },
     {
-      "id": "rel:350",
+      "id": "rel:346",
       "sourceId": "package:@peria/renderer",
       "targetId": "file:packages/renderer/src/search.ts",
       "type": "package_exports_module",
@@ -12112,7 +11947,7 @@
       "reason": "File packages/renderer/src/search.ts belongs to package @peria/renderer"
     },
     {
-      "id": "rel:351",
+      "id": "rel:347",
       "sourceId": "package:@peria/renderer",
       "targetId": "file:packages/renderer/src/static.ts",
       "type": "package_exports_module",
@@ -12120,7 +11955,7 @@
       "reason": "File packages/renderer/src/static.ts belongs to package @peria/renderer"
     },
     {
-      "id": "rel:352",
+      "id": "rel:348",
       "sourceId": "package:@peria/renderer",
       "targetId": "file:packages/renderer/src/types.ts",
       "type": "package_exports_module",
@@ -12128,7 +11963,7 @@
       "reason": "File packages/renderer/src/types.ts belongs to package @peria/renderer"
     },
     {
-      "id": "rel:353",
+      "id": "rel:349",
       "sourceId": "package:@peria/sdk",
       "targetId": "file:packages/sdk/tsup.config.ts",
       "type": "package_exports_module",
@@ -12136,7 +11971,7 @@
       "reason": "File packages/sdk/tsup.config.ts belongs to package @peria/sdk"
     },
     {
-      "id": "rel:354",
+      "id": "rel:350",
       "sourceId": "package:@peria/sdk",
       "targetId": "file:packages/sdk/src/api-reference.ts",
       "type": "package_exports_module",
@@ -12144,7 +11979,7 @@
       "reason": "File packages/sdk/src/api-reference.ts belongs to package @peria/sdk"
     },
     {
-      "id": "rel:355",
+      "id": "rel:351",
       "sourceId": "package:@peria/sdk",
       "targetId": "file:packages/sdk/src/index.ts",
       "type": "package_exports_module",
@@ -12152,7 +11987,7 @@
       "reason": "File packages/sdk/src/index.ts belongs to package @peria/sdk"
     },
     {
-      "id": "rel:356",
+      "id": "rel:352",
       "sourceId": "package:@peria/sdk",
       "targetId": "file:packages/sdk/src/types.ts",
       "type": "package_exports_module",
@@ -12160,7 +11995,7 @@
       "reason": "File packages/sdk/src/types.ts belongs to package @peria/sdk"
     },
     {
-      "id": "rel:357",
+      "id": "rel:353",
       "sourceId": "package:@peria/sdk",
       "targetId": "file:packages/sdk/src/server/embed.ts",
       "type": "package_exports_module",
@@ -12169,60 +12004,47 @@
     }
   ],
   "git": {
-    "lastCommit": "d7924b07b5fb81410bbe5fff69d885f82384a376",
-    "shortCommit": "d7924b0",
+    "lastCommit": "d0a5f2266d97a31e0c775cc8a67e92a44c5b6d46",
+    "shortCommit": "d0a5f22",
     "branch": "feat/self-documentation-bootstrap",
     "isDirty": true,
     "changedFiles": [
-      "peria/manifest.json",
+      "LAUDE.md",
+      "CONTRIBUTING.md",
       "PUBLISHING.md",
       "README.md",
-      "biome.json",
       "bun.lock",
-      "docs/assets/wiki.js",
-      "docs/index.html",
-      "docs/pages/adapters.md",
-      "docs/pages/ai-context.md",
-      "docs/pages/history.md",
-      "docs/pages/modules.md",
-      "docs/pages/overview.md",
-      "docs/pages/packages.md",
-      "docs/wiki-manifest.json",
+      "package.json",
+      "packages/adapters/README.md",
       "packages/adapters/package.json",
-      "packages/adapters/src/__tests__/smoke.test.ts",
+      "packages/adapters/src/elysia.ts",
+      "packages/adapters/src/hono.ts",
+      "packages/adapters/src/index.ts",
+      "packages/adapters/tsup.config.ts",
       "packages/api-reference/package.json",
-      "packages/api-reference/pnpm-lock.yaml",
-      "packages/cli/README.md",
+      "packages/cli/bin/peria.js",
       "packages/cli/package.json",
-      "packages/cli/src/__tests__/integration.test.ts",
-      "packages/cli/src/commands/build.ts",
-      "packages/cli/src/commands/check.ts",
-      "packages/core/fixtures/nestjs-api/package.json",
-      "packages/core/fixtures/nestjs-basic/docs/assets/wiki.js",
-      "packages/core/fixtures/nestjs-basic/docs/index.html",
-      "packages/core/fixtures/nestjs-basic/docs/pages/ai-context.md",
-      "packages/core/fixtures/nestjs-basic/docs/pages/history.md",
-      "packages/core/fixtures/nestjs-basic/docs/pages/overview.md",
-      "packages/core/fixtures/nestjs-basic/docs/wiki-manifest.json",
-      "packages/core/fixtures/nestjs-basic/temp/dto-by-name/data.ts",
+      "packages/cli/src/index.ts",
       "packages/core/package.json",
-      "packages/core/src/__tests__/audit/types.test.ts",
-      "packages/core/src/__tests__/nestjs-parser.test.ts",
-      "packages/core/src/audit/docs-routes.ts",
-      "packages/core/src/audit/index.ts",
-      "packages/core/src/audit/openapi-docs.ts",
-      "packages/core/src/audit/package-exports.ts",
-      "packages/core/src/audit/types.ts",
+      "packages/core/src/wiki/pages.ts",
       "packages/docs-ui/package.json",
+      "packages/docs-ui/src/index.ts",
+      "packages/docs-ui/tsconfig.json",
+      "packages/docs-ui/tsup.config.ts",
       "packages/renderer/package.json",
-      "packages/renderer/src/js.ts",
       "packages/sdk/package.json",
-      "packages/sdk/tsup.config.ts",
-      "pnpm-lock.yaml",
-      "pnpm-workspace.yaml",
-      "packages/sdk/src/api-reference.ts"
+      "peria.config.ts",
+      "packages/cli/peria-cli-0.1.0.tgz",
+      "packages/core/peria-core-0.1.0.tgz"
     ],
     "recentChanges": [
+      {
+        "id": "d0a5f22",
+        "path": "",
+        "type": "modified",
+        "commit": "d0a5f22",
+        "subject": "fix: harden npm publish readiness"
+      },
       {
         "id": "d7924b0",
         "path": "",
@@ -12355,22 +12177,15 @@
         "type": "modified",
         "commit": "22f6f50",
         "subject": "feat(cli): wire audit engine into check command"
-      },
-      {
-        "id": "14454a1",
-        "path": "",
-        "type": "modified",
-        "commit": "14454a1",
-        "subject": "feat(core): add audit module for drift detection"
       }
     ]
   },
   "drift": [],
   "stats": {
-    "startTime": "1970-01-01T00:00:00.447Z",
-    "endTime": "1970-01-01T00:00:01.431Z",
-    "durationMs": 984,
-    "filesScanned": 178,
-    "packagesScanned": 10
+    "startTime": "1970-01-01T00:00:00.432Z",
+    "endTime": "1970-01-01T00:00:01.775Z",
+    "durationMs": 1343,
+    "filesScanned": 174,
+    "packagesScanned": 9
   }
 }

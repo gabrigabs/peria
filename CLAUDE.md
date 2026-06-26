@@ -18,8 +18,8 @@ peria/
 │   ├── core/        # Engine principal — types, config, detectors
 │   ├── cli/         # Command-line interface
 │   ├── sdk/         # SDK para uso programático
-│   ├── adapters/    # Express, Fastify, NestJS, Hono, Elysia adapters
-│   └── docs-ui/      # UI da documentação (planejado)
+│   ├── adapters/    # Express, Fastify, NestJS adapters
+│   └── renderer/    # Static wiki renderer
 ├── package.json      # Root workspace
 ├── tsconfig.base.json
 └── README.md

@@ -1,68 +1,55 @@
 {
   "title": "Peria Wiki",
   "tagline": "Human-readable by default. LLM-ready by design.",
-  "generatedAt": "2026-06-26T16:50:12.738Z",
+  "generatedAt": "2026-06-26T19:34:44.442Z",
   "manifestVersion": "0.1.0",
-  "commit": "d7924b07b5fb81410bbe5fff69d885f82384a376",
+  "commit": "d0a5f2266d97a31e0c775cc8a67e92a44c5b6d46",
   "git": {
     "branch": "feat/self-documentation-bootstrap",
-    "commit": "d7924b07b5fb81410bbe5fff69d885f82384a376",
-    "shortCommit": "d7924b0",
+    "commit": "d0a5f2266d97a31e0c775cc8a67e92a44c5b6d46",
+    "shortCommit": "d0a5f22",
     "author": "Gabriel Bezerra Rodrigues",
     "authorEmail": "gabrielbrodrigues1@gmail.com",
-    "authoredAt": "2026-06-26T12:31:59-03:00",
-    "subject": "fix(lint): resolve all remaining warnings",
+    "authoredAt": "2026-06-26T13:52:38-03:00",
+    "subject": "fix: harden npm publish readiness",
     "isDirty": true,
     "changedFiles": [
       "M .peria/manifest.json",
+      "M CLAUDE.md",
+      "M CONTRIBUTING.md",
       "M PUBLISHING.md",
       "M README.md",
-      "M biome.json",
       "M bun.lock",
-      "M docs/assets/wiki.js",
-      "M docs/index.html",
-      "M docs/pages/adapters.md",
-      "M docs/pages/ai-context.md",
-      "M docs/pages/history.md",
-      "M docs/pages/modules.md",
-      "M docs/pages/overview.md",
-      "M docs/pages/packages.md",
-      "M docs/wiki-manifest.json",
+      "M package.json",
+      "M packages/adapters/README.md",
       "M packages/adapters/package.json",
-      "M packages/adapters/src/__tests__/smoke.test.ts",
+      "D packages/adapters/src/elysia.ts",
+      "D packages/adapters/src/hono.ts",
+      "M packages/adapters/src/index.ts",
+      "M packages/adapters/tsup.config.ts",
       "M packages/api-reference/package.json",
-      "D packages/api-reference/pnpm-lock.yaml",
-      "M packages/cli/README.md",
+      "M packages/cli/bin/peria.js",
       "M packages/cli/package.json",
-      "M packages/cli/src/__tests__/integration.test.ts",
-      "M packages/cli/src/commands/build.ts",
-      "M packages/cli/src/commands/check.ts",
-      "M packages/core/fixtures/nestjs-api/package.json",
-      "M packages/core/fixtures/nestjs-basic/docs/assets/wiki.js",
-      "M packages/core/fixtures/nestjs-basic/docs/index.html",
-      "M packages/core/fixtures/nestjs-basic/docs/pages/ai-context.md",
-      "M packages/core/fixtures/nestjs-basic/docs/pages/history.md",
-      "M packages/core/fixtures/nestjs-basic/docs/pages/overview.md",
-      "M packages/core/fixtures/nestjs-basic/docs/wiki-manifest.json",
-      "M packages/core/fixtures/nestjs-basic/temp/dto-by-name/data.ts",
+      "M packages/cli/src/index.ts",
       "M packages/core/package.json",
-      "M packages/core/src/__tests__/audit/types.test.ts",
-      "M packages/core/src/__tests__/nestjs-parser.test.ts",
-      "M packages/core/src/audit/docs-routes.ts",
-      "M packages/core/src/audit/index.ts",
-      "M packages/core/src/audit/openapi-docs.ts",
-      "M packages/core/src/audit/package-exports.ts",
-      "M packages/core/src/audit/types.ts",
-      "M packages/docs-ui/package.json",
+      "M packages/core/src/wiki/pages.ts",
+      "D packages/docs-ui/package.json",
+      "D packages/docs-ui/src/index.ts",
+      "D packages/docs-ui/tsconfig.json",
+      "D packages/docs-ui/tsup.config.ts",
       "M packages/renderer/package.json",
-      "M packages/renderer/src/js.ts",
       "M packages/sdk/package.json",
-      "M packages/sdk/tsup.config.ts",
-      "D pnpm-lock.yaml",
-      "D pnpm-workspace.yaml",
-      "?? packages/sdk/src/api-reference.ts"
+      "M peria.config.ts",
+      "?? packages/cli/peria-cli-0.1.0.tgz",
+      "?? packages/core/peria-core-0.1.0.tgz"
     ],
     "recentCommits": [
+      {
+        "hash": "d0a5f22",
+        "date": "2026-06-26",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "fix: harden npm publish readiness"
+      },
       {
         "hash": "d7924b0",
         "date": "2026-06-26",
@@ -128,12 +115,6 @@
         "date": "2026-06-25",
         "author": "Gabriel Bezerra Rodrigues",
         "subject": "feat(cli): add context and diagram commands"
-      },
-      {
-        "hash": "9d5ae11",
-        "date": "2026-06-25",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "feat: npm publish setup for Phase 8"
       }
     ]
   },
@@ -183,7 +164,7 @@
         "role": "Runtime integration layer",
         "audience": "API teams embedding generated docs in framework applications.",
         "responsibilities": [
-          "Expose framework-specific entrypoints for Express, Fastify, NestJS, Hono, and Elysia.",
+          "Expose framework-specific entrypoints for Express, Fastify, and NestJS.",
           "Keep adapter contracts thin until generated artifacts are stable."
         ]
       },
@@ -193,14 +174,6 @@
         "responsibilities": [
           "Define SDK instance contracts.",
           "Prepare for embedded server and graph/search access."
-        ]
-      },
-      "@peria/docs-ui": {
-        "role": "Future packaged reader UI",
-        "audience": "Users consuming generated docs in a browser.",
-        "responsibilities": [
-          "Provide the eventual reusable UI package for the generated wiki.",
-          "Remain separate from the current CLI-emitted static reader while the UX stabilizes."
         ]
       }
     }

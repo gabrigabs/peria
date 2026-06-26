@@ -35,19 +35,19 @@ This package contributes 0 source modules and 0 exported declarations to the gen
 
 **Responsibilities:**
 
-- Expose framework-specific entrypoints for Express, Fastify, NestJS, Hono, and Elysia.
+- Expose framework-specific entrypoints for Express, Fastify, and NestJS.
 - Keep adapter contracts thin until generated artifacts are stable.
 
 **Why it matters:**
 
-This package contributes 7 source modules and 24 exported declarations to the generated knowledge graph. Its manifest lives at `packages/adapters/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 5 source modules and 17 exported declarations to the generated knowledge graph. Its manifest lives at `packages/adapters/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
 - Directory: `packages/adapters`
 - Version: 0.1.0
 - Scripts: `build`, `typecheck`, `test`, `dev`
-- Package exports: `.`, `./elysia`, `./express`, `./fastify`, `./hono`, `./nest`
+- Package exports: `.`, `./express`, `./fastify`, `./nest`
 - Internal package imports: none detected
 - External dependencies: `@fastify/static`, `@nestjs/core`, `@types/express`, `@types/node`, `express`, `fastify`, `tsup`, `typescript`, `vitest`
 
@@ -89,7 +89,7 @@ This package contributes 17 source modules and 26 exported declarations to the g
 **Surface:**
 
 - Directory: `packages/cli`
-- Version: 0.1.0
+- Version: 0.1.2
 - Scripts: `build`, `typecheck`, `test`, `dev`, `prepublishOnly`
 - Package exports: none
 - Internal package imports: `@peria/core`, `@peria/renderer`
@@ -120,30 +120,6 @@ This package contributes 116 source modules and 535 exported declarations to the
 - Internal package imports: none detected
 - External dependencies: `@apidevtools/swagger-parser`, `@types/node`, `remark`, `remark-frontmatter`, `remark-parse`, `ts-morph`, `tsup`, `typescript`, `unified`, `vitest`, `zod`
 
-## @peria/docs-ui
-
-**Role:** Future packaged reader UI
-
-**Audience:** Users consuming generated docs in a browser.
-
-**Responsibilities:**
-
-- Provide the eventual reusable UI package for the generated wiki.
-- Remain separate from the current CLI-emitted static reader while the UX stabilizes.
-
-**Why it matters:**
-
-This package contributes 1 source modules and 2 exported declarations to the generated knowledge graph. Its manifest lives at `packages/docs-ui/package.json`, so package metadata and scripts remain traceable to source.
-
-**Surface:**
-
-- Directory: `packages/docs-ui`
-- Version: 0.1.0
-- Scripts: `build`, `typecheck`, `test`, `dev`
-- Package exports: none
-- Internal package imports: none detected
-- External dependencies: `@types/node`, `tsup`, `typescript`
-
 ## @peria/renderer
 
 **Role:** Documentation renderer for Peria with support for static HTML generation
@@ -157,7 +133,7 @@ This package contributes 12 source modules and 112 exported declarations to the 
 **Surface:**
 
 - Directory: `packages/renderer`
-- Version: 0.1.0
+- Version: 0.1.1
 - Scripts: `build`, `typecheck`, `dev`, `test`
 - Package exports: `.`
 - Internal package imports: `@peria/core`

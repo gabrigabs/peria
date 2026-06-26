@@ -5,10 +5,6 @@
  * - Express
  * - Fastify
  * - NestJS
- *
- * Coming soon:
- * - Hono
- * - Elysia
  */
 
 // Express adapter

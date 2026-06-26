@@ -131,3 +131,9 @@ export type {
 } from './types/wiki.js';
 // Wiki builder
 export { buildWiki } from './wiki/builder.js';
+
+// Audit module (Phase 5)
+export { runAuditChecks, getAuditCheck, listAuditChecks, AUDIT_CHECKS } from './audit/index.js';
+export { CLIReporter, createCLIReporter } from './audit/reporters/cli.js';
+export { JSONReporter, createJSONReporter, toJSON } from './audit/reporters/json.js';
+export type { AuditCheck, AuditResult, AuditOptions, AuditSeverity, CheckResult, AuditSummary } from './audit/types.js';

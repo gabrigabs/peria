@@ -110,6 +110,14 @@ try {
   execSync(`git commit -m "chore: release v${newVersion}"`, { cwd: ROOT, stdio: 'inherit' });
   execSync(`git tag v${newVersion}`, { cwd: ROOT, stdio: 'inherit' });
 
+  // Export version for GitHub Actions
+  const githubEnv = process.env.GITHUB_ENV;
+  if (githubEnv) {
+    const { appendFileSync } = await import('node:fs');
+    appendFileSync(githubEnv, `NEW_VERSION=${newVersion}\n`);
+    console.log(`\n📤 Exported NEW_VERSION=${newVersion} to GITHUB_ENV`);
+  }
+
   console.log(`\n🎉 Done! Release v${newVersion} is ready.\n`);
   console.log('To publish, push the tag:');
   console.log(`  git push origin main --tags\n`);

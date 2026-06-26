@@ -2,15 +2,16 @@ name: Publish to npm
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches: [main]
 
 concurrency:
-  group: publish-${{ github.ref }}
+  group: publish
   cancel-in-progress: false
 
 jobs:
   publish:
+    # Skip release commits to avoid infinite loop
+    if: "!startsWith(github.event.head_commit.message, 'chore: release')"
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -19,6 +20,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -43,10 +46,13 @@ jobs:
       - name: Test
         run: bun run test
 
+      - name: Bump version
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          bun scripts/version.ts patch
+
       # Publish in topological order (leaves first, then dependents)
-      # Layer 0: no internal deps
-      # Layer 1: depends on core
-      # Layer 2: depends on core + renderer
       - name: Publish packages
         run: |
           PACKAGES=(
@@ -62,7 +68,6 @@ jobs:
             PKG_NAME=$(node -p "require('./$pkg/package.json').name")
             PKG_VERSION=$(node -p "require('./$pkg/package.json').version")
 
-            # Check if this version is already published
             if npm view "$PKG_NAME@$PKG_VERSION" version 2>/dev/null; then
               echo "⏭️  $PKG_NAME@$PKG_VERSION already published, skipping"
             else
@@ -72,7 +77,11 @@ jobs:
             fi
           done
 
+      - name: Push version commit and tag
+        run: git push origin main --tags
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: v${{ env.NEW_VERSION }}
           generate_release_notes: true

@@ -4,8 +4,8 @@
  * Generate context for a specific package including modules, exports, and dependencies.
  */
 
-import type { PackageContextPack, ContextPackOptions } from './types.js';
 import type { PackageEntity } from '../types/graph.js';
+import type { ContextPackOptions, PackageContextPack } from './types.js';
 import { generateContextPackId } from './types.js';
 import { truncateToLines } from './utils.js';
 

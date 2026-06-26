@@ -2,9 +2,9 @@
  * Context command - Generate agent context packs
  */
 
-import { readManifest } from '../utils/manifest.js';
 import { generateAndSaveContextPacks } from '@peria/core';
 import { logger } from '../utils/logger.js';
+import { readManifest } from '../utils/manifest.js';
 
 /**
  * CLI options for the context command

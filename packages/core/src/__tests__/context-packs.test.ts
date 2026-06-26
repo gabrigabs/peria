@@ -2,12 +2,8 @@
  * Tests for context packs module
  */
 
-import { describe, it, expect } from 'vitest';
-import {
-  generateContextPackId,
-  TASK_TEMPLATES,
-} from '../context-packs/index.js';
-import type { ContextVariant, TaskType } from '../context-packs/index.js';
+import { describe, expect, it } from 'vitest';
+import { generateContextPackId, TASK_TEMPLATES } from '../context-packs/index.js';
 
 describe('context-packs types', () => {
   describe('generateContextPackId', () => {

@@ -2,10 +2,10 @@
  * Audit Module Tests
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
-  createEmptyAuditResult,
   calculateSummary,
+  createEmptyAuditResult,
   filterBySeverity,
   sortBySeverity,
 } from '../../audit/types.js';
@@ -44,10 +44,7 @@ describe('Audit Types', () => {
           name: 'check2',
           description: 'Test check 2',
           status: 'passed' as const,
-          findings: [
-            { severity: 'info' } as DriftFinding,
-            { severity: 'info' } as DriftFinding,
-          ],
+          findings: [{ severity: 'info' } as DriftFinding, { severity: 'info' } as DriftFinding],
         },
       ];
 

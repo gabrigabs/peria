@@ -2,8 +2,8 @@
  * CLI Reporter - Human-readable audit output
  */
 
-import type { AuditResult } from '../types.js';
 import type { DriftFinding } from '../../types/graph.js';
+import type { AuditResult } from '../types.js';
 
 /**
  * Format a source reference
@@ -49,7 +49,7 @@ export class CLIReporter {
 
     // Header
     lines.push(this.color ? '\x1b[1mPeria Audit Report\x1b[0m' : 'Peria Audit Report');
-    lines.push(this.color ? '\x1b[2m' + '='.repeat(50) + '\x1b[0m' : '='.repeat(50));
+    lines.push(this.color ? `\x1b[2m${'='.repeat(50)}\x1b[0m` : '='.repeat(50));
     lines.push('');
 
     if (result.checks.length === 0) {
@@ -152,7 +152,11 @@ export class CLIReporter {
 
     // Entity
     if (finding.entityId) {
-      lines.push(this.color ? `    \x1b[90mEntity: ${finding.entityId}\x1b[0m` : `    Entity: ${finding.entityId}`);
+      lines.push(
+        this.color
+          ? `    \x1b[90mEntity: ${finding.entityId}\x1b[0m`
+          : `    Entity: ${finding.entityId}`
+      );
     }
 
     // Suggestions
@@ -201,6 +205,9 @@ export class CLIReporter {
 /**
  * Create a CLI reporter instance
  */
-export function createCLIReporter(options?: { showSuggestions?: boolean; color?: boolean }): CLIReporter {
+export function createCLIReporter(options?: {
+  showSuggestions?: boolean;
+  color?: boolean;
+}): CLIReporter {
   return new CLIReporter(options);
 }

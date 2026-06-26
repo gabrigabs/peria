@@ -8,12 +8,11 @@
  * - Type declarations missing (warning)
  */
 
-import { access, readFile, readdir } from 'node:fs/promises';
+import { access, readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-
-import type { AuditCheck, AuditSeverity } from './types.js';
 import type { DriftFinding } from '../types/graph.js';
 import type { PeriaManifest } from '../types/manifest.js';
+import type { AuditCheck, AuditSeverity } from './types.js';
 
 interface PackageJson {
   name: string;
@@ -88,13 +87,14 @@ export const runPackageExportsCheck: AuditCheck = {
       let pkgJson: PackageJson | null = null;
       try {
         const content = await readFile(pkgJsonPath, 'utf-8');
-        pkgJson = JSON.parse(content);
+        pkgJson = JSON.parse(content) as PackageJson;
       } catch {
         // Package.json doesn't exist, skip
         continue;
       }
 
-      // At this point, pkgJson is guaranteed to be non-null
+      // TypeScript narrowing doesn't work here, but we know pkgJson is set after try-catch
+      // biome-ignore lint/style/noNonNullAssertion: pkgJson is guaranteed to be set after successful JSON.parse
       const pkgJsonData = pkgJson!;
 
       // Check if dist exists
@@ -137,15 +137,12 @@ export const runPackageExportsCheck: AuditCheck = {
           // Skip node patterns
           if (exportPath.includes('*') || exportPath.includes('#')) continue;
 
-          const exportObj = typeof exportValue === 'string'
-            ? { default: exportValue }
-            : exportValue;
+          const exportObj =
+            typeof exportValue === 'string' ? { default: exportValue } : exportValue;
 
           // Check default export
           if (exportObj.default) {
-            const exportFile = exportObj.default
-              .replace(/^\.\//, '')
-              .replace(/\.js$/, '');
+            const exportFile = exportObj.default.replace(/^\.\//, '').replace(/\.js$/, '');
 
             if (!distFileSet.has(exportFile) && !distFileSet.has(`${exportFile}/index`)) {
               findings.push({
@@ -168,14 +165,10 @@ export const runPackageExportsCheck: AuditCheck = {
 
           // Check types export
           if (exportObj.types) {
-            const typesFile = exportObj.types
-              .replace(/^\.\//, '')
-              .replace(/\.d\.ts$/, '');
+            const typesFile = exportObj.types.replace(/^\.\//, '').replace(/\.d\.ts$/, '');
 
             // Check for .d.ts file
-            const hasTypes = distFiles.some(
-              (f) => f.startsWith(typesFile) && f.endsWith('.d')
-            );
+            const hasTypes = distFiles.some((f) => f.startsWith(typesFile) && f.endsWith('.d'));
 
             if (!hasTypes) {
               findings.push({

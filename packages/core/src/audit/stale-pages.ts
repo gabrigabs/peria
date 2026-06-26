@@ -7,12 +7,11 @@
  * - Pages with inconsistent state
  */
 
-import { access, stat, readdir } from 'node:fs/promises';
+import { access, readdir, stat } from 'node:fs/promises';
 import { join } from 'node:path';
-
-import type { AuditCheck, AuditSeverity } from './types.js';
 import type { DriftFinding } from '../types/graph.js';
 import type { PeriaManifest } from '../types/manifest.js';
+import type { AuditCheck, AuditSeverity } from './types.js';
 
 /**
  * Generate a unique ID for findings
@@ -71,9 +70,7 @@ export const runStalePagesCheck: AuditCheck = {
 
       if (mtime && mtime.getTime() > manifestTime) {
         // Calculate how long after the manifest
-        const hoursSince = Math.round(
-          (mtime.getTime() - manifestTime) / (1000 * 60 * 60)
-        );
+        const hoursSince = Math.round((mtime.getTime() - manifestTime) / (1000 * 60 * 60));
 
         findings.push({
           id: generateId('page-stale', index++),
@@ -107,9 +104,7 @@ export const runStalePagesCheck: AuditCheck = {
           const mtime = await getMtime(filePath);
 
           // Check if page is not in manifest but exists on disk
-          const isInManifest = manifest.docsPages.some(
-            (p) => p.source.file.endsWith(file.name)
-          );
+          const isInManifest = manifest.docsPages.some((p) => p.source.file.endsWith(file.name));
 
           if (mtime && !isInManifest) {
             findings.push({

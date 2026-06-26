@@ -2,9 +2,9 @@
  * Check command - Audit/drift detection and diagnostics
  */
 
-import { readManifest } from '../utils/manifest.js';
-import { runAuditChecks, CLIReporter, toJSON } from '@peria/core';
+import { CLIReporter, runAuditChecks, toJSON } from '@peria/core';
 import { logger } from '../utils/logger.js';
+import { readManifest } from '../utils/manifest.js';
 
 /**
  * CLI options for the check command
@@ -19,7 +19,9 @@ interface CheckOptions {
  * Main check command
  */
 export async function checkCommand(cwd: string, options: CheckOptions = {}): Promise<void> {
-  logger.header('Peria Check');
+  if (!options.json) {
+    logger.header('Peria Check');
+  }
 
   // Load manifest
   const manifest = await readManifest(cwd);

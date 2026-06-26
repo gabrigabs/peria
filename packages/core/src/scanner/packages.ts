@@ -47,7 +47,7 @@ export async function scanPackages(cwd: string): Promise<PackageEntity[]> {
         id: `package:${pkg.name}`,
         name: pkg.name,
         version: pkg.version,
-        directory: file.replace('/package.json', ''),
+        directory: file === 'package.json' ? '.' : file.replace('/package.json', ''),
         manifestPath: file,
         description: pkg.description,
         scripts: pkg.scripts,

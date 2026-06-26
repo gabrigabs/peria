@@ -9,7 +9,12 @@ import type { Confidence, SourceRef } from '../types/graph.js';
 /**
  * Diagram types
  */
-export type DiagramType = 'route-flow' | 'module-graph' | 'package-deps' | 'schema' | 'endpoint-handler';
+export type DiagramType =
+  | 'route-flow'
+  | 'module-graph'
+  | 'package-deps'
+  | 'schema'
+  | 'endpoint-handler';
 
 /**
  * Mermaid diagram entity
@@ -75,6 +80,6 @@ export const DIAGRAM_TYPE_LABELS: Record<DiagramType, string> = {
   'route-flow': 'Route Flow',
   'module-graph': 'Module Graph',
   'package-deps': 'Package Dependencies',
-  'schema': 'Schema Diagram',
+  schema: 'Schema Diagram',
   'endpoint-handler': 'Endpoint Handler',
 };

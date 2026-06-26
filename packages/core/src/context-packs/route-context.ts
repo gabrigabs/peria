@@ -4,8 +4,8 @@
  * Generate context for a specific route including handler, OpenAPI, and schemas.
  */
 
-import type { RouteContextPack, ContextPackOptions } from './types.js';
-import type { RouteEntity, OpenAPIOperation } from '../types/graph.js';
+import type { OpenAPIOperation, RouteEntity } from '../types/graph.js';
+import type { ContextPackOptions, RouteContextPack } from './types.js';
 import { generateContextPackId } from './types.js';
 import { truncateToLines } from './utils.js';
 
@@ -90,9 +90,7 @@ function buildRouteContextContent(
       lines.push('| Name | Location | Required |');
       lines.push('|------|----------|----------|');
       for (const param of options.openapiOp.parameters) {
-        lines.push(
-          `| ${param.name} | ${param.in} | ${param.required ? 'Yes' : 'No'} |`
-        );
+        lines.push(`| ${param.name} | ${param.in} | ${param.required ? 'Yes' : 'No'} |`);
       }
       lines.push('');
     }

@@ -2,8 +2,8 @@
  * JSON Reporter - Machine-readable audit output
  */
 
-import type { AuditResult } from '../types.js';
 import type { DriftFinding } from '../../types/graph.js';
+import type { AuditResult } from '../types.js';
 
 /**
  * JSON output format for audit results
@@ -80,17 +80,13 @@ export class JSONReporter {
     };
 
     // Add any errors from checks
-    const errors = result.checks
-      .filter((c) => c.error)
-      .map((c) => `${c.name}: ${c.error}`);
+    const errors = result.checks.filter((c) => c.error).map((c) => `${c.name}: ${c.error}`);
 
     if (errors.length > 0) {
       output.errors = errors;
     }
 
-    return this.pretty
-      ? JSON.stringify(output, null, 2)
-      : JSON.stringify(output);
+    return this.pretty ? JSON.stringify(output, null, 2) : JSON.stringify(output);
   }
 
   /**

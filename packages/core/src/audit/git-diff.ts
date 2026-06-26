@@ -9,10 +9,9 @@
 
 import { exec } from 'node:child_process';
 import { promisify } from 'node:util';
-
-import type { AuditCheck, AuditSeverity } from './types.js';
 import type { DriftFinding } from '../types/graph.js';
 import type { PeriaManifest } from '../types/manifest.js';
+import type { AuditCheck, AuditSeverity } from './types.js';
 
 const execAsync = promisify(exec);
 
@@ -46,10 +45,7 @@ async function runGit(command: string, cwd: string): Promise<string> {
 /**
  * Get git diff since a specific commit
  */
-async function getGitDiff(
-  cwd: string,
-  sinceCommit?: string
-): Promise<GitDiffResult> {
+async function getGitDiff(cwd: string, sinceCommit?: string): Promise<GitDiffResult> {
   const result: GitDiffResult = {
     files: [],
     summary: { added: 0, modified: 0, deleted: 0 },
@@ -179,11 +175,7 @@ function categorizeFile(filePath: string): 'route' | 'schema' | 'doc' | 'openapi
     return 'schema';
   }
 
-  if (
-    lower.includes('docs') ||
-    lower.includes('.md') ||
-    lower.includes('.mdx')
-  ) {
+  if (lower.includes('docs') || lower.includes('.md') || lower.includes('.mdx')) {
     return 'doc';
   }
 

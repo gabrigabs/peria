@@ -4,9 +4,9 @@
  * Generate endpoint-to-handler flow diagrams in Mermaid format.
  */
 
-import type { MermaidDiagram, MermaidOptions } from './types.js';
-import { generateDiagramId, DIAGRAM_TYPE_LABELS } from './types.js';
 import type { PeriaManifest } from '../types/manifest.js';
+import type { MermaidDiagram, MermaidOptions } from './types.js';
+import { DIAGRAM_TYPE_LABELS, generateDiagramId } from './types.js';
 
 /**
  * Generate route flow diagrams
@@ -22,12 +22,14 @@ export function generateRouteFlowDiagrams(
   }
 
   // Group routes by path prefix
-  const routeGroups = groupRoutesByPrefix(manifest.routes.map((r) => ({
-    method: r.method,
-    path: r.path,
-    id: r.id,
-    source: { file: r.source.file, line: r.source.line ?? 1 },
-  })));
+  const routeGroups = groupRoutesByPrefix(
+    manifest.routes.map((r) => ({
+      method: r.method,
+      path: r.path,
+      id: r.id,
+      source: { file: r.source.file, line: r.source.line ?? 1 },
+    }))
+  );
 
   // Generate one diagram per group (limit to maxPerType)
   const maxPerType = options.maxPerType ?? 5;
@@ -40,11 +42,13 @@ export function generateRouteFlowDiagrams(
 
   // Generate overall route map if we have multiple groups
   if (groups.length > 1) {
-    const overview = generateOverviewDiagram(manifest.routes.map((r) => ({
-      method: r.method,
-      path: r.path,
-      id: r.id,
-    })));
+    const overview = generateOverviewDiagram(
+      manifest.routes.map((r) => ({
+        method: r.method,
+        path: r.path,
+        id: r.id,
+      }))
+    );
     diagrams.unshift(overview);
   }
 

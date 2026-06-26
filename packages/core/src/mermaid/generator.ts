@@ -6,17 +6,12 @@
 
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import type {
-  MermaidDiagram,
-  MermaidOptions,
-  MermaidResult,
-  DiagramType,
-} from './types.js';
-import { generateDiagramId } from './types.js';
-import { generateRouteFlowDiagrams } from './route-flow.js';
-import { generatePackageDepDiagrams } from './package-deps.js';
-import { generateSchemaDiagrams } from './schema.js';
 import type { PeriaManifest } from '../types/manifest.js';
+import { generatePackageDepDiagrams } from './package-deps.js';
+import { generateRouteFlowDiagrams } from './route-flow.js';
+import { generateSchemaDiagrams } from './schema.js';
+import type { DiagramType, MermaidDiagram, MermaidOptions, MermaidResult } from './types.js';
+import { generateDiagramId } from './types.js';
 
 /**
  * Default output directory for diagrams
@@ -26,10 +21,7 @@ const DEFAULT_OUTPUT_DIR = '.peria/diagrams';
 /**
  * Generate all diagrams from a manifest
  */
-export function generateDiagrams(
-  manifest: PeriaManifest,
-  options: MermaidOptions
-): MermaidResult {
+export function generateDiagrams(manifest: PeriaManifest, options: MermaidOptions): MermaidResult {
   const diagrams: MermaidDiagram[] = [];
   const types = options.types ?? ['route-flow', 'package-deps', 'schema'];
 
@@ -56,7 +48,7 @@ export function generateDiagrams(
     'route-flow': 0,
     'module-graph': 0,
     'package-deps': 0,
-    'schema': 0,
+    schema: 0,
     'endpoint-handler': 0,
   };
 
@@ -140,10 +132,7 @@ export function generateOverviewDiagram(manifest: PeriaManifest): MermaidDiagram
 /**
  * Save diagrams to disk
  */
-export async function saveDiagrams(
-  result: MermaidResult,
-  outputDir?: string
-): Promise<void> {
+export async function saveDiagrams(result: MermaidResult, outputDir?: string): Promise<void> {
   const dir = outputDir ?? DEFAULT_OUTPUT_DIR;
 
   // Create output directory
@@ -156,7 +145,7 @@ export async function saveDiagrams(
     if (!byType.has(diagram.type)) {
       byType.set(diagram.type, []);
     }
-    byType.get(diagram.type)!.push(diagram);
+    byType.get(diagram.type)?.push(diagram);
   }
 
   // Save diagrams by type

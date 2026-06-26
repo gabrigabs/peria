@@ -2,16 +2,16 @@
  * Tests for mermaid module
  */
 
-import { describe, it, expect } from 'vitest';
-import {
-  generateDiagramId,
-  DIAGRAM_TYPE_LABELS,
-  generateRouteFlowDiagrams,
-  generatePackageDepDiagrams,
-  generateSchemaDiagrams,
-  generateDiagrams,
-} from '../mermaid/index.js';
+import { describe, expect, it } from 'vitest';
 import type { DiagramType } from '../mermaid/index.js';
+import {
+  DIAGRAM_TYPE_LABELS,
+  generateDiagramId,
+  generateDiagrams,
+  generatePackageDepDiagrams,
+  generateRouteFlowDiagrams,
+  generateSchemaDiagrams,
+} from '../mermaid/index.js';
 
 describe('mermaid types', () => {
   describe('generateDiagramId', () => {
@@ -43,7 +43,13 @@ describe('mermaid types', () => {
 
   describe('DIAGRAM_TYPE_LABELS', () => {
     it('should have labels for all diagram types', () => {
-      const types: DiagramType[] = ['route-flow', 'module-graph', 'package-deps', 'schema', 'endpoint-handler'];
+      const types: DiagramType[] = [
+        'route-flow',
+        'module-graph',
+        'package-deps',
+        'schema',
+        'endpoint-handler',
+      ];
 
       for (const type of types) {
         expect(DIAGRAM_TYPE_LABELS[type]).toBeDefined();
@@ -56,7 +62,7 @@ describe('mermaid types', () => {
       expect(DIAGRAM_TYPE_LABELS['route-flow']).toBe('Route Flow');
       expect(DIAGRAM_TYPE_LABELS['module-graph']).toBe('Module Graph');
       expect(DIAGRAM_TYPE_LABELS['package-deps']).toBe('Package Dependencies');
-      expect(DIAGRAM_TYPE_LABELS['schema']).toBe('Schema Diagram');
+      expect(DIAGRAM_TYPE_LABELS.schema).toBe('Schema Diagram');
       expect(DIAGRAM_TYPE_LABELS['endpoint-handler']).toBe('Endpoint Handler');
     });
   });

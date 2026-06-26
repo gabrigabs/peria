@@ -7,9 +7,9 @@
  * - Docs referencing non-existent routes (warning)
  */
 
-import type { AuditCheck, AuditSeverity } from './types.js';
 import type { DriftFinding } from '../types/graph.js';
 import type { PeriaManifest } from '../types/manifest.js';
+import type { AuditCheck, AuditSeverity } from './types.js';
 
 /**
  * Generate a unique ID for findings
@@ -31,9 +31,7 @@ export const runDocsRoutesCheck: AuditCheck = {
     let index = 0;
 
     // Build a set of valid route IDs
-    const routeIds = new Set(
-      manifest.routes.map((r) => `${r.method}:${r.path}`.toLowerCase())
-    );
+    const routeIds = new Set(manifest.routes.map((r) => `${r.method}:${r.path}`.toLowerCase()));
 
     // Build a set of documented routes
     const documentedRoutes = new Set<string>();
@@ -46,15 +44,16 @@ export const runDocsRoutesCheck: AuditCheck = {
 
         // Skip if the path looks like a file path or CLI command (not an API route)
         const path = mention.path.toLowerCase();
-        const isLikelyFilePath = path.includes('/utils/') ||
-                                 path.includes('/prompts/') ||
-                                 path.includes('/generators/') ||
-                                 path.includes('/commands/') ||
-                                 path.includes('/modules/') ||
-                                 path.startsWith('/docs') ||
-                                 path.includes('.md') ||
-                                 path.includes('.ts') ||
-                                 path.includes('.js');
+        const isLikelyFilePath =
+          path.includes('/utils/') ||
+          path.includes('/prompts/') ||
+          path.includes('/generators/') ||
+          path.includes('/commands/') ||
+          path.includes('/modules/') ||
+          path.startsWith('/docs') ||
+          path.includes('.md') ||
+          path.includes('.ts') ||
+          path.includes('.js');
 
         if (isLikelyFilePath) {
           // These are likely references to code modules, not API routes
@@ -135,8 +134,7 @@ export function getDocsCoverage(manifest: PeriaManifest): {
   return {
     totalRoutes: manifest.routes.length,
     documentedRoutes: documented,
-    coveragePercent: manifest.routes.length > 0
-      ? Math.round((documented / manifest.routes.length) * 100)
-      : 100,
+    coveragePercent:
+      manifest.routes.length > 0 ? Math.round((documented / manifest.routes.length) * 100) : 100,
   };
 }

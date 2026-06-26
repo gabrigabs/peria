@@ -6,6 +6,11 @@
 
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import type { PeriaManifest } from '../types/manifest.js';
+import { generateDiffContext } from './diff-context.js';
+import { generatePackageContext } from './package-context.js';
+import { generateRouteContext } from './route-context.js';
+import { generateTaskContext } from './task-context.js';
 import type {
   ContextPack,
   ContextPackOptions,
@@ -14,11 +19,6 @@ import type {
   FullContextPack,
   TaskType,
 } from './types.js';
-import { generateRouteContext } from './route-context.js';
-import { generatePackageContext } from './package-context.js';
-import { generateTaskContext } from './task-context.js';
-import { generateDiffContext } from './diff-context.js';
-import type { PeriaManifest } from '../types/manifest.js';
 
 /**
  * Default output directory for context packs
@@ -36,7 +36,7 @@ export async function generateContextPacks(
   const packs: ContextPack[] = [];
 
   // Build OpenAPI operation lookup
-  const openapiOpMap = new Map<string, typeof manifest.openapiOps[0]>();
+  const openapiOpMap = new Map<string, (typeof manifest.openapiOps)[0]>();
   if (manifest.openapiOps) {
     for (const op of manifest.openapiOps) {
       const key = `${op.method}:${op.path}`.toLowerCase();
@@ -64,12 +64,7 @@ export async function generateContextPacks(
   }
 
   // Generate task context packs
-  const taskTypes: TaskType[] = [
-    'add-route',
-    'add-schema',
-    'add-package',
-    'fix-drift',
-  ];
+  const taskTypes: TaskType[] = ['add-route', 'add-schema', 'add-package', 'fix-drift'];
 
   for (const taskType of taskTypes) {
     const taskPack = generateTaskContext(taskType, {

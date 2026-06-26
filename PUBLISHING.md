@@ -180,14 +180,22 @@ Then in GitHub Settings > Secrets, add `NPM_TOKEN` with an npm automation token.
 
 ## Current Status
 
-As of Phase 0 completion:
+As of Phase 7 completion:
 - Package metadata is prepared ✅
 - Build works ✅
 - CLI binary works ✅
-- Publishing is ready when you are
+- Adapters implemented (Express, Fastify, NestJS) ✅
+- Publishing pending: npm pack test and tarball installation test
 
-To publish now:
+To publish when ready:
 ```sh
+bun run build
+npm pack --pack-destination /tmp packages/core packages/cli packages/adapters
+# Test tarball installation
+cd /tmp && npm install peria-core-*.tgz peria-cli-*.tgz peria-adapters-*.tgz
+npx peria --help
+# If tests pass, publish:
 cd packages/core && npm publish --access public
 cd packages/cli && npm publish --access public
+cd packages/adapters && npm publish --access public
 ```

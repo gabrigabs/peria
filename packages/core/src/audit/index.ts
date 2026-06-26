@@ -12,27 +12,27 @@
  * ```
  */
 
-export * from './types.js';
-export * from './route-openapi.js';
 export * from './docs-routes.js';
+export * from './git-diff.js';
 export * from './manifest-state.js';
 export * from './package-exports.js';
-export * from './stale-pages.js';
-export * from './stale-openapi.js';
-export * from './git-diff.js';
 export * from './reporters/cli.js';
 export * from './reporters/json.js';
+export * from './route-openapi.js';
+export * from './stale-openapi.js';
+export * from './stale-pages.js';
+export * from './types.js';
 
-import type { AuditCheck, AuditResult, AuditOptions, CheckResult, CheckStatus } from './types.js';
-import { createEmptyAuditResult, calculateSummary } from './types.js';
-import { runRouteOpenAPICheck } from './route-openapi.js';
+import type { PeriaManifest } from '../types/manifest.js';
 import { runDocsRoutesCheck } from './docs-routes.js';
+import { runGitDiffCheck } from './git-diff.js';
 import { runManifestStateCheck } from './manifest-state.js';
 import { runPackageExportsCheck } from './package-exports.js';
-import { runStalePagesCheck } from './stale-pages.js';
+import { runRouteOpenAPICheck } from './route-openapi.js';
 import { runStaleOpenAPICheck } from './stale-openapi.js';
-import { runGitDiffCheck } from './git-diff.js';
-import type { PeriaManifest } from '../types/manifest.js';
+import { runStalePagesCheck } from './stale-pages.js';
+import type { AuditCheck, AuditOptions, AuditResult, CheckResult, CheckStatus } from './types.js';
+import { calculateSummary, createEmptyAuditResult } from './types.js';
 
 /**
  * All available audit checks

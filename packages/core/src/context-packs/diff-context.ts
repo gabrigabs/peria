@@ -6,7 +6,7 @@
 
 import { exec } from 'node:child_process';
 import { promisify } from 'node:util';
-import type { DiffContextPack, ContextPackOptions } from './types.js';
+import type { ContextPackOptions, DiffContextPack } from './types.js';
 import { generateContextPackId } from './types.js';
 import { truncateToLines } from './utils.js';
 
@@ -174,7 +174,9 @@ function buildDiffContextContent(
   // Header
   lines.push('# Git Diff Context');
   lines.push('');
-  lines.push(`**Summary:** ${diff.summary.added} added, ${diff.summary.modified} modified, ${diff.summary.deleted} deleted`);
+  lines.push(
+    `**Summary:** ${diff.summary.added} added, ${diff.summary.modified} modified, ${diff.summary.deleted} deleted`
+  );
   lines.push(`**Impact Level:** ${impact.impactLevel.toUpperCase()}`);
   lines.push('');
 

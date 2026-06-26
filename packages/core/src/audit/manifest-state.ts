@@ -9,12 +9,11 @@
  */
 
 import { access } from 'node:fs/promises';
-import { join, isAbsolute } from 'node:path';
-
-import type { AuditCheck, AuditSeverity } from './types.js';
+import { isAbsolute, join } from 'node:path';
 import type { DriftFinding } from '../types/graph.js';
 import type { PeriaManifest } from '../types/manifest.js';
 import { isValidManifest } from '../types/manifest.js';
+import type { AuditCheck, AuditSeverity } from './types.js';
 
 /**
  * Generate a unique ID for findings
@@ -106,10 +105,7 @@ export const runManifestStateCheck: AuditCheck = {
           expected: 'File should exist',
           actual: 'File not found',
           source: { file: '.peria/manifest.json', line: sourceFile.source.line },
-          suggestions: [
-            'Run "peria scan" to update manifest',
-            'Or restore the missing file',
-          ],
+          suggestions: ['Run "peria scan" to update manifest', 'Or restore the missing file'],
         });
       }
     }
@@ -148,10 +144,7 @@ export const runManifestStateCheck: AuditCheck = {
           expected: 'Package directory should exist',
           actual: 'Directory not found',
           source: { file: '.peria/manifest.json' },
-          suggestions: [
-            'Remove the package directory',
-            'Or run "peria scan" to update manifest',
-          ],
+          suggestions: ['Remove the package directory', 'Or run "peria scan" to update manifest'],
         });
       }
     }

@@ -15,26 +15,23 @@
  * ```
  */
 
-// Types
-export * from './types.js';
-
-// Generators
-export { generateRouteFlowDiagrams } from './route-flow.js';
-export { generatePackageDepDiagrams } from './package-deps.js';
-export { generateSchemaDiagrams } from './schema.js';
-
 // Main generator
 export {
+  generateAndSaveDiagrams,
   generateDiagrams,
   generateOverviewDiagram,
   saveDiagrams,
-  generateAndSaveDiagrams,
 } from './generator.js';
-
+export { generatePackageDepDiagrams } from './package-deps.js';
+// Generators
+export { generateRouteFlowDiagrams } from './route-flow.js';
+export { generateSchemaDiagrams } from './schema.js';
 // Re-export types for convenience
 export type {
+  DiagramType,
   MermaidDiagram,
   MermaidOptions,
   MermaidResult,
-  DiagramType,
 } from './types.js';
+// Types
+export * from './types.js';

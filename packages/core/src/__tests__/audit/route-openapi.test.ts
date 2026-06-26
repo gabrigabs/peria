@@ -2,7 +2,7 @@
  * Route vs OpenAPI Audit Check Tests
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { runRouteOpenAPICheck } from '../../audit/route-openapi.js';
 import type { PeriaManifest } from '../../types/manifest.js';
 
@@ -71,7 +71,9 @@ describe('Route vs OpenAPI Check', () => {
     expect(findings).toHaveLength(2);
     expect(findings[0].severity).toBe('error');
     expect(findings[0].type).toBe('route-missing-openapi');
-    expect(findings[0].problem).toContain('Route GET /users has no corresponding OpenAPI operation');
+    expect(findings[0].problem).toContain(
+      'Route GET /users has no corresponding OpenAPI operation'
+    );
 
     expect(findings[1].severity).toBe('warning');
     expect(findings[1].type).toBe('openapi-missing-route');

@@ -7,10 +7,10 @@
  * - OpenAPI operations without corresponding routes (warning)
  */
 
-import type { AuditCheck, AuditSeverity } from './types.js';
+import { matchRoutesToOpenAPI } from '../matcher/openapi-matcher.js';
 import type { DriftFinding } from '../types/graph.js';
 import type { PeriaManifest } from '../types/manifest.js';
-import { matchRoutesToOpenAPI } from '../matcher/openapi-matcher.js';
+import type { AuditCheck, AuditSeverity } from './types.js';
 
 /**
  * Generate a unique ID for findings
@@ -91,13 +91,9 @@ export function getRouteOpenAPISummary(manifest: PeriaManifest): {
   openapiOpsTotal: number;
   openapiOpsWithRoute: number;
 } {
-  const routesWithOpenAPI = manifest.routes.filter(
-    (r) => r.openapiOp !== undefined
-  ).length;
-  const openapiOpsWithRoute = manifest.openapiOps.filter(
-    (op) => manifest.routes.some(
-      (r) => r.openapiOp?.id === op.id
-    )
+  const routesWithOpenAPI = manifest.routes.filter((r) => r.openapiOp !== undefined).length;
+  const openapiOpsWithRoute = manifest.openapiOps.filter((op) =>
+    manifest.routes.some((r) => r.openapiOp?.id === op.id)
   ).length;
 
   return {

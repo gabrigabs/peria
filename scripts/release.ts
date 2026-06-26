@@ -5,7 +5,7 @@
  * Usage: bun run release.ts [patch|minor|major]
  */
 
-import { execSync } from 'child_process';
+import { execSync } from 'node:child_process';
 
 const versionBump = process.argv[2] || 'patch';
 

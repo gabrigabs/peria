@@ -11,8 +11,44 @@ export type {
   ModuleEntity,
   RepoContext,
 } from './adapters/types.js';
+// Audit module (Phase 5)
+export { AUDIT_CHECKS, getAuditCheck, listAuditChecks, runAuditChecks } from './audit/index.js';
+export { CLIReporter, createCLIReporter } from './audit/reporters/cli.js';
+export { createJSONReporter, JSONReporter, toJSON } from './audit/reporters/json.js';
+export type {
+  AuditCheck,
+  AuditOptions,
+  AuditResult,
+  AuditSeverity,
+  AuditSummary,
+  CheckResult,
+} from './audit/types.js';
 export { DEFAULT_ENTRYPOINT_CANDIDATES } from './config/defaults.js';
 export { configExists, loadConfig } from './config/loader.js';
+export type {
+  ContextPack,
+  ContextPackOptions,
+  ContextPackResult,
+  ContextVariant,
+  DiffContextPack,
+  FullContextPack,
+  PackageContextPack,
+  RepoSummary,
+  RouteContextPack,
+  TaskContextPack,
+  TaskType,
+} from './context-packs/index.js';
+// Context packs module (Phase 6)
+export {
+  generateAndSaveContextPacks,
+  generateContextPacks,
+  generateDiffContext,
+  generatePackageContext,
+  generateRouteContext,
+  generateTaskContext,
+  saveContextPacks,
+  TASK_TEMPLATES,
+} from './context-packs/index.js';
 export {
   detectEntrypoint,
   getEntrypointOptions,
@@ -30,6 +66,21 @@ export {
 export type { MatchingResult, MatchType, RouteOpenAPIMatch } from './matcher/index.js';
 // Matcher (Phase 3)
 export { matchRoutesToOpenAPI, summarizeMatching } from './matcher/index.js';
+export type {
+  DiagramType,
+  MermaidDiagram,
+  MermaidOptions,
+  MermaidResult,
+} from './mermaid/index.js';
+// Mermaid diagrams module (Phase 7)
+export {
+  generateAndSaveDiagrams,
+  generateDiagrams,
+  generateOverviewDiagram,
+  generatePackageDepDiagrams,
+  generateRouteFlowDiagrams,
+  generateSchemaDiagrams,
+} from './mermaid/index.js';
 // Legacy parser exports for backward compatibility
 export {
   parseCode,
@@ -131,50 +182,3 @@ export type {
 } from './types/wiki.js';
 // Wiki builder
 export { buildWiki } from './wiki/builder.js';
-
-// Audit module (Phase 5)
-export { runAuditChecks, getAuditCheck, listAuditChecks, AUDIT_CHECKS } from './audit/index.js';
-export { CLIReporter, createCLIReporter } from './audit/reporters/cli.js';
-export { JSONReporter, createJSONReporter, toJSON } from './audit/reporters/json.js';
-export type { AuditCheck, AuditResult, AuditOptions, AuditSeverity, CheckResult, AuditSummary } from './audit/types.js';
-
-// Context packs module (Phase 6)
-export {
-  generateContextPacks,
-  generateAndSaveContextPacks,
-  saveContextPacks,
-  generateRouteContext,
-  generatePackageContext,
-  generateTaskContext,
-  generateDiffContext,
-  TASK_TEMPLATES,
-} from './context-packs/index.js';
-export type {
-  ContextPack,
-  RouteContextPack,
-  PackageContextPack,
-  TaskContextPack,
-  DiffContextPack,
-  FullContextPack,
-  ContextPackOptions,
-  ContextPackResult,
-  ContextVariant,
-  RepoSummary,
-  TaskType,
-} from './context-packs/index.js';
-
-// Mermaid diagrams module (Phase 7)
-export {
-  generateDiagrams,
-  generateAndSaveDiagrams,
-  generateOverviewDiagram,
-  generateRouteFlowDiagrams,
-  generatePackageDepDiagrams,
-  generateSchemaDiagrams,
-} from './mermaid/index.js';
-export type {
-  MermaidDiagram,
-  MermaidOptions,
-  MermaidResult,
-  DiagramType,
-} from './mermaid/index.js';

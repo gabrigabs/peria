@@ -7,12 +7,11 @@
  * - Enriched OpenAPI missing (warning)
  */
 
-import { access, stat, readFile } from 'node:fs/promises';
+import { access, readFile, stat } from 'node:fs/promises';
 import { join } from 'node:path';
-
-import type { AuditCheck, AuditSeverity } from './types.js';
 import type { DriftFinding } from '../types/graph.js';
 import type { PeriaManifest } from '../types/manifest.js';
+import type { AuditCheck, AuditSeverity } from './types.js';
 
 /**
  * Generate a unique ID for findings
@@ -80,10 +79,7 @@ export const runStaleOpenAPICheck: AuditCheck = {
         expected: 'OpenAPI file should exist',
         actual: 'File not found',
         source: { file: openapiPath },
-        suggestions: [
-          'Restore the OpenAPI file',
-          'Or update config to point to the correct file',
-        ],
+        suggestions: ['Restore the OpenAPI file', 'Or update config to point to the correct file'],
       });
       return findings;
     }
@@ -118,7 +114,7 @@ export const runStaleOpenAPICheck: AuditCheck = {
           id: generateId('openapi-stale', index++),
           severity: 'error',
           type: 'openapi-modified-after-enrichment',
-          problem: `OpenAPI file was modified ${hoursSince > 0 ? hoursSince + ' hours' : 'recently'} after enrichment`,
+          problem: `OpenAPI file was modified ${hoursSince > 0 ? `${hoursSince} hours` : 'recently'} after enrichment`,
           expected: 'Enriched OpenAPI should be regenerated',
           actual: `Original OpenAPI is newer than enriched version`,
           source: { file: openapiPath },
@@ -149,9 +145,7 @@ export const runStaleOpenAPICheck: AuditCheck = {
       // Check operation count matches
       const enrichedPaths = enriched.paths as Record<string, Record<string, unknown>> | undefined;
       const enrichedOps = enrichedPaths
-        ? Object.values(enrichedPaths).flatMap((pathItem) =>
-            Object.values(pathItem)
-          ).length
+        ? Object.values(enrichedPaths).flatMap((pathItem) => Object.values(pathItem)).length
         : 0;
 
       if (manifest.openapi.operationsCount !== enrichedOps) {

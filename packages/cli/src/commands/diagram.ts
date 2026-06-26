@@ -2,9 +2,9 @@
  * Diagram command - Generate Mermaid diagrams
  */
 
-import { readManifest } from '../utils/manifest.js';
 import { generateAndSaveDiagrams } from '@peria/core';
 import { logger } from '../utils/logger.js';
+import { readManifest } from '../utils/manifest.js';
 
 /**
  * CLI options for the diagram command
@@ -32,9 +32,10 @@ export async function diagramCommand(cwd: string, options: DiagramOptions = {}):
 
   // Determine diagram types
   const defaultTypes = ['route-flow', 'package-deps', 'schema'] as const;
-  const types = options.type && options.type !== 'all'
-    ? [options.type as 'route-flow' | 'package-deps' | 'schema']
-    : [...defaultTypes];
+  const types =
+    options.type && options.type !== 'all'
+      ? [options.type as 'route-flow' | 'package-deps' | 'schema']
+      : [...defaultTypes];
 
   // Generate diagrams
   logger.info(`Generating diagrams to ${outputDir}...`);
@@ -49,7 +50,7 @@ export async function diagramCommand(cwd: string, options: DiagramOptions = {}):
   console.log('');
   console.log(`  Route flow diagrams:  ${result.metadata.byType['route-flow']}`);
   console.log(`  Package dep diagrams: ${result.metadata.byType['package-deps']}`);
-  console.log(`  Schema diagrams:     ${result.metadata.byType['schema']}`);
+  console.log(`  Schema diagrams:     ${result.metadata.byType.schema}`);
   console.log('');
 
   logger.info(`Diagrams saved to: ${outputDir}`);

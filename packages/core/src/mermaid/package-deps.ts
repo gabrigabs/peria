@@ -4,9 +4,9 @@
  * Generate module dependency diagrams in Mermaid format.
  */
 
-import type { MermaidDiagram, MermaidOptions } from './types.js';
-import { generateDiagramId, DIAGRAM_TYPE_LABELS } from './types.js';
 import type { PackageEntity } from '../types/graph.js';
+import type { MermaidDiagram, MermaidOptions } from './types.js';
+import { DIAGRAM_TYPE_LABELS, generateDiagramId } from './types.js';
 
 /**
  * Generate package dependency diagrams

@@ -4,9 +4,9 @@
  * Generate schema relationship diagrams in Mermaid ER diagram format.
  */
 
-import type { MermaidDiagram, MermaidOptions } from './types.js';
-import { generateDiagramId, DIAGRAM_TYPE_LABELS } from './types.js';
 import type { PeriaManifest } from '../types/manifest.js';
+import type { MermaidDiagram, MermaidOptions } from './types.js';
+import { DIAGRAM_TYPE_LABELS, generateDiagramId } from './types.js';
 
 /**
  * Generate schema diagrams
@@ -22,12 +22,14 @@ export function generateSchemaDiagrams(
   }
 
   // Generate overall schema diagram
-  const overview = generateSchemaOverview(manifest.schemas.map((s) => ({
-    name: s.name,
-    id: s.id,
-    file: s.file ?? 'unknown',
-    properties: s.properties ?? [],
-  })));
+  const overview = generateSchemaOverview(
+    manifest.schemas.map((s) => ({
+      name: s.name,
+      id: s.id,
+      file: s.file ?? 'unknown',
+      properties: s.properties ?? [],
+    }))
+  );
 
   if (overview) {
     diagrams.push(overview);
@@ -88,7 +90,7 @@ function generateSchemaOverview(
   return {
     id: generateDiagramId('schema', 'overview'),
     type: 'schema',
-    title: `${DIAGRAM_TYPE_LABELS['schema']}: Overview`,
+    title: `${DIAGRAM_TYPE_LABELS.schema}: Overview`,
     content,
     sourceEntities: limitedSchemas.map((s) => s.id),
     confidence: 'high',
@@ -130,7 +132,7 @@ function generateSchemaDetail(
   return {
     id: generateDiagramId('schema', schemaName),
     type: 'schema',
-    title: `${DIAGRAM_TYPE_LABELS['schema']}: ${schemaName}`,
+    title: `${DIAGRAM_TYPE_LABELS.schema}: ${schemaName}`,
     content,
     sourceEntities: [id],
     confidence: 'high',

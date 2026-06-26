@@ -27,7 +27,7 @@ export async function buildCommand(cwd: string): Promise<void> {
   const docsDir = join(cwd, result.config.docs.outputDir);
   const pagesDir = join(docsDir, 'pages');
   const assetsDir = join(docsDir, 'assets');
-  const artifactDir = join(cwd, '.eria');
+  const artifactDir = join(cwd, '.peria');
 
   await mkdir(pagesDir, { recursive: true });
   await mkdir(assetsDir, { recursive: true });
@@ -60,7 +60,7 @@ export async function buildCommand(cwd: string): Promise<void> {
 
   logger.success(`Generated ${result.pages.length} wiki pages in ${result.config.docs.outputDir}`);
   logger.success('Generated visual wiki UI');
-  logger.success('Generated .eria/graph.json');
+  logger.success('Generated .peria/graph.json');
   logger.success('Generated llms.txt');
   logger.dim(`Commit: ${result.commit ?? 'unknown'}`);
 }

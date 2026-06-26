@@ -2,7 +2,7 @@
  * JSON Reporter Tests
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { JSONReporter } from '../../audit/reporters/json.js';
 import type { AuditResult } from '../../audit/types.js';
 

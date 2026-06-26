@@ -10,34 +10,36 @@
 
 ## Status
 
-### Working ✅
+### CLI Commands ✅
 
 | Command | Description |
 |---------|-------------|
 | `peria scan` | Scan codebase for packages, routes, schemas, OpenAPI specs |
 | `peria build` | Generate wiki pages, llms.txt, graph |
-| `peria check` | Audit for drift (`--json` for CI) |
+| `peria check` | Audit for drift with 10 checks (`--json` for CI) |
 | `peria context` | Generate context packs for agents |
 | `peria diagram` | Generate Mermaid diagrams |
-| `peria init` | Initialization wizard |
-| `peria serve` | Local preview server |
 
-### Framework Adapters (Static File Serving)
+### Framework Adapters ✅
 
-These serve pre-built docs — they don't extract routes from code yet:
+All adapters serve static files + manifest + llms.txt:
 
 | Adapter | Status |
 |---------|--------|
-| Express | ✅ Works — static files + manifest.json + llms.txt |
-| Fastify | ✅ Works — static files + manifest.json + llms.txt |
-| NestJS | ⚠️ Partial — static files only |
+| Express | ✅ Works |
+| Fastify | ✅ Works |
+| NestJS | ✅ Works |
+| Hono | 🔜 Coming soon |
+| Elysia | 🔜 Coming soon |
 
-### What's Missing
+### Self-Documentation ✅
 
-- Route extraction adapters (current adapters only serve static files)
-- Self-documentation: Peria docs are mostly empty
-- GitHub integration
-- CI/CD drift reporting
+Peria uses itself to document Peria:
+
+- **153 TypeScript modules** extracted with ts-morph
+- **10 audit checks** for drift detection
+- **23 CLI tests** (smoke + integration)
+- Docs generated at `docs/pages/`
 
 ---
 
@@ -64,6 +66,8 @@ This generates:
 - `.peria/manifest.json` — full graph data
 - `.peria/graph.json` — entity relationships
 - `.peria/ai-context.md` — AI context file
+- `.peria/context/` — agent context packs
+- `.peria/diagrams/` — Mermaid diagrams
 - `llms.txt` — compact AI reading map
 
 ### 3. Integrate
@@ -89,7 +93,29 @@ peria check
 
 # JSON output for CI
 peria check --json | jq .
+
+# Only errors
+peria check --json --severity error
 ```
+
+---
+
+## Drift Checks
+
+Peria runs 10 audit checks:
+
+| Check | Description |
+|-------|-------------|
+| `route-openapi` | Routes without OpenAPI (error) |
+| `docs-routes` | Docs referencing non-existent routes |
+| `manifest-state` | Stale manifest detection |
+| `package-exports` | Package export drift |
+| `stale-pages` | Generated pages out of sync |
+| `stale-openapi` | OpenAPI spec changes |
+| `git-diff` | Git changes affecting docs |
+| `schema-coverage` | Undefined schema references |
+| `openapi-docs` | OpenAPI ops without docs |
+| `routes-undocumented` | Routes without documentation |
 
 ---
 
@@ -156,7 +182,7 @@ export default defineConfig({
 Sources (Code, OpenAPI, Markdown)
     │
     ▼
-Scanner (packages, routes, schemas)
+Scanner (packages, routes, schemas, modules)
     │
     ▼
 Manifest (.peria/manifest.json)
@@ -167,6 +193,9 @@ Generators
 ├── llms.txt (LLM consumption)
 ├── Context Packs (task-optimized)
 └── Mermaid Diagrams
+    │
+    ▼
+Adapters (serve docs at /docs)
 ```
 
 ---

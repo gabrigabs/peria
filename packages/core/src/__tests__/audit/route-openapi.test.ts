@@ -11,7 +11,7 @@ describe('Route vs OpenAPI Check', () => {
     const manifest = {
       routes: [],
       openapiOps: [],
-    } as PeriaManifest;
+    } as unknown as PeriaManifest;
 
     const findings = await runRouteOpenAPICheck.run(manifest, '/tmp');
 

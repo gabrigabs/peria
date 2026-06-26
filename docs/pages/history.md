@@ -5,36 +5,24 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 ## Current Revision
 
 - Branch: `feat/self-documentation-bootstrap`
-- Commit: `83fa4bf994e3da0d9f82867c4523a111a71c2bd6`
-- Subject: feat: fix typecheck, lint, adapters, check --json, and add CLI tests
+- Commit: `b3813e1e4129bc9e733e0f372e814efea49e82ef`
+- Subject: refactor: archive ROADMAP.md and simplify README
 - Author: Gabriel Bezerra Rodrigues <gabrielbrodrigues1@gmail.com>
-- Authored at: 2026-06-26T10:28:34-03:00
-- Working tree: 17 changed files
+- Authored at: 2026-06-26T11:17:22-03:00
+- Working tree: 4 changed files
 
 ## Working Tree Changes
 
-- `M .gitignore`
 - `M .peria/manifest.json`
-- `M docs/assets/wiki.css`
-- `M docs/index.html`
-- `M docs/pages/adapters.md`
-- `M docs/pages/ai-context.md`
-- `M docs/pages/cli.md`
-- `M docs/pages/configuration.md`
-- `M docs/pages/history.md`
-- `M docs/pages/modules.md`
-- `M docs/pages/overview.md`
-- `M docs/pages/packages.md`
-- `M docs/wiki-manifest.json`
 - `M packages/core/fixtures/nestjs-basic/temp/dto-by-name/data.ts`
-- `M packages/core/src/context-packs/generator.ts`
-- `M packages/core/src/mermaid/generator.ts`
-- `M packages/core/src/mermaid/route-flow.ts`
+- `M packages/core/src/scanner/source-files.ts`
+- `?? packages/core/src/scanner/ts-morph-utils.ts`
 
 ## Recent Commits
 
 | Commit | Date | Author | Subject |
 | --- | --- | --- | --- |
+| `b3813e1` | 2026-06-26 | Gabriel Bezerra Rodrigues | refactor: archive ROADMAP.md and simplify README |
 | `83fa4bf` | 2026-06-26 | Gabriel Bezerra Rodrigues | feat: fix typecheck, lint, adapters, check --json, and add CLI tests |
 | `2df5d5d` | 2026-06-26 | Gabriel Bezerra Rodrigues | feat: implement documentation server for Fastify and NestJS adapters with static file support |
 | `ea322dd` | 2026-06-25 | Gabriel Bezerra Rodrigues | test(core): add tests for context-packs and mermaid modules |
@@ -46,10 +34,10 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 | `2bc9588` | 2026-06-25 | Gabriel Bezerra Rodrigues | fix(test): fix type assertion in route-openapi test |
 | `a85133f` | 2026-06-25 | Gabriel Bezerra Rodrigues | test(core): add unit tests for audit module |
 | `b18ab45` | 2026-06-25 | Gabriel Bezerra Rodrigues | fix(core): improve audit heuristics for CLI projects |
-| `22f6f50` | 2026-06-25 | Gabriel Bezerra Rodrigues | feat(cli): wire audit engine into check command |
 
 ## Raw Log Snapshot
 
+- b3813e1 2026-06-26 refactor: archive ROADMAP.md and simplify README
 - 83fa4bf 2026-06-26 feat: fix typecheck, lint, adapters, check --json, and add CLI tests
 - 2df5d5d 2026-06-26 feat: implement documentation server for Fastify and NestJS adapters with static file support
 - ea322dd 2026-06-25 test(core): add tests for context-packs and mermaid modules
@@ -61,4 +49,3 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 - 2bc9588 2026-06-25 fix(test): fix type assertion in route-openapi test
 - a85133f 2026-06-25 test(core): add unit tests for audit module
 - b18ab45 2026-06-25 fix(core): improve audit heuristics for CLI projects
-- 22f6f50 2026-06-25 feat(cli): wire audit engine into check command

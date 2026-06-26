@@ -12,9 +12,10 @@
  * ```
  */
 
+import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { NestApplication } from '@nestjs/core';
-import express from 'express';
+import express, { type Request, type Response } from 'express';
 
 export type { NestApplication } from '@nestjs/core';
 
@@ -32,9 +33,54 @@ export function setupPeriaDocs(app: NestApplication, options: PeriaNestOptions =
   const docsPath = options.docsPath ?? 'docs';
   const route = options.route ?? '/docs';
 
-  // Use Express static serving under the docs route
-  app.use(route, express.static(docsPath));
+  // Get the underlying Express/Fastify instance
+  // NestJS uses Express by default (or Fastify with @nestjs/platform-fastify)
+  const httpAdapter = app.getHttpAdapter();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const instance = httpAdapter.getInstance<any>();
 
-  // Fallback to index.html for SPA navigation
-  app.use(`${route}/*`, express.static(join(docsPath, 'index.html')));
+  // Check if we have an Express-compatible instance
+  if (!instance || typeof instance.use !== 'function') {
+    console.warn(
+      '[peria] NestJS adapter: unsupported HTTP adapter. ' +
+        'Only Express and Fastify are supported natively.'
+    );
+    return;
+  }
+
+  // Serve static files (index.html, assets, wiki pages)
+  instance.use(route, express.static(docsPath));
+
+  // API: serve wiki manifest
+  instance.get(`${route}/api/manifest.json`, async (_req: Request, res: Response) => {
+    try {
+      const manifestPath = join(docsPath, 'wiki-manifest.json');
+      const content = await readFile(manifestPath, 'utf-8');
+      res.json(JSON.parse(content));
+    } catch {
+      res.status(404).json({
+        error: 'Manifest not found',
+        message: 'Run "peria build" first to generate documentation',
+      });
+    }
+  });
+
+  // Serve llms.txt as plain text
+  instance.get(`${route}/llms.txt`, async (_req: Request, res: Response) => {
+    try {
+      const llmsPath = join(docsPath, 'ai-context.md');
+      const content = await readFile(llmsPath, 'utf-8');
+      res.type('text/plain').send(content);
+    } catch {
+      res
+        .status(404)
+        .type('text/plain')
+        .send('# Documentation not available\n\nRun "peria build" first.');
+    }
+  });
+
+  // Fallback to index.html for SPA-style navigation
+  instance.get(`${route}/*`, (_req: Request, res: Response) => {
+    res.sendFile(join(docsPath, 'index.html'));
+  });
 }

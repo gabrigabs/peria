@@ -40,7 +40,7 @@ This package contributes 0 source modules and 0 exported declarations to the gen
 
 **Why it matters:**
 
-This package contributes 0 source modules and 0 exported declarations to the generated knowledge graph. Its manifest lives at `packages/adapters/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 6 source modules and 30 exported declarations to the generated knowledge graph. Its manifest lives at `packages/adapters/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
@@ -59,7 +59,7 @@ This package contributes 0 source modules and 0 exported declarations to the gen
 
 **Why it matters:**
 
-This package contributes 0 source modules and 0 exported declarations to the generated knowledge graph. Its manifest lives at `packages/api-reference/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 2 source modules and 0 exported declarations to the generated knowledge graph. Its manifest lives at `packages/api-reference/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
@@ -84,7 +84,7 @@ This package contributes 0 source modules and 0 exported declarations to the gen
 
 **Why it matters:**
 
-This package contributes 0 source modules and 0 exported declarations to the generated knowledge graph. Its manifest lives at `packages/cli/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 16 source modules and 26 exported declarations to the generated knowledge graph. Its manifest lives at `packages/cli/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
@@ -92,7 +92,7 @@ This package contributes 0 source modules and 0 exported declarations to the gen
 - Version: 0.1.0
 - Scripts: `build`, `typecheck`, `test`, `dev`, `prepublishOnly`
 - Package exports: none
-- Internal package imports: none detected
+- Internal package imports: `@peria/core`, `@peria/renderer`
 - External dependencies: `@clack/prompts`, `@peria/core`, `@peria/renderer`, `@types/node`, `cac`, `chalk`, `tsup`, `typescript`, `vitest`
 
 ## @peria/core
@@ -109,7 +109,7 @@ This package contributes 0 source modules and 0 exported declarations to the gen
 
 **Why it matters:**
 
-This package contributes 0 source modules and 0 exported declarations to the generated knowledge graph. Its manifest lives at `packages/core/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 113 source modules and 529 exported declarations to the generated knowledge graph. Its manifest lives at `packages/core/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
@@ -133,7 +133,7 @@ This package contributes 0 source modules and 0 exported declarations to the gen
 
 **Why it matters:**
 
-This package contributes 0 source modules and 0 exported declarations to the generated knowledge graph. Its manifest lives at `packages/docs-ui/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 1 source modules and 2 exported declarations to the generated knowledge graph. Its manifest lives at `packages/docs-ui/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
@@ -152,7 +152,7 @@ This package contributes 0 source modules and 0 exported declarations to the gen
 
 **Why it matters:**
 
-This package contributes 0 source modules and 0 exported declarations to the generated knowledge graph. Its manifest lives at `packages/renderer/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 12 source modules and 112 exported declarations to the generated knowledge graph. Its manifest lives at `packages/renderer/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
@@ -160,7 +160,7 @@ This package contributes 0 source modules and 0 exported declarations to the gen
 - Version: 0.1.0
 - Scripts: `build`, `typecheck`, `dev`, `test`
 - Package exports: `.`
-- Internal package imports: none detected
+- Internal package imports: `@peria/core`
 - External dependencies: `@peria/core`, `@types/node`, `highlight.js`, `marked`, `react`, `react-dom`, `tsup`, `typescript`
 
 ## @peria/sdk
@@ -176,7 +176,7 @@ This package contributes 0 source modules and 0 exported declarations to the gen
 
 **Why it matters:**
 
-This package contributes 0 source modules and 0 exported declarations to the generated knowledge graph. Its manifest lives at `packages/sdk/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 3 source modules and 16 exported declarations to the generated knowledge graph. Its manifest lives at `packages/sdk/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 

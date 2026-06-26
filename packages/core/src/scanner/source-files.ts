@@ -1,67 +1,36 @@
 /**
  * Source Files Scanner - Scans TypeScript source files
+ *
+ * Uses ts-morph for proper AST analysis to extract:
+ * - Named exports (functions, classes, interfaces, types)
+ * - Imports
+ * - Decorator presence
+ * - Meaningful module names
  */
 
-import { readdir, readFile } from 'node:fs/promises';
-import { extname, join, relative } from 'node:path';
+import { join } from 'node:path';
 import type { ResolvedPeriaConfig } from '../types/config.js';
 import type { SourceFile } from '../types/graph.js';
+import {
+  createScannerProject,
+  extractExports,
+  extractImports,
+  findTypeScriptFiles,
+  hasDecorators,
+  deriveModuleName,
+} from './ts-morph-utils.js';
 
-const IGNORED_DIRECTORIES = new Set([
-  '.git',
-  'node_modules',
-  'dist',
-  'build',
-  '.eria',
-  '.next',
-  'coverage',
-]);
-
-const TYPESCRIPT_EXTENSIONS = new Set(['.ts', '.tsx']);
+const IGNORED_EXTENSIONS = new Set(['.d.ts', '.test.ts', '.spec.ts']);
 
 /**
- * Extract imports from content
+ * Check if a file should be scanned
  */
-function extractImports(content: string): string[] {
-  const imports: string[] = [];
-  const matches = content.matchAll(/import\s+.*?from\s+['"]([^'"]+)['"]/g);
-
-  for (const match of matches) {
-    const specifier = match[1];
-    if (!specifier.startsWith('.') && !specifier.startsWith('@peria/')) {
-      imports.push(specifier);
-    }
+function shouldScan(filePath: string): boolean {
+  // Skip declaration files and test files
+  for (const ext of IGNORED_EXTENSIONS) {
+    if (filePath.endsWith(ext)) return false;
   }
-
-  return imports;
-}
-
-/**
- * Find all TypeScript files
- */
-async function findTypeScriptFiles(cwd: string): Promise<string[]> {
-  const files: string[] = [];
-
-  async function walk(dir: string): Promise<void> {
-    const entries = await readdir(dir, { withFileTypes: true });
-
-    for (const entry of entries) {
-      if (entry.isDirectory()) {
-        if (!IGNORED_DIRECTORIES.has(entry.name) && !entry.name.startsWith('.')) {
-          await walk(join(dir, entry.name));
-        }
-        continue;
-      }
-
-      const ext = extname(entry.name);
-      if (TYPESCRIPT_EXTENSIONS.has(ext) && !entry.name.endsWith('.d.ts')) {
-        files.push(relative(cwd, join(dir, entry.name)));
-      }
-    }
-  }
-
-  await walk(cwd);
-  return files;
+  return true;
 }
 
 /**
@@ -69,27 +38,66 @@ async function findTypeScriptFiles(cwd: string): Promise<string[]> {
  */
 export async function scanSourceFiles(
   cwd: string,
-  _config: ResolvedPeriaConfig
+  config: ResolvedPeriaConfig
 ): Promise<SourceFile[]> {
   const files: SourceFile[] = [];
-  const tsFiles = await findTypeScriptFiles(cwd);
 
+  // Get package name from config if available
+  const packageName = config.project?.name;
+
+  // Find all TypeScript files
+  const tsFiles = findTypeScriptFiles(cwd, cwd);
+
+  // Create ts-morph project
+  const project = createScannerProject(cwd);
+
+  // Add all source files to the project
   for (const file of tsFiles) {
     const fullPath = join(cwd, file);
+    try {
+      project.addSourceFileAtPath(fullPath);
+    } catch {
+      // Skip files that can't be added
+    }
+  }
+
+  // Process each source file
+  for (const sourceFile of project.getSourceFiles()) {
+    const filePath = sourceFile.getFilePath().replace(cwd + '/', '').replace(cwd, '.');
+
+    if (!shouldScan(filePath)) continue;
+
+    // Skip files outside the project root
+    if (!sourceFile.getFilePath().startsWith(cwd)) continue;
 
     try {
-      const content = await readFile(fullPath, 'utf-8');
+      // Extract exports using ts-morph
+      const exports = extractExports(sourceFile);
+
+      // Extract imports using ts-morph
+      const imports = extractImports(sourceFile);
+
+      // Check for decorators
+      const decorators = hasDecorators(sourceFile);
+
+      // Derive meaningful module name
+      const module = deriveModuleName(filePath, packageName);
 
       files.push({
-        id: `file:${file}`,
-        path: file,
-        module: file,
-        imports: extractImports(content),
-        source: { file, commit: undefined },
+        id: `file:${filePath}`,
+        path: filePath,
+        module,
+        exports,
+        imports,
+        hasDecorators: decorators,
+        source: {
+          file: filePath,
+          line: 1,
+        },
         confidence: 'high',
       });
     } catch {
-      // Skip files we can't read
+      // Skip files that fail to parse
     }
   }
 

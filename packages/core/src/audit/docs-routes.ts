@@ -44,6 +44,23 @@ export const runDocsRoutesCheck: AuditCheck = {
         const key = `${mention.method || 'GET'}:${mention.path}`.toLowerCase();
         documentedRoutes.add(key);
 
+        // Skip if the path looks like a file path or CLI command (not an API route)
+        const path = mention.path.toLowerCase();
+        const isLikelyFilePath = path.includes('/utils/') ||
+                                 path.includes('/prompts/') ||
+                                 path.includes('/generators/') ||
+                                 path.includes('/commands/') ||
+                                 path.includes('/modules/') ||
+                                 path.startsWith('/docs') ||
+                                 path.includes('.md') ||
+                                 path.includes('.ts') ||
+                                 path.includes('.js');
+
+        if (isLikelyFilePath) {
+          // These are likely references to code modules, not API routes
+          continue;
+        }
+
         // Check if the mentioned route exists
         if (!routeIds.has(key)) {
           findings.push({

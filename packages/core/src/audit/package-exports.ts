@@ -196,12 +196,16 @@ export const runPackageExportsCheck: AuditCheck = {
       }
 
       // Check main/module fields
+      // Note: main/module pointing to dist that doesn't exist is a warning during development
+      // because the user might not have built yet. Only flag as error if explicitly exported.
       if (pkgJsonData.main) {
         const mainFile = pkgJsonData.main.replace(/^\.\//, '').replace(/\.js$/, '');
+        const isDistField = mainFile.startsWith('dist/');
+
         if (!distFileSet.has(mainFile)) {
           findings.push({
             id: generateId('pkg-main-missing', index++),
-            severity: 'error',
+            severity: isDistField ? 'warning' : 'error',
             type: 'package-main-missing',
             entityId: pkg.id,
             entityType: 'package',
@@ -209,17 +213,21 @@ export const runPackageExportsCheck: AuditCheck = {
             expected: `dist/${mainFile}.js should exist`,
             actual: 'File not found',
             source: { file: pkgJsonPath },
-            suggestions: ['Run "bun run build" to rebuild'],
+            suggestions: isDistField
+              ? ['Run "bun run build" to build packages']
+              : ['Run "bun run build" to rebuild'],
           });
         }
       }
 
       if (pkgJsonData.module && pkgJsonData.module !== pkgJsonData.main) {
         const moduleFile = pkgJsonData.module.replace(/^\.\//, '').replace(/\.js$/, '');
+        const isDistField = moduleFile.startsWith('dist/');
+
         if (!distFileSet.has(moduleFile)) {
           findings.push({
             id: generateId('pkg-module-missing', index++),
-            severity: 'error',
+            severity: isDistField ? 'warning' : 'error',
             type: 'package-module-missing',
             entityId: pkg.id,
             entityType: 'package',
@@ -227,7 +235,9 @@ export const runPackageExportsCheck: AuditCheck = {
             expected: `dist/${moduleFile}.js should exist`,
             actual: 'File not found',
             source: { file: pkgJsonPath },
-            suggestions: ['Run "bun run build" to rebuild'],
+            suggestions: isDistField
+              ? ['Run "bun run build" to build packages']
+              : ['Run "bun run build" to rebuild'],
           });
         }
       }

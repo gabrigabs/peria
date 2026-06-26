@@ -8,6 +8,7 @@ import { exec } from 'node:child_process';
 import { promisify } from 'node:util';
 import type { DiffContextPack, ContextPackOptions } from './types.js';
 import { generateContextPackId } from './types.js';
+import { truncateToLines } from './utils.js';
 
 const execAsync = promisify(exec);
 
@@ -148,8 +149,9 @@ async function getGitDiff(cwd: string, sinceCommit?: string): Promise<GitDiffRes
 
       result.files.push({ path, status });
     }
-  } catch {
-    // Git command failed, return empty result
+  } catch (err) {
+    // Git command failed, log warning
+    console.warn(`Failed to get git diff: ${err instanceof Error ? err.message : String(err)}`);
   }
 
   return result;
@@ -217,21 +219,4 @@ function buildDiffContextContent(
   lines.push('');
 
   return lines.join('\n');
-}
-
-/**
- * Truncate content to a maximum number of lines
- */
-function truncateToLines(content: string, maxLines: number): string {
-  const lines = content.split('\n');
-  if (lines.length <= maxLines) {
-    return content;
-  }
-
-  const truncated = lines.slice(0, maxLines);
-  truncated.push('');
-  truncated.push('---');
-  truncated.push(`*[Content truncated: ${lines.length - maxLines} lines omitted]*`);
-
-  return truncated.join('\n');
 }

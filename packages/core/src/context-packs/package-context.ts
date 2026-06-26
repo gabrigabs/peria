@@ -7,6 +7,7 @@
 import type { PackageContextPack, ContextPackOptions } from './types.js';
 import type { PackageEntity } from '../types/graph.js';
 import { generateContextPackId } from './types.js';
+import { truncateToLines } from './utils.js';
 
 /**
  * Default maximum lines for package context
@@ -91,7 +92,7 @@ function buildPackageContextContent(pkg: PackageEntity): string {
   // Source
   lines.push('## Source');
   lines.push('');
-  lines.push(`**Main file:** ${pkg.source.file}:${pkg.source.line}`);
+  lines.push(`**Main file:** ${pkg.source.file}:${pkg.source.line ?? 1}`);
   lines.push('');
 
   // Agent Instructions
@@ -106,21 +107,4 @@ function buildPackageContextContent(pkg: PackageEntity): string {
   lines.push('');
 
   return lines.join('\n');
-}
-
-/**
- * Truncate content to a maximum number of lines
- */
-function truncateToLines(content: string, maxLines: number): string {
-  const lines = content.split('\n');
-  if (lines.length <= maxLines) {
-    return content;
-  }
-
-  const truncated = lines.slice(0, maxLines);
-  truncated.push('');
-  truncated.push('---');
-  truncated.push(`*[Content truncated: ${lines.length - maxLines} lines omitted]*`);
-
-  return truncated.join('\n');
 }

@@ -7,6 +7,7 @@
 import type { TaskContextPack, ContextPackOptions, TaskType } from './types.js';
 import { TASK_TEMPLATES, generateContextPackId } from './types.js';
 import type { RouteEntity, PackageEntity, SchemaEntity } from '../types/graph.js';
+import { truncateToLines } from './utils.js';
 
 /**
  * Default maximum lines for task context
@@ -114,21 +115,4 @@ function buildTaskContextContent(
   lines.push('');
 
   return lines.join('\n');
-}
-
-/**
- * Truncate content to a maximum number of lines
- */
-function truncateToLines(content: string, maxLines: number): string {
-  const lines = content.split('\n');
-  if (lines.length <= maxLines) {
-    return content;
-  }
-
-  const truncated = lines.slice(0, maxLines);
-  truncated.push('');
-  truncated.push('---');
-  truncated.push(`*[Content truncated: ${lines.length - maxLines} lines omitted]*`);
-
-  return truncated.join('\n');
 }

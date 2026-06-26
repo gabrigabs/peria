@@ -81,7 +81,7 @@ export function findTypeScriptFiles(dir: string, cwd: string): string[] {
           walk(fullPath);
         } else if (entry.isFile() && entry.name.endsWith('.ts') && !entry.name.endsWith('.d.ts')) {
           // Return path relative to cwd
-          results.push(fullPath.replace(cwd + '/', '').replace(cwd, '.'));
+          results.push(fullPath.replace(`${cwd}/`, '').replace(cwd, '.'));
         }
       }
     } catch {

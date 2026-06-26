@@ -74,7 +74,7 @@ async function loadActivePage() {
   state.activeSlug = page.slug;
   title.textContent = page.title;
   description.textContent = page.description;
-  const response = await fetch('./' + page.path);
+  const response = await fetch(`./${page.path}`);
   const markdown = await response.text();
   content.innerHTML = markdownToHtml(markdown);
   renderNav();
@@ -95,7 +95,7 @@ function markdownToHtml(markdown) {
         code.push(lines[index]);
         index += 1;
       }
-      html.push('<pre><code>' + escapeHtml(code.join('\n')) + '</code></pre>');
+      html.push(`<pre><code>${escapeHtml(code.join('\n'))}</code></pre>`);
       index += 1;
       continue;
     }
@@ -112,37 +112,37 @@ function markdownToHtml(markdown) {
     }
 
     if (line.startsWith('### ')) {
-      html.push('<h3>' + inline(line.slice(4)) + '</h3>');
+      html.push(`<h3>${inline(line.slice(4))}</h3>`);
     } else if (line.startsWith('## ')) {
-      html.push('<h2>' + inline(line.slice(3)) + '</h2>');
+      html.push(`<h2>${inline(line.slice(3))}</h2>`);
     } else if (line.startsWith('# ')) {
-      html.push('<h1>' + inline(line.slice(2)) + '</h1>');
+      html.push(`<h1>${inline(line.slice(2))}</h1>`);
     } else if (line.startsWith('> ')) {
       const quotes = [];
       while (index < lines.length && lines[index].startsWith('> ')) {
-        quotes.push('<p>' + inline(lines[index].slice(2)) + '</p>');
+        quotes.push(`<p>${inline(lines[index].slice(2))}</p>`);
         index += 1;
       }
-      html.push('<blockquote>' + quotes.join('') + '</blockquote>');
+      html.push(`<blockquote>${quotes.join('')}</blockquote>`);
       continue;
     } else if (line.startsWith('- ')) {
       const items = [];
       while (index < lines.length && lines[index].startsWith('- ')) {
-        items.push('<li>' + inline(lines[index].slice(2)) + '</li>');
+        items.push(`<li>${inline(lines[index].slice(2))}</li>`);
         index += 1;
       }
-      html.push('<ul>' + items.join('') + '</ul>');
+      html.push(`<ul>${items.join('')}</ul>`);
       continue;
     } else if (/^\d+\.\s/.test(line)) {
       const items = [];
       while (index < lines.length && /^\d+\.\s/.test(lines[index])) {
-        items.push('<li>' + inline(lines[index].replace(/^\d+\.\s/, '')) + '</li>');
+        items.push(`<li>${inline(lines[index].replace(/^\d+\.\s/, ''))}</li>`);
         index += 1;
       }
-      html.push('<ol>' + items.join('') + '</ol>');
+      html.push(`<ol>${items.join('')}</ol>`);
       continue;
     } else if (line.trim()) {
-      html.push('<p>' + inline(line) + '</p>');
+      html.push(`<p>${inline(line)}</p>`);
     }
 
     index += 1;
@@ -159,15 +159,12 @@ function renderTable(lines) {
       .map((cell) => inline(cell.trim()))
   );
   const header = rows.shift() || [];
-  const head =
-    '<thead><tr>' + header.map((cell) => '<th>' + cell + '</th>').join('') + '</tr></thead>';
+  const head = `<thead><tr>${header.map((cell) => `<th>${cell}</th>`).join('')}</tr></thead>`;
   const body =
     '<tbody>' +
-    rows
-      .map((row) => '<tr>' + row.map((cell) => '<td>' + cell + '</td>').join('') + '</tr>')
-      .join('') +
+    rows.map((row) => `<tr>${row.map((cell) => `<td>${cell}</td>`).join('')}</tr>`).join('') +
     '</tbody>';
-  return '<table>' + head + body + '</table>';
+  return `<table>${head}${body}</table>`;
 }
 
 function inline(value) {
@@ -196,5 +193,5 @@ searchInput.addEventListener('input', () => {
 
 init().catch((error) => {
   title.textContent = 'Wiki failed to load';
-  content.innerHTML = '<p>' + escapeHtml(error.message) + '</p>';
+  content.innerHTML = `<p>${escapeHtml(error.message)}</p>`;
 });

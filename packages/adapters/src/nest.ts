@@ -36,8 +36,7 @@ export function setupPeriaDocs(app: NestApplication, options: PeriaNestOptions =
   // Get the underlying Express/Fastify instance
   // NestJS uses Express by default (or Fastify with @nestjs/platform-fastify)
   const httpAdapter = app.getHttpAdapter();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const instance = httpAdapter.getInstance<any>();
+  const instance = httpAdapter.getInstance();
 
   // Check if we have an Express-compatible instance
   if (!instance || typeof instance.use !== 'function') {

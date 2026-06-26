@@ -5,33 +5,30 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 ## Current Revision
 
 - Branch: `feat/self-documentation-bootstrap`
-- Commit: `21a32206ba7c6081591c36990c3b19bf3f9d79b1`
-- Subject: docs: update README with current status
+- Commit: `8e5fb177822e527a090f394529071f745b54a772`
+- Subject: fix: critical blockers for npm release
 - Author: Gabriel Bezerra Rodrigues <gabrielbrodrigues1@gmail.com>
-- Authored at: 2026-06-26T12:17:07-03:00
-- Working tree: 14 changed files
+- Authored at: 2026-06-26T12:28:31-03:00
+- Working tree: 10 changed files
 
 ## Working Tree Changes
 
 - `M ../../../../docs/assets/wiki.js`
-- `M ../../../adapters/src/express.ts`
-- `M ../../../adapters/src/index.ts`
-- `M ../../../cli/src/__tests__/integration.test.ts`
+- `M ../../../adapters/package.json`
+- `M ../../../adapters/src/nest.ts`
 - `M docs/index.html`
 - `M docs/pages/ai-context.md`
 - `M docs/pages/history.md`
 - `M docs/pages/overview.md`
 - `M docs/wiki-manifest.json`
-- `M ../../src/audit/routes-undocumented.ts`
 - `M ../../src/scanner/source-files.ts`
 - `M ../../src/scanner/ts-morph-utils.ts`
-- `M ../../tsup.config.ts`
-- `?? ../../../adapters/src/__tests__/`
 
 ## Recent Commits
 
 | Commit | Date | Author | Subject |
 | --- | --- | --- | --- |
+| `8e5fb17` | 2026-06-26 | Gabriel Bezerra Rodrigues | fix: critical blockers for npm release |
 | `21a3220` | 2026-06-26 | Gabriel Bezerra Rodrigues | docs: update README with current status |
 | `5f7b4b9` | 2026-06-26 | Gabriel Bezerra Rodrigues | feat(audit): add 3 new drift checks |
 | `76892cf` | 2026-06-26 | Gabriel Bezerra Rodrigues | test(cli): add integration tests for all commands |
@@ -43,10 +40,10 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 | `c47bcfe` | 2026-06-25 | Gabriel Bezerra Rodrigues | feat(cli): add context and diagram commands |
 | `9d5ae11` | 2026-06-25 | Gabriel Bezerra Rodrigues | feat: npm publish setup for Phase 8 |
 | `8c9c106` | 2026-06-25 | Gabriel Bezerra Rodrigues | fix(core): address code review findings |
-| `5766bd8` | 2026-06-25 | Gabriel Bezerra Rodrigues | feat(core): add mermaid module for Phase 7 |
 
 ## Raw Log Snapshot
 
+- 8e5fb17 2026-06-26 fix: critical blockers for npm release
 - 21a3220 2026-06-26 docs: update README with current status
 - 5f7b4b9 2026-06-26 feat(audit): add 3 new drift checks
 - 76892cf 2026-06-26 test(cli): add integration tests for all commands
@@ -58,4 +55,3 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 - c47bcfe 2026-06-25 feat(cli): add context and diagram commands
 - 9d5ae11 2026-06-25 feat: npm publish setup for Phase 8
 - 8c9c106 2026-06-25 fix(core): address code review findings
-- 5766bd8 2026-06-25 feat(core): add mermaid module for Phase 7

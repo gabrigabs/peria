@@ -63,10 +63,7 @@ export async function scanSourceFiles(
 
   // Process each source file
   for (const sourceFile of project.getSourceFiles()) {
-    const filePath = sourceFile
-      .getFilePath()
-      .replace(cwd + '/', '')
-      .replace(cwd, '.');
+    const filePath = sourceFile.getFilePath().replace(`${cwd}/`, '').replace(cwd, '.');
 
     if (!shouldScan(filePath)) continue;
 

@@ -1,35 +1,37 @@
 {
   "title": "Peria Wiki",
   "tagline": "Human-readable by default. LLM-ready by design.",
-  "generatedAt": "2026-06-26T15:28:18.661Z",
+  "generatedAt": "2026-06-26T15:31:42.525Z",
   "manifestVersion": "0.1.0",
-  "commit": "21a32206ba7c6081591c36990c3b19bf3f9d79b1",
+  "commit": "8e5fb177822e527a090f394529071f745b54a772",
   "git": {
     "branch": "feat/self-documentation-bootstrap",
-    "commit": "21a32206ba7c6081591c36990c3b19bf3f9d79b1",
-    "shortCommit": "21a3220",
+    "commit": "8e5fb177822e527a090f394529071f745b54a772",
+    "shortCommit": "8e5fb17",
     "author": "Gabriel Bezerra Rodrigues",
     "authorEmail": "gabrielbrodrigues1@gmail.com",
-    "authoredAt": "2026-06-26T12:17:07-03:00",
-    "subject": "docs: update README with current status",
+    "authoredAt": "2026-06-26T12:28:31-03:00",
+    "subject": "fix: critical blockers for npm release",
     "isDirty": true,
     "changedFiles": [
       "M ../../../../docs/assets/wiki.js",
-      "M ../../../adapters/src/express.ts",
-      "M ../../../adapters/src/index.ts",
-      "M ../../../cli/src/__tests__/integration.test.ts",
+      "M ../../../adapters/package.json",
+      "M ../../../adapters/src/nest.ts",
       "M docs/index.html",
       "M docs/pages/ai-context.md",
       "M docs/pages/history.md",
       "M docs/pages/overview.md",
       "M docs/wiki-manifest.json",
-      "M ../../src/audit/routes-undocumented.ts",
       "M ../../src/scanner/source-files.ts",
-      "M ../../src/scanner/ts-morph-utils.ts",
-      "M ../../tsup.config.ts",
-      "?? ../../../adapters/src/__tests__/"
+      "M ../../src/scanner/ts-morph-utils.ts"
     ],
     "recentCommits": [
+      {
+        "hash": "8e5fb17",
+        "date": "2026-06-26",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "fix: critical blockers for npm release"
+      },
       {
         "hash": "21a3220",
         "date": "2026-06-26",
@@ -95,12 +97,6 @@
         "date": "2026-06-25",
         "author": "Gabriel Bezerra Rodrigues",
         "subject": "fix(core): address code review findings"
-      },
-      {
-        "hash": "5766bd8",
-        "date": "2026-06-25",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "feat(core): add mermaid module for Phase 7"
       }
     ]
   },

@@ -5,6 +5,8 @@
 import CAC from 'cac';
 import { buildCommand } from './commands/build.js';
 import { checkCommand } from './commands/check.js';
+import { contextCommand } from './commands/context.js';
+import { diagramCommand } from './commands/diagram.js';
 import { initCommand } from './commands/init.js';
 import { scanCommand } from './commands/scan.js';
 import { serveCommand } from './commands/serve.js';
@@ -31,7 +33,7 @@ cli.command('serve', 'Serve documentation locally').action(async (opts: { cwd: s
 
 // Check command with options
 cli
-  .command('check [options]', 'Run audit checks to detect inconsistencies between code, docs, and OpenAPI')
+  .command('check', 'Run audit checks to detect inconsistencies between code, docs, and OpenAPI')
   .option('--json', 'Output results as JSON')
   .option('--severity <level>', 'Minimum severity to report (error, warning, info)')
   .option('--checks <names>', 'Comma-separated list of checks to run')
@@ -45,7 +47,7 @@ cli
 
 // Alias 'audit' for 'check'
 cli
-  .command('audit [options]', 'Alias for check')
+  .command('audit', 'Alias for check')
   .option('--json', 'Output results as JSON')
   .option('--severity <level>', 'Minimum severity to report (error, warning, info)')
   .option('--checks <names>', 'Comma-separated list of checks to run')
@@ -61,6 +63,26 @@ cli
   .command('scan', 'Scan repository and generate manifest')
   .action(async (opts: { cwd: string }) => {
     await scanCommand(opts.cwd);
+  });
+
+// Context command
+cli
+  .command('context', 'Generate agent context packs for coding assistants')
+  .option('--output <dir>', 'Output directory (default: .peria/context)')
+  .action(async (opts: { cwd: string; output?: string }) => {
+    await contextCommand(opts.cwd, { output: opts.output });
+  });
+
+// Diagram command
+cli
+  .command('diagram', 'Generate Mermaid diagrams for routes, packages, and schemas')
+  .option('--type <type>', 'Diagram type (route-flow, package-deps, schema, all)')
+  .option('--output <dir>', 'Output directory (default: .peria/diagrams)')
+  .action(async (opts: { cwd: string; type?: string; output?: string }) => {
+    await diagramCommand(opts.cwd, {
+      type: opts.type as 'route-flow' | 'package-deps' | 'schema' | 'all' | undefined,
+      output: opts.output,
+    });
   });
 
 // Help

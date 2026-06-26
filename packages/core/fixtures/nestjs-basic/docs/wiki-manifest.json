@@ -1,0 +1,197 @@
+{
+  "title": "Peria Wiki",
+  "tagline": "Human-readable by default. LLM-ready by design.",
+  "generatedAt": "2026-06-26T14:58:21.634Z",
+  "manifestVersion": "0.1.0",
+  "commit": "b8dc2b8dfdc42aec76ad140ee3e6c6a1d692dad0",
+  "git": {
+    "branch": "feat/self-documentation-bootstrap",
+    "commit": "b8dc2b8dfdc42aec76ad140ee3e6c6a1d692dad0",
+    "shortCommit": "b8dc2b8",
+    "author": "Gabriel Bezerra Rodrigues",
+    "authorEmail": "gabrielbrodrigues1@gmail.com",
+    "authoredAt": "2026-06-26T11:54:02-03:00",
+    "subject": "feat(scanner): integrate ts-morph for proper AST extraction",
+    "isDirty": true,
+    "changedFiles": [
+      "?? ../../../cli/src/__tests__/integration.test.ts",
+      "?? docs/"
+    ],
+    "recentCommits": [
+      {
+        "hash": "b8dc2b8",
+        "date": "2026-06-26",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(scanner): integrate ts-morph for proper AST extraction"
+      },
+      {
+        "hash": "b3813e1",
+        "date": "2026-06-26",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "refactor: archive ROADMAP.md and simplify README"
+      },
+      {
+        "hash": "83fa4bf",
+        "date": "2026-06-26",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat: fix typecheck, lint, adapters, check --json, and add CLI tests"
+      },
+      {
+        "hash": "2df5d5d",
+        "date": "2026-06-26",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat: implement documentation server for Fastify and NestJS adapters with static file support"
+      },
+      {
+        "hash": "ea322dd",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "test(core): add tests for context-packs and mermaid modules"
+      },
+      {
+        "hash": "c47bcfe",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(cli): add context and diagram commands"
+      },
+      {
+        "hash": "9d5ae11",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat: npm publish setup for Phase 8"
+      },
+      {
+        "hash": "8c9c106",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "fix(core): address code review findings"
+      },
+      {
+        "hash": "5766bd8",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(core): add mermaid module for Phase 7"
+      },
+      {
+        "hash": "54a74c7",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(core): add context-packs module for Phase 6"
+      },
+      {
+        "hash": "2bc9588",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "fix(test): fix type assertion in route-openapi test"
+      },
+      {
+        "hash": "a85133f",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "test(core): add unit tests for audit module"
+      }
+    ]
+  },
+  "project": {
+    "name": "Peria",
+    "tagline": "Human-readable by default. LLM-ready by design.",
+    "description": "Peria turns codebase knowledge into a traceable technical wiki.",
+    "audience": "Engineers and AI coding agents who need reliable codebase context.",
+    "tone": "Direct, technical, and provenance-first.",
+    "problem": "Codebases lose practical knowledge when architecture, commands, docs, and Git history live in separate places.",
+    "currentFocus": "Build a local-first self-documenting wiki pipeline before adding hosted integrations.",
+    "highlights": [
+      "Markdown wiki pages are the canonical artifact.",
+      "llms.txt is a compact reading map derived from the human wiki.",
+      "Every generated claim should trace back to source files, line numbers, and Git context."
+    ],
+    "packageContexts": {}
+  },
+  "pages": [
+    {
+      "title": "Peria Overview",
+      "slug": "overview",
+      "description": "Peria turns codebase knowledge into a traceable technical wiki.",
+      "path": "pages/overview.md"
+    },
+    {
+      "title": "Packages",
+      "slug": "packages",
+      "description": "Workspace packages, manifests, scripts, dependencies, and package exports.",
+      "path": "pages/packages.md"
+    },
+    {
+      "title": "CLI Commands",
+      "slug": "cli",
+      "description": "Registered Peria CLI commands and their command registry provenance.",
+      "path": "pages/cli.md"
+    },
+    {
+      "title": "TypeScript Modules",
+      "slug": "modules",
+      "description": "Source files, imports, and exported declarations extracted with ts-morph.",
+      "path": "pages/modules.md"
+    },
+    {
+      "title": "Adapters",
+      "slug": "adapters",
+      "description": "Framework adapters that expose the generated docs in application runtimes.",
+      "path": "pages/adapters.md"
+    },
+    {
+      "title": "Configuration And Features",
+      "slug": "configuration",
+      "description": "Resolved config, enabled features, and config provenance.",
+      "path": "pages/configuration.md"
+    },
+    {
+      "title": "Wiki UI",
+      "slug": "wiki-ui",
+      "description": "Static visual wiki shell generated into /docs and backed by markdown pages.",
+      "path": "pages/wiki-ui.md"
+    },
+    {
+      "title": "History",
+      "slug": "history",
+      "description": "Recent Git history captured as dated provenance for the generated wiki.",
+      "path": "pages/history.md"
+    },
+    {
+      "title": "AI Context Map",
+      "slug": "ai-context",
+      "description": "A compact reading map for agents, derived from the human wiki.",
+      "path": "pages/ai-context.md"
+    }
+  ],
+  "tree": [
+    {
+      "title": "Start here",
+      "pages": [
+        "overview",
+        "ai-context"
+      ]
+    },
+    {
+      "title": "Product surface",
+      "pages": [
+        "packages",
+        "cli",
+        "configuration"
+      ]
+    },
+    {
+      "title": "Code map",
+      "pages": [
+        "modules",
+        "adapters",
+        "wiki-ui"
+      ]
+    },
+    {
+      "title": "Provenance",
+      "pages": [
+        "history"
+      ]
+    }
+  ]
+}

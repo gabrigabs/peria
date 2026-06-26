@@ -32,6 +32,11 @@
     "typescript": "^5.6.0"
   },
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabrigabs/peria.git",
+    "directory": "packages/api-reference"
+  },
   "publishConfig": {
     "access": "public"
   }

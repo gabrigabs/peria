@@ -46,7 +46,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/gabrigabs/peria"
+    "url": "git+https://github.com/gabrigabs/peria.git",
+    "directory": "packages/core"
   },
   "license": "MIT",
   "engines": {

@@ -4,7 +4,7 @@
   "description": "Local-first source-backed knowledge graph CLI for backend and API repositories.",
   "type": "module",
   "bin": {
-    "peria": "./bin/peria.js"
+    "peria": "bin/peria.js"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -35,7 +35,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/gabrigabs/peria"
+    "url": "git+https://github.com/gabrigabs/peria.git",
+    "directory": "packages/cli"
   },
   "license": "MIT",
   "engines": {

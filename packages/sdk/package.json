@@ -49,6 +49,12 @@
     "tsup": "^8.3.0",
     "typescript": "^5.7.2"
   },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabrigabs/peria.git",
+    "directory": "packages/sdk"
+  },
   "publishConfig": {
     "access": "public"
   }

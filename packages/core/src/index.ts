@@ -137,3 +137,28 @@ export { runAuditChecks, getAuditCheck, listAuditChecks, AUDIT_CHECKS } from './
 export { CLIReporter, createCLIReporter } from './audit/reporters/cli.js';
 export { JSONReporter, createJSONReporter, toJSON } from './audit/reporters/json.js';
 export type { AuditCheck, AuditResult, AuditOptions, AuditSeverity, CheckResult, AuditSummary } from './audit/types.js';
+
+// Context packs module (Phase 6)
+export {
+  generateContextPacks,
+  generateAndSaveContextPacks,
+  saveContextPacks,
+  generateRouteContext,
+  generatePackageContext,
+  generateTaskContext,
+  generateDiffContext,
+  TASK_TEMPLATES,
+} from './context-packs/index.js';
+export type {
+  ContextPack,
+  RouteContextPack,
+  PackageContextPack,
+  TaskContextPack,
+  DiffContextPack,
+  FullContextPack,
+  ContextPackOptions,
+  ContextPackResult,
+  ContextVariant,
+  RepoSummary,
+  TaskType,
+} from './context-packs/index.js';

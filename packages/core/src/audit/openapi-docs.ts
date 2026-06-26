@@ -72,25 +72,28 @@ export const runOpenAPIDocsCheck: AuditCheck = {
     }
 
     // Check 2: Docs referencing non-existent schemas (warning)
-    for (const page of manifest.docsPages ?? []) {
-      for (const ref of page.schemaRefs ?? []) {
-        if (!definedSchemas.has(ref.name)) {
-          findings.push({
-            id: generateId('doc-schema-missing', index++),
-            severity: 'warning',
-            type: 'doc-schema-missing',
-            entityId: page.id,
-            entityType: 'doc-page',
-            problem: `Doc page "${page.title}" references schema "${ref.name}" which does not exist`,
-            expected: `Schema "${ref.name}" should be defined in the manifest`,
-            actual: 'Schema not found in manifest.schemas',
-            source: page.source,
-            suggestions: [
-              `Define schema "${ref.name}" in your code`,
-              'Or update the doc to reference an existing schema',
-            ],
-            relatedEntities: [ref.name],
-          });
+    if (definedSchemas.size > 0) {
+      for (const page of manifest.docsPages ?? []) {
+        for (const ref of page.schemaRefs ?? []) {
+          const schemaId = `schema:${ref.name}`;
+          if (!definedSchemas.has(schemaId)) {
+            findings.push({
+              id: generateId('doc-schema-missing', index++),
+              severity: 'warning',
+              type: 'doc-schema-missing',
+              entityId: page.id,
+              entityType: 'doc-page',
+              problem: `Doc page "${page.title}" references schema "${ref.name}" which does not exist`,
+              expected: `Schema "${ref.name}" should be defined in the manifest`,
+              actual: 'Schema not found in manifest.schemas',
+              source: page.source,
+              suggestions: [
+                `Define schema "${ref.name}" in your code`,
+                'Or update the doc to reference an existing schema',
+              ],
+              relatedEntities: [ref.name],
+            });
+          }
         }
       }
     }

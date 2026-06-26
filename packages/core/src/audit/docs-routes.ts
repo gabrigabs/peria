@@ -30,6 +30,10 @@ export const runDocsRoutesCheck: AuditCheck = {
     const findings: DriftFinding[] = [];
     let index = 0;
 
+    if (!manifest.routes.length) {
+      return findings;
+    }
+
     // Build a set of valid route IDs
     const routeIds = new Set(manifest.routes.map((r) => `${r.method}:${r.path}`.toLowerCase()));
 

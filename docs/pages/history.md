@@ -5,47 +5,90 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 ## Current Revision
 
 - Branch: `feat/self-documentation-bootstrap`
-- Commit: `b3813e1e4129bc9e733e0f372e814efea49e82ef`
-- Subject: refactor: archive ROADMAP.md and simplify README
+- Commit: `d7924b07b5fb81410bbe5fff69d885f82384a376`
+- Subject: fix(lint): resolve all remaining warnings
 - Author: Gabriel Bezerra Rodrigues <gabrielbrodrigues1@gmail.com>
-- Authored at: 2026-06-26T11:17:22-03:00
-- Working tree: 4 changed files
+- Authored at: 2026-06-26T12:31:59-03:00
+- Working tree: 47 changed files
 
 ## Working Tree Changes
 
 - `M .peria/manifest.json`
+- `M PUBLISHING.md`
+- `M README.md`
+- `M biome.json`
+- `M bun.lock`
+- `M docs/assets/wiki.js`
+- `M docs/index.html`
+- `M docs/pages/adapters.md`
+- `M docs/pages/ai-context.md`
+- `M docs/pages/history.md`
+- `M docs/pages/modules.md`
+- `M docs/pages/overview.md`
+- `M docs/pages/packages.md`
+- `M docs/wiki-manifest.json`
+- `M packages/adapters/package.json`
+- `M packages/adapters/src/__tests__/smoke.test.ts`
+- `M packages/api-reference/package.json`
+- `D packages/api-reference/pnpm-lock.yaml`
+- `M packages/cli/README.md`
+- `M packages/cli/package.json`
+- `M packages/cli/src/__tests__/integration.test.ts`
+- `M packages/cli/src/commands/build.ts`
+- `M packages/cli/src/commands/check.ts`
+- `M packages/core/fixtures/nestjs-api/package.json`
+- `M packages/core/fixtures/nestjs-basic/docs/assets/wiki.js`
+- `M packages/core/fixtures/nestjs-basic/docs/index.html`
+- `M packages/core/fixtures/nestjs-basic/docs/pages/ai-context.md`
+- `M packages/core/fixtures/nestjs-basic/docs/pages/history.md`
+- `M packages/core/fixtures/nestjs-basic/docs/pages/overview.md`
+- `M packages/core/fixtures/nestjs-basic/docs/wiki-manifest.json`
 - `M packages/core/fixtures/nestjs-basic/temp/dto-by-name/data.ts`
-- `M packages/core/src/scanner/source-files.ts`
-- `?? packages/core/src/scanner/ts-morph-utils.ts`
+- `M packages/core/package.json`
+- `M packages/core/src/__tests__/audit/types.test.ts`
+- `M packages/core/src/__tests__/nestjs-parser.test.ts`
+- `M packages/core/src/audit/docs-routes.ts`
+- `M packages/core/src/audit/index.ts`
+- `M packages/core/src/audit/openapi-docs.ts`
+- `M packages/core/src/audit/package-exports.ts`
+- `M packages/core/src/audit/types.ts`
+- `M packages/docs-ui/package.json`
+- `M packages/renderer/package.json`
+- `M packages/renderer/src/js.ts`
+- `M packages/sdk/package.json`
+- `M packages/sdk/tsup.config.ts`
+- `D pnpm-lock.yaml`
+- `D pnpm-workspace.yaml`
+- `?? packages/sdk/src/api-reference.ts`
 
 ## Recent Commits
 
 | Commit | Date | Author | Subject |
 | --- | --- | --- | --- |
+| `d7924b0` | 2026-06-26 | Gabriel Bezerra Rodrigues | fix(lint): resolve all remaining warnings |
+| `8e5fb17` | 2026-06-26 | Gabriel Bezerra Rodrigues | fix: critical blockers for npm release |
+| `21a3220` | 2026-06-26 | Gabriel Bezerra Rodrigues | docs: update README with current status |
+| `5f7b4b9` | 2026-06-26 | Gabriel Bezerra Rodrigues | feat(audit): add 3 new drift checks |
+| `76892cf` | 2026-06-26 | Gabriel Bezerra Rodrigues | test(cli): add integration tests for all commands |
+| `b8dc2b8` | 2026-06-26 | Gabriel Bezerra Rodrigues | feat(scanner): integrate ts-morph for proper AST extraction |
 | `b3813e1` | 2026-06-26 | Gabriel Bezerra Rodrigues | refactor: archive ROADMAP.md and simplify README |
 | `83fa4bf` | 2026-06-26 | Gabriel Bezerra Rodrigues | feat: fix typecheck, lint, adapters, check --json, and add CLI tests |
 | `2df5d5d` | 2026-06-26 | Gabriel Bezerra Rodrigues | feat: implement documentation server for Fastify and NestJS adapters with static file support |
 | `ea322dd` | 2026-06-25 | Gabriel Bezerra Rodrigues | test(core): add tests for context-packs and mermaid modules |
 | `c47bcfe` | 2026-06-25 | Gabriel Bezerra Rodrigues | feat(cli): add context and diagram commands |
 | `9d5ae11` | 2026-06-25 | Gabriel Bezerra Rodrigues | feat: npm publish setup for Phase 8 |
-| `8c9c106` | 2026-06-25 | Gabriel Bezerra Rodrigues | fix(core): address code review findings |
-| `5766bd8` | 2026-06-25 | Gabriel Bezerra Rodrigues | feat(core): add mermaid module for Phase 7 |
-| `54a74c7` | 2026-06-25 | Gabriel Bezerra Rodrigues | feat(core): add context-packs module for Phase 6 |
-| `2bc9588` | 2026-06-25 | Gabriel Bezerra Rodrigues | fix(test): fix type assertion in route-openapi test |
-| `a85133f` | 2026-06-25 | Gabriel Bezerra Rodrigues | test(core): add unit tests for audit module |
-| `b18ab45` | 2026-06-25 | Gabriel Bezerra Rodrigues | fix(core): improve audit heuristics for CLI projects |
 
 ## Raw Log Snapshot
 
+- d7924b0 2026-06-26 fix(lint): resolve all remaining warnings
+- 8e5fb17 2026-06-26 fix: critical blockers for npm release
+- 21a3220 2026-06-26 docs: update README with current status
+- 5f7b4b9 2026-06-26 feat(audit): add 3 new drift checks
+- 76892cf 2026-06-26 test(cli): add integration tests for all commands
+- b8dc2b8 2026-06-26 feat(scanner): integrate ts-morph for proper AST extraction
 - b3813e1 2026-06-26 refactor: archive ROADMAP.md and simplify README
 - 83fa4bf 2026-06-26 feat: fix typecheck, lint, adapters, check --json, and add CLI tests
 - 2df5d5d 2026-06-26 feat: implement documentation server for Fastify and NestJS adapters with static file support
 - ea322dd 2026-06-25 test(core): add tests for context-packs and mermaid modules
 - c47bcfe 2026-06-25 feat(cli): add context and diagram commands
 - 9d5ae11 2026-06-25 feat: npm publish setup for Phase 8
-- 8c9c106 2026-06-25 fix(core): address code review findings
-- 5766bd8 2026-06-25 feat(core): add mermaid module for Phase 7
-- 54a74c7 2026-06-25 feat(core): add context-packs module for Phase 6
-- 2bc9588 2026-06-25 fix(test): fix type assertion in route-openapi test
-- a85133f 2026-06-25 test(core): add unit tests for audit module
-- b18ab45 2026-06-25 fix(core): improve audit heuristics for CLI projects

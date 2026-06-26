@@ -18,3 +18,4 @@ Configured docs route: `/docs`
 | fastify | implemented | `packages/adapters/src/fastify.ts` | FastifyInstance (interface), periaDocs (function), PeriaDocsOptions (interface) |
 | hono | placeholder | `packages/adapters/src/hono.ts` | HonoContext (interface), periaDocs (function), PeriaDocsOptions (interface) |
 | nest | implemented | `packages/adapters/src/nest.ts` | NestApplication (class), PeriaNestOptions (interface), setupPeriaDocs (function) |
+| smoke.test | implemented | `packages/adapters/src/__tests__/smoke.test.ts` | none |

@@ -87,10 +87,12 @@ export async function runAuditChecks(
           );
         }
 
+        const hasErrorFinding = filteredFindings.some((finding) => finding.severity === 'error');
+
         return {
           name: check.name,
           description: check.description,
-          status: (filteredFindings.length > 0 ? 'failed' : 'passed') as CheckStatus,
+          status: (hasErrorFinding ? 'failed' : 'passed') as CheckStatus,
           findings: filteredFindings,
         };
       } catch (error) {
@@ -108,8 +110,8 @@ export async function runAuditChecks(
   result.checks = checkResults;
   result.summary = calculateSummary(checkResults);
 
-  // Check passes if there are no errors (warnings and infos are informational)
-  result.passed = result.summary.errors === 0;
+  // Check passes only when there are no error findings and no check crashed.
+  result.passed = result.summary.errors === 0 && !checkResults.some((check) => check.error);
 
   return result;
 }

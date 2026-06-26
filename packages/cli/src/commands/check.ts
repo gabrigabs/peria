@@ -27,7 +27,8 @@ export async function checkCommand(cwd: string, options: CheckOptions = {}): Pro
   const manifest = await readManifest(cwd);
   if (!manifest) {
     logger.error('No manifest found. Run "peria scan" first.');
-    process.exit(1);
+    process.exitCode = 1;
+    return;
   }
 
   // Run audit checks
@@ -47,6 +48,6 @@ export async function checkCommand(cwd: string, options: CheckOptions = {}): Pro
 
   // Exit code based on result
   if (!auditResult.passed) {
-    process.exit(1);
+    process.exitCode = 1;
   }
 }

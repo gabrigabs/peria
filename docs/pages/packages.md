@@ -40,7 +40,7 @@ This package contributes 0 source modules and 0 exported declarations to the gen
 
 **Why it matters:**
 
-This package contributes 6 source modules and 30 exported declarations to the generated knowledge graph. Its manifest lives at `packages/adapters/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 7 source modules and 24 exported declarations to the generated knowledge graph. Its manifest lives at `packages/adapters/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
@@ -49,7 +49,7 @@ This package contributes 6 source modules and 30 exported declarations to the ge
 - Scripts: `build`, `typecheck`, `test`, `dev`
 - Package exports: `.`, `./elysia`, `./express`, `./fastify`, `./hono`, `./nest`
 - Internal package imports: none detected
-- External dependencies: `@fastify/static`, `@nestjs/core`, `@types/express`, `@types/node`, `express`, `fastify`, `tsup`, `typescript`
+- External dependencies: `@fastify/static`, `@nestjs/core`, `@types/express`, `@types/node`, `express`, `fastify`, `tsup`, `typescript`, `vitest`
 
 ## @peria/api-reference
 
@@ -84,7 +84,7 @@ This package contributes 2 source modules and 0 exported declarations to the gen
 
 **Why it matters:**
 
-This package contributes 16 source modules and 26 exported declarations to the generated knowledge graph. Its manifest lives at `packages/cli/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 17 source modules and 26 exported declarations to the generated knowledge graph. Its manifest lives at `packages/cli/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
@@ -109,7 +109,7 @@ This package contributes 16 source modules and 26 exported declarations to the g
 
 **Why it matters:**
 
-This package contributes 113 source modules and 529 exported declarations to the generated knowledge graph. Its manifest lives at `packages/core/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 116 source modules and 535 exported declarations to the generated knowledge graph. Its manifest lives at `packages/core/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
@@ -161,7 +161,7 @@ This package contributes 12 source modules and 112 exported declarations to the 
 - Scripts: `build`, `typecheck`, `dev`, `test`
 - Package exports: `.`
 - Internal package imports: `@peria/core`
-- External dependencies: `@peria/core`, `@types/node`, `highlight.js`, `marked`, `react`, `react-dom`, `tsup`, `typescript`
+- External dependencies: `@peria/core`, `@types/node`, `highlight.js`, `marked`, `tsup`, `typescript`
 
 ## @peria/sdk
 
@@ -176,7 +176,7 @@ This package contributes 12 source modules and 112 exported declarations to the 
 
 **Why it matters:**
 
-This package contributes 3 source modules and 16 exported declarations to the generated knowledge graph. Its manifest lives at `packages/sdk/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 4 source modules and 26 exported declarations to the generated knowledge graph. Its manifest lives at `packages/sdk/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 

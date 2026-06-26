@@ -17,7 +17,8 @@ import type { AuditCheck, AuditSeverity } from './types.js';
 interface PackageJson {
   name: string;
   version?: string;
-  exports?: Record<string, string | { types?: string; default?: string }>;
+  private?: boolean;
+  exports?: Record<string, string | { import?: string; types?: string; default?: string }>;
   main?: string;
   types?: string;
   module?: string;
@@ -65,6 +66,10 @@ async function getAllFiles(dir: string, basePath: string = ''): Promise<string[]
   return files;
 }
 
+function normalizeDistPath(path: string): string {
+  return path.replace(/^\.\//, '').replace(/^dist\//, '');
+}
+
 /**
  * Package Exports audit check
  */
@@ -97,6 +102,10 @@ export const runPackageExportsCheck: AuditCheck = {
       // biome-ignore lint/style/noNonNullAssertion: pkgJson is guaranteed to be set after successful JSON.parse
       const pkgJsonData = pkgJson!;
 
+      if (pkgJsonData.private) {
+        continue;
+      }
+
       // Check if dist exists
       const distExists = await fileExists(distPath);
       if (!distExists) {
@@ -122,8 +131,6 @@ export const runPackageExportsCheck: AuditCheck = {
       let distFiles: string[] = [];
       try {
         distFiles = await getAllFiles(distPath);
-        // Normalize paths (remove .js extensions for comparison)
-        distFiles = distFiles.map((f) => f.replace(/\.js$/, '').replace(/\.d\.ts$/, ''));
       } catch {
         // Can't read dist, skip further checks
         continue;
@@ -140,11 +147,12 @@ export const runPackageExportsCheck: AuditCheck = {
           const exportObj =
             typeof exportValue === 'string' ? { default: exportValue } : exportValue;
 
-          // Check default export
-          if (exportObj.default) {
-            const exportFile = exportObj.default.replace(/^\.\//, '').replace(/\.js$/, '');
+          // Check runtime export
+          const runtimeExport = exportObj.import ?? exportObj.default;
+          if (runtimeExport) {
+            const exportFile = normalizeDistPath(runtimeExport);
 
-            if (!distFileSet.has(exportFile) && !distFileSet.has(`${exportFile}/index`)) {
+            if (!distFileSet.has(exportFile)) {
               findings.push({
                 id: generateId('pkg-export-missing', index++),
                 severity: 'error',
@@ -152,7 +160,7 @@ export const runPackageExportsCheck: AuditCheck = {
                 entityId: pkg.id,
                 entityType: 'package',
                 problem: `Package "${pkg.name}" exports "${exportPath}" but file is missing from dist`,
-                expected: `dist/${exportFile}.js should exist`,
+                expected: `${runtimeExport} should exist`,
                 actual: 'File not found',
                 source: { file: pkgJsonPath },
                 suggestions: [
@@ -165,10 +173,10 @@ export const runPackageExportsCheck: AuditCheck = {
 
           // Check types export
           if (exportObj.types) {
-            const typesFile = exportObj.types.replace(/^\.\//, '').replace(/\.d\.ts$/, '');
+            const typesFile = normalizeDistPath(exportObj.types);
 
             // Check for .d.ts file
-            const hasTypes = distFiles.some((f) => f.startsWith(typesFile) && f.endsWith('.d'));
+            const hasTypes = distFileSet.has(typesFile);
 
             if (!hasTypes) {
               findings.push({
@@ -178,7 +186,7 @@ export const runPackageExportsCheck: AuditCheck = {
                 entityId: pkg.id,
                 entityType: 'package',
                 problem: `Package "${pkg.name}" exports "${exportPath}" but type declarations may be missing`,
-                expected: `dist/${typesFile}.d.ts should exist`,
+                expected: `${exportObj.types} should exist`,
                 actual: 'Type declarations not found',
                 source: { file: pkgJsonPath },
                 suggestions: ['Check build output for TypeScript compilation'],
@@ -192,8 +200,8 @@ export const runPackageExportsCheck: AuditCheck = {
       // Note: main/module pointing to dist that doesn't exist is a warning during development
       // because the user might not have built yet. Only flag as error if explicitly exported.
       if (pkgJsonData.main) {
-        const mainFile = pkgJsonData.main.replace(/^\.\//, '').replace(/\.js$/, '');
-        const isDistField = mainFile.startsWith('dist/');
+        const mainFile = normalizeDistPath(pkgJsonData.main);
+        const isDistField = pkgJsonData.main.replace(/^\.\//, '').startsWith('dist/');
 
         if (!distFileSet.has(mainFile)) {
           findings.push({
@@ -203,7 +211,7 @@ export const runPackageExportsCheck: AuditCheck = {
             entityId: pkg.id,
             entityType: 'package',
             problem: `Package "${pkg.name}" has "main" pointing to missing file`,
-            expected: `dist/${mainFile}.js should exist`,
+            expected: `${pkgJsonData.main} should exist`,
             actual: 'File not found',
             source: { file: pkgJsonPath },
             suggestions: isDistField
@@ -214,8 +222,8 @@ export const runPackageExportsCheck: AuditCheck = {
       }
 
       if (pkgJsonData.module && pkgJsonData.module !== pkgJsonData.main) {
-        const moduleFile = pkgJsonData.module.replace(/^\.\//, '').replace(/\.js$/, '');
-        const isDistField = moduleFile.startsWith('dist/');
+        const moduleFile = normalizeDistPath(pkgJsonData.module);
+        const isDistField = pkgJsonData.module.replace(/^\.\//, '').startsWith('dist/');
 
         if (!distFileSet.has(moduleFile)) {
           findings.push({
@@ -225,7 +233,7 @@ export const runPackageExportsCheck: AuditCheck = {
             entityId: pkg.id,
             entityType: 'package',
             problem: `Package "${pkg.name}" has "module" pointing to missing file`,
-            expected: `dist/${moduleFile}.js should exist`,
+            expected: `${pkgJsonData.module} should exist`,
             actual: 'File not found',
             source: { file: pkgJsonPath },
             suggestions: isDistField

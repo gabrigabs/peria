@@ -15,8 +15,6 @@ Local-first source-backed knowledge graph CLI for backend and API repositories.
 ```bash
 npm install -D @peria/cli
 # or
-pnpm add -D @peria/cli
-# or
 bun add -D @peria/cli
 ```
 

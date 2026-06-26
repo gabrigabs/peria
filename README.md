@@ -38,7 +38,7 @@ Peria uses itself to document Peria:
 
 - **153 TypeScript modules** extracted with ts-morph
 - **10 audit checks** for drift detection
-- **23 CLI tests** (smoke + integration)
+- **21 CLI tests** (smoke + integration)
 - Docs generated at `docs/pages/`
 
 ---

@@ -148,11 +148,11 @@ function renderNav() {
     const links = section.pages
       .map((slug) => state.pages.find((page) => page.slug === slug))
       .filter((page) => page && pageMatches.has(page.slug))
-      .map((page) => '<a class="nav-link ' + (page.slug === state.activeSlug ? 'active' : '') + '" href="#/' + page.slug + '">' + escapeHtml(page.title) + '</a>')
+      .map((page) => \`<a class="nav-link \${page.slug === state.activeSlug ? 'active' : ''}" href="#/\${page.slug}">\${escapeHtml(page.title)}</a>\`)
       .join('')
 
     if (!links) return ''
-    return '<section><p class="nav-section-title">' + escapeHtml(section.title) + '</p>' + links + '</section>'
+    return \`<section><p class="nav-section-title">\${escapeHtml(section.title)}</p>\${links}</section>\`
   }).join('')
 }
 
@@ -163,7 +163,7 @@ async function loadActivePage() {
   state.activeSlug = page.slug
   title.textContent = page.title
   description.textContent = page.description
-  const response = await fetch('./' + page.path)
+  const response = await fetch(\`./\${page.path}\`)
   const markdown = await response.text()
   content.innerHTML = markdownToHtml(markdown)
   renderNav()
@@ -184,7 +184,7 @@ function markdownToHtml(markdown) {
         code.push(lines[index])
         index += 1
       }
-      html.push('<pre><code>' + escapeHtml(code.join('\\n')) + '</code></pre>')
+      html.push(\`<pre><code>\${escapeHtml(code.join('\\n'))}</code></pre>\`)
       index += 1
       continue
     }
@@ -201,37 +201,37 @@ function markdownToHtml(markdown) {
     }
 
     if (line.startsWith('### ')) {
-      html.push('<h3>' + inline(line.slice(4)) + '</h3>')
+      html.push(\`<h3>\${inline(line.slice(4))}</h3>\`)
     } else if (line.startsWith('## ')) {
-      html.push('<h2>' + inline(line.slice(3)) + '</h2>')
+      html.push(\`<h2>\${inline(line.slice(3))}</h2>\`)
     } else if (line.startsWith('# ')) {
-      html.push('<h1>' + inline(line.slice(2)) + '</h1>')
+      html.push(\`<h1>\${inline(line.slice(2))}</h1>\`)
     } else if (line.startsWith('> ')) {
       const quotes = []
       while (index < lines.length && lines[index].startsWith('> ')) {
-        quotes.push('<p>' + inline(lines[index].slice(2)) + '</p>')
+        quotes.push(\`<p>\${inline(lines[index].slice(2))}</p>\`)
         index += 1
       }
-      html.push('<blockquote>' + quotes.join('') + '</blockquote>')
+      html.push(\`<blockquote>\${quotes.join('')}</blockquote>\`)
       continue
     } else if (line.startsWith('- ')) {
       const items = []
       while (index < lines.length && lines[index].startsWith('- ')) {
-        items.push('<li>' + inline(lines[index].slice(2)) + '</li>')
+        items.push(\`<li>\${inline(lines[index].slice(2))}</li>\`)
         index += 1
       }
-      html.push('<ul>' + items.join('') + '</ul>')
+      html.push(\`<ul>\${items.join('')}</ul>\`)
       continue
     } else if (/^\\d+\\.\\s/.test(line)) {
       const items = []
       while (index < lines.length && /^\\d+\\.\\s/.test(lines[index])) {
-        items.push('<li>' + inline(lines[index].replace(/^\\d+\\.\\s/, '')) + '</li>')
+        items.push(\`<li>\${inline(lines[index].replace(/^\\d+\\.\\s/, ''))}</li>\`)
         index += 1
       }
-      html.push('<ol>' + items.join('') + '</ol>')
+      html.push(\`<ol>\${items.join('')}</ol>\`)
       continue
     } else if (line.trim()) {
-      html.push('<p>' + inline(line) + '</p>')
+      html.push(\`<p>\${inline(line)}</p>\`)
     }
 
     index += 1
@@ -243,9 +243,9 @@ function markdownToHtml(markdown) {
 function renderTable(lines) {
   const rows = lines.map((line) => line.split('|').slice(1, -1).map((cell) => inline(cell.trim())))
   const header = rows.shift() || []
-  const head = '<thead><tr>' + header.map((cell) => '<th>' + cell + '</th>').join('') + '</tr></thead>'
-  const body = '<tbody>' + rows.map((row) => '<tr>' + row.map((cell) => '<td>' + cell + '</td>').join('') + '</tr>').join('') + '</tbody>'
-  return '<table>' + head + body + '</table>'
+  const head = \`<thead><tr>\${header.map((cell) => \`<th>\${cell}</th>\`).join('')}</tr></thead>\`
+  const body = \`<tbody>\${rows.map((row) => \`<tr>\${row.map((cell) => \`<td>\${cell}</td>\`).join('')}</tr>\`).join('')}</tbody>\`
+  return \`<table>\${head}\${body}</table>\`
 }
 
 function inline(value) {
@@ -274,7 +274,7 @@ searchInput.addEventListener('input', () => {
 
 init().catch((error) => {
   title.textContent = 'Wiki failed to load'
-  content.innerHTML = '<p>' + escapeHtml(error.message) + '</p>'
+  content.innerHTML = \`<p>\${escapeHtml(error.message)}</p>\`
 })
 `;
 }

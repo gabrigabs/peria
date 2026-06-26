@@ -2,7 +2,8 @@
  * NestJS Parser Tests
  */
 
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { beforeAll, describe, expect, it } from 'vitest';
@@ -266,32 +267,33 @@ describe('NestJS Adapter', () => {
         return;
       }
 
-      // Create a temporary fixture with a DTO by naming pattern only (not in a schema file)
-      const tempDir = join(FIXTURE_PATH, 'temp', 'dto-by-name');
-      await mkdir(tempDir, { recursive: true });
+      const tempDir = await mkdtemp(join(tmpdir(), 'peria-dto-by-name-'));
 
-      // Create a file that matches DTO naming pattern but NOT schema patterns (.dto.ts, .entity.ts, .schema.ts, .model.ts)
-      await writeFile(
-        join(tempDir, 'data.ts'),
-        `
-export class CreateUserDto {
+      try {
+        // Create a file that matches DTO naming pattern but NOT schema patterns (.dto.ts, .entity.ts, .schema.ts, .model.ts)
+        await writeFile(
+          join(tempDir, 'data.ts'),
+          `export class CreateUserDto {
   email: string;
   name: string;
 }
-        `
-      );
+`
+        );
 
-      const tempContext = {
-        ...context,
-        cwd: tempDir,
-      };
+        const tempContext = {
+          ...context,
+          cwd: tempDir,
+        };
 
-      const schemas = await extractSchemas(tempContext);
-      const createDto = schemas.find((s) => s.name === 'CreateUserDto');
+        const schemas = await extractSchemas(tempContext);
+        const createDto = schemas.find((s) => s.name === 'CreateUserDto');
 
-      // DTOs by naming pattern only (not in schema files) should have medium confidence
-      expect(createDto?.confidence).toBe('medium');
-      expect(createDto?.extractionMethod).toBe('heuristic');
+        // DTOs by naming pattern only (not in schema files) should have medium confidence
+        expect(createDto?.confidence).toBe('medium');
+        expect(createDto?.extractionMethod).toBe('heuristic');
+      } finally {
+        await rm(tempDir, { recursive: true, force: true });
+      }
     });
   });
 });

@@ -53,7 +53,7 @@ export async function buildCommand(cwd: string): Promise<void> {
     writeFile(join(assetsDir, 'wiki.css'), css, 'utf-8'),
     writeFile(join(assetsDir, 'wiki.js'), js, 'utf-8'),
     writeJsonFile(join(artifactDir, 'graph.json'), result.graph),
-    writeJsonFile(join(artifactDir, 'manifest.json'), result.manifest),
+    writeJsonFile(join(artifactDir, 'wiki-manifest.json'), result.manifest),
     writeFile(join(artifactDir, 'ai-context.md'), result.llmsText, 'utf-8'),
     writeFile(join(cwd, 'llms.txt'), result.llmsText, 'utf-8'),
   ]);

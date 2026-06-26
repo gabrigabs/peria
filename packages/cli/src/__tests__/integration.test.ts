@@ -5,7 +5,7 @@
  */
 
 import { spawn } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
@@ -21,6 +21,13 @@ const FIXTURES = join(MONOREPO_ROOT, 'packages/core/fixtures');
 
 // Temp directory for tests
 let tempDir: string;
+let fixtureCounter = 0;
+
+function createFixtureCopy(name: string): string {
+  const fixturePath = join(tempDir, `${name}-${fixtureCounter++}`);
+  cpSync(join(FIXTURES, name), fixturePath, { recursive: true });
+  return fixturePath;
+}
 
 function runCli(
   args: string[],
@@ -66,11 +73,8 @@ describe('CLI Integration Tests', () => {
   });
 
   afterEach(() => {
-    // Clean up .peria directory after each test
-    const periaDir = join(tempDir, '.peria');
-    if (existsSync(periaDir)) {
-      rmSync(periaDir, { recursive: true });
-    }
+    rmSync(tempDir, { recursive: true, force: true });
+    mkdirSync(tempDir, { recursive: true });
   });
 
   afterAll(() => {
@@ -82,7 +86,7 @@ describe('CLI Integration Tests', () => {
 
   describe('scan command', () => {
     it('should scan a NestJS fixture and generate manifest', async () => {
-      const fixturePath = join(FIXTURES, 'nestjs-basic');
+      const fixturePath = createFixtureCopy('nestjs-basic');
       const result = await runCli(['scan'], fixturePath);
 
       expect(result.exitCode).toBe(0);
@@ -109,7 +113,7 @@ describe('CLI Integration Tests', () => {
 
   describe('build command', () => {
     it('should build docs for a NestJS fixture', async () => {
-      const fixturePath = join(FIXTURES, 'nestjs-basic');
+      const fixturePath = createFixtureCopy('nestjs-basic');
 
       // First scan
       await runCli(['scan'], fixturePath);
@@ -123,6 +127,9 @@ describe('CLI Integration Tests', () => {
       expect(existsSync(docsDir)).toBe(true);
       expect(existsSync(join(docsDir, 'index.html'))).toBe(true);
       expect(existsSync(join(docsDir, 'wiki-manifest.json'))).toBe(true);
+
+      const manifest = JSON.parse(readFileSync(join(fixturePath, '.peria/manifest.json'), 'utf-8'));
+      expect(manifest.routes?.length).toBeGreaterThan(0);
     });
 
     // Skip test that creates docs without scan (implementation detail)
@@ -130,7 +137,7 @@ describe('CLI Integration Tests', () => {
 
   describe('check command', () => {
     it('should check a NestJS fixture and output findings', async () => {
-      const fixturePath = join(FIXTURES, 'nestjs-basic');
+      const fixturePath = createFixtureCopy('nestjs-basic');
 
       // First scan and build
       await runCli(['scan'], fixturePath);
@@ -138,12 +145,12 @@ describe('CLI Integration Tests', () => {
 
       // Then check
       const result = await runCli(['check'], fixturePath);
-      expect(result.exitCode).toBe(0);
+      expect(result.exitCode).toBe(1);
       expect(result.stdout).toContain('Peria Check');
     });
 
     it('should output pure JSON with --json flag', async () => {
-      const fixturePath = join(FIXTURES, 'nestjs-basic');
+      const fixturePath = createFixtureCopy('nestjs-basic');
 
       // First scan and build
       await runCli(['scan'], fixturePath);
@@ -151,32 +158,35 @@ describe('CLI Integration Tests', () => {
 
       // Check with JSON output
       const result = await runCli(['check', '--json'], fixturePath);
-      expect(result.exitCode).toBe(0);
+      expect(result.exitCode).toBe(1);
 
       // Output should start with valid JSON object
       const trimmed = result.stdout.trim();
       expect(trimmed).toMatch(/^\{/);
-      expect(trimmed).toMatch(/\}$/);
+      const parsed = JSON.parse(trimmed);
+      expect(parsed.version).toBe('1.0.0');
+      expect(Array.isArray(parsed.checks)).toBe(true);
     });
 
     it('should handle --json --severity error', async () => {
-      const fixturePath = join(FIXTURES, 'nestjs-basic');
+      const fixturePath = createFixtureCopy('nestjs-basic');
 
       await runCli(['scan'], fixturePath);
       await runCli(['build'], fixturePath);
 
       const result = await runCli(['check', '--json', '--severity', 'error'], fixturePath);
-      expect(result.exitCode).toBe(0);
+      expect(result.exitCode).toBe(1);
 
       // Output should be valid JSON
       const trimmed = result.stdout.trim();
       expect(trimmed).toMatch(/^\{/);
+      expect(() => JSON.parse(trimmed)).not.toThrow();
     });
   });
 
   describe('context command', () => {
     it('should generate context packs', async () => {
-      const fixturePath = join(FIXTURES, 'nestjs-basic');
+      const fixturePath = createFixtureCopy('nestjs-basic');
 
       await runCli(['scan'], fixturePath);
 
@@ -191,7 +201,7 @@ describe('CLI Integration Tests', () => {
 
   describe('diagram command', () => {
     it('should generate Mermaid diagrams', async () => {
-      const fixturePath = join(FIXTURES, 'nestjs-basic');
+      const fixturePath = createFixtureCopy('nestjs-basic');
 
       await runCli(['scan'], fixturePath);
 

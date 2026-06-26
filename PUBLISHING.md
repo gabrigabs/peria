@@ -22,6 +22,7 @@ The monorepo uses scoped packages (`@peria/*`):
 |---------|-----------|--------|
 | CLI | `@peria/cli` | Primary install target |
 | Core | `@peria/core` | Dependency |
+| Renderer | `@peria/renderer` | Dependency |
 | Adapters | `@peria/adapters` | Future |
 | SDK | `@peria/sdk` | Future |
 | Docs UI | `@peria/docs-ui` | Future |
@@ -40,6 +41,7 @@ Check if the package names are available:
 ```sh
 npm view @peria/cli 2>&1 | head -5
 npm view @peria/core 2>&1 | head -5
+npm view @peria/renderer 2>&1 | head -5
 ```
 
 If they don't exist, you'll be the first publisher.
@@ -55,11 +57,12 @@ bun run build
 # Verify the package contents
 ls packages/cli/dist/
 ls packages/core/dist/
+ls packages/renderer/dist/
 ```
 
 ## Step 4: Publish @peria/core First
 
-Core must be published before CLI (CLI depends on it):
+Core must be published before renderer and CLI (both depend on it):
 
 ```sh
 cd packages/core
@@ -74,13 +77,31 @@ npm publish --access public
 npm view @peria/core
 ```
 
-## Step 5: Publish @peria/cli
+## Step 5: Publish @peria/renderer
+
+Renderer must be published before CLI (CLI depends on it):
+
+```sh
+cd packages/renderer
+
+# Version must match core and CLI
+
+# Dry run
+npm pack --dry-run
+
+# Publish
+npm publish --access public
+
+# Verify
+npm view @peria/renderer
+```
+
+## Step 6: Publish @peria/cli
 
 ```sh
 cd packages/cli
 
-# Update version in package.json if needed
-# Version must match in all published packages
+# Version must match core and renderer
 
 # Dry run
 npm pack --dry-run
@@ -92,7 +113,7 @@ npm publish --access public
 npm view @peria/cli
 ```
 
-## Step 6: Test the Installation
+## Step 7: Test the Installation
 
 From a fresh directory:
 
@@ -180,22 +201,22 @@ Then in GitHub Settings > Secrets, add `NPM_TOKEN` with an npm automation token.
 
 ## Current Status
 
-As of Phase 7 completion:
+As of Phase 8 completion:
 - Package metadata is prepared ✅
 - Build works ✅
 - CLI binary works ✅
-- Adapters implemented (Express, Fastify, NestJS) ✅
-- Publishing pending: npm pack test and tarball installation test
+- Core, renderer, and CLI are the publishable packages for the first npm release ✅
+- Adapters, SDK, and Docs UI remain future package targets
 
 To publish when ready:
 ```sh
 bun run build
-npm pack --pack-destination /tmp packages/core packages/cli packages/adapters
+npm pack --pack-destination /tmp packages/core packages/renderer packages/cli
 # Test tarball installation
-cd /tmp && npm install peria-core-*.tgz peria-cli-*.tgz peria-adapters-*.tgz
+cd /tmp && npm install peria-core-*.tgz peria-renderer-*.tgz peria-cli-*.tgz
 npx peria --help
 # If tests pass, publish:
 cd packages/core && npm publish --access public
+cd packages/renderer && npm publish --access public
 cd packages/cli && npm publish --access public
-cd packages/adapters && npm publish --access public
 ```

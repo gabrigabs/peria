@@ -114,6 +114,11 @@ export function calculateSummary(checks: CheckResult[]): AuditSummary {
   };
 
   for (const check of checks) {
+    if (check.error) {
+      summary.errors++;
+      summary.total++;
+    }
+
     for (const finding of check.findings) {
       summary.total++;
       switch (finding.severity) {

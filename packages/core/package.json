@@ -7,20 +7,20 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     },
     "./config": {
-      "import": "./dist/config/loader.js",
-      "types": "./dist/config/loader.d.ts"
+      "types": "./dist/config/loader.d.ts",
+      "import": "./dist/config/loader.js"
     },
     "./detectors": {
-      "import": "./dist/detectors/index.js",
-      "types": "./dist/detectors/index.d.ts"
+      "types": "./dist/detectors/index.d.ts",
+      "import": "./dist/detectors/index.js"
     },
     "./build": {
-      "import": "./dist/build/index.js",
-      "types": "./dist/build/index.d.ts"
+      "types": "./dist/build/index.d.ts",
+      "import": "./dist/build/index.js"
     }
   },
   "files": [
@@ -59,12 +59,12 @@
     "remark-parse": "^11.0.0",
     "remark-frontmatter": "^5.0.0",
     "unified": "^11.0.0",
-    "@apidevtools/swagger-parser": "^10.1.0"
+    "@apidevtools/swagger-parser": "^10.1.0",
+    "typescript": "^5.7.2"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
     "tsup": "^8.3.0",
-    "typescript": "^5.7.2",
     "vitest": "^3.0.0"
   }
 }

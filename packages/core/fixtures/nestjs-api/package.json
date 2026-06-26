@@ -2,6 +2,7 @@
   "name": "nestjs-api-fixture",
   "version": "1.0.0",
   "description": "Test fixture for Peria NestJS adapter",
+  "private": true,
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",

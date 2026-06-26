@@ -5,29 +5,67 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 ## Current Revision
 
 - Branch: `feat/self-documentation-bootstrap`
-- Commit: `8e5fb177822e527a090f394529071f745b54a772`
-- Subject: fix: critical blockers for npm release
+- Commit: `d7924b07b5fb81410bbe5fff69d885f82384a376`
+- Subject: fix(lint): resolve all remaining warnings
 - Author: Gabriel Bezerra Rodrigues <gabrielbrodrigues1@gmail.com>
-- Authored at: 2026-06-26T12:28:31-03:00
-- Working tree: 10 changed files
+- Authored at: 2026-06-26T12:31:59-03:00
+- Working tree: 47 changed files
 
 ## Working Tree Changes
 
+- `M ../../../../.peria/manifest.json`
+- `M ../../../../PUBLISHING.md`
+- `M ../../../../README.md`
+- `M ../../../../biome.json`
+- `M ../../../../bun.lock`
 - `M ../../../../docs/assets/wiki.js`
+- `M ../../../../docs/index.html`
+- `M ../../../../docs/pages/adapters.md`
+- `M ../../../../docs/pages/ai-context.md`
+- `M ../../../../docs/pages/history.md`
+- `M ../../../../docs/pages/modules.md`
+- `M ../../../../docs/pages/overview.md`
+- `M ../../../../docs/pages/packages.md`
+- `M ../../../../docs/wiki-manifest.json`
 - `M ../../../adapters/package.json`
-- `M ../../../adapters/src/nest.ts`
+- `M ../../../adapters/src/__tests__/smoke.test.ts`
+- `M ../../../api-reference/package.json`
+- `D ../../../api-reference/pnpm-lock.yaml`
+- `M ../../../cli/README.md`
+- `M ../../../cli/package.json`
+- `M ../../../cli/src/__tests__/integration.test.ts`
+- `M ../../../cli/src/commands/build.ts`
+- `M ../../../cli/src/commands/check.ts`
+- `M ../nestjs-api/package.json`
+- `M docs/assets/wiki.js`
 - `M docs/index.html`
 - `M docs/pages/ai-context.md`
 - `M docs/pages/history.md`
 - `M docs/pages/overview.md`
 - `M docs/wiki-manifest.json`
-- `M ../../src/scanner/source-files.ts`
-- `M ../../src/scanner/ts-morph-utils.ts`
+- `M temp/dto-by-name/data.ts`
+- `M ../../package.json`
+- `M ../../src/__tests__/audit/types.test.ts`
+- `M ../../src/__tests__/nestjs-parser.test.ts`
+- `M ../../src/audit/docs-routes.ts`
+- `M ../../src/audit/index.ts`
+- `M ../../src/audit/openapi-docs.ts`
+- `M ../../src/audit/package-exports.ts`
+- `M ../../src/audit/types.ts`
+- `M ../../../docs-ui/package.json`
+- `M ../../../renderer/package.json`
+- `M ../../../renderer/src/js.ts`
+- `M ../../../sdk/package.json`
+- `M ../../../sdk/tsup.config.ts`
+- `D ../../../../pnpm-lock.yaml`
+- `D ../../../../pnpm-workspace.yaml`
+- `?? ../../../sdk/src/api-reference.ts`
 
 ## Recent Commits
 
 | Commit | Date | Author | Subject |
 | --- | --- | --- | --- |
+| `d7924b0` | 2026-06-26 | Gabriel Bezerra Rodrigues | fix(lint): resolve all remaining warnings |
 | `8e5fb17` | 2026-06-26 | Gabriel Bezerra Rodrigues | fix: critical blockers for npm release |
 | `21a3220` | 2026-06-26 | Gabriel Bezerra Rodrigues | docs: update README with current status |
 | `5f7b4b9` | 2026-06-26 | Gabriel Bezerra Rodrigues | feat(audit): add 3 new drift checks |
@@ -39,10 +77,10 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 | `ea322dd` | 2026-06-25 | Gabriel Bezerra Rodrigues | test(core): add tests for context-packs and mermaid modules |
 | `c47bcfe` | 2026-06-25 | Gabriel Bezerra Rodrigues | feat(cli): add context and diagram commands |
 | `9d5ae11` | 2026-06-25 | Gabriel Bezerra Rodrigues | feat: npm publish setup for Phase 8 |
-| `8c9c106` | 2026-06-25 | Gabriel Bezerra Rodrigues | fix(core): address code review findings |
 
 ## Raw Log Snapshot
 
+- d7924b0 2026-06-26 fix(lint): resolve all remaining warnings
 - 8e5fb17 2026-06-26 fix: critical blockers for npm release
 - 21a3220 2026-06-26 docs: update README with current status
 - 5f7b4b9 2026-06-26 feat(audit): add 3 new drift checks
@@ -54,4 +92,3 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 - ea322dd 2026-06-25 test(core): add tests for context-packs and mermaid modules
 - c47bcfe 2026-06-25 feat(cli): add context and diagram commands
 - 9d5ae11 2026-06-25 feat: npm publish setup for Phase 8
-- 8c9c106 2026-06-25 fix(core): address code review findings

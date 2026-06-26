@@ -68,6 +68,25 @@ describe('Audit Types', () => {
         total: 0,
       });
     });
+
+    it('should count check execution errors as audit errors', () => {
+      const summary = calculateSummary([
+        {
+          name: 'check1',
+          description: 'Test check',
+          status: 'failed' as const,
+          findings: [],
+          error: 'Unexpected failure',
+        },
+      ]);
+
+      expect(summary).toEqual({
+        errors: 1,
+        warnings: 0,
+        infos: 0,
+        total: 1,
+      });
+    });
   });
 
   describe('filterBySeverity', () => {

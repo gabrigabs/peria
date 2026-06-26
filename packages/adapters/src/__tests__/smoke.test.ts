@@ -4,7 +4,22 @@
  * Basic tests to verify adapter functions are exported correctly.
  */
 
+import { mkdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
+
+function withTempDocs<T>(callback: (docsPath: string) => T): T {
+  const directory = mkdtempSync(join(tmpdir(), 'peria-adapters-'));
+  const docsPath = join(directory, 'docs');
+  mkdirSync(docsPath, { recursive: true });
+
+  try {
+    return callback(docsPath);
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+}
 
 // Express adapter tests
 describe('Express adapter', () => {
@@ -15,16 +30,20 @@ describe('Express adapter', () => {
 
   it('should create a router with default options', async () => {
     const { periaDocs } = await import('../express.js');
-    const router = periaDocs();
-    expect(typeof router).toBe('object');
-    expect(typeof router.get).toBe('function');
-    expect(typeof router.use).toBe('function');
+    withTempDocs((docsPath) => {
+      const router = periaDocs({ docsPath });
+      expect(typeof router).toBe('function');
+      expect(typeof router.get).toBe('function');
+      expect(typeof router.use).toBe('function');
+    });
   });
 
   it('should accept custom options', async () => {
     const { periaDocs } = await import('../express.js');
-    const router = periaDocs({ route: '/api-docs', docsPath: 'custom-docs' });
-    expect(typeof router).toBe('object');
+    withTempDocs((docsPath) => {
+      const router = periaDocs({ route: '/api-docs', docsPath });
+      expect(typeof router).toBe('function');
+    });
   });
 });
 

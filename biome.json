@@ -7,7 +7,14 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]
+    "includes": [
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.js",
+      "**/*.jsx",
+      "!docs/assets/wiki.js",
+      "!packages/core/fixtures/**/docs/assets/wiki.js"
+    ]
   },
   "formatter": {
     "enabled": true,

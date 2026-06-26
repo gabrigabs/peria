@@ -16,14 +16,15 @@ export function generateRouteFlowDiagrams(
   options: MermaidOptions
 ): MermaidDiagram[] {
   const diagrams: MermaidDiagram[] = [];
+  const routes = manifest.routes ?? [];
 
-  if (manifest.routes.length === 0) {
+  if (routes.length === 0) {
     return diagrams;
   }
 
   // Group routes by path prefix
   const routeGroups = groupRoutesByPrefix(
-    manifest.routes.map((r) => ({
+    routes.map((r) => ({
       method: r.method,
       path: r.path,
       id: r.id,

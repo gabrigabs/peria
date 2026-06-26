@@ -71,31 +71,34 @@ export function generateDiagrams(manifest: PeriaManifest, options: MermaidOption
  */
 export function generateOverviewDiagram(manifest: PeriaManifest): MermaidDiagram {
   const lines: string[] = [];
+  const routes = manifest.routes ?? [];
+  const schemas = manifest.schemas ?? [];
+  const packages = manifest.packages ?? [];
 
   lines.push('```mermaid');
   lines.push('graph TD');
   lines.push('    subgraph "System Overview"');
 
   // Routes summary
-  if (manifest.routes.length > 0) {
+  if (routes.length > 0) {
     lines.push('        routes["📡 Routes"]');
-    lines.push(`        routes_text["${manifest.routes.length} endpoints"]`);
+    lines.push(`        routes_text["${routes.length} endpoints"]`);
     lines.push('        routes --> routes_text');
     lines.push(`        style routes fill:#61affe,stroke:#2563eb,color:#fff`);
   }
 
   // Schemas summary
-  if (manifest.schemas.length > 0) {
+  if (schemas.length > 0) {
     lines.push('        schemas["📋 Schemas"]');
-    lines.push(`        schemas_text["${manifest.schemas.length} types"]`);
+    lines.push(`        schemas_text["${schemas.length} types"]`);
     lines.push('        schemas --> schemas_text');
     lines.push(`        style schemas fill:#fca130,stroke:#ea580c,color:#fff`);
   }
 
   // Packages summary
-  if (manifest.packages.length > 0) {
+  if (packages.length > 0) {
     lines.push('        packages["📦 Packages"]');
-    lines.push(`        packages_text["${manifest.packages.length} modules"]`);
+    lines.push(`        packages_text["${packages.length} modules"]`);
     lines.push('        packages --> packages_text');
     lines.push(`        style packages fill:#6366f1,stroke:#4338ca,color:#fff`);
   }
@@ -119,9 +122,9 @@ export function generateOverviewDiagram(manifest: PeriaManifest): MermaidDiagram
     title: 'System Overview',
     content,
     sourceEntities: [
-      ...manifest.routes.map((r) => r.id),
-      ...manifest.schemas.map((s) => s.id),
-      ...manifest.packages.map((p) => p.id),
+      ...routes.map((r) => r.id),
+      ...schemas.map((s) => s.id),
+      ...packages.map((p) => p.id),
     ],
     confidence: 'high',
     evidence: [],

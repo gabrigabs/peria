@@ -11,10 +11,4 @@ Configured docs route: `/docs`
 
 ## Adapter Surface
 
-| Adapter | Status | Source | Exports |
-| --- | --- | --- | --- |
-| elysia | placeholder | `packages/adapters/src/elysia.ts` | ElysiaGroup (interface), ElysiaInstance (interface), periaDocs (function), PeriaDocsOptions (interface) |
-| express | placeholder | `packages/adapters/src/express.ts` | periaDocs (function), PeriaDocsOptions (interface) |
-| fastify | placeholder | `packages/adapters/src/fastify.ts` | FastifyInstance (interface), periaDocs (function), PeriaDocsOptions (interface) |
-| hono | placeholder | `packages/adapters/src/hono.ts` | HonoContext (interface), periaDocs (function), PeriaDocsOptions (interface) |
-| nest | placeholder | `packages/adapters/src/nest.ts` | NestApplication (interface), PeriaNestOptions (interface), setupPeriaDocs (function) |
+_No entries found._

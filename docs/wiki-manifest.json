@@ -1,21 +1,24 @@
 {
   "title": "Peria Wiki",
   "tagline": "Human-readable by default. LLM-ready by design.",
-  "generatedAt": "2026-06-23T16:19:10.465Z",
+  "generatedAt": "2026-06-26T14:11:39.116Z",
   "manifestVersion": "0.1.0",
-  "commit": "cc40d72efa12a21d6856a873ee8e4e52d9bea61b",
+  "commit": "83fa4bf994e3da0d9f82867c4523a111a71c2bd6",
   "git": {
     "branch": "feat/self-documentation-bootstrap",
-    "commit": "cc40d72efa12a21d6856a873ee8e4e52d9bea61b",
-    "shortCommit": "cc40d72",
+    "commit": "83fa4bf994e3da0d9f82867c4523a111a71c2bd6",
+    "shortCommit": "83fa4bf",
     "author": "Gabriel Bezerra Rodrigues",
     "authorEmail": "gabrielbrodrigues1@gmail.com",
-    "authoredAt": "2026-06-23T09:59:10-03:00",
-    "subject": "feat: add self-documenting wiki generation",
+    "authoredAt": "2026-06-26T10:28:34-03:00",
+    "subject": "feat: fix typecheck, lint, adapters, check --json, and add CLI tests",
     "isDirty": true,
     "changedFiles": [
-      "M bun.lock",
+      "M .gitignore",
+      "M .peria/manifest.json",
+      "M docs/assets/wiki.css",
       "M docs/index.html",
+      "M docs/pages/adapters.md",
       "M docs/pages/ai-context.md",
       "M docs/pages/cli.md",
       "M docs/pages/configuration.md",
@@ -24,41 +27,83 @@
       "M docs/pages/overview.md",
       "M docs/pages/packages.md",
       "M docs/wiki-manifest.json",
-      "M package.json",
-      "M packages/cli/package.json",
-      "M packages/cli/src/commands/build.ts",
-      "M packages/cli/src/commands/check.ts",
-      "M packages/core/package.json",
-      "M packages/core/src/config/loader.ts",
-      "M packages/core/src/types/config.ts",
-      "M packages/core/src/types/wiki.ts",
-      "M packages/core/src/wiki/builder.ts",
-      "M packages/core/tsup.config.ts",
-      "M peria.config.ts",
-      "?? .github/",
-      "?? PUBLISHING.md",
-      "?? ROADMAP.md",
-      "?? packages/core/src/__tests__/",
-      "?? packages/core/vitest.config.ts"
+      "M packages/core/fixtures/nestjs-basic/temp/dto-by-name/data.ts",
+      "M packages/core/src/context-packs/generator.ts",
+      "M packages/core/src/mermaid/generator.ts",
+      "M packages/core/src/mermaid/route-flow.ts"
     ],
     "recentCommits": [
       {
-        "hash": "cc40d72",
-        "date": "2026-06-23",
+        "hash": "83fa4bf",
+        "date": "2026-06-26",
         "author": "Gabriel Bezerra Rodrigues",
-        "subject": "feat: add self-documenting wiki generation"
+        "subject": "feat: fix typecheck, lint, adapters, check --json, and add CLI tests"
       },
       {
-        "hash": "08562c5",
-        "date": "2026-06-22",
+        "hash": "2df5d5d",
+        "date": "2026-06-26",
         "author": "Gabriel Bezerra Rodrigues",
-        "subject": "feat: initialize project monorepo structure with core, sdk, cli, and adapter packages"
+        "subject": "feat: implement documentation server for Fastify and NestJS adapters with static file support"
       },
       {
-        "hash": "7d3856d",
-        "date": "2026-06-22",
-        "author": "Gabriel Bezerra",
-        "subject": "Initial commit"
+        "hash": "ea322dd",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "test(core): add tests for context-packs and mermaid modules"
+      },
+      {
+        "hash": "c47bcfe",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(cli): add context and diagram commands"
+      },
+      {
+        "hash": "9d5ae11",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat: npm publish setup for Phase 8"
+      },
+      {
+        "hash": "8c9c106",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "fix(core): address code review findings"
+      },
+      {
+        "hash": "5766bd8",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(core): add mermaid module for Phase 7"
+      },
+      {
+        "hash": "54a74c7",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(core): add context-packs module for Phase 6"
+      },
+      {
+        "hash": "2bc9588",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "fix(test): fix type assertion in route-openapi test"
+      },
+      {
+        "hash": "a85133f",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "test(core): add unit tests for audit module"
+      },
+      {
+        "hash": "b18ab45",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "fix(core): improve audit heuristics for CLI projects"
+      },
+      {
+        "hash": "22f6f50",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(cli): wire audit engine into check command"
       }
     ]
   },
@@ -189,19 +234,32 @@
   "tree": [
     {
       "title": "Start here",
-      "pages": ["overview", "ai-context"]
+      "pages": [
+        "overview",
+        "ai-context"
+      ]
     },
     {
       "title": "Product surface",
-      "pages": ["packages", "cli", "configuration"]
+      "pages": [
+        "packages",
+        "cli",
+        "configuration"
+      ]
     },
     {
       "title": "Code map",
-      "pages": ["modules", "adapters", "wiki-ui"]
+      "pages": [
+        "modules",
+        "adapters",
+        "wiki-ui"
+      ]
     },
     {
       "title": "Provenance",
-      "pages": ["history"]
+      "pages": [
+        "history"
+      ]
     }
   ]
 }

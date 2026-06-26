@@ -45,22 +45,26 @@ export async function generateContextPacks(
   }
 
   // Generate route context packs
-  for (const route of manifest.routes) {
-    const openapiKey = `${route.method}:${route.path}`.toLowerCase();
-    const openapiOp = openapiOpMap.get(openapiKey);
+  if (manifest.routes) {
+    for (const route of manifest.routes) {
+      const openapiKey = `${route.method}:${route.path}`.toLowerCase();
+      const openapiOp = openapiOpMap.get(openapiKey);
 
-    const routePack = generateRouteContext(route, {
-      ...options,
-      openapiOp,
-    });
+      const routePack = generateRouteContext(route, {
+        ...options,
+        openapiOp,
+      });
 
-    packs.push(routePack);
+      packs.push(routePack);
+    }
   }
 
   // Generate package context packs
-  for (const pkg of manifest.packages) {
-    const pkgPack = generatePackageContext(pkg, options);
-    packs.push(pkgPack);
+  if (manifest.packages) {
+    for (const pkg of manifest.packages) {
+      const pkgPack = generatePackageContext(pkg, options);
+      packs.push(pkgPack);
+    }
   }
 
   // Generate task context packs
@@ -69,9 +73,9 @@ export async function generateContextPacks(
   for (const taskType of taskTypes) {
     const taskPack = generateTaskContext(taskType, {
       ...options,
-      relevantRoutes: manifest.routes.slice(0, 5),
-      relevantPackages: manifest.packages.slice(0, 5),
-      relevantSchemas: manifest.schemas.slice(0, 5),
+      relevantRoutes: manifest.routes?.slice(0, 5) ?? [],
+      relevantPackages: manifest.packages?.slice(0, 5) ?? [],
+      relevantSchemas: manifest.schemas?.slice(0, 5) ?? [],
     });
 
     packs.push(taskPack);
@@ -133,9 +137,9 @@ function generateFullContext(manifest: PeriaManifest): FullContextPack {
   lines.push('');
   lines.push(`| Metric | Count |`);
   lines.push(`|--------|-------|`);
-  lines.push(`| Routes | ${manifest.routes.length} |`);
-  lines.push(`| Schemas | ${manifest.schemas.length} |`);
-  lines.push(`| Packages | ${manifest.packages.length} |`);
+  lines.push(`| Routes | ${manifest.routes?.length ?? 0} |`);
+  lines.push(`| Schemas | ${manifest.schemas?.length ?? 0} |`);
+  lines.push(`| Packages | ${manifest.packages?.length ?? 0} |`);
   if (manifest.openapiOps) {
     lines.push(`| OpenAPI Operations | ${manifest.openapiOps.length} |`);
   }
@@ -154,14 +158,15 @@ function generateFullContext(manifest: PeriaManifest): FullContextPack {
   }
 
   // Routes Overview
+  const routes = manifest.routes ?? [];
   lines.push('## Routes Overview');
   lines.push('');
   lines.push('```');
-  for (const route of manifest.routes.slice(0, 30)) {
+  for (const route of routes.slice(0, 30)) {
     lines.push(`${route.method.padEnd(6)} ${route.path}`);
   }
-  if (manifest.routes.length > 30) {
-    lines.push(`... and ${manifest.routes.length - 30} more routes`);
+  if (routes.length > 30) {
+    lines.push(`... and ${routes.length - 30} more routes`);
   }
   lines.push('```');
   lines.push('');
@@ -169,7 +174,8 @@ function generateFullContext(manifest: PeriaManifest): FullContextPack {
   // Packages Overview
   lines.push('## Packages');
   lines.push('');
-  for (const pkg of manifest.packages) {
+  const packages = manifest.packages ?? [];
+  for (const pkg of packages) {
     lines.push(`- **${pkg.name}** (${pkg.directory})`);
   }
   lines.push('');
@@ -200,17 +206,17 @@ function generateFullContext(manifest: PeriaManifest): FullContextPack {
     content,
     sourceFiles: [],
     relatedEntities: [
-      ...manifest.routes.map((r) => r.id),
-      ...manifest.schemas.map((s) => s.id),
-      ...manifest.packages.map((p) => p.id),
+      ...routes.map((r) => r.id),
+      ...(manifest.schemas ?? []).map((s) => s.id),
+      ...packages.map((p) => p.id),
     ],
     confidence: 'high',
     summary: {
       name: manifest.repo?.name ?? 'unknown',
       framework: manifest.framework?.name ?? 'unknown',
-      totalRoutes: manifest.routes.length,
-      totalSchemas: manifest.schemas.length,
-      totalPackages: manifest.packages.length,
+      totalRoutes: routes.length,
+      totalSchemas: manifest.schemas?.length ?? 0,
+      totalPackages: packages.length,
       totalOpenAPIOps: manifest.openapiOps?.length ?? 0,
       hasOpenAPI: !!manifest.openapi,
     },

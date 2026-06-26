@@ -7,7 +7,7 @@ dist/
 
 # Generated files
 *.tsbuildinfo
-.eria/
+.peria/
 llms.txt
 llms-full.txt
 

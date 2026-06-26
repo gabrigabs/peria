@@ -22,10 +22,10 @@ This package contributes 0 source modules and 0 exported declarations to the gen
 
 - Directory: `.`
 - Version: 0.1.0
-- Scripts: `build`, `typecheck`, `test`, `dev`
+- Scripts: `build`, `lint`, `typecheck`, `test`, `dev`
 - Package exports: none
 - Internal package imports: none detected
-- External dependencies: `@peria/core`, `vitest`
+- External dependencies: `@biomejs/biome`, `@peria/core`, `@peria/renderer`, `vitest`
 
 ## @peria/adapters
 
@@ -40,7 +40,7 @@ This package contributes 0 source modules and 0 exported declarations to the gen
 
 **Why it matters:**
 
-This package contributes 6 source modules and 30 exported declarations to the generated knowledge graph. Its manifest lives at `packages/adapters/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 0 source modules and 0 exported declarations to the generated knowledge graph. Its manifest lives at `packages/adapters/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
@@ -49,7 +49,26 @@ This package contributes 6 source modules and 30 exported declarations to the ge
 - Scripts: `build`, `typecheck`, `test`, `dev`
 - Package exports: `.`, `./elysia`, `./express`, `./fastify`, `./hono`, `./nest`
 - Internal package imports: none detected
-- External dependencies: `@types/node`, `tsup`, `typescript`
+- External dependencies: `@fastify/static`, `@nestjs/core`, `@types/express`, `@types/node`, `express`, `fastify`, `tsup`, `typescript`
+
+## @peria/api-reference
+
+**Role:** Stoplight Elements integration for Peria API reference
+
+**Audience:** Contributors working in this package.
+
+**Why it matters:**
+
+This package contributes 0 source modules and 0 exported declarations to the generated knowledge graph. Its manifest lives at `packages/api-reference/package.json`, so package metadata and scripts remain traceable to source.
+
+**Surface:**
+
+- Directory: `packages/api-reference`
+- Version: 0.1.0
+- Scripts: `build`, `dev`, `typecheck`
+- Package exports: `.`
+- Internal package imports: none detected
+- External dependencies: `@stoplight/elements`, `@stoplight/elements-core`, `@types/react`, `react`, `react`, `typescript`
 
 ## @peria/cli
 
@@ -65,7 +84,7 @@ This package contributes 6 source modules and 30 exported declarations to the ge
 
 **Why it matters:**
 
-This package contributes 11 source modules and 19 exported declarations to the generated knowledge graph. Its manifest lives at `packages/cli/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 0 source modules and 0 exported declarations to the generated knowledge graph. Its manifest lives at `packages/cli/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
@@ -73,8 +92,8 @@ This package contributes 11 source modules and 19 exported declarations to the g
 - Version: 0.1.0
 - Scripts: `build`, `typecheck`, `test`, `dev`, `prepublishOnly`
 - Package exports: none
-- Internal package imports: `@peria/core`
-- External dependencies: `@clack/prompts`, `@peria/core`, `@types/node`, `cac`, `chalk`, `tsup`, `typescript`
+- Internal package imports: none detected
+- External dependencies: `@clack/prompts`, `@peria/core`, `@peria/renderer`, `@types/node`, `cac`, `chalk`, `tsup`, `typescript`, `vitest`
 
 ## @peria/core
 
@@ -90,16 +109,16 @@ This package contributes 11 source modules and 19 exported declarations to the g
 
 **Why it matters:**
 
-This package contributes 17 source modules and 113 exported declarations to the generated knowledge graph. Its manifest lives at `packages/core/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 0 source modules and 0 exported declarations to the generated knowledge graph. Its manifest lives at `packages/core/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
 - Directory: `packages/core`
 - Version: 0.1.0
 - Scripts: `build`, `typecheck`, `test`, `test:run`, `dev`
-- Package exports: `.`, `./config`, `./detectors`
+- Package exports: `.`, `./build`, `./config`, `./detectors`
 - Internal package imports: none detected
-- External dependencies: `@types/node`, `ts-morph`, `tsup`, `typescript`, `vitest`, `zod`
+- External dependencies: `@apidevtools/swagger-parser`, `@types/node`, `remark`, `remark-frontmatter`, `remark-parse`, `ts-morph`, `tsup`, `typescript`, `unified`, `vitest`, `zod`
 
 ## @peria/docs-ui
 
@@ -114,7 +133,7 @@ This package contributes 17 source modules and 113 exported declarations to the 
 
 **Why it matters:**
 
-This package contributes 1 source modules and 2 exported declarations to the generated knowledge graph. Its manifest lives at `packages/docs-ui/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 0 source modules and 0 exported declarations to the generated knowledge graph. Its manifest lives at `packages/docs-ui/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
@@ -124,6 +143,25 @@ This package contributes 1 source modules and 2 exported declarations to the gen
 - Package exports: none
 - Internal package imports: none detected
 - External dependencies: `@types/node`, `tsup`, `typescript`
+
+## @peria/renderer
+
+**Role:** Documentation renderer for Peria with support for static HTML generation
+
+**Audience:** Contributors working in this package.
+
+**Why it matters:**
+
+This package contributes 0 source modules and 0 exported declarations to the generated knowledge graph. Its manifest lives at `packages/renderer/package.json`, so package metadata and scripts remain traceable to source.
+
+**Surface:**
+
+- Directory: `packages/renderer`
+- Version: 0.1.0
+- Scripts: `build`, `typecheck`, `dev`, `test`
+- Package exports: `.`
+- Internal package imports: none detected
+- External dependencies: `@peria/core`, `@types/node`, `highlight.js`, `marked`, `react`, `react-dom`, `tsup`, `typescript`
 
 ## @peria/sdk
 
@@ -138,13 +176,13 @@ This package contributes 1 source modules and 2 exported declarations to the gen
 
 **Why it matters:**
 
-This package contributes 3 source modules and 11 exported declarations to the generated knowledge graph. Its manifest lives at `packages/sdk/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 0 source modules and 0 exported declarations to the generated knowledge graph. Its manifest lives at `packages/sdk/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
 - Directory: `packages/sdk`
 - Version: 0.1.0
 - Scripts: `build`, `typecheck`, `test`, `dev`
-- Package exports: `.`
+- Package exports: `.`, `./api-reference`
 - Internal package imports: none detected
-- External dependencies: `@peria/core`, `@types/node`, `tsup`, `typescript`
+- External dependencies: `@fastify/static`, `@fastify/static`, `@nestjs/core`, `@nestjs/core`, `@peria/api-reference`, `@peria/core`, `@peria/core`, `@types/express`, `@types/node`, `elysia`, `elysia`, `express`, `express`, `fastify`, `fastify`, `hono`, `hono`, `tsup`, `typescript`

@@ -7,11 +7,16 @@
 import { spawn } from 'node:child_process';
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 
-// Monorepo root (absolute path)
-const MONOREPO_ROOT = '/Users/gabrielbezerrarodrigues/dev/peria';
+// Resolve paths relative to this test file location
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Monorepo root (resolved from packages/cli/src/__tests__/)
+const MONOREPO_ROOT = resolve(__dirname, '../../../../');
 
 // Path to CLI binary
 const CLI = join(MONOREPO_ROOT, 'packages/cli/bin/peria.js');

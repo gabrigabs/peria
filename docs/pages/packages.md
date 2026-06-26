@@ -1,0 +1,164 @@
+# Packages
+
+Packages are documented as ownership boundaries, not just manifest rows. Each section combines package.json metadata, TypeScript source coverage, internal imports, and configured editorial context.
+
+## peria
+
+**Role:** Workspace orchestration root
+
+**Audience:** Contributors running repo-wide build, typecheck, test, and release preparation commands.
+
+**Responsibilities:**
+
+- Coordinate Bun workspaces.
+- Expose root scripts that validate every package.
+- Carry the self-documentation config for this repository.
+
+**Why it matters:**
+
+This package contributes 0 source modules and 0 exported declarations to the generated knowledge graph. Its manifest lives at `package.json`, so package metadata and scripts remain traceable to source.
+
+**Surface:**
+
+- Directory: `.`
+- Version: 0.1.0
+- Scripts: `build`, `lint`, `typecheck`, `test`, `dev`
+- Package exports: none
+- Internal package imports: none detected
+- External dependencies: `@biomejs/biome`, `@peria/core`, `@peria/renderer`, `vitest`
+
+## @peria/adapters
+
+**Role:** Runtime integration layer
+
+**Audience:** API teams embedding generated docs in framework applications.
+
+**Responsibilities:**
+
+- Expose framework-specific entrypoints for Express, Fastify, and NestJS.
+- Keep adapter contracts thin until generated artifacts are stable.
+
+**Why it matters:**
+
+This package contributes 5 source modules and 17 exported declarations to the generated knowledge graph. Its manifest lives at `packages/adapters/package.json`, so package metadata and scripts remain traceable to source.
+
+**Surface:**
+
+- Directory: `packages/adapters`
+- Version: 0.1.0
+- Scripts: `build`, `typecheck`, `test`, `dev`
+- Package exports: `.`, `./express`, `./fastify`, `./nest`
+- Internal package imports: none detected
+- External dependencies: `@fastify/static`, `@nestjs/core`, `@types/express`, `@types/node`, `express`, `fastify`, `tsup`, `typescript`, `vitest`
+
+## @peria/api-reference
+
+**Role:** Stoplight Elements integration for Peria API reference
+
+**Audience:** Contributors working in this package.
+
+**Why it matters:**
+
+This package contributes 2 source modules and 0 exported declarations to the generated knowledge graph. Its manifest lives at `packages/api-reference/package.json`, so package metadata and scripts remain traceable to source.
+
+**Surface:**
+
+- Directory: `packages/api-reference`
+- Version: 0.1.0
+- Scripts: `build`, `dev`, `typecheck`
+- Package exports: `.`
+- Internal package imports: none detected
+- External dependencies: `@stoplight/elements`, `@stoplight/elements-core`, `@types/react`, `react`, `react`, `typescript`
+
+## @peria/cli
+
+**Role:** Operator interface
+
+**Audience:** Developers running Peria locally or wiring it into scripts.
+
+**Responsibilities:**
+
+- Initialize project configuration.
+- Build the wiki and artifacts.
+- Serve the generated static docs locally.
+
+**Why it matters:**
+
+This package contributes 17 source modules and 26 exported declarations to the generated knowledge graph. Its manifest lives at `packages/cli/package.json`, so package metadata and scripts remain traceable to source.
+
+**Surface:**
+
+- Directory: `packages/cli`
+- Version: 0.1.2
+- Scripts: `build`, `typecheck`, `test`, `dev`, `prepublishOnly`
+- Package exports: none
+- Internal package imports: `@peria/core`, `@peria/renderer`
+- External dependencies: `@clack/prompts`, `@peria/core`, `@peria/renderer`, `@types/node`, `cac`, `chalk`, `tsup`, `typescript`, `vitest`
+
+## @peria/core
+
+**Role:** Knowledge engine
+
+**Audience:** Contributors changing extraction, graph, config, or wiki generation behavior.
+
+**Responsibilities:**
+
+- Resolve configuration and defaults.
+- Extract packages, modules, exports, commands, adapters, features, context files, and Git metadata.
+- Generate markdown pages, manifest data, llms.txt content, and graph artifacts.
+
+**Why it matters:**
+
+This package contributes 116 source modules and 535 exported declarations to the generated knowledge graph. Its manifest lives at `packages/core/package.json`, so package metadata and scripts remain traceable to source.
+
+**Surface:**
+
+- Directory: `packages/core`
+- Version: 0.1.0
+- Scripts: `build`, `typecheck`, `test`, `test:run`, `dev`
+- Package exports: `.`, `./build`, `./config`, `./detectors`
+- Internal package imports: none detected
+- External dependencies: `@apidevtools/swagger-parser`, `@types/node`, `remark`, `remark-frontmatter`, `remark-parse`, `ts-morph`, `tsup`, `typescript`, `unified`, `vitest`, `zod`
+
+## @peria/renderer
+
+**Role:** Documentation renderer for Peria with support for static HTML generation
+
+**Audience:** Contributors working in this package.
+
+**Why it matters:**
+
+This package contributes 12 source modules and 112 exported declarations to the generated knowledge graph. Its manifest lives at `packages/renderer/package.json`, so package metadata and scripts remain traceable to source.
+
+**Surface:**
+
+- Directory: `packages/renderer`
+- Version: 0.1.1
+- Scripts: `build`, `typecheck`, `dev`, `test`
+- Package exports: `.`
+- Internal package imports: `@peria/core`
+- External dependencies: `@peria/core`, `@types/node`, `highlight.js`, `marked`, `tsup`, `typescript`
+
+## @peria/sdk
+
+**Role:** Programmatic API surface
+
+**Audience:** Tools that need to call Peria without going through the CLI.
+
+**Responsibilities:**
+
+- Define SDK instance contracts.
+- Prepare for embedded server and graph/search access.
+
+**Why it matters:**
+
+This package contributes 4 source modules and 26 exported declarations to the generated knowledge graph. Its manifest lives at `packages/sdk/package.json`, so package metadata and scripts remain traceable to source.
+
+**Surface:**
+
+- Directory: `packages/sdk`
+- Version: 0.1.0
+- Scripts: `build`, `typecheck`, `test`, `dev`
+- Package exports: `.`, `./api-reference`
+- Internal package imports: none detected
+- External dependencies: `@fastify/static`, `@fastify/static`, `@nestjs/core`, `@nestjs/core`, `@peria/api-reference`, `@peria/core`, `@peria/core`, `@types/express`, `@types/node`, `elysia`, `elysia`, `express`, `express`, `fastify`, `fastify`, `hono`, `hono`, `tsup`, `typescript`

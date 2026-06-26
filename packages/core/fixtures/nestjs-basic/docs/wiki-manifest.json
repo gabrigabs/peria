@@ -1,0 +1,232 @@
+{
+  "title": "Peria Wiki",
+  "tagline": "Human-readable by default. LLM-ready by design.",
+  "generatedAt": "2026-06-26T19:34:59.561Z",
+  "manifestVersion": "0.1.0",
+  "commit": "d0a5f2266d97a31e0c775cc8a67e92a44c5b6d46",
+  "git": {
+    "branch": "feat/self-documentation-bootstrap",
+    "commit": "d0a5f2266d97a31e0c775cc8a67e92a44c5b6d46",
+    "shortCommit": "d0a5f22",
+    "author": "Gabriel Bezerra Rodrigues",
+    "authorEmail": "gabrielbrodrigues1@gmail.com",
+    "authoredAt": "2026-06-26T13:52:38-03:00",
+    "subject": "fix: harden npm publish readiness",
+    "isDirty": true,
+    "changedFiles": [
+      "M ../../../../.peria/manifest.json",
+      "M ../../../../CLAUDE.md",
+      "M ../../../../CONTRIBUTING.md",
+      "M ../../../../PUBLISHING.md",
+      "M ../../../../README.md",
+      "M ../../../../bun.lock",
+      "M ../../../../docs/index.html",
+      "M ../../../../docs/pages/adapters.md",
+      "M ../../../../docs/pages/ai-context.md",
+      "M ../../../../docs/pages/configuration.md",
+      "M ../../../../docs/pages/history.md",
+      "M ../../../../docs/pages/modules.md",
+      "M ../../../../docs/pages/overview.md",
+      "M ../../../../docs/pages/packages.md",
+      "M ../../../../docs/wiki-manifest.json",
+      "M ../../../../package.json",
+      "M ../../../adapters/README.md",
+      "M ../../../adapters/package.json",
+      "D ../../../adapters/src/elysia.ts",
+      "D ../../../adapters/src/hono.ts",
+      "M ../../../adapters/src/index.ts",
+      "M ../../../adapters/tsup.config.ts",
+      "M ../../../api-reference/package.json",
+      "M ../../../cli/bin/peria.js",
+      "M ../../../cli/package.json",
+      "M ../../../cli/src/index.ts",
+      "M ../../package.json",
+      "M ../../src/wiki/pages.ts",
+      "D ../../../docs-ui/package.json",
+      "D ../../../docs-ui/src/index.ts",
+      "D ../../../docs-ui/tsconfig.json",
+      "D ../../../docs-ui/tsup.config.ts",
+      "M ../../../renderer/package.json",
+      "M ../../../sdk/package.json",
+      "M ../../../../peria.config.ts",
+      "?? ../../../cli/peria-cli-0.1.0.tgz",
+      "?? ../../peria-core-0.1.0.tgz"
+    ],
+    "recentCommits": [
+      {
+        "hash": "d0a5f22",
+        "date": "2026-06-26",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "fix: harden npm publish readiness"
+      },
+      {
+        "hash": "d7924b0",
+        "date": "2026-06-26",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "fix(lint): resolve all remaining warnings"
+      },
+      {
+        "hash": "8e5fb17",
+        "date": "2026-06-26",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "fix: critical blockers for npm release"
+      },
+      {
+        "hash": "21a3220",
+        "date": "2026-06-26",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "docs: update README with current status"
+      },
+      {
+        "hash": "5f7b4b9",
+        "date": "2026-06-26",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(audit): add 3 new drift checks"
+      },
+      {
+        "hash": "76892cf",
+        "date": "2026-06-26",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "test(cli): add integration tests for all commands"
+      },
+      {
+        "hash": "b8dc2b8",
+        "date": "2026-06-26",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(scanner): integrate ts-morph for proper AST extraction"
+      },
+      {
+        "hash": "b3813e1",
+        "date": "2026-06-26",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "refactor: archive ROADMAP.md and simplify README"
+      },
+      {
+        "hash": "83fa4bf",
+        "date": "2026-06-26",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat: fix typecheck, lint, adapters, check --json, and add CLI tests"
+      },
+      {
+        "hash": "2df5d5d",
+        "date": "2026-06-26",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat: implement documentation server for Fastify and NestJS adapters with static file support"
+      },
+      {
+        "hash": "ea322dd",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "test(core): add tests for context-packs and mermaid modules"
+      },
+      {
+        "hash": "c47bcfe",
+        "date": "2026-06-25",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(cli): add context and diagram commands"
+      }
+    ]
+  },
+  "project": {
+    "name": "Peria",
+    "tagline": "Human-readable by default. LLM-ready by design.",
+    "description": "Peria turns codebase knowledge into a traceable technical wiki.",
+    "audience": "Engineers and AI coding agents who need reliable codebase context.",
+    "tone": "Direct, technical, and provenance-first.",
+    "problem": "Codebases lose practical knowledge when architecture, commands, docs, and Git history live in separate places.",
+    "currentFocus": "Build a local-first self-documenting wiki pipeline before adding hosted integrations.",
+    "highlights": [
+      "Markdown wiki pages are the canonical artifact.",
+      "llms.txt is a compact reading map derived from the human wiki.",
+      "Every generated claim should trace back to source files, line numbers, and Git context."
+    ],
+    "packageContexts": {}
+  },
+  "pages": [
+    {
+      "title": "Peria Overview",
+      "slug": "overview",
+      "description": "Peria turns codebase knowledge into a traceable technical wiki.",
+      "path": "pages/overview.md"
+    },
+    {
+      "title": "Packages",
+      "slug": "packages",
+      "description": "Workspace packages, manifests, scripts, dependencies, and package exports.",
+      "path": "pages/packages.md"
+    },
+    {
+      "title": "CLI Commands",
+      "slug": "cli",
+      "description": "Registered Peria CLI commands and their command registry provenance.",
+      "path": "pages/cli.md"
+    },
+    {
+      "title": "TypeScript Modules",
+      "slug": "modules",
+      "description": "Source files, imports, and exported declarations extracted with ts-morph.",
+      "path": "pages/modules.md"
+    },
+    {
+      "title": "Adapters",
+      "slug": "adapters",
+      "description": "Framework adapters that expose the generated docs in application runtimes.",
+      "path": "pages/adapters.md"
+    },
+    {
+      "title": "Configuration And Features",
+      "slug": "configuration",
+      "description": "Resolved config, enabled features, and config provenance.",
+      "path": "pages/configuration.md"
+    },
+    {
+      "title": "Wiki UI",
+      "slug": "wiki-ui",
+      "description": "Static visual wiki shell generated into /docs and backed by markdown pages.",
+      "path": "pages/wiki-ui.md"
+    },
+    {
+      "title": "History",
+      "slug": "history",
+      "description": "Recent Git history captured as dated provenance for the generated wiki.",
+      "path": "pages/history.md"
+    },
+    {
+      "title": "AI Context Map",
+      "slug": "ai-context",
+      "description": "A compact reading map for agents, derived from the human wiki.",
+      "path": "pages/ai-context.md"
+    }
+  ],
+  "tree": [
+    {
+      "title": "Start here",
+      "pages": [
+        "overview",
+        "ai-context"
+      ]
+    },
+    {
+      "title": "Product surface",
+      "pages": [
+        "packages",
+        "cli",
+        "configuration"
+      ]
+    },
+    {
+      "title": "Code map",
+      "pages": [
+        "modules",
+        "adapters",
+        "wiki-ui"
+      ]
+    },
+    {
+      "title": "Provenance",
+      "pages": [
+        "history"
+      ]
+    }
+  ]
+}

@@ -5,9 +5,24 @@
   "type": "module",
   "scripts": {
     "build": "bun run --filter '*' build",
+    "lint": "biome check --write",
     "typecheck": "bun run --filter '*' typecheck",
     "test": "bun run --filter '*' test",
-    "dev": "bun run --filter '*' dev"
+    "dev": "bun run --filter '*' dev",
+    "release:patch": "bun scripts/version.ts patch",
+    "release:minor": "bun scripts/version.ts minor",
+    "release:major": "bun scripts/version.ts major",
+    "release:dry": "bun scripts/version.ts patch --dry-run"
   },
-  "workspaces": ["packages/*"]
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.1",
+    "@peria/core": "workspace:*",
+    "vitest": "^4.1.9"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "@peria/renderer": "workspace:*"
+  }
 }

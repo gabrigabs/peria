@@ -113,7 +113,7 @@ Before submitting, verify:
 | `packages/cli` | CLI commands |
 | `packages/sdk` | Programmatic SDK |
 | `packages/adapters` | Framework adapters |
-| `packages/docs-ui` | Documentation UI |
+| `packages/renderer` | Documentation renderer |
 
 ---
 

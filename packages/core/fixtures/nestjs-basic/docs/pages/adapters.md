@@ -1,0 +1,14 @@
+# Adapters
+
+Adapters are the runtime bridge between generated artifacts and application frameworks. In this slice they intentionally stay thin while the generated `/docs` contract stabilizes.
+
+Configured docs route: `/docs`
+
+## Maturity
+
+- `implemented` means the file exposes behavior without a placeholder marker.
+- `placeholder` means the adapter contract exists but still returns or logs "coming soon" behavior.
+
+## Adapter Surface
+
+_No entries found._

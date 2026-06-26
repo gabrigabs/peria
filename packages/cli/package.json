@@ -1,27 +1,60 @@
 {
   "name": "@peria/cli",
-  "version": "0.1.0",
+  "version": "0.1.2",
+  "description": "Local-first source-backed knowledge graph CLI for backend and API repositories.",
   "type": "module",
   "bin": {
     "peria": "./bin/peria.js"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "bin",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"No tests yet\"",
-    "dev": "tsup --watch"
+    "test": "vitest run",
+    "dev": "tsup --watch",
+    "prepublishOnly": "bun run build"
+  },
+  "keywords": [
+    "docs",
+    "openapi",
+    "backend",
+    "api",
+    "knowledge-graph",
+    "documentation",
+    "drift",
+    "agents",
+    "llms-txt",
+    "nestjs",
+    "express"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gabrigabs/peria"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
   },
   "dependencies": {
     "@clack/prompts": "^0.8.2",
+    "@peria/core": "0.1.0",
+    "@peria/renderer": "0.1.1",
     "cac": "^6.7.14",
-    "chalk": "^5.3.0",
-    "@peria/core": "workspace:*"
+    "chalk": "^5.3.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
     "tsup": "^8.3.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.9"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -2,47 +2,94 @@
  * Peria CLI - Main entry point
  */
 
-import CAC from 'cac'
-import { initCommand } from './commands/init.js'
-import { buildCommand } from './commands/build.js'
-import { serveCommand } from './commands/serve.js'
-import { checkCommand } from './commands/check.js'
+import CAC from 'cac';
+import { buildCommand } from './commands/build.js';
+import { checkCommand } from './commands/check.js';
+import { contextCommand } from './commands/context.js';
+import { diagramCommand } from './commands/diagram.js';
+import { initCommand } from './commands/init.js';
+import { scanCommand } from './commands/scan.js';
+import { serveCommand } from './commands/serve.js';
 
-const cli = CAC('peria') as {
-  option: (name: string, desc: string, opts?: { default?: unknown }) => void
-  command: (name: string, desc: string) => { action: (fn: (opts: { cwd: string }) => Promise<void>) => void }
-  help: () => void
-  version: (v: string) => void
-  parse: () => void
-}
+const cli = CAC('peria');
 
 // Global options
 cli.option('--cwd <path>', 'Working directory', {
   default: process.cwd(),
-})
+});
 
 // Commands
 cli.command('init', 'Initialize Peria in your project').action(async (opts: { cwd: string }) => {
-  await initCommand(opts.cwd)
-})
+  await initCommand(opts.cwd);
+});
 
 cli.command('build', 'Build documentation').action(async (opts: { cwd: string }) => {
-  await buildCommand(opts.cwd)
-})
+  await buildCommand(opts.cwd);
+});
 
 cli.command('serve', 'Serve documentation locally').action(async (opts: { cwd: string }) => {
-  await serveCommand(opts.cwd)
-})
+  await serveCommand(opts.cwd);
+});
 
-cli.command('check', 'Check for documentation drift').action(async (opts: { cwd: string }) => {
-  await checkCommand(opts.cwd)
-})
+// Check command with options
+cli
+  .command('check', 'Run audit checks to detect inconsistencies between code, docs, and OpenAPI')
+  .option('--json', 'Output results as JSON')
+  .option('--severity <level>', 'Minimum severity to report (error, warning, info)')
+  .option('--checks <names>', 'Comma-separated list of checks to run')
+  .action(async (opts: { cwd: string; json?: boolean; severity?: string; checks?: string }) => {
+    await checkCommand(opts.cwd, {
+      json: opts.json,
+      severity: opts.severity as 'error' | 'warning' | 'info' | undefined,
+      checks: opts.checks ? opts.checks.split(',').map((s) => s.trim()) : undefined,
+    });
+  });
+
+// Alias 'audit' for 'check'
+cli
+  .command('audit', 'Alias for check')
+  .option('--json', 'Output results as JSON')
+  .option('--severity <level>', 'Minimum severity to report (error, warning, info)')
+  .option('--checks <names>', 'Comma-separated list of checks to run')
+  .action(async (opts: { cwd: string; json?: boolean; severity?: string; checks?: string }) => {
+    await checkCommand(opts.cwd, {
+      json: opts.json,
+      severity: opts.severity as 'error' | 'warning' | 'info' | undefined,
+      checks: opts.checks ? opts.checks.split(',').map((s) => s.trim()) : undefined,
+    });
+  });
+
+cli
+  .command('scan', 'Scan repository and generate manifest')
+  .action(async (opts: { cwd: string }) => {
+    await scanCommand(opts.cwd);
+  });
+
+// Context command
+cli
+  .command('context', 'Generate agent context packs for coding assistants')
+  .option('--output <dir>', 'Output directory (default: .peria/context)')
+  .action(async (opts: { cwd: string; output?: string }) => {
+    await contextCommand(opts.cwd, { output: opts.output });
+  });
+
+// Diagram command
+cli
+  .command('diagram', 'Generate Mermaid diagrams for routes, packages, and schemas')
+  .option('--type <type>', 'Diagram type (route-flow, package-deps, schema, all)')
+  .option('--output <dir>', 'Output directory (default: .peria/diagrams)')
+  .action(async (opts: { cwd: string; type?: string; output?: string }) => {
+    await diagramCommand(opts.cwd, {
+      type: opts.type as 'route-flow' | 'package-deps' | 'schema' | 'all' | undefined,
+      output: opts.output,
+    });
+  });
 
 // Help
-cli.help()
+cli.help();
 
 // Version
-cli.version('0.1.0')
+cli.version('0.1.2');
 
 // Parse
-cli.parse()
+cli.parse();

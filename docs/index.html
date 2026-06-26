@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Peria Wiki</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="./assets/wiki.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-mark">P</span>
+          <div>
+            <strong>Peria Wiki</strong>
+            <small>Human-readable by default. LLM-ready by design.</small>
+          </div>
+        </div>
+        <div class="project-card">
+          <p>Make the repository capable of documenting itself with a useful markdown wiki, visual reader, graph artifact, and agent context map.</p>
+        </div>
+        <label class="search">
+          <span>Search</span>
+          <input id="search-input" type="search" placeholder="Find pages, modules, CLI...">
+        </label>
+        <nav id="wiki-nav" class="wiki-nav" aria-label="Wiki pages"></nav>
+      </aside>
+
+      <main class="content-shell">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Generated technical wiki</p>
+            <h1 id="page-title">Loading wiki...</h1>
+            <p id="page-description" class="page-description">Peria compiles code, configuration, docs, and Git history into a living technical wiki with traceable claims.</p>
+          </div>
+          <div class="meta">
+            <span>feat/self-documentation-bootstrap</span>
+            <span>d0a5f22</span>
+            <span>28 changed files</span>
+          </div>
+        </header>
+        <article id="wiki-content" class="wiki-content"></article>
+      </main>
+    </div>
+    <script type="module" src="./assets/wiki.js"></script>
+  </body>
+</html>

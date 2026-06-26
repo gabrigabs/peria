@@ -2,55 +2,73 @@
 
 > Human-readable by default. LLM-ready by design.
 
-**Peria** turns your codebase into a living technical wiki. Serve it at `/docs`, keep it connected to code changes, and reuse it as high-quality context for AI coding agents.
+**Peria** turns your backend codebase into a living technical wiki. Scan routes, schemas, and packages → generate docs, diagrams, and agent context → detect drift automatically.
 
 **Origin:** *peritia*, Latin for practical knowledge and expertise.
 
 ---
 
-## Features
+## Status
 
-### Core
-- **Embedded `/docs`** — Serve documentation at `/docs` in your own API
-- **Code Map** — Maps routes, handlers, controllers, schemas, DTOs, modules
-- **API Reference** — Reads OpenAPI specs and connects endpoints to code
-- **Wiki Generator** — Generates technical wiki from Markdown + code knowledge
+### CLI Commands ✅
 
-### Output
-- **llms.txt** — LLM-readable output for AI agents
-- **Mermaid Support** — Preserve and render Mermaid diagrams
+| Command | Description |
+|---------|-------------|
+| `peria scan` | Scan codebase for packages, routes, schemas, OpenAPI specs |
+| `peria build` | Generate wiki pages, llms.txt, graph |
+| `peria check` | Audit for drift with 10 checks (`--json` for CI) |
+| `peria context` | Generate context packs for agents |
+| `peria diagram` | Generate Mermaid diagrams |
 
-### Analysis
-- **Git Diff Mapper** — Identifies impacted files, routes, and docs from changes
-- **Change Map** — Transforms diffs into semantic changes
-- **Docs Drift Checker** — Detects outdated documentation
-- **Patch Notes Generator** — Creates changelogs from commits and issues
+### Framework Adapters ✅
 
-### Integration
-- **GitHub Integration** — Connects issues, PRs, milestones, releases
-- **Context Packs** — Generates context by route, diff, PR, issue, release
+All adapters serve static files + manifest + llms.txt:
+
+| Adapter | Status |
+|---------|--------|
+| Express | ✅ Works |
+| Fastify | ✅ Works |
+| NestJS | ✅ Works |
+| Hono | 🔜 Coming soon |
+| Elysia | 🔜 Coming soon |
+
+### Self-Documentation ✅
+
+Peria uses itself to document Peria:
+
+- **153 TypeScript modules** extracted with ts-morph
+- **10 audit checks** for drift detection
+- **21 CLI tests** (smoke + integration)
+- Docs generated at `docs/pages/`
 
 ---
 
 ## Quick Start
 
-### 1. Initialize
+### 1. Install
 
 ```bash
-bunx @peria/cli init
+npm install -D @peria/cli
 ```
 
-The wizard will:
-- Detect your framework (NestJS, Express, Fastify, Hono, Elysia)
-- Detect your entrypoint
-- Ask for the docs route (default: `/docs`)
-- Select features to enable
-
-### 2. Build
+### 2. Scan & Build
 
 ```bash
-bun run peria build
+peria scan
+peria build
 ```
+
+This generates:
+
+- `docs/pages/` — wiki pages
+- `docs/index.html` — visual wiki UI
+- `docs/wiki-manifest.json` — page tree
+- `.peria/manifest.json` — full graph data
+- `.peria/graph.json` — entity relationships
+- `.peria/ai-context.md` — AI context file
+- `.peria/context/` — agent context packs
+- `.peria/diagrams/` — Mermaid diagrams
+- `llms.txt` — compact AI reading map
 
 ### 3. Integrate
 
@@ -68,27 +86,63 @@ import { setupPeriaDocs } from '@peria/adapters/nest'
 setupPeriaDocs(app, { route: '/docs' })
 ```
 
+### 4. Check for Drift
+
+```bash
+peria check
+
+# JSON output for CI
+peria check --json | jq .
+
+# Only errors
+peria check --json --severity error
+```
+
+---
+
+## Drift Checks
+
+Peria runs 10 audit checks:
+
+| Check | Description |
+|-------|-------------|
+| `route-openapi` | Routes without OpenAPI (error) |
+| `docs-routes` | Docs referencing non-existent routes |
+| `manifest-state` | Stale manifest detection |
+| `package-exports` | Package export drift |
+| `stale-pages` | Generated pages out of sync |
+| `stale-openapi` | OpenAPI spec changes |
+| `git-diff` | Git changes affecting docs |
+| `schema-coverage` | Undefined schema references |
+| `openapi-docs` | OpenAPI ops without docs |
+| `routes-undocumented` | Routes without documentation |
+
 ---
 
 ## Configuration
 
 ```ts
 // peria.config.ts
-import { defineConfig } from "peria/config"
+import { defineConfig } from "@peria/core"
 
 export default defineConfig({
   framework: "nestjs",
   entrypoint: "src/main.ts",
 
+  project: {
+    name: "My API",
+    tagline: "Source-backed engineering knowledge.",
+  },
+
   docs: {
     enabled: true,
-    route: "/docs"
+    route: "/docs",
+    outputDir: "docs"
   },
 
   sources: {
     openapi: "openapi.yaml",
     markdown: ["README.md", "docs/**/*.md"],
-    llms: ["llms.txt", "llms-full.txt"]
   },
 
   features: {
@@ -97,14 +151,11 @@ export default defineConfig({
     apiReference: true,
     wiki: true,
     llms: true,
-    gitDiff: true,
+    gitDiff: false,
     driftCheck: true,
     mermaid: true,
-    // optional:
     github: false,
-    contextPacks: false,
-    patchNotes: false,
-    changeMap: false
+    contextPacks: true,
   }
 })
 ```
@@ -113,81 +164,38 @@ export default defineConfig({
 
 ## Packages
 
-This monorepo contains:
-
 | Package | Description |
 |---------|-------------|
-| [`packages/core`](packages/core/) | Engine principal — types, config, detectors |
-| [`packages/cli`](packages/cli/) | CLI com comandos init, build, serve, check |
-| [`packages/sdk`](packages/sdk/) | SDK para uso programático |
-| [`packages/adapters`](packages/adapters/) | Adapters Express, Fastify, NestJS, Hono, Elysia |
-| [`packages/docs-ui`](packages/docs-ui/) | UI da documentação (planejado) |
+| [`packages/core`](packages/core/) | Engine — types, config, scanners, parsers, generators |
+| [`packages/cli`](packages/cli/) | CLI commands |
+| [`packages/adapters`](packages/adapters/) | Express, Fastify, NestJS middleware |
+| [`packages/sdk`](packages/sdk/) | Programmatic API |
+| [`packages/renderer`](packages/renderer/) | Wiki UI renderer |
+| [`packages/api-reference`](packages/api-reference/) | Stoplight Elements integration |
 
 ---
 
 ## Architecture
 
 ```
-Sources (Markdown, OpenAPI, Code, Git)
+Sources (Code, OpenAPI, Markdown)
     │
     ▼
-Documents (Normalized representation)
+Scanner (packages, routes, schemas, modules)
     │
     ▼
-Entities + Claims
-├── Entity: endpoint, service, page, ADR, issue, PR, function
-├── Claim: verifiable statement + provenance + confidence
+Manifest (.peria/manifest.json)
     │
     ▼
-Graph (versioned relationships)
-├── Nodes: Entities + Claims
-└── Edges: implements, deprecates, relates_to, changed_by
-    │
-    ▼
-Artifacts
-├── Wiki pages (Markdown, navigable)
+Generators
+├── Wiki pages (Markdown)
 ├── llms.txt (LLM consumption)
-├── Context Packs (task-optimized bundles)
-└── Diff reports (change impact)
+├── Context Packs (task-optimized)
+└── Mermaid Diagrams
+    │
+    ▼
+Adapters (serve docs at /docs)
 ```
-
----
-
-## CLI Commands
-
-| Command | Description |
-|---------|-------------|
-| `peria init` | Initialize Peria in your project |
-| `peria build` | Parse code, generate wiki, generate llms.txt |
-| `peria serve` | Local preview of generated docs |
-| `peria check` | Detect drift since last build |
-| `peria diff` | Analyze changes between commits *(planned)* |
-| `peria context` | Generate context pack for AI agent *(planned)* |
-| `peria notes` | Generate patch notes *(planned)* |
-
----
-
-## Status
-
-**Early development.** MVP in progress — Roadmap below.
-
-### Phase 1 — MVP
-- [x] CLI setup with `init` wizard
-- [ ] Code parsing (routes, controllers, schemas)
-- [ ] OpenAPI integration
-- [ ] llms.txt generation
-- [ ] Embedded /docs in Express/Fastify
-
-### Phase 2 — Core Features
-- [ ] Wiki generator
-- [ ] Git diff mapper
-- [ ] Docs drift checker
-- [ ] Change map
-
-### Phase 3 — Integrations
-- [ ] GitHub sync (issues, PRs, releases)
-- [ ] Context packs
-- [ ] Patch notes generator
 
 ---
 

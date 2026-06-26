@@ -1,35 +1,73 @@
 {
   "name": "@peria/core",
   "version": "0.1.0",
+  "description": "Core knowledge graph engine for Peria - source-backed evidence extraction for backend and API repositories.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     },
     "./config": {
-      "import": "./dist/config/loader.js",
-      "types": "./dist/config/loader.d.ts"
+      "types": "./dist/config/loader.d.ts",
+      "import": "./dist/config/loader.js"
     },
     "./detectors": {
-      "import": "./dist/detectors/index.js",
-      "types": "./dist/detectors/index.d.ts"
+      "types": "./dist/detectors/index.d.ts",
+      "import": "./dist/detectors/index.js"
+    },
+    "./build": {
+      "types": "./dist/build/index.d.ts",
+      "import": "./dist/build/index.js"
     }
   },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"No tests yet\"",
+    "test": "vitest",
+    "test:run": "vitest run",
     "dev": "tsup --watch"
   },
+  "keywords": [
+    "docs",
+    "openapi",
+    "backend",
+    "api",
+    "knowledge-graph",
+    "documentation",
+    "drift",
+    "agents"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gabrigabs/peria"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
+    "@apidevtools/swagger-parser": "^10.1.0",
+    "remark": "^15.0.0",
+    "remark-frontmatter": "^5.0.0",
+    "remark-parse": "^11.0.0",
+    "ts-morph": "^28.0.0",
+    "typescript": "^5.7.2",
+    "unified": "^11.0.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
     "tsup": "^8.3.0",
-    "typescript": "^5.7.2"
+    "vitest": "^3.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -1,16 +1,15 @@
-import { defineConfig } from 'tsup'
+import { defineConfig } from 'tsup';
 
 export default defineConfig({
   entry: {
+    index: 'src/index.ts',
     express: 'src/express.ts',
     fastify: 'src/fastify.ts',
     nest: 'src/nest.ts',
-    hono: 'src/hono.ts',
-    elysia: 'src/elysia.ts',
   },
   format: ['esm'],
   dts: true,
   splitting: false,
   sourcemap: true,
   clean: true,
-})
+});

@@ -4,41 +4,48 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     },
     "./express": {
-      "import": "./dist/express.js",
-      "types": "./dist/express.d.ts"
+      "types": "./dist/express.d.ts",
+      "import": "./dist/express.js"
     },
     "./fastify": {
-      "import": "./dist/fastify.js",
-      "types": "./dist/fastify.d.ts"
+      "types": "./dist/fastify.d.ts",
+      "import": "./dist/fastify.js"
     },
     "./nest": {
-      "import": "./dist/nest.js",
-      "types": "./dist/nest.d.ts"
-    },
-    "./hono": {
-      "import": "./dist/hono.js",
-      "types": "./dist/hono.d.ts"
-    },
-    "./elysia": {
-      "import": "./dist/elysia.js",
-      "types": "./dist/elysia.d.ts"
+      "types": "./dist/nest.d.ts",
+      "import": "./dist/nest.js"
     }
   },
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"No tests yet\"",
+    "test": "vitest run",
     "dev": "tsup --watch"
   },
+  "dependencies": {
+    "@fastify/static": "^9.1.3",
+    "express": "^4.21.0"
+  },
   "devDependencies": {
+    "@nestjs/core": "^10.0.0",
+    "@types/express": "^5.0.0",
     "@types/node": "^22.10.2",
+    "fastify": "^4.0.0",
     "tsup": "^8.3.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.9"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

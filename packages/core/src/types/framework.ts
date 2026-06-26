@@ -2,18 +2,12 @@
  * Framework detection types
  */
 
-export type DetectedFramework =
-  | 'nestjs'
-  | 'express'
-  | 'fastify'
-  | 'hono'
-  | 'elysia'
-  | 'other'
+export type DetectedFramework = 'nestjs' | 'express' | 'fastify' | 'hono' | 'elysia' | 'other';
 
 export interface FrameworkInfo {
-  framework: DetectedFramework
-  confidence: 'high' | 'medium' | 'low'
-  evidence?: string
+  framework: DetectedFramework;
+  confidence: 'high' | 'medium' | 'low';
+  evidence?: string;
 }
 
 export const FRAMEWORK_PACKAGES: Record<string, DetectedFramework> = {
@@ -22,7 +16,7 @@ export const FRAMEWORK_PACKAGES: Record<string, DetectedFramework> = {
   fastify: 'fastify',
   hono: 'hono',
   elysia: 'elysia',
-}
+};
 
 export const FRAMEWORK_LABELS: Record<DetectedFramework, string> = {
   nestjs: 'NestJS',
@@ -31,4 +25,4 @@ export const FRAMEWORK_LABELS: Record<DetectedFramework, string> = {
   hono: 'Hono',
   elysia: 'Elysia',
   other: 'Other / Manual',
-}
+};

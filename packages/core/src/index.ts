@@ -162,3 +162,19 @@ export type {
   RepoSummary,
   TaskType,
 } from './context-packs/index.js';
+
+// Mermaid diagrams module (Phase 7)
+export {
+  generateDiagrams,
+  generateAndSaveDiagrams,
+  generateOverviewDiagram,
+  generateRouteFlowDiagrams,
+  generatePackageDepDiagrams,
+  generateSchemaDiagrams,
+} from './mermaid/index.js';
+export type {
+  MermaidDiagram,
+  MermaidOptions,
+  MermaidResult,
+  DiagramType,
+} from './mermaid/index.js';

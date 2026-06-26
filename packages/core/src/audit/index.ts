@@ -15,10 +15,13 @@
 export * from './docs-routes.js';
 export * from './git-diff.js';
 export * from './manifest-state.js';
+export * from './openapi-docs.js';
 export * from './package-exports.js';
 export * from './reporters/cli.js';
 export * from './reporters/json.js';
 export * from './route-openapi.js';
+export * from './routes-undocumented.js';
+export * from './schema-coverage.js';
 export * from './stale-openapi.js';
 export * from './stale-pages.js';
 export * from './types.js';
@@ -27,8 +30,11 @@ import type { PeriaManifest } from '../types/manifest.js';
 import { runDocsRoutesCheck } from './docs-routes.js';
 import { runGitDiffCheck } from './git-diff.js';
 import { runManifestStateCheck } from './manifest-state.js';
+import { runOpenAPIDocsCheck } from './openapi-docs.js';
 import { runPackageExportsCheck } from './package-exports.js';
 import { runRouteOpenAPICheck } from './route-openapi.js';
+import { runRoutesUndocumentedCheck } from './routes-undocumented.js';
+import { runSchemaCoverageCheck } from './schema-coverage.js';
 import { runStaleOpenAPICheck } from './stale-openapi.js';
 import { runStalePagesCheck } from './stale-pages.js';
 import type { AuditCheck, AuditOptions, AuditResult, CheckResult, CheckStatus } from './types.js';
@@ -45,6 +51,9 @@ export const AUDIT_CHECKS: AuditCheck[] = [
   runStalePagesCheck,
   runStaleOpenAPICheck,
   runGitDiffCheck,
+  runSchemaCoverageCheck,
+  runOpenAPIDocsCheck,
+  runRoutesUndocumentedCheck,
 ];
 
 /**

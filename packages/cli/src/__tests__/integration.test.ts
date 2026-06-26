@@ -5,7 +5,7 @@
  */
 
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { spawn } from 'node:child_process';
 import { tmpdir } from 'node:os';

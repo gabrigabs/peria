@@ -1,23 +1,37 @@
 {
   "title": "Peria Wiki",
   "tagline": "Human-readable by default. LLM-ready by design.",
-  "generatedAt": "2026-06-26T14:58:21.634Z",
+  "generatedAt": "2026-06-26T15:02:27.156Z",
   "manifestVersion": "0.1.0",
-  "commit": "b8dc2b8dfdc42aec76ad140ee3e6c6a1d692dad0",
+  "commit": "76892cfb316b1569be467f5d09ef183abff0aba6",
   "git": {
     "branch": "feat/self-documentation-bootstrap",
-    "commit": "b8dc2b8dfdc42aec76ad140ee3e6c6a1d692dad0",
-    "shortCommit": "b8dc2b8",
+    "commit": "76892cfb316b1569be467f5d09ef183abff0aba6",
+    "shortCommit": "76892cf",
     "author": "Gabriel Bezerra Rodrigues",
     "authorEmail": "gabrielbrodrigues1@gmail.com",
-    "authoredAt": "2026-06-26T11:54:02-03:00",
-    "subject": "feat(scanner): integrate ts-morph for proper AST extraction",
+    "authoredAt": "2026-06-26T11:58:33-03:00",
+    "subject": "test(cli): add integration tests for all commands",
     "isDirty": true,
     "changedFiles": [
-      "?? ../../../cli/src/__tests__/integration.test.ts",
-      "?? docs/"
+      "M ../../../cli/src/__tests__/integration.test.ts",
+      "M docs/index.html",
+      "M docs/pages/ai-context.md",
+      "M docs/pages/history.md",
+      "M docs/pages/overview.md",
+      "M docs/wiki-manifest.json",
+      "M ../../src/audit/index.ts",
+      "?? ../../src/audit/openapi-docs.ts",
+      "?? ../../src/audit/routes-undocumented.ts",
+      "?? ../../src/audit/schema-coverage.ts"
     ],
     "recentCommits": [
+      {
+        "hash": "76892cf",
+        "date": "2026-06-26",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "test(cli): add integration tests for all commands"
+      },
       {
         "hash": "b8dc2b8",
         "date": "2026-06-26",
@@ -83,12 +97,6 @@
         "date": "2026-06-25",
         "author": "Gabriel Bezerra Rodrigues",
         "subject": "fix(test): fix type assertion in route-openapi test"
-      },
-      {
-        "hash": "a85133f",
-        "date": "2026-06-25",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "test(core): add unit tests for audit module"
       }
     ]
   },

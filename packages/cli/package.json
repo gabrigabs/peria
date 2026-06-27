@@ -1,6 +1,6 @@
 {
   "name": "@peria/cli",
-  "version": "0.1.2",
+  "version": "0.1.1",
   "description": "Local-first source-backed knowledge graph CLI for backend and API repositories.",
   "type": "module",
   "bin": {
@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@clack/prompts": "^0.8.2",
-    "@peria/core": "0.1.0",
+    "@peria/core": "0.1.1",
     "@peria/renderer": "0.1.1",
     "cac": "^6.7.14",
     "chalk": "^5.3.0"

@@ -1,7 +1,4 @@
-/**
- * Peria CLI - Main entry point
- */
-
+import { createRequire } from 'node:module';
 import CAC from 'cac';
 import { buildCommand } from './commands/build.js';
 import { checkCommand } from './commands/check.js';
@@ -10,6 +7,9 @@ import { diagramCommand } from './commands/diagram.js';
 import { initCommand } from './commands/init.js';
 import { scanCommand } from './commands/scan.js';
 import { serveCommand } from './commands/serve.js';
+
+const require = createRequire(import.meta.url);
+const pkg = require('../package.json');
 
 const cli = CAC('peria');
 
@@ -89,7 +89,7 @@ cli
 cli.help();
 
 // Version
-cli.version('0.1.2');
+cli.version(pkg.version);
 
 // Parse
 cli.parse();

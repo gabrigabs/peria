@@ -28,16 +28,19 @@ jobs:
         with:
           bun-version: latest
 
+      # Node 22.14+ and npm 11.5.1+ required for Trusted Publishers OIDC
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          registry-url: 'https://registry.npmjs.org'
+
+      - name: Ensure latest npm
+        run: npm install -g npm@latest
 
       - name: Install dependencies
         run: bun install
 
-      - name: Build all packages
+      - name: Build all packages (initial)
         run: bun run build
 
       - name: Typecheck
@@ -51,6 +54,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           bun scripts/version.ts patch
+
+      - name: Push version commit and tag
+        run: git push origin main --tags
+
+      - name: Build all packages
+        run: bun run build
 
       # Publish in topological order (leaves first, then dependents)
       - name: Publish packages
@@ -72,13 +81,10 @@ jobs:
               echo "⏭️  $PKG_NAME@$PKG_VERSION already published, skipping"
             else
               echo "📦 Publishing $PKG_NAME@$PKG_VERSION..."
-              npm publish "./$pkg" --provenance --access public
+              (cd "$pkg" && npm publish --provenance --access public)
               echo "✅ Published $PKG_NAME@$PKG_VERSION"
             fi
           done
-
-      - name: Push version commit and tag
-        run: git push origin main --tags
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

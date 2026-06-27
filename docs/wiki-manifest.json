@@ -1,22 +1,40 @@
 {
   "title": "Peria Wiki",
   "tagline": "Human-readable by default. LLM-ready by design.",
-  "generatedAt": "2026-06-27T23:09:15.651Z",
+  "generatedAt": "2026-06-27T23:26:09.023Z",
+  "periaVersion": "0.1.0",
   "manifestVersion": "0.1.0",
-  "commit": "a95ae0e07cc65372904f79100d5fe6dadb12646f",
+  "commit": "8e0669b886993e50f21eef0f0c4ab3430c94adc8",
   "git": {
     "branch": "feat/planning",
-    "commit": "a95ae0e07cc65372904f79100d5fe6dadb12646f",
-    "shortCommit": "a95ae0e",
+    "commit": "8e0669b886993e50f21eef0f0c4ab3430c94adc8",
+    "shortCommit": "8e0669b",
     "author": "Gabriel Bezerra Rodrigues",
     "authorEmail": "gabrielbrodrigues1@gmail.com",
-    "authoredAt": "2026-06-27T20:06:06-03:00",
-    "subject": "feat(renderer): generate fumadocs-compatible MDX output (T1.2)",
+    "authoredAt": "2026-06-27T20:09:27-03:00",
+    "subject": "feat(cli): integrate Fumadocs renderer in build command",
     "isDirty": true,
     "changedFiles": [
-      "M packages/cli/src/commands/build.ts"
+      "M .peria/manifest.json",
+      "M docs/content.config.ts",
+      "D docs/overview.mdx",
+      "M docs/pages/ai-context.md",
+      "M docs/pages/history.md",
+      "M docs/pages/modules.md",
+      "M docs/pages/overview.md",
+      "M docs/wiki-manifest.json",
+      "M packages/cli/src/commands/build.ts",
+      "M packages/core/src/wiki/builder.ts",
+      "M packages/renderer/src/content.ts",
+      "M packages/renderer/src/fumadocs.ts"
     ],
     "recentCommits": [
+      {
+        "hash": "8e0669b",
+        "date": "2026-06-27",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(cli): integrate Fumadocs renderer in build command"
+      },
       {
         "hash": "a95ae0e",
         "date": "2026-06-27",
@@ -82,12 +100,6 @@
         "date": "2026-06-26",
         "author": "Gabriel Bezerra Rodrigues",
         "subject": "Merge branch 'feat/self-documentation-bootstrap'"
-      },
-      {
-        "hash": "c2602cc",
-        "date": "2026-06-26",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "feat: automate version bumping and package publishing on main branch push"
       }
     ]
   },

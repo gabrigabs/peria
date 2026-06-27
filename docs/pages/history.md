@@ -5,20 +5,21 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 ## Current Revision
 
 - Branch: `feat/planning`
-- Commit: `a95ae0e07cc65372904f79100d5fe6dadb12646f`
-- Subject: feat(renderer): generate fumadocs-compatible MDX output (T1.2)
+- Commit: `8e0669b886993e50f21eef0f0c4ab3430c94adc8`
+- Subject: feat(cli): integrate Fumadocs renderer in build command
 - Author: Gabriel Bezerra Rodrigues <gabrielbrodrigues1@gmail.com>
-- Authored at: 2026-06-27T20:06:06-03:00
+- Authored at: 2026-06-27T20:09:27-03:00
 - Working tree: 1 changed files
 
 ## Working Tree Changes
 
-- `M packages/cli/src/commands/build.ts`
+- `M packages/renderer/src/fumadocs.ts`
 
 ## Recent Commits
 
 | Commit | Date | Author | Subject |
 | --- | --- | --- | --- |
+| `8e0669b` | 2026-06-27 | Gabriel Bezerra Rodrigues | feat(cli): integrate Fumadocs renderer in build command |
 | `a95ae0e` | 2026-06-27 | Gabriel Bezerra Rodrigues | feat(renderer): generate fumadocs-compatible MDX output (T1.2) |
 | `42ecdb6` | 2026-06-27 | Gabriel Bezerra Rodrigues | feat(renderer): add renderer mode selection (T1.1) |
 | `053366c` | 2026-06-27 | Gabriel Bezerra Rodrigues | test: add fresh npm install dogfood validation script (T0.4) |
@@ -30,10 +31,10 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 | `4d77e2f` | 2026-06-26 | Gabriel Bezerra Rodrigues | ci: update publishing workflow to use latest npm and align CLI version with package.json |
 | `8ffd568` | 2026-06-26 | Gabriel Bezerra Rodrigues | chore: standardize repository configuration and fix CLI bin path across workspace packages |
 | `b3c6190` | 2026-06-26 | Gabriel Bezerra Rodrigues | Merge branch 'feat/self-documentation-bootstrap' |
-| `c2602cc` | 2026-06-26 | Gabriel Bezerra Rodrigues | feat: automate version bumping and package publishing on main branch push |
 
 ## Raw Log Snapshot
 
+- 8e0669b 2026-06-27 feat(cli): integrate Fumadocs renderer in build command
 - a95ae0e 2026-06-27 feat(renderer): generate fumadocs-compatible MDX output (T1.2)
 - 42ecdb6 2026-06-27 feat(renderer): add renderer mode selection (T1.1)
 - 053366c 2026-06-27 test: add fresh npm install dogfood validation script (T0.4)
@@ -45,4 +46,3 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 - 4d77e2f 2026-06-26 ci: update publishing workflow to use latest npm and align CLI version with package.json
 - 8ffd568 2026-06-26 chore: standardize repository configuration and fix CLI bin path across workspace packages
 - b3c6190 2026-06-26 Merge branch 'feat/self-documentation-bootstrap'
-- c2602cc 2026-06-26 feat: automate version bumping and package publishing on main branch push

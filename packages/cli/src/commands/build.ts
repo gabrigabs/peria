@@ -34,16 +34,20 @@ export async function buildCommand(cwd: string, options?: { renderer?: 'static' 
   const docsDir = join(cwd, result.config.docs.outputDir);
   const pagesDir = join(docsDir, 'pages');
   const assetsDir = join(docsDir, 'assets');
+  const contentDir = join(docsDir, 'content');
   const artifactDir = join(cwd, '.peria');
 
   await mkdir(pagesDir, { recursive: true });
   await mkdir(assetsDir, { recursive: true });
+  await mkdir(contentDir, { recursive: true });
   await mkdir(artifactDir, { recursive: true });
 
-  // Write all wiki pages in parallel
-  await Promise.all(
-    result.pages.map((page) => writeFile(join(docsDir, page.path), page.body, 'utf-8'))
-  );
+  // Write all wiki pages in parallel (skip for fumadocs mode)
+  if (rendererMode !== 'fumadocs') {
+    await Promise.all(
+      result.pages.map((page) => writeFile(join(docsDir, page.path), page.body, 'utf-8'))
+    );
+  }
 
   // Generate output based on renderer mode
   if (rendererMode === 'fumadocs') {

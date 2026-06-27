@@ -103,6 +103,7 @@ function createManifest(
     title: `${config.project.name} Wiki`,
     tagline: config.project.tagline,
     generatedAt,
+    periaVersion: MANIFEST_VERSION,
     manifestVersion: MANIFEST_VERSION,
     commit: git.commit ?? undefined,
     git,

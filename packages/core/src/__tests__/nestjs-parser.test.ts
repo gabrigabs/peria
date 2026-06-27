@@ -28,7 +28,7 @@ const DEFAULT_CONTEXT_CONFIG = defineConfig({
     highlights: [],
     packageContexts: {},
   },
-  docs: { enabled: true, route: '/docs', outputDir: 'docs' },
+  docs: { enabled: true, route: '/docs', outputDir: 'docs', renderer: 'static' },
   sources: {
     openapi: 'openapi.yaml',
     markdown: ['**/*.md'],

@@ -50,6 +50,13 @@ export {
   generateStaticDocs,
   type StaticDocsOptions,
 } from './static.js';
+// Fumadocs-compatible content generation
+export {
+  generateFumadocsContent,
+  type FumadocsContentOptions,
+  type FumadocsOutput,
+  type PageTreeNode,
+} from './fumadocs.js';
 // Types
 export type {
   Confidence,

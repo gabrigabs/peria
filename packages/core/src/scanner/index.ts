@@ -335,6 +335,7 @@ function createDefaultConfig(): ResolvedPeriaConfig {
       enabled: true,
       route: '/docs',
       outputDir: 'docs',
+      renderer: 'static',
     },
     sources: {
       openapi: 'openapi.yaml',

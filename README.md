@@ -29,8 +29,13 @@ All adapters serve static files + manifest + llms.txt:
 | Express | ✅ Works |
 | Fastify | ✅ Works |
 | NestJS | ✅ Works |
-| Hono | 🔜 Coming soon |
-| Elysia | 🔜 Coming soon |
+
+### Planned Adapters
+
+| Adapter | Status |
+|---------|--------|
+| Hono | 🔜 Future |
+| Elysia | 🔜 Future |
 
 ### Self-Documentation ✅
 

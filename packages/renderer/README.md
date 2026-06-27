@@ -1,6 +1,8 @@
 # @peria/renderer
 
-Static wiki renderer for Peria documentation using Fumadocs.
+Static wiki renderer for Peria documentation.
+
+Currently generates a self-contained static HTML wiki. Future versions will support Fumadocs integration.
 
 ## Installation
 

@@ -22,7 +22,7 @@ This package contributes 0 source modules and 0 exported declarations to the gen
 
 - Directory: `.`
 - Version: 0.1.0
-- Scripts: `build`, `lint`, `typecheck`, `test`, `dev`
+- Scripts: `build`, `lint`, `typecheck`, `test`, `dev`, `release:patch`, `release:minor`, `release:major`, `release:dry`
 - Package exports: none
 - Internal package imports: none detected
 - External dependencies: `@biomejs/biome`, `@peria/core`, `@peria/renderer`, `vitest`
@@ -128,7 +128,7 @@ This package contributes 116 source modules and 535 exported declarations to the
 
 **Why it matters:**
 
-This package contributes 12 source modules and 112 exported declarations to the generated knowledge graph. Its manifest lives at `packages/renderer/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 13 source modules and 122 exported declarations to the generated knowledge graph. Its manifest lives at `packages/renderer/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 

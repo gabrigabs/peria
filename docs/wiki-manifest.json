@@ -1,120 +1,93 @@
 {
   "title": "Peria Wiki",
   "tagline": "Human-readable by default. LLM-ready by design.",
-  "generatedAt": "2026-06-26T19:34:44.442Z",
+  "generatedAt": "2026-06-27T23:09:15.651Z",
   "manifestVersion": "0.1.0",
-  "commit": "d0a5f2266d97a31e0c775cc8a67e92a44c5b6d46",
+  "commit": "a95ae0e07cc65372904f79100d5fe6dadb12646f",
   "git": {
-    "branch": "feat/self-documentation-bootstrap",
-    "commit": "d0a5f2266d97a31e0c775cc8a67e92a44c5b6d46",
-    "shortCommit": "d0a5f22",
+    "branch": "feat/planning",
+    "commit": "a95ae0e07cc65372904f79100d5fe6dadb12646f",
+    "shortCommit": "a95ae0e",
     "author": "Gabriel Bezerra Rodrigues",
     "authorEmail": "gabrielbrodrigues1@gmail.com",
-    "authoredAt": "2026-06-26T13:52:38-03:00",
-    "subject": "fix: harden npm publish readiness",
+    "authoredAt": "2026-06-27T20:06:06-03:00",
+    "subject": "feat(renderer): generate fumadocs-compatible MDX output (T1.2)",
     "isDirty": true,
     "changedFiles": [
-      "M .peria/manifest.json",
-      "M CLAUDE.md",
-      "M CONTRIBUTING.md",
-      "M PUBLISHING.md",
-      "M README.md",
-      "M bun.lock",
-      "M package.json",
-      "M packages/adapters/README.md",
-      "M packages/adapters/package.json",
-      "D packages/adapters/src/elysia.ts",
-      "D packages/adapters/src/hono.ts",
-      "M packages/adapters/src/index.ts",
-      "M packages/adapters/tsup.config.ts",
-      "M packages/api-reference/package.json",
-      "M packages/cli/bin/peria.js",
-      "M packages/cli/package.json",
-      "M packages/cli/src/index.ts",
-      "M packages/core/package.json",
-      "M packages/core/src/wiki/pages.ts",
-      "D packages/docs-ui/package.json",
-      "D packages/docs-ui/src/index.ts",
-      "D packages/docs-ui/tsconfig.json",
-      "D packages/docs-ui/tsup.config.ts",
-      "M packages/renderer/package.json",
-      "M packages/sdk/package.json",
-      "M peria.config.ts",
-      "?? packages/cli/peria-cli-0.1.0.tgz",
-      "?? packages/core/peria-core-0.1.0.tgz"
+      "M packages/cli/src/commands/build.ts"
     ],
     "recentCommits": [
       {
-        "hash": "d0a5f22",
+        "hash": "a95ae0e",
+        "date": "2026-06-27",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(renderer): generate fumadocs-compatible MDX output (T1.2)"
+      },
+      {
+        "hash": "42ecdb6",
+        "date": "2026-06-27",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(renderer): add renderer mode selection (T1.1)"
+      },
+      {
+        "hash": "053366c",
+        "date": "2026-06-27",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "test: add fresh npm install dogfood validation script (T0.4)"
+      },
+      {
+        "hash": "799cca2",
+        "date": "2026-06-27",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "chore: reconcile published package versions (T0.1)"
+      },
+      {
+        "hash": "006a961",
+        "date": "2026-06-27",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "docs: align public docs with shipped package behavior"
+      },
+      {
+        "hash": "410399a",
+        "date": "2026-06-27",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "chore: remove release artifacts from source tree"
+      },
+      {
+        "hash": "260730f",
+        "date": "2026-06-27",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "docs: add execution plan based on research findings"
+      },
+      {
+        "hash": "4b7ea52",
+        "date": "2026-06-27",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "docs: add detailed product task backlog"
+      },
+      {
+        "hash": "4d77e2f",
         "date": "2026-06-26",
         "author": "Gabriel Bezerra Rodrigues",
-        "subject": "fix: harden npm publish readiness"
+        "subject": "ci: update publishing workflow to use latest npm and align CLI version with package.json"
       },
       {
-        "hash": "d7924b0",
+        "hash": "8ffd568",
         "date": "2026-06-26",
         "author": "Gabriel Bezerra Rodrigues",
-        "subject": "fix(lint): resolve all remaining warnings"
+        "subject": "chore: standardize repository configuration and fix CLI bin path across workspace packages"
       },
       {
-        "hash": "8e5fb17",
+        "hash": "b3c6190",
         "date": "2026-06-26",
         "author": "Gabriel Bezerra Rodrigues",
-        "subject": "fix: critical blockers for npm release"
+        "subject": "Merge branch 'feat/self-documentation-bootstrap'"
       },
       {
-        "hash": "21a3220",
+        "hash": "c2602cc",
         "date": "2026-06-26",
         "author": "Gabriel Bezerra Rodrigues",
-        "subject": "docs: update README with current status"
-      },
-      {
-        "hash": "5f7b4b9",
-        "date": "2026-06-26",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "feat(audit): add 3 new drift checks"
-      },
-      {
-        "hash": "76892cf",
-        "date": "2026-06-26",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "test(cli): add integration tests for all commands"
-      },
-      {
-        "hash": "b8dc2b8",
-        "date": "2026-06-26",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "feat(scanner): integrate ts-morph for proper AST extraction"
-      },
-      {
-        "hash": "b3813e1",
-        "date": "2026-06-26",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "refactor: archive ROADMAP.md and simplify README"
-      },
-      {
-        "hash": "83fa4bf",
-        "date": "2026-06-26",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "feat: fix typecheck, lint, adapters, check --json, and add CLI tests"
-      },
-      {
-        "hash": "2df5d5d",
-        "date": "2026-06-26",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "feat: implement documentation server for Fastify and NestJS adapters with static file support"
-      },
-      {
-        "hash": "ea322dd",
-        "date": "2026-06-25",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "test(core): add tests for context-packs and mermaid modules"
-      },
-      {
-        "hash": "c47bcfe",
-        "date": "2026-06-25",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "feat(cli): add context and diagram commands"
+        "subject": "feat: automate version bumping and package publishing on main branch push"
       }
     ]
   },

@@ -12,7 +12,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { buildWiki, loadConfig } from '@peria/core';
-import { renderWikiAssets } from '@peria/renderer';
+import { renderWikiAssets, generateFumadocsContent } from '@peria/renderer';
 import { logger } from '../utils/logger.js';
 
 export async function buildCommand(cwd: string, options?: { renderer?: 'static' | 'fumadocs' }): Promise<void> {
@@ -45,13 +45,34 @@ export async function buildCommand(cwd: string, options?: { renderer?: 'static' 
     result.pages.map((page) => writeFile(join(docsDir, page.path), page.body, 'utf-8'))
   );
 
-  // Get rendered assets based on renderer mode
+  // Generate output based on renderer mode
   if (rendererMode === 'fumadocs') {
-    // TODO: call generateFumadocsContent() when implemented
-    logger.info('Fumadocs mode - using static fallback');
+    logger.info('Generating Fumadocs-compatible output...');
+
+    const fumadocsOutput = generateFumadocsContent({
+      manifest: result.manifest,
+      baseUrl: config?.docs.route ?? '/docs',
+    });
+
+    // Write MDX files
+    await Promise.all(
+      fumadocsOutput.files.map((file) =>
+        writeFile(join(docsDir, file.path), file.content, 'utf-8')
+      )
+    );
+
+    // Write content config
+    await writeFile(
+      join(docsDir, 'content.config.ts'),
+      fumadocsOutput.contentConfig,
+      'utf-8'
+    );
+
+    logger.success(`Generated ${fumadocsOutput.files.length} MDX pages`);
+    logger.success('Generated content.config.ts for Fumadocs');
   }
 
-  // Get rendered assets from renderer package
+  // Get rendered assets from renderer package (static mode)
   const { html, css, js } = renderWikiAssets({
     manifest: result.manifest,
     pages: result.pages,
@@ -62,9 +83,11 @@ export async function buildCommand(cwd: string, options?: { renderer?: 'static' 
   // Write all remaining files in parallel
   await Promise.all([
     writeJsonFile(join(docsDir, 'wiki-manifest.json'), result.manifest),
-    writeFile(join(docsDir, 'index.html'), html, 'utf-8'),
-    writeFile(join(assetsDir, 'wiki.css'), css, 'utf-8'),
-    writeFile(join(assetsDir, 'wiki.js'), js, 'utf-8'),
+    ...(rendererMode === 'fumadocs' ? [] : [
+      writeFile(join(docsDir, 'index.html'), html, 'utf-8'),
+      writeFile(join(assetsDir, 'wiki.css'), css, 'utf-8'),
+      writeFile(join(assetsDir, 'wiki.js'), js, 'utf-8'),
+    ]),
     writeJsonFile(join(artifactDir, 'graph.json'), result.graph),
     writeJsonFile(join(artifactDir, 'wiki-manifest.json'), result.manifest),
     writeFile(join(artifactDir, 'ai-context.md'), result.llmsText, 'utf-8'),
@@ -72,7 +95,11 @@ export async function buildCommand(cwd: string, options?: { renderer?: 'static' 
   ]);
 
   logger.success(`Generated ${result.pages.length} wiki pages in ${result.config.docs.outputDir}`);
-  logger.success('Generated visual wiki UI');
+  if (rendererMode === 'fumadocs') {
+    logger.success('Generated Fumadocs MDX content');
+  } else {
+    logger.success('Generated visual wiki UI');
+  }
   logger.success('Generated .peria/graph.json');
   logger.success('Generated llms.txt');
   logger.dim(`Commit: ${result.commit ?? 'unknown'}`);

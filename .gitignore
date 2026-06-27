@@ -39,3 +39,4 @@ output/playwright/
 # Bun
 .bun/
 bun.lockb
+*.tgz

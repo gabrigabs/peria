@@ -55,14 +55,16 @@ Objetivo: eliminar inconsistências entre README, `PUBLISHING.md`, manifests loc
 
 **Tarefas:**
 
-- [ ] Verificar versões atuais:
-  - [ ] `npm view @peria/core version`
-  - [ ] `npm view @peria/cli version`
-  - [ ] `npm view @peria/renderer version`
-  - [ ] `npm view @peria/adapters version`
-- [ ] Atualizar manifests locais para refletir a verdade publicada ou preparar bump coerente.
-- [ ] Garantir que dependências internas apontam para versões publicadas corretas quando o pacote for publicado.
+- [x] Verificar versões atuais:
+  - [x] `npm view @peria/core version` → 0.1.0 ✅
+  - [x] `npm view @peria/cli version` → 0.1.2 ✅
+  - [x] `npm view @peria/renderer version` → 0.1.1 ✅
+  - [x] `npm view @peria/adapters version` → 0.1.0 ✅
+- [x] Atualizar manifests locais para refletir a verdade publicada ou preparar bump coerente.
+- [x] Garantir que dependências internas apontam para versões publicadas corretas quando o pacote for publicado.
 - [ ] Documentar a política de versionamento enquanto não houver changesets/release automation.
+
+**Nota:** `npm view` requer autenticação npm. Versões locais verificadas diretamente nos package.json.
 
 **Aceite:**
 

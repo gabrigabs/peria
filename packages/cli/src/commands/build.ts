@@ -15,12 +15,19 @@ import { buildWiki, loadConfig } from '@peria/core';
 import { renderWikiAssets } from '@peria/renderer';
 import { logger } from '../utils/logger.js';
 
-export async function buildCommand(cwd: string): Promise<void> {
+export async function buildCommand(cwd: string, options?: { renderer?: 'static' | 'fumadocs' }): Promise<void> {
   logger.header('Peria Build');
 
   const config = await loadConfig(cwd);
   if (!config) {
     logger.warning('No peria.config.ts found. Using default configuration.');
+  }
+
+  // Override renderer mode from CLI option
+  const rendererMode = options?.renderer || config?.docs.renderer || 'static';
+
+  if (rendererMode === 'fumadocs' && config?.docs.renderer !== 'fumadocs') {
+    logger.warning('Fumadocs renderer selected - install fumadocs dependencies for full support');
   }
 
   const result = await buildWiki(cwd, config ?? {});
@@ -37,6 +44,12 @@ export async function buildCommand(cwd: string): Promise<void> {
   await Promise.all(
     result.pages.map((page) => writeFile(join(docsDir, page.path), page.body, 'utf-8'))
   );
+
+  // Get rendered assets based on renderer mode
+  if (rendererMode === 'fumadocs') {
+    // TODO: call generateFumadocsContent() when implemented
+    logger.info('Fumadocs mode - using static fallback');
+  }
 
   // Get rendered assets from renderer package
   const { html, css, js } = renderWikiAssets({

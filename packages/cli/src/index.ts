@@ -23,8 +23,8 @@ cli.command('init', 'Initialize Peria in your project').action(async (opts: { cw
   await initCommand(opts.cwd);
 });
 
-cli.command('build', 'Build documentation').action(async (opts: { cwd: string }) => {
-  await buildCommand(opts.cwd);
+cli.command('build', 'Build documentation').option('--renderer <mode>', 'Renderer mode (static, fumadocs)').action(async (opts: { cwd: string; renderer?: string }) => {
+  await buildCommand(opts.cwd, { renderer: opts.renderer as 'static' | 'fumadocs' | undefined });
 });
 
 cli.command('serve', 'Serve documentation locally').action(async (opts: { cwd: string }) => {

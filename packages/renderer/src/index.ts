@@ -14,6 +14,7 @@ export {
   encodePackageName,
   generateNavigation,
   type RendererConfigOptions,
+  type RendererMode,
 } from './config.js';
 // Content generation
 export { type ContentGenerationOptions, generatePagesFromManifest } from './content.js';

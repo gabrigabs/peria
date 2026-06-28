@@ -11,7 +11,7 @@
 
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { buildWiki, loadConfig } from '@peria/core';
+import { buildWiki, generateAndSaveDiagrams, loadConfig } from '@peria/core';
 import { renderWikiAssets, generateFumadocsContent } from '@peria/renderer';
 import { logger } from '../utils/logger.js';
 
@@ -36,11 +36,35 @@ export async function buildCommand(cwd: string, options?: { renderer?: 'static' 
   const assetsDir = join(docsDir, 'assets');
   const contentDir = join(docsDir, 'content');
   const artifactDir = join(cwd, '.peria');
+  const diagramsDir = join(cwd, '.peria', 'diagrams');
 
   await mkdir(pagesDir, { recursive: true });
   await mkdir(assetsDir, { recursive: true });
   await mkdir(contentDir, { recursive: true });
   await mkdir(artifactDir, { recursive: true });
+  await mkdir(diagramsDir, { recursive: true });
+
+  // Generate Mermaid diagrams if enabled
+  if (result.config.features.mermaid) {
+    logger.info('Generating Mermaid diagrams...');
+    // ponytail: WikiBuildResult.packages is PackageSummary[], Mermaid expects PackageEntity[]
+    // Need to convert or use only available fields
+    const manifestForMermaid = {
+      ...result,
+      packages: result.packages as any[], // PackageSummary can cast to PackageEntity for diagram gen
+      routes: [],
+      schemas: [],
+      openapiOps: [],
+      docsPages: [],
+      sourceFiles: [],
+      agentContext: [],
+      relations: [],
+      drift: [],
+      stats: { routes: 0, schemas: 0, packages: result.packages.length, docsPages: 0 },
+    };
+    await generateAndSaveDiagrams(manifestForMermaid as any, { cwd });
+    logger.success('Generated Mermaid diagrams');
+  }
 
   // Write all wiki pages in parallel (skip for fumadocs mode)
   if (rendererMode !== 'fumadocs') {

@@ -93,7 +93,7 @@ export default defineConfig({
     apiReference: false, // OpenAPI parsing (Phase 3)
     driftCheck: true, // Basic diagnostics (Phase 0, task 3)
     contextPacks: false, // Agent context packs (Phase 6)
-    mermaid: false, // Mermaid support (Phase 7)
+    mermaid: true, // Mermaid support (Phase 7)
     embeddedDocsAdapters: false, // Express/Fastify/NestJS adapters (Phase 4)
 
     // Not planned for MVP

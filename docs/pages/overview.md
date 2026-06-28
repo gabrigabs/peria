@@ -23,10 +23,10 @@ Engineers maintaining a codebase and AI agents that need source-backed context b
 
 ## Current Snapshot
 
-- Generated at: 2026-06-27T23:11:56.396Z
+- Generated at: 2026-06-28T01:30:47.063Z
 - Git branch: feat/planning
-- Git commit: 8e0669b886993e50f21eef0f0c4ab3430c94adc8
-- Working tree: 1 changed files
+- Git commit: 77ea4b3b030b37fee2799a21cf58970e44a8e5c1
+- Working tree: 10 changed files
 - Packages documented: 7
 - TypeScript modules mapped: 157
 - CLI commands documented: 3 (3 implemented handlers)

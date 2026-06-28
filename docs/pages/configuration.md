@@ -40,6 +40,6 @@ Configured highlights:
 | gitDiff | disabled | `peria.config.ts:100` |
 | github | disabled | `peria.config.ts:103` |
 | llms | enabled | `peria.config.ts:90` |
-| mermaid | disabled | `peria.config.ts:96` |
+| mermaid | enabled | `peria.config.ts:96` |
 | patchNotes | disabled | `peria.config.ts:102` |
 | wiki | enabled | `peria.config.ts:89` |

@@ -93,6 +93,7 @@ export interface WikiManifest {
   tagline: string;
   generatedAt: string;
   manifestVersion: string;
+  periaVersion: string;
   commit?: string;
   git: GitMetadata;
   project: Required<ProjectProfile>;

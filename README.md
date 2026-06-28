@@ -30,21 +30,15 @@ All adapters serve static files + manifest + llms.txt:
 | Fastify | ✅ Works |
 | NestJS | ✅ Works |
 
-### Planned Adapters
-
-| Adapter | Status |
-|---------|--------|
-| Hono | 🔜 Future |
-| Elysia | 🔜 Future |
-
 ### Self-Documentation ✅
 
 Peria uses itself to document Peria:
-
 - **153 TypeScript modules** extracted with ts-morph
 - **10 audit checks** for drift detection
 - **21 CLI tests** (smoke + integration)
 - Docs generated at `docs/pages/`
+
+*Note: Numbers reflect current state and may vary with updates.*
 
 ---
 

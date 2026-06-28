@@ -2,7 +2,7 @@
 
 Static wiki renderer for Peria documentation.
 
-Currently generates a self-contained static HTML wiki. Future versions will support Fumadocs integration.
+Currently generates a self-contained static HTML wiki with support for both static and Fumadocs output modes via the CLI.
 
 ## Installation
 
@@ -12,12 +12,33 @@ npm install @peria/renderer
 
 ## Usage
 
-```typescript
-import { createPeriaRenderer } from '@peria/renderer';
+The renderer is typically used through the CLI:
 
-const renderer = createPeriaRenderer({
+```bash
+# Generate static HTML wiki
+peria build
+
+# Generate Fumadocs-compatible MDX content
+peria build --renderer fumadocs
+```
+
+Or programmatically:
+
+```typescript
+import { renderWikiAssets, generateFumadocsContent } from '@peria/renderer';
+
+// For static HTML
+const { html, css, js } = renderWikiAssets({
   manifest: manifest,
-  outputDir: './docs',
+  pages: pages,
+  graph: graph,
+  llmsText: llmsText,
+});
+
+// For Fumadocs
+const fumadocsOutput = generateFumadocsContent({
+  manifest: manifest,
+  baseUrl: '/docs',
 });
 ```
 

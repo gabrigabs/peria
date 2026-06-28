@@ -24,7 +24,7 @@ The monorepo uses scoped packages (`@peria/*`):
 | Core | `@peria/core` | Dependency |
 | Renderer | `@peria/renderer` | Dependency |
 | Adapters | `@peria/adapters` | Published ✅ |
-| SDK | `@peria/sdk` | Future |
+| SDK | `@peria/sdk` | Experimental |
 
 ## Step 1: Reserve the @peria Organization (One-time)
 

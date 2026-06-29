@@ -9,6 +9,7 @@ import {
   DocsTitle,
 } from 'fumadocs-ui/layouts/docs/page'
 import defaultMdxComponents from 'fumadocs-ui/mdx'
+import { Mermaid } from '@/components/mermaid'
 import { source } from '@/lib/source'
 import { useFumadocsLoader } from 'fumadocs-core/source/client'
 import { Suspense } from 'react'
@@ -41,7 +42,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
         <DocsTitle>{frontmatter.title}</DocsTitle>
         <DocsDescription>{frontmatter.description}</DocsDescription>
         <DocsBody>
-          <MDX components={defaultMdxComponents} />
+          <MDX components={{ ...defaultMdxComponents, Mermaid }} />
         </DocsBody>
       </DocsPage>
     )

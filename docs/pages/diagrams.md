@@ -2,7 +2,7 @@
 
 These Mermaid diagrams are generated during `peria build` with the same Mermaid engine used by `peria diagram`.
 
-Generated at: 2026-06-29T14:20:36.490Z
+Generated at: 2026-06-29T14:24:51.685Z
 
 ## Coverage
 

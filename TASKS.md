@@ -315,35 +315,35 @@ Objetivo: Peria precisa documentar Peria usando o pacote instalado como um usuá
 
 **Tarefas:**
 
-- [ ] Criar script de dogfood que instala `@peria/cli@latest` em ambiente temporário.
+- [x] Criar script de dogfood que instala `@peria/cli@latest` em ambiente temporário.
 - [ ] Rodar contra o próprio checkout do Peria.
-- [ ] Gerar docs em diretório controlado.
-- [ ] Comparar saída com fixtures esperadas.
-- [ ] Rodar `peria check` contra a saída gerada.
+- [x] Gerar docs em diretório controlado.
+- [x] Comparar saída com fixtures esperadas.
+- [x] Rodar `peria check` contra a saída gerada.
 
 **Aceite:**
 
-- [ ] O resultado não depende de `workspace:*`.
-- [ ] O comando falha se pacote publicado estiver quebrado.
+- [x] O resultado não depende de `workspace:*`.
+- [x] O comando falha se pacote publicado estiver quebrado.
 
 ### T3.2 Publicar os docs dogfoodados
 
 **Tarefas:**
 
-- [ ] Decidir destino:
-  - [ ] `docs/` versionado;
+- [x] Decidir destino:
+  - [x] `docs/` versionado;
   - [ ] GitHub Pages;
   - [ ] release artifact;
   - [ ] todos, em fases.
-- [ ] Garantir que docs gerados não geram ruído impossível de revisar.
+- [x] Garantir que docs gerados não geram ruído impossível de revisar.
 - [ ] Criar comando:
-  - [ ] `bun run docs:generate`;
-  - [ ] `bun run docs:check`;
-  - [ ] `bun run docs:serve`.
+  - [x] `bun run docs:generate`;
+  - [x] `bun run docs:check`;
+  - [x] `bun run docs:serve`.
 
 **Aceite:**
 
-- [ ] Um contribuidor consegue abrir a documentação do próprio Peria localmente.
+- [x] Um contribuidor consegue abrir a documentação do próprio Peria localmente.
 - [ ] CI consegue detectar quando docs estão obsoletos.
 
 ### T3.3 Usar a wiki para guiar desenvolvimento

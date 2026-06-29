@@ -7,7 +7,7 @@ The application map is the compact artifact for answering what exists, where it 
 - Name: Peria
 - Framework: `other`
 - Entrypoint: `packages/cli/src/index.ts`
-- Generated at: 2026-06-29T14:20:30.451Z
+- Generated at: 2026-06-29T14:24:46.348Z
 
 ## Summary
 
@@ -118,5 +118,5 @@ _No entries found._
 ## Git Context
 
 - Branch: `feat/planning`
-- Commit: `0be7c0b32428e4e3329f2507a205e12b7fdbca00`
-- Working tree: 41 changed files
+- Commit: `131eeead638586b6325e9adddafa8937e530e9b1`
+- Working tree: 21 changed files

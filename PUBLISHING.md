@@ -167,6 +167,14 @@ Verified on 2026-06-29 in a temporary npm project outside the monorepo:
 
 `peria init` remains interactive and should be validated manually or with a TTY harness before marking init dogfood fully automated.
 
+The repeatable npm dogfood command is:
+
+```sh
+bun run dogfood:npm
+```
+
+It installs `@peria/cli@latest` in a temporary project, copies the NestJS fixture, runs `scan`, `build`, `scan`, and `check --json`, and validates generated artifacts without workspace links.
+
 ## Versioning Strategy
 
 Until changesets or release automation exist, versioning is manual and must follow this policy:

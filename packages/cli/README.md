@@ -10,6 +10,7 @@ Local-first source-backed knowledge graph CLI for backend and API repositories.
 - **`peria serve`** - Serve documentation locally
 - **`peria github auth status`** - Diagnose which GitHub credential source Peria will use
 - **`peria github cache write`** - Persist `.peria/github.json` from the scanned manifest
+- **`peria github issues create-from-check`** - Draft cached issues from drift findings
 - **`peria init`** - Initialize Peria in a new project
 
 ## Installation
@@ -60,9 +61,12 @@ peria serve --port 3000
 ```bash
 peria github auth status
 peria github cache write
+peria github issues create-from-check --label team-docs
 ```
 
 `github cache write` reads `.peria/manifest.json` and writes `.peria/github.json` with typed GitHub entities and graph relations. It does not call GitHub or store tokens.
+
+`github issues create-from-check` runs drift checks, deduplicates findings by fingerprint, and writes open issue records to the same cache. `peria build` includes those open issues in the generated wiki when `.peria/github.json` exists.
 
 ## Options
 
@@ -72,7 +76,7 @@ peria github cache write
 | `check` | `--json`, `--severity` | Output format and severity filter |
 | `build` | `--output` | Output directory |
 | `serve` | `--port`, `--open` | Server options |
-| `github` | `auth status`, `auth login`, `cache write` | Auth diagnostics and provenance cache |
+| `github` | `auth status`, `auth login`, `cache write`, `issues create-from-check` | Auth diagnostics, provenance cache, and cached drift issues |
 
 ## Configuration
 

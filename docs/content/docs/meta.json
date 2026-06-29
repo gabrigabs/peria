@@ -19,6 +19,7 @@
     "release-status",
     "known-gaps",
     "---Provenance---",
-    "history"
+    "history",
+    "github-issues"
   ]
 }

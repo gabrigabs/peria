@@ -224,5 +224,18 @@
       "TASKS.md",
       ".peria/application-map.json"
     ]
+  },
+  {
+    "title": "GitHub Issues",
+    "slug": "github-issues",
+    "url": "/docs/github-issues",
+    "description": "Cached GitHub issues created or synchronized from Peria drift findings.",
+    "headings": [
+      "Snapshot",
+      "Open Drift Issues"
+    ],
+    "sources": [
+      ".peria/github.json"
+    ]
   }
 ]

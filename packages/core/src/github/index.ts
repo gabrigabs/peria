@@ -1,5 +1,11 @@
 export { GITHUB_CACHE_PATH, readGitHubCache, writeGitHubCache } from './cache.js';
 export {
+  type CreateDriftIssuesOptions,
+  type CreateDriftIssuesResult,
+  createDriftIssueFingerprint,
+  createDriftIssuesFromFindings,
+} from './issues.js';
+export {
   type CreateGitHubCacheOptions,
   type CreateGitHubRelationsInput,
   createGitHubCacheFromManifest,

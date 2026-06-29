@@ -98,9 +98,56 @@ cli
 // GitHub commands
 cli
   .command('github [...args]', 'GitHub auth and sync commands')
-  .action(async (args: string[] | undefined, opts: { cwd: string }) => {
-    await githubCommand(args ?? [], opts.cwd);
-  });
+  .option('--label <label>', 'Extra label for GitHub issue creation')
+  .option('--labels <labels>', 'Comma-separated extra labels for GitHub issue creation')
+  .option('--severity <level>', 'Minimum severity for issue creation')
+  .option('--checks <names>', 'Comma-separated checks for issue creation')
+  .allowUnknownOptions()
+  .action(
+    async (
+      args: string[] | undefined,
+      opts: {
+        cwd: string;
+        label?: string | string[];
+        labels?: string;
+        severity?: string;
+        checks?: string;
+      }
+    ) => {
+      await githubCommand(appendGitHubOptions(args ?? [], opts), opts.cwd);
+    }
+  );
+
+function appendGitHubOptions(
+  args: string[],
+  opts: {
+    label?: string | string[];
+    labels?: string;
+    severity?: string;
+    checks?: string;
+  }
+): string[] {
+  const nextArgs = [...args];
+  const labels = Array.isArray(opts.label) ? opts.label : opts.label ? [opts.label] : [];
+
+  for (const label of labels) {
+    nextArgs.push('--label', label);
+  }
+
+  if (opts.labels) {
+    nextArgs.push('--labels', opts.labels);
+  }
+
+  if (opts.severity) {
+    nextArgs.push('--severity', opts.severity);
+  }
+
+  if (opts.checks) {
+    nextArgs.push('--checks', opts.checks);
+  }
+
+  return nextArgs;
+}
 
 // Help
 cli.help();

@@ -3,7 +3,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { createGitHubCacheFromManifest } from '../github/index.js';
+import { createDriftIssuesFromFindings, createGitHubCacheFromManifest } from '../github/index.js';
 import type {
   DriftFinding,
   GraphRelation,
@@ -54,6 +54,32 @@ describe('github cache', () => {
         'drift_finding_opens_issue',
       ])
     );
+  });
+
+  it('deduplicates drift issues by fingerprint', () => {
+    const manifest = createManifest();
+    const first = createDriftIssuesFromFindings(manifest, null, manifest.drift, {
+      generatedAt: '2026-06-29T00:00:00.000Z',
+      labels: ['team-docs'],
+    });
+    const second = createDriftIssuesFromFindings(manifest, first.cache, manifest.drift, {
+      generatedAt: '2026-06-29T00:01:00.000Z',
+      labels: ['team-docs'],
+    });
+
+    expect(first.created).toBe(1);
+    expect(first.updated).toBe(0);
+    expect(second.created).toBe(0);
+    expect(second.updated).toBe(1);
+    expect(second.cache.issues).toHaveLength(first.cache.issues.length);
+
+    const driftIssue = second.cache.issues.find(
+      (issue) => issue.driftFindingId === manifest.drift[0]?.id
+    );
+    expect(driftIssue?.labels).toEqual(
+      expect.arrayContaining(['peria', 'docs-drift', 'severity:warning', 'team-docs'])
+    );
+    expect(driftIssue?.body).toContain('peria check --json');
   });
 });
 

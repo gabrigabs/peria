@@ -19,7 +19,7 @@
 | `peria check` | Audit for drift with 10 checks (`--json` for CI) |
 | `peria context` | Generate context packs for agents |
 | `peria diagram` | Generate Mermaid diagrams |
-| `peria github` | Diagnose auth and write local GitHub provenance cache |
+| `peria github` | Diagnose auth, write provenance cache, and draft drift issues |
 
 ### Framework Adapters ✅
 
@@ -119,6 +119,15 @@ peria github cache write
 ```
 
 This writes `.peria/github.json` with typed issues, pull requests, milestones, commits, and relations inferred from the manifest and local Git history. It does not call the GitHub API or persist credentials.
+
+### 7. Draft Drift Issues
+
+```bash
+peria github issues create-from-check --label team-docs
+peria build
+```
+
+This runs the same checks as `peria check`, deduplicates findings by fingerprint, and stores open issue records in `.peria/github.json`. When the cache exists, `peria build` adds a GitHub Issues page to the generated wiki.
 
 ---
 

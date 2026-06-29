@@ -17,10 +17,13 @@ import {
   buildWiki,
   createLlmsText,
   defineConfig,
+  type GitHubCache,
+  type GitHubIssue,
   generateAndSaveDiagrams,
   loadConfig,
   type MermaidResult,
   type PeriaManifest,
+  readGitHubCache,
   type WikiManifest,
   type WikiPage,
 } from '@peria/core';
@@ -40,7 +43,10 @@ export async function buildCommand(cwd: string, options?: { renderer?: string })
   validateRenderer(options?.renderer ?? config.docs.renderer);
 
   const result = await buildWiki(cwd, config);
-  const scannedManifest = await readManifest(cwd);
+  const [scannedManifest, githubCache] = await Promise.all([
+    readManifest(cwd),
+    readGitHubCache(cwd),
+  ]);
   const docsDir = join(cwd, result.config.docs.outputDir);
   const pagesDir = join(docsDir, 'pages');
   const artifactDir = join(cwd, '.peria');
@@ -77,6 +83,7 @@ export async function buildCommand(cwd: string, options?: { renderer?: string })
     ...diagramPages,
     createApplicationMapPage(initialAppMap),
     ...createMaintenancePages(initialAppMap),
+    ...createGitHubPages(githubCache),
   ];
   const manifest = appendPagesToManifest(result.manifest, initialGeneratedPages);
   const appMap = updateApplicationMapDocs(initialAppMap, manifest);
@@ -84,6 +91,7 @@ export async function buildCommand(cwd: string, options?: { renderer?: string })
     ...diagramPages,
     createApplicationMapPage(appMap),
     ...createMaintenancePages(appMap),
+    ...createGitHubPages(githubCache),
   ];
   const pages = [...result.pages, ...generatedPages];
   const llmsText = createLlmsText(manifest, result.contextFiles);
@@ -222,6 +230,22 @@ function createMaintenancePages(appMap: ApplicationMap): WikiPage[] {
   ];
 }
 
+function createGitHubPages(cache: GitHubCache | null): WikiPage[] {
+  if (!cache) {
+    return [];
+  }
+
+  return [
+    createWikiPage(
+      'github-issues',
+      'GitHub Issues',
+      'Cached GitHub issues created or synchronized from Peria drift findings.',
+      renderGitHubIssuesPage(cache),
+      ['.peria/github.json']
+    ),
+  ];
+}
+
 function updateApplicationMapDocs(appMap: ApplicationMap, manifest: WikiManifest): ApplicationMap {
   return {
     ...appMap,
@@ -266,8 +290,14 @@ function appendPagesToManifest(manifest: WikiManifest, pages: WikiPage[]): WikiM
   }));
   const codeMapPages = new Set(['modules', 'adapters', 'wiki-ui']);
   const maintenancePages = ['development-map', 'release-status', 'known-gaps'];
+  const provenancePages = new Set(['history']);
 
   for (const page of pages) {
+    if (page.slug === 'github-issues') {
+      provenancePages.add(page.slug);
+      continue;
+    }
+
     if (!maintenancePages.includes(page.slug)) {
       codeMapPages.add(page.slug);
     }
@@ -283,7 +313,12 @@ function appendPagesToManifest(manifest: WikiManifest, pages: WikiPage[]): WikiM
               ...section,
               pages: Array.from(codeMapPages),
             }
-          : section
+          : section.title === 'Provenance'
+            ? {
+                ...section,
+                pages: Array.from(provenancePages),
+              }
+            : section
       ),
       pages
     ),
@@ -548,6 +583,51 @@ function renderReleaseStatusPage(appMap: ApplicationMap): string {
     '- Adapter dogfood against a real NestJS app.',
     '',
   ].join('\n');
+}
+
+function renderGitHubIssuesPage(cache: GitHubCache): string {
+  const openIssues = cache.issues.filter((issue) => issue.state === 'open');
+  const rows = openIssues.map((issue) => [
+    formatIssueNumber(issue),
+    issue.title,
+    issue.labels.map((label) => `\`${label}\``).join(', ') || 'none',
+    issue.driftFindingId ? `\`${issue.driftFindingId}\`` : 'none',
+    issue.source ? `\`${formatSourceRef(issue)}\`` : 'none',
+  ]);
+
+  return [
+    '# GitHub Issues',
+    '',
+    'This page is generated from `.peria/github.json`. It shows cached issue records before or after they are synchronized with GitHub.',
+    '',
+    '## Snapshot',
+    '',
+    `- Generated at: ${cache.generatedAt}`,
+    `- Repository: ${cache.repository.owner ? `${cache.repository.owner}/` : ''}${cache.repository.name}`,
+    `- Open issues: ${openIssues.length}`,
+    `- Total cached issues: ${cache.issues.length}`,
+    `- Relations: ${cache.relations.length}`,
+    '',
+    '## Open Drift Issues',
+    '',
+    markdownTable(['Issue', 'Title', 'Labels', 'Drift finding', 'Source'], rows),
+    '',
+  ].join('\n');
+}
+
+function formatIssueNumber(issue: GitHubIssue): string {
+  return issue.url ? `[#${issue.number}](${issue.url})` : `#${issue.number}`;
+}
+
+function formatSourceRef(issue: GitHubIssue): string {
+  if (!issue.source) {
+    return 'unknown';
+  }
+
+  const line = issue.source.line ? `:${issue.source.line}` : '';
+  const column = issue.source.column ? `:${issue.source.column}` : '';
+
+  return `${issue.source.file}${line}${column}`;
 }
 
 function renderKnownGapsPage(appMap: ApplicationMap): string {

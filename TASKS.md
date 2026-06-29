@@ -490,25 +490,27 @@ Objetivo: conectar provenance e planejamento ao GitHub sem transformar Peria em 
 
 **Tarefas:**
 
-- [ ] Adicionar comando:
-  - [ ] `peria github issues create-from-check`
+- [x] Adicionar comando:
+  - [x] `peria github issues create-from-check`
   - [ ] ou `peria check --create-issues`
-- [ ] Deduplicar issues por fingerprint.
-- [ ] Adicionar labels configuráveis:
-  - [ ] `peria`
-  - [ ] `docs-drift`
-  - [ ] severidade.
-- [ ] Escrever corpo da issue com:
-  - [ ] achado;
-  - [ ] fonte;
-  - [ ] impacto;
-  - [ ] comando para reproduzir;
-  - [ ] sugestão de correção.
+- [x] Deduplicar issues por fingerprint.
+- [x] Adicionar labels configuráveis:
+  - [x] `peria`
+  - [x] `docs-drift`
+  - [x] severidade.
+- [x] Escrever corpo da issue com:
+  - [x] achado;
+  - [x] fonte;
+  - [x] impacto;
+  - [x] comando para reproduzir;
+  - [x] sugestão de correção.
+
+**Nota:** primeira versão é cache-first: cria registros `GitHubIssue` em `.peria/github.json` para sincronização posterior, sem chamar a API do GitHub.
 
 **Aceite:**
 
-- [ ] Rodar duas vezes não duplica issues.
-- [ ] Issues abertas aparecem na wiki.
+- [x] Rodar duas vezes não duplica issues.
+- [x] Issues abertas aparecem na wiki.
 
 ### T5.5 Milestones e organização de tarefas
 

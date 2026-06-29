@@ -1,18 +1,18 @@
 {
   "title": "Peria Wiki",
   "tagline": "Human-readable by default. LLM-ready by design.",
-  "generatedAt": "2026-06-29T15:23:48.392Z",
+  "generatedAt": "2026-06-29T15:36:43.166Z",
   "periaVersion": "0.1.0",
   "manifestVersion": "0.1.0",
-  "commit": "22d7d9c47d831a1803b8e7545c1882d242b3cb4d",
+  "commit": "7e7434c5b7ea284a221fd7269afccc300e2adfb6",
   "git": {
     "branch": "feat/planning",
-    "commit": "22d7d9c47d831a1803b8e7545c1882d242b3cb4d",
-    "shortCommit": "22d7d9c",
+    "commit": "7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+    "shortCommit": "7e7434c",
     "author": "Gabriel Bezerra Rodrigues",
     "authorEmail": "gabrielbrodrigues1@gmail.com",
-    "authoredAt": "2026-06-29T12:12:02-03:00",
-    "subject": "feat(github): add auth diagnostics",
+    "authoredAt": "2026-06-29T12:25:20-03:00",
+    "subject": "feat(github): add provenance cache model",
     "isDirty": true,
     "changedFiles": [
       "M .peria/manifest.json",
@@ -23,6 +23,7 @@
       "M docs/content/docs/development-map.mdx",
       "M docs/content/docs/diagrams.mdx",
       "M docs/content/docs/history.mdx",
+      "M docs/content/docs/meta.json",
       "M docs/content/docs/modules.mdx",
       "M docs/content/docs/overview.mdx",
       "M docs/content/docs/packages.mdx",
@@ -36,19 +37,25 @@
       "M docs/pages/overview.md",
       "M docs/pages/packages.md",
       "M docs/pages/release-status.md",
+      "M docs/search-index.json",
       "M docs/wiki-manifest.json",
       "M packages/cli/README.md",
       "M packages/cli/src/__tests__/integration.test.ts",
       "M packages/cli/src/commands/build.ts",
       "M packages/cli/src/commands/github.ts",
-      "M packages/core/src/index.ts",
-      "M packages/core/src/scanner/git.ts",
-      "M packages/core/src/scanner/index.ts",
-      "M packages/core/src/types/graph.ts",
-      "M packages/core/src/types/manifest.ts",
-      "M packages/core/src/wiki/collectors/git.ts"
+      "M packages/cli/src/index.ts",
+      "M packages/core/src/__tests__/github.test.ts",
+      "M packages/core/src/github/index.ts",
+      "M packages/core/src/github/types.ts",
+      "M packages/core/src/index.ts"
     ],
     "recentCommits": [
+      {
+        "hash": "7e7434c",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(github): add provenance cache model"
+      },
       {
         "hash": "22d7d9c",
         "date": "2026-06-29",
@@ -114,12 +121,6 @@
         "date": "2026-06-27",
         "author": "Gabriel Bezerra Rodrigues",
         "subject": "feat(cli): integrate Fumadocs renderer in build command"
-      },
-      {
-        "hash": "a95ae0e",
-        "date": "2026-06-27",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "feat(renderer): generate fumadocs-compatible MDX output (T1.2)"
       }
     ]
   },
@@ -267,6 +268,12 @@
       "slug": "known-gaps",
       "description": "Detected gaps that keep the generated wiki from being a complete adoption artifact.",
       "path": "pages/known-gaps.md"
+    },
+    {
+      "title": "GitHub Issues",
+      "slug": "github-issues",
+      "description": "Cached GitHub issues created or synchronized from Peria drift findings.",
+      "path": "pages/github-issues.md"
     }
   ],
   "tree": [
@@ -306,7 +313,8 @@
     {
       "title": "Provenance",
       "pages": [
-        "history"
+        "history",
+        "github-issues"
       ]
     }
   ]

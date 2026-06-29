@@ -7,20 +7,20 @@ The application map is the compact artifact for answering what exists, where it 
 - Name: Peria
 - Framework: `other`
 - Entrypoint: `packages/cli/src/index.ts`
-- Generated at: 2026-06-29T15:23:48.392Z
+- Generated at: 2026-06-29T15:36:43.166Z
 
 ## Summary
 
 | Area | Count |
 | --- | --- |
 | packages | 7 |
-| modules | 158 |
+| modules | 159 |
 | routes | 0 |
 | schemas | 0 |
 | commands | 2 |
 | adapters | 5 |
-| pages | 14 |
-| claims | 963 |
+| pages | 15 |
+| claims | 977 |
 
 ## Entrypoints
 
@@ -57,7 +57,7 @@ The application map is the compact artifact for answering what exists, where it 
 | `packages/cli/src/commands/check.ts` | @peria/cli | 3 | 1 |
 | `packages/cli/src/commands/context.ts` | @peria/cli | 3 | 1 |
 | `packages/cli/src/commands/diagram.ts` | @peria/cli | 3 | 1 |
-| `packages/cli/src/commands/github.ts` | @peria/cli | 6 | 7 |
+| `packages/cli/src/commands/github.ts` | @peria/cli | 6 | 8 |
 | `packages/cli/src/commands/init.ts` | @peria/cli | 9 | 4 |
 | `packages/cli/src/commands/scan.ts` | @peria/cli | 4 | 1 |
 | `packages/cli/src/commands/serve.ts` | @peria/cli | 5 | 1 |
@@ -114,9 +114,10 @@ _No entries found._
 | Development Map | `development-map` | `pages/development-map.md` |
 | Release Status | `release-status` | `pages/release-status.md` |
 | Known Gaps | `known-gaps` | `pages/known-gaps.md` |
+| GitHub Issues | `github-issues` | `pages/github-issues.md` |
 
 ## Git Context
 
 - Branch: `feat/planning`
-- Commit: `22d7d9c47d831a1803b8e7545c1882d242b3cb4d`
-- Working tree: 32 changed files
+- Commit: `7e7434c5b7ea284a221fd7269afccc300e2adfb6`
+- Working tree: 33 changed files

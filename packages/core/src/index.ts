@@ -66,6 +66,8 @@ export {
   summarizeEnrichment,
 } from './generators/index.js';
 export type {
+  CreateDriftIssuesOptions,
+  CreateDriftIssuesResult,
   CreateGitHubCacheOptions,
   CreateGitHubRelationsInput,
   GitHubCache,
@@ -81,6 +83,8 @@ export type {
   GitHubRepository,
 } from './github/index.js';
 export {
+  createDriftIssueFingerprint,
+  createDriftIssuesFromFindings,
   createGitHubCacheFromManifest,
   createGitHubRelations,
   GITHUB_CACHE_PATH,

@@ -343,5 +343,45 @@ describe('CLI Integration Tests', () => {
     });
   });
 
+  describe('github issues command', () => {
+    it('creates deduplicated cached issues from check findings and exposes them in docs', async () => {
+      const fixturePath = createFixtureCopy('nestjs-basic');
+
+      await runCli(['scan'], fixturePath);
+      await runCli(['build'], fixturePath);
+
+      const first = await runCli(
+        ['github', 'issues', 'create-from-check', '--label', 'team-docs'],
+        fixturePath
+      );
+      expect(first.exitCode).toBe(0);
+      expect(first.stdout).toContain('created');
+
+      const cachePath = join(fixturePath, '.peria/github.json');
+      const firstCache = JSON.parse(readFileSync(cachePath, 'utf-8'));
+      expect(firstCache.issues.length).toBeGreaterThan(0);
+      expect(firstCache.issues[0].labels).toEqual(
+        expect.arrayContaining(['peria', 'docs-drift', 'team-docs'])
+      );
+      expect(firstCache.issues[0].body).toContain('## Source');
+      expect(firstCache.issues[0].body).toContain('peria check --json');
+
+      const second = await runCli(
+        ['github', 'issues', 'create-from-check', '--label', 'team-docs'],
+        fixturePath
+      );
+      const secondCache = JSON.parse(readFileSync(cachePath, 'utf-8'));
+
+      expect(second.exitCode).toBe(0);
+      expect(secondCache.issues).toHaveLength(firstCache.issues.length);
+
+      await runCli(['build'], fixturePath);
+
+      const issuesPage = readFileSync(join(fixturePath, 'docs/pages/github-issues.md'), 'utf-8');
+      expect(issuesPage).toContain('# GitHub Issues');
+      expect(issuesPage).toContain(firstCache.issues[0].title);
+    });
+  });
+
   // Skip init test - requires interactive tty
 });

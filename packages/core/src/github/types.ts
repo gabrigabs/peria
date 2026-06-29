@@ -32,6 +32,7 @@ export interface GitHubIssue {
   author?: string;
   milestoneNumber?: number;
   driftFindingId?: string;
+  fingerprint?: string;
   createdAt?: string;
   updatedAt?: string;
   closedAt?: string;

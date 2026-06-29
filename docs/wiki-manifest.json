@@ -1,32 +1,91 @@
 {
   "title": "Peria Wiki",
   "tagline": "Human-readable by default. LLM-ready by design.",
-  "generatedAt": "2026-06-28T01:30:47.063Z",
+  "generatedAt": "2026-06-29T14:07:03.855Z",
   "periaVersion": "0.1.0",
   "manifestVersion": "0.1.0",
-  "commit": "77ea4b3b030b37fee2799a21cf58970e44a8e5c1",
+  "commit": "a391352a9beb6ee38f239a9d3b93db2748947161",
   "git": {
     "branch": "feat/planning",
-    "commit": "77ea4b3b030b37fee2799a21cf58970e44a8e5c1",
-    "shortCommit": "77ea4b3",
+    "commit": "a391352a9beb6ee38f239a9d3b93db2748947161",
+    "shortCommit": "a391352",
     "author": "Gabriel Bezerra Rodrigues",
     "authorEmail": "gabrielbrodrigues1@gmail.com",
-    "authoredAt": "2026-06-27T20:26:21-03:00",
-    "subject": "fix: multiple bug fixes from code review",
+    "authoredAt": "2026-06-28T12:25:54-03:00",
+    "subject": "docs: align public docs with shipped package behavior",
     "isDirty": true,
     "changedFiles": [
-      "M docs/index.html",
+      "M .peria/manifest.json",
+      "M CLAUDE.md",
+      "M PLANNING.md",
+      "M PUBLISHING.md",
+      "M README.md",
+      "M TASKS.md",
+      "M biome.json",
+      "M bun.lock",
+      "D docs/assets/wiki.css",
+      "D docs/assets/wiki.js",
+      "D docs/content.config.ts",
+      "D docs/content/overview.mdx",
+      "D docs/index.html",
       "M docs/pages/ai-context.md",
+      "M docs/pages/cli.md",
       "M docs/pages/configuration.md",
       "M docs/pages/history.md",
       "M docs/pages/modules.md",
       "M docs/pages/overview.md",
+      "M docs/pages/packages.md",
+      "M docs/pages/wiki-ui.md",
       "M docs/wiki-manifest.json",
+      "M packages/adapters/package.json",
+      "M packages/cli/package.json",
+      "M packages/cli/src/__tests__/integration.test.ts",
       "M packages/cli/src/commands/build.ts",
-      "M packages/core/src/types/wiki.ts",
-      "M peria.config.ts"
+      "M packages/cli/src/commands/serve.ts",
+      "M packages/cli/src/index.ts",
+      "M packages/core/package.json",
+      "M packages/core/src/__tests__/mermaid.test.ts",
+      "M packages/core/src/__tests__/nestjs-parser.test.ts",
+      "M packages/core/src/index.ts",
+      "M packages/core/src/mermaid/generator.ts",
+      "M packages/core/src/mermaid/types.ts",
+      "M packages/core/src/scanner/index.ts",
+      "M packages/core/src/types/config.ts",
+      "M packages/core/src/wiki/pages.ts",
+      "M packages/renderer/README.md",
+      "M packages/renderer/package.json",
+      "M packages/renderer/src/config.ts",
+      "D packages/renderer/src/css.ts",
+      "M packages/renderer/src/fumadocs.ts",
+      "D packages/renderer/src/html.ts",
+      "M packages/renderer/src/index.ts",
+      "D packages/renderer/src/js.ts",
+      "D packages/renderer/src/renderer.ts",
+      "D packages/renderer/src/static.ts",
+      "M packages/sdk/package.json",
+      "M peria.config.ts",
+      "?? docs/README.md",
+      "?? docs/content/docs/",
+      "?? docs/lib/",
+      "?? docs/pages/application-map.md",
+      "?? docs/pages/diagrams.md",
+      "?? docs/source.config.ts",
+      "?? execute-tasks-plan.js",
+      "?? packages/core/src/application-map.ts"
     ],
     "recentCommits": [
+      {
+        "hash": "a391352",
+        "date": "2026-06-28",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "docs: align public docs with shipped package behavior"
+      },
+      {
+        "hash": "6b56872",
+        "date": "2026-06-27",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(core): integrate Mermaid diagrams in build (T2.1)"
+      },
       {
         "hash": "77ea4b3",
         "date": "2026-06-27",
@@ -86,18 +145,6 @@
         "date": "2026-06-27",
         "author": "Gabriel Bezerra Rodrigues",
         "subject": "docs: add detailed product task backlog"
-      },
-      {
-        "hash": "4d77e2f",
-        "date": "2026-06-26",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "ci: update publishing workflow to use latest npm and align CLI version with package.json"
-      },
-      {
-        "hash": "8ffd568",
-        "date": "2026-06-26",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "chore: standardize repository configuration and fix CLI bin path across workspace packages"
       }
     ]
   },
@@ -108,10 +155,10 @@
     "audience": "Engineers maintaining a codebase and AI agents that need source-backed context before making changes.",
     "tone": "Pragmatic, source-linked, and implementation-aware.",
     "problem": "Most generated docs flatten a repo into indexes. Peria should preserve intent, ownership boundaries, and change history.",
-    "currentFocus": "Make the repository capable of documenting itself with a useful markdown wiki, visual reader, graph artifact, and agent context map.",
+    "currentFocus": "Make the repository capable of documenting itself with a useful markdown wiki, Fumadocs-compatible output, graph artifact, and agent context map.",
     "highlights": [
       "The human wiki in /docs is the source of truth.",
-      "The visual reader is generated from markdown instead of a parallel content model.",
+      "The Fumadocs-compatible content is generated from markdown instead of a parallel content model.",
       "Agent context files point back to the same wiki tree used by humans.",
       "Git metadata is part of the generated knowledge, not an afterthought."
     ],
@@ -140,7 +187,7 @@
         "responsibilities": [
           "Initialize project configuration.",
           "Build the wiki and artifacts.",
-          "Serve the generated static docs locally."
+          "Generate Fumadocs-compatible documentation locally."
         ]
       },
       "@peria/adapters": {
@@ -199,9 +246,9 @@
       "path": "pages/configuration.md"
     },
     {
-      "title": "Wiki UI",
+      "title": "Fumadocs Output",
       "slug": "wiki-ui",
-      "description": "Static visual wiki shell generated into /docs and backed by markdown pages.",
+      "description": "Fumadocs-compatible documentation generated into /docs and backed by markdown pages.",
       "path": "pages/wiki-ui.md"
     },
     {
@@ -215,6 +262,18 @@
       "slug": "ai-context",
       "description": "A compact reading map for agents, derived from the human wiki.",
       "path": "pages/ai-context.md"
+    },
+    {
+      "title": "Diagrams",
+      "slug": "diagrams",
+      "description": "Mermaid diagrams generated by the same engine used by the peria diagram command.",
+      "path": "pages/diagrams.md"
+    },
+    {
+      "title": "Application Map",
+      "slug": "application-map",
+      "description": "Aggregate map of project packages, modules, entrypoints, docs, and Git context.",
+      "path": "pages/application-map.md"
     }
   ],
   "tree": [
@@ -238,7 +297,9 @@
       "pages": [
         "modules",
         "adapters",
-        "wiki-ui"
+        "wiki-ui",
+        "diagrams",
+        "application-map"
       ]
     },
     {

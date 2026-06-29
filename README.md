@@ -22,7 +22,7 @@
 
 ### Framework Adapters ✅
 
-All adapters serve static files + manifest + llms.txt:
+Adapters for the published framework surface:
 
 | Adapter | Status |
 |---------|--------|
@@ -33,12 +33,12 @@ All adapters serve static files + manifest + llms.txt:
 ### Self-Documentation ✅
 
 Peria uses itself to document Peria:
-- **153 TypeScript modules** extracted with ts-morph
+- TypeScript modules extracted with ts-morph
 - **10 audit checks** for drift detection
-- **21 CLI tests** (smoke + integration)
-- Docs generated at `docs/pages/`
+- CLI smoke and integration tests
+- Docs generated as markdown pages and Fumadocs-compatible MDX content
 
-*Note: Numbers reflect current state and may vary with updates.*
+Run `peria build` to refresh the current module, package, command, Git, and page counts.
 
 ---
 
@@ -59,11 +59,15 @@ peria build
 
 This generates:
 
-- `docs/pages/` — wiki pages
-- `docs/index.html` — visual wiki UI
+- `docs/pages/` — source-backed wiki pages
+- `docs/content/docs/` — Fumadocs-compatible MDX pages
+- `docs/content/docs/meta.json` — Fumadocs sidebar metadata
+- `docs/source.config.ts` — Fumadocs MDX collection config
+- `docs/lib/source.ts` — Fumadocs loader module
 - `docs/wiki-manifest.json` — page tree
 - `.peria/manifest.json` — full graph data
 - `.peria/graph.json` — entity relationships
+- `.peria/application-map.json` — aggregate application map
 - `.peria/ai-context.md` — AI context file
 - `.peria/context/` — agent context packs
 - `.peria/diagrams/` — Mermaid diagrams
@@ -136,7 +140,8 @@ export default defineConfig({
   docs: {
     enabled: true,
     route: "/docs",
-    outputDir: "docs"
+    outputDir: "docs",
+    renderer: "fumadocs"
   },
 
   sources: {
@@ -169,7 +174,7 @@ export default defineConfig({
 | [`packages/cli`](packages/cli/) | CLI commands |
 | [`packages/adapters`](packages/adapters/) | Express, Fastify, NestJS middleware |
 | [`packages/sdk`](packages/sdk/) | Programmatic API |
-| [`packages/renderer`](packages/renderer/) | Wiki UI renderer |
+| [`packages/renderer`](packages/renderer/) | Fumadocs-compatible wiki renderer |
 | [`packages/api-reference`](packages/api-reference/) | Stoplight Elements integration |
 
 ---
@@ -188,12 +193,10 @@ Manifest (.peria/manifest.json)
     ▼
 Generators
 ├── Wiki pages (Markdown)
+├── Fumadocs content (MDX + meta)
 ├── llms.txt (LLM consumption)
 ├── Context Packs (task-optimized)
 └── Mermaid Diagrams
-    │
-    ▼
-Adapters (serve docs at /docs)
 ```
 
 ---

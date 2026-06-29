@@ -1,0 +1,20 @@
+{
+  "title": "Peria Wiki",
+  "pages": [
+    "---Start here---",
+    "overview",
+    "ai-context",
+    "---Product surface---",
+    "packages",
+    "cli",
+    "configuration",
+    "---Code map---",
+    "modules",
+    "adapters",
+    "wiki-ui",
+    "diagrams",
+    "application-map",
+    "---Provenance---",
+    "history"
+  ]
+}

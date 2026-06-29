@@ -152,8 +152,10 @@ Focus on making these work:
 `peria build` now generates the first self-documenting wiki for this repository:
 
 - `docs/pages/*.md` contains the human-readable wiki pages
-- `docs/index.html` is a static UI that reads `docs/wiki-manifest.json` and markdown pages
+- `docs/content/docs/*.mdx` contains Fumadocs-compatible content generated from the same wiki pages
+- `docs/source.config.ts` and `docs/lib/source.ts` provide the Fumadocs collection and loader bridge
 - `.eria/graph.json` stores serializable entities and claims with source/line/commit provenance
+- `.peria/application-map.json` stores the aggregate package/module/docs/Git map
 - `llms.txt` is derived from the human wiki tree and points agents back to the wiki
 
 The current extractor covers packages, CLI commands, TypeScript modules, exported declarations, adapters, config/features, wiki UI, recent Git history, and configured AI context files. It does not yet parse framework routes, OpenAPI specs, controllers, schemas, DTOs, or doc drift.

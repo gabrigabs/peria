@@ -53,7 +53,7 @@ function getPort(): number {
 
 function resolveRequestedPath(docsDir: string, pathname: string): string {
   const cleanPath = decodeURIComponent(pathname).replace(/^\/+/, '');
-  const relativePath = cleanPath || 'index.html';
+  const relativePath = cleanPath || 'README.md';
   return resolve(join(docsDir, relativePath));
 }
 
@@ -73,6 +73,14 @@ async function readFileOrIndex(
     return {
       path: indexPath,
       data: await readFile(indexPath),
+    };
+  }
+
+  const readmePath = join(docsDir, 'README.md');
+  if (extname(filePath) === '' && (await isFile(readmePath))) {
+    return {
+      path: readmePath,
+      data: await readFile(readmePath),
     };
   }
 

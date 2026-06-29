@@ -1,6 +1,6 @@
 {
   "name": "@peria/core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Core knowledge graph engine for Peria - source-backed evidence extraction for backend and API repositories.",
   "type": "module",
   "main": "./dist/index.js",

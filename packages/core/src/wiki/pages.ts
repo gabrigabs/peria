@@ -109,8 +109,8 @@ export function createPages(input: {
     ),
     createPage(
       'wiki-ui',
-      'Wiki UI',
-      'Static visual wiki shell generated into /docs and backed by markdown pages.',
+      'Fumadocs Output',
+      'Fumadocs-compatible documentation generated into /docs and backed by markdown pages.',
       renderWikiUi(input.config),
       ['packages/renderer/src/index.ts', 'packages/cli/src/commands/build.ts']
     ),
@@ -422,16 +422,17 @@ function renderConfiguration(config: ResolvedPeriaConfig, features: FeatureSumma
 
 function renderWikiUi(config: ResolvedPeriaConfig): string {
   return [
-    '# Wiki UI',
+    '# Fumadocs Output',
     '',
-    `The visual wiki is generated into \`${config.docs.outputDir}\`. It uses \`${config.docs.outputDir}/wiki-manifest.json\` as its page registry and reads markdown from \`${config.docs.outputDir}/pages/*.md\`.`,
+    `The generated wiki is written into \`${config.docs.outputDir}\` as source-backed markdown plus Fumadocs-compatible MDX content.`,
     '',
     '## Contract',
     '',
     '- Markdown pages remain the source of truth.',
-    '- `index.html` provides search, navigation, reading metadata, and rendered markdown.',
-    '- `wiki-manifest.json` is the bridge between generated pages and the browser UI.',
-    '- The UI has no backend requirement; it can be served as static files.',
+    '- `content/docs/**/*.mdx` contains the Fumadocs-compatible page content.',
+    '- `content/docs/meta.json` carries sidebar ordering from the wiki manifest.',
+    '- `source.config.ts` and `lib/source.ts` provide the Fumadocs collection and loader bridge.',
+    '- `wiki-manifest.json` remains the Peria-owned page registry for agents and tooling.',
     '',
   ].join('\n');
 }

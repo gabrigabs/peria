@@ -11,6 +11,8 @@ export type {
   ModuleEntity,
   RepoContext,
 } from './adapters/types.js';
+export type { ApplicationMap } from './application-map.js';
+export { buildApplicationMap } from './application-map.js';
 // Audit module (Phase 5)
 export { AUDIT_CHECKS, getAuditCheck, listAuditChecks, runAuditChecks } from './audit/index.js';
 export { CLIReporter, createCLIReporter } from './audit/reporters/cli.js';
@@ -182,3 +184,4 @@ export type {
 } from './types/wiki.js';
 // Wiki builder
 export { buildWiki } from './wiki/builder.js';
+export { createLlmsText } from './wiki/llms-text.js';

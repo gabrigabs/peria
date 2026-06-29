@@ -9,9 +9,9 @@
 - **T0.4**: dogfood via npm não executado
 
 ### M1 - Renderer Fumadocs (PÓS-M0)
-- Renderer atual: 100% estático, Fumadocs NÃO instalado
-- Recomendação TASKS.md: opção 3 (flag `--renderer fumadacs` + fallback)
-- Diff mínimo: `renderer.mode` config + CLI propaga + branch `generateStatic()` vs `generateFumadocs()`
+- Decisão atual: seguir apenas com Fumadocs, sem fallback estático público
+- `peria build` deve gerar conteúdo compatível com Fumadocs e rejeitar renderer não suportado
+- Diff mínimo: `docs.renderer` default `fumadocs`, CLI valida `--renderer`, e renderer gera MDX/meta/source config
 - **NÃO**: busca customizada, theming, i18n agora
 
 ### M2-7 Status
@@ -54,10 +54,10 @@ echo "*.tgz" >> .gitignore
 ```
 
 ### M1 (2 commits)
-- Adicionar `renderer.mode` ao config schema
-- CLI propaga `--renderer fumadocs` → core
-- `generateStaticDocs()` + skeleton `generateFumadocs()`
-- CLI error se mode='fumadocs' sem deps
+- Adicionar `docs.renderer` ao config schema com default `fumadocs`
+- CLI propaga e valida `--renderer fumadocs`
+- Remover caminho público do renderer estático
+- Gerar conteúdo Fumadocs-compatible a partir das páginas da wiki
 
 ### M2 (2 commits)
 - Integrar Mermaid no build principal (flag `features.mermaid`)

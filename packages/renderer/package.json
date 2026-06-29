@@ -1,7 +1,7 @@
 {
   "name": "@peria/renderer",
   "version": "0.1.1",
-  "description": "Documentation renderer for Peria with support for static HTML generation",
+  "description": "Fumadocs-compatible documentation renderer for Peria generated wikis",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -21,7 +21,7 @@
     "test": "echo \"No tests yet\""
   },
   "dependencies": {
-    "@peria/core": "0.1.0",
+    "@peria/core": "0.1.1",
     "marked": "^15.0.0",
     "highlight.js": "^11.11.0"
   },

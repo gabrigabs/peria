@@ -1,218 +1,188 @@
 /**
- * Fumadocs-compatible content generator for Peria
+ * Fumadocs-compatible content generator for Peria.
  *
- * Generates MDX files with frontmatter and a content.config.ts
- * compatible with Fumadocs v13.
+ * The wiki builder owns the source-backed markdown pages. This module converts
+ * those pages into MDX and emits the small Fumadocs config files needed by a
+ * Next/Fumadocs app.
  */
 
-import type { PeriaManifest } from '@peria/core';
-import { generatePagesFromManifest } from './content.js';
-import type { GeneratedPage } from './types.js';
+import type { WikiManifest, WikiPage } from '@peria/core';
 
 export interface FumadocsContentOptions {
-  /** Peria manifest to generate from */
-  manifest: PeriaManifest;
-
-  /** Base URL for links */
+  manifest: WikiManifest;
+  pages: WikiPage[];
   baseUrl?: string;
+  contentDir?: string;
+}
 
-  /** Output directory relative to docs root */
-  outputDir?: string;
+export interface FumadocsOutputFile {
+  path: string;
+  content: string;
 }
 
 export interface FumadocsOutput {
-  /** MDX files to write: { path, content } */
-  files: Array<{ path: string; content: string }>;
-
-  /** Content config for Fumadocs */
-  contentConfig: string;
-
-  /** Page tree for navigation */
+  files: FumadocsOutputFile[];
   pageTree: PageTreeNode[];
+  pageCount: number;
 }
 
 export interface PageTreeNode {
   title: string;
-  href?: string;
+  slug?: string;
   children?: PageTreeNode[];
 }
 
-// ============ Helper Functions ============
-
-function encodeRoutePath(path: string): string {
-  return encodeURIComponent(path.replace(/\//g, '_').replace(/:/g, '_'));
+function escapeYaml(value: string): string {
+  return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, ' ');
 }
 
-function encodePackageName(name: string): string {
-  return name.replace('@', '_at_').replace('/', '_slash_');
+function normalizeSlug(slug: string): string {
+  return slug.replace(/^\/+|\/+$/g, '') || 'index';
 }
 
-function escapeYaml(str: string): string {
-  return str.replace(/"/g, '\\"').replace(/\n/g, ' ');
+function pathForPage(contentDir: string, page: WikiPage): string {
+  return `${contentDir}/${normalizeSlug(page.slug)}.mdx`;
 }
 
-function escapeString(str: string): string {
-  return str.replace(/'/g, "\\'");
+function convertMarkdownToMdx(markdown: string): string {
+  return markdown.replace(/<([^>\n]+@[^>\n]+)>/g, '&lt;$1&gt;');
 }
 
-function generateFrontmatter(page: GeneratedPage): string {
-  const fields: string[] = [];
-
-  fields.push(`title: "${escapeYaml(page.title)}"`);
-
-  if (page.description) {
-    fields.push(`description: "${escapeYaml(page.description)}"`);
+function renderSources(page: WikiPage): string {
+  if (page.sourcePaths.length === 0) {
+    return '';
   }
 
-  if (page.category) {
-    fields.push(`tag: "${page.category}"`);
-  }
-
-  if (page.order !== undefined) {
-    fields.push(`order: ${page.order}`);
-  }
-
-  return `---
-${fields.join('\n')}
----`;
+  return [
+    '',
+    '## Sources',
+    '',
+    ...page.sourcePaths.map((sourcePath) => `- \`${sourcePath}\``),
+  ].join('\n');
 }
 
-function convertToMdx(page: GeneratedPage): string {
-  const frontmatter = generateFrontmatter(page);
-  return `${frontmatter}\n\n${page.content}`;
+function renderMdxPage(page: WikiPage): string {
+  return [
+    '---',
+    `title: "${escapeYaml(page.title)}"`,
+    `description: "${escapeYaml(page.description)}"`,
+    '---',
+    '',
+    convertMarkdownToMdx(page.body),
+    renderSources(page),
+    '',
+  ].join('\n');
 }
 
-function buildPageTree(
-  routes: ReturnType<typeof generatePagesFromManifest>['routes'],
-  packages: ReturnType<typeof generatePagesFromManifest>['packages'],
-  schemas: ReturnType<typeof generatePagesFromManifest>['schemas'],
-  driftFindings: ReturnType<typeof generatePagesFromManifest>['driftFindings'],
-): PageTreeNode[] {
-  const tree: PageTreeNode[] = [];
-
-  // Start Here section
-  tree.push({
-    title: 'Start Here',
-    children: [{ title: 'Overview', href: '/overview' }],
-  });
-
-  // API Routes section
-  if (routes.length > 0) {
-    tree.push({
-      title: 'API',
-      children: routes.slice(0, 20).map((r) => ({
-        title: `${r.method} ${r.path}`,
-        href: `/routes/${encodeRoutePath(r.path)}`,
-      })),
-    });
-  }
-
-  // Schemas section
-  if (schemas.length > 0) {
-    tree.push({
-      title: 'Schemas',
-      children: schemas.map((s) => ({
-        title: s.name,
-        href: `/schemas/${s.name}`,
-      })),
-    });
-  }
-
-  // Packages section
-  if (packages.length > 0) {
-    tree.push({
-      title: 'Packages',
-      children: packages.map((p) => ({
-        title: p.name,
-        href: `/packages/${encodePackageName(p.name)}`,
-      })),
-    });
-  }
-
-  // Drift section
-  if (driftFindings.length > 0) {
-    tree.push({
-      title: 'Maintenance',
-      children: [{ title: 'Drift Report', href: '/drift' }],
-    });
-  }
-
-  return tree;
+function buildPageTree(manifest: WikiManifest): PageTreeNode[] {
+  return manifest.tree.map((section) => ({
+    title: section.title,
+    children: section.pages.map((slug) => {
+      const page = manifest.pages.find((item) => item.slug === slug);
+      return {
+        title: page?.title ?? slug,
+        slug,
+      };
+    }),
+  }));
 }
 
-function pageTreeToTreeValue(nodes: PageTreeNode[], indent = 2): string {
-  const spaces = ' '.repeat(indent);
-  const lines: string[] = [];
+function buildMetaJson(manifest: WikiManifest): string {
+  const pageSlugs = new Set(manifest.pages.map((page) => page.slug));
+  const pages: string[] = [];
 
-  for (const node of nodes) {
-    if (node.children && node.children.length > 0) {
-      lines.push(`${spaces}{`);
-      lines.push(`${spaces}  page: {`);
-      lines.push(`${spaces}    title: '${escapeString(node.title)}',`);
-      lines.push(`${spaces}    children: [`);
-      lines.push(pageTreeToTreeValue(node.children, indent + 4));
-      lines.push(`${spaces}    ],`);
-      lines.push(`${spaces}  },`);
-      lines.push(`${spaces}},`);
-    } else {
-      lines.push(`${spaces}{`);
-      lines.push(`${spaces}  title: '${escapeString(node.title)}',`);
-      if (node.href) {
-        lines.push(`${spaces}  url: '${node.href}',`);
+  for (const section of manifest.tree) {
+    pages.push(`---${section.title}---`);
+
+    for (const slug of section.pages) {
+      if (pageSlugs.has(slug)) {
+        pages.push(slug);
       }
-      lines.push(`${spaces}},`);
     }
   }
 
-  return lines.join('\n');
+  for (const page of manifest.pages) {
+    if (!pages.includes(page.slug)) {
+      pages.push(page.slug);
+    }
+  }
+
+  return `${JSON.stringify(
+    {
+      title: manifest.title,
+      pages,
+    },
+    null,
+    2
+  )}\n`;
 }
 
-function generateContentConfig(pageTree: PageTreeNode[]): string {
-  const treeStr = pageTreeToTreeValue(pageTree);
+function buildSourceConfig(contentDir: string): string {
+  return `import { defineConfig, defineDocs } from 'fumadocs-mdx/config';
 
-  return `import { defineCollection } from 'fumadocs-core/mdx';
-import { docsOptions, travelTree } from 'fumadocs-core/server';
-
-const docs = defineCollection({
-  ...docsOptions({
-    rootDir: './content',
-  }),
+export const docs = defineDocs({
+  dir: '${contentDir}',
 });
 
-// Fumadocs v13 content config
-// ponytail: auto-generated by peria
-export const { pages, tree } = travelTree({
-  docs,
-  tree: [
-${treeStr}
-  ],
+export default defineConfig();
+`;
+}
+
+function buildSourceModule(baseUrl: string): string {
+  return `import { docs } from 'collections/server';
+import { loader } from 'fumadocs-core/source';
+
+export const source = loader({
+  baseUrl: '${baseUrl}',
+  source: docs.toFumadocsSource(),
 });
 `;
 }
 
-// ============ Main Export ============
+function buildReadme(manifest: WikiManifest): string {
+  return [
+    `# ${manifest.title}`,
+    '',
+    'This directory contains Fumadocs-compatible output generated by Peria.',
+    '',
+    'Generated files:',
+    '',
+    '- `content/docs/**/*.mdx` wiki pages',
+    '- `content/docs/meta.json` sidebar metadata',
+    '- `source.config.ts` Fumadocs MDX collection config',
+    '- `lib/source.ts` loader module for a Next/Fumadocs app',
+    '- `wiki-manifest.json` Peria page manifest',
+    '',
+    'Install the Fumadocs app dependencies in the host project and import `source` from `lib/source.ts`.',
+    '',
+  ].join('\n');
+}
 
-/**
- * Generate Fumadocs-compatible content from Peria manifest
- */
 export function generateFumadocsContent(options: FumadocsContentOptions): FumadocsOutput {
-  const { manifest, baseUrl = '/docs' } = options;
+  const { manifest, pages, baseUrl = '/docs', contentDir = 'content/docs' } = options;
+  const pageTree = buildPageTree(manifest);
+  const files: FumadocsOutputFile[] = [
+    ...pages.map((page) => ({
+      path: pathForPage(contentDir, page),
+      content: renderMdxPage(page),
+    })),
+    {
+      path: `${contentDir}/meta.json`,
+      content: buildMetaJson(manifest),
+    },
+    {
+      path: 'source.config.ts',
+      content: buildSourceConfig(contentDir),
+    },
+    {
+      path: 'lib/source.ts',
+      content: buildSourceModule(baseUrl),
+    },
+    {
+      path: 'README.md',
+      content: buildReadme(manifest),
+    },
+  ];
 
-  // Generate pages using existing content generator
-  const { pages, routes, packages, schemas, driftFindings } =
-    generatePagesFromManifest({ manifest, baseUrl });
-
-  // Convert pages to MDX with frontmatter
-  const files = pages.map((page) => ({
-    path: `content/${page.slug.replace(/\//g, '_')}.mdx`,
-    content: convertToMdx(page),
-  }));
-
-  // Generate page tree
-  const pageTree = buildPageTree(routes, packages, schemas, driftFindings);
-
-  // Generate content.config.ts
-  const contentConfig = generateContentConfig(pageTree);
-
-  return { files, contentConfig, pageTree };
+  return { files, pageTree, pageCount: pages.length };
 }

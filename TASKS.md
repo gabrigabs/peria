@@ -2,7 +2,7 @@
 
 > Backlog técnico para levar Peria do estado experimental atual até dogfooding real e um primeiro ciclo de uso público honesto.
 
-Última revisão: 2026-06-27  
+Última revisão: 2026-06-29
 Branch base: `main`
 
 ## Leitura crítica do estado atual
@@ -13,14 +13,14 @@ Estado verificado nesta revisão:
 
 | Área | Status realista | Observação |
 | --- | --- | --- |
-| `@peria/core` | Publicado, mas precisa reconciliar versão local/remota | npm reportou `0.1.1`; manifesto local ainda mostra `0.1.0`. |
+| `@peria/core` | Publicado e reconciliado localmente | npm reportou `0.1.1`; manifesto local ajustado para `0.1.1`. |
 | `@peria/cli` | Publicado e instalável | npm reportou `0.1.2`. |
-| `@peria/renderer` | Publicado, mas implementação ainda é renderer estático próprio | npm reportou `0.1.1`; README diz Fumadocs, mas o código não usa Fumadocs. |
-| `@peria/adapters` | Publicado, mas precisa dogfood e documentação final | npm reportou `0.1.1`; manifesto local ainda mostra `0.1.0`. |
+| `@peria/renderer` | Publicado e agora focado em Fumadocs | npm reportou `0.1.1`; código local removeu o caminho público de renderer estático. |
+| `@peria/adapters` | Publicado, mas precisa dogfood e documentação final | npm reportou `0.1.1`; manifesto local ajustado para `0.1.1`. |
 | `@peria/sdk` | Não pronto para publicar | API pública e dependências ainda parecem prematuras. |
 | `@peria/api-reference` | Não pronto para publicar | Precisa decisão de produto e integração real antes de virar pacote público. |
-| Renderer/Fumadocs | Bloqueante para qualidade percebida | Hoje `peria build` gera uma UI estática customizada, não Fumadocs. |
-| Diagramas | Motor existe, integração na wiki ainda é limitada | Precisa aparecer no fluxo principal de documentação. |
+| Renderer/Fumadocs | Conteúdo compatível gerado | `peria build` gera MDX, meta e source config compatíveis com Fumadocs; ainda falta app/preview Fumadocs completo. |
+| Diagramas | Integrado ao build da wiki | `peria build` gera página `diagrams` quando `features.mermaid = true`; ainda faltam módulos, schemas, commits e links navegáveis por entidade. |
 | Dogfooding | Incompleto | Precisa usar pacotes publicados e validar Peria documentando Peria. |
 | GitHub sync | Ideia correta, ainda não produto | Precisa design de modelo, auth, issues/milestones e rastreabilidade. |
 
@@ -56,21 +56,21 @@ Objetivo: eliminar inconsistências entre README, `PUBLISHING.md`, manifests loc
 **Tarefas:**
 
 - [x] Verificar versões atuais:
-  - [x] `npm view @peria/core version` → 0.1.0 ✅
+  - [x] `npm view @peria/core version` → 0.1.1 ✅
   - [x] `npm view @peria/cli version` → 0.1.2 ✅
   - [x] `npm view @peria/renderer version` → 0.1.1 ✅
-  - [x] `npm view @peria/adapters version` → 0.1.0 ✅
+  - [x] `npm view @peria/adapters version` → 0.1.1 ✅
 - [x] Atualizar manifests locais para refletir a verdade publicada ou preparar bump coerente.
 - [x] Garantir que dependências internas apontam para versões publicadas corretas quando o pacote for publicado.
-- [ ] Documentar a política de versionamento enquanto não houver changesets/release automation.
+- [x] Documentar a política de versionamento enquanto não houver changesets/release automation.
 
-**Nota:** `npm view` requer autenticação npm. Versões locais verificadas diretamente nos package.json.
+**Nota:** versões npm verificadas em 2026-06-29 com `npm view`.
 
 **Aceite:**
 
-- [ ] `package.json` dos pacotes publicados não divergem silenciosamente do npm.
-- [ ] `npm pack --dry-run` mostra conteúdo esperado em cada pacote.
-- [ ] `PUBLISHING.md` descreve a ordem real de publicação.
+- [x] `package.json` dos pacotes publicados não divergem silenciosamente do npm.
+- [x] `npm pack --dry-run` mostra conteúdo esperado em cada pacote.
+- [x] `PUBLISHING.md` descreve a ordem real de publicação.
 
 **Validação:**
 
@@ -90,17 +90,17 @@ npm view @peria/adapters version
 
 **Tarefas:**
 
-- [ ] Corrigir o README do renderer para dizer o comportamento atual ou implementar Fumadocs antes.
-- [ ] Atualizar `PUBLISHING.md` para remover "Adapters = Future" se o pacote já estiver publicado.
-- [ ] Revisar a tabela de adapters do README:
-  - [ ] manter somente Express, Fastify e NestJS se Hono/Elysia não estiverem no pacote;
-  - [ ] mover Hono/Elysia para roadmap, não para status principal.
-- [ ] Revisar a seção "Self-Documentation" para garantir que números de módulos/testes sejam gerados ou fáceis de atualizar.
+- [x] Corrigir o README do renderer para dizer o comportamento atual ou implementar Fumadocs antes.
+- [x] Atualizar `PUBLISHING.md` para remover "Adapters = Future" se o pacote já estiver publicado.
+- [x] Revisar a tabela de adapters do README:
+  - [x] manter somente Express, Fastify e NestJS se Hono/Elysia não estiverem no pacote;
+  - [x] mover Hono/Elysia para roadmap, não para status principal.
+- [x] Revisar a seção "Self-Documentation" para garantir que números de módulos/testes sejam gerados ou fáceis de atualizar.
 
 **Aceite:**
 
-- [ ] Um usuário novo consegue ler o README e executar exatamente o que está documentado.
-- [ ] Nenhum README mostra import inexistente ou feature ainda não implementada como entregue.
+- [x] Um usuário novo consegue ler o README e executar exatamente o que está documentado.
+- [x] Nenhum README mostra import inexistente ou feature ainda não implementada como entregue.
 
 ### T0.3 Limpar artefatos acidentais do repositório
 
@@ -108,13 +108,13 @@ npm view @peria/adapters version
 
 **Tarefas:**
 
-- [ ] Remover tarballs e outputs locais do repositório.
-- [ ] Garantir `.gitignore` cobre `*.tgz`, `dist`, caches e artefatos temporários relevantes.
-- [ ] Rodar `git status --short` antes e depois.
+- [x] Remover tarballs e outputs locais do repositório.
+- [x] Garantir `.gitignore` cobre `*.tgz`, `dist`, caches e artefatos temporários relevantes.
+- [x] Rodar `git status --short` antes e depois.
 
 **Aceite:**
 
-- [ ] `rg --files | rg '\.tgz$'` não retorna artefatos de pacote.
+- [x] `rg --files | rg '\.tgz$'` não retorna artefatos de pacote.
 
 ### T0.4 Fresh install real com pacotes publicados
 
@@ -122,22 +122,24 @@ npm view @peria/adapters version
 
 **Tarefas:**
 
-- [ ] Criar diretório temporário limpo.
-- [ ] Instalar `@peria/cli@latest`.
-- [ ] Rodar `npx peria --help`.
-- [ ] Rodar `npx peria --version`.
+- [x] Criar diretório temporário limpo.
+- [x] Instalar `@peria/cli@latest`.
+- [x] Rodar `npx peria --help`.
+- [x] Rodar `npx peria --version`.
 - [ ] Rodar `npx peria init`, `scan`, `build`, `check` em fixture mínima.
-- [ ] Registrar resultado no `PUBLISHING.md`.
+  - [ ] `init` ainda precisa harness TTY ou validação manual.
+  - [x] `scan`, `build`, `scan`, `check --json` passaram em fixture mínima com config manual.
+- [x] Registrar resultado no `PUBLISHING.md`.
 
 **Aceite:**
 
-- [ ] A instalação via npm funciona sem workspace, sem Bun global e sem links locais.
+- [x] A instalação via npm funciona sem workspace, sem Bun global e sem links locais.
 
 ---
 
 ## Milestone 1 - Renderer Fumadocs de verdade
 
-Objetivo: substituir ou complementar o renderer estático atual por uma experiência Fumadocs real, com navegação, busca, conteúdo denso e suporte a páginas geradas.
+Objetivo: substituir o renderer estático atual por uma experiência Fumadocs real, com navegação, busca, conteúdo denso e suporte a páginas geradas.
 
 ### T1.1 Decidir arquitetura do renderer
 
@@ -147,44 +149,42 @@ Objetivo: substituir ou complementar o renderer estático atual por uma experiê
 2. Gerar uma pasta consumível por uma app Fumadocs existente.
 3. Manter renderer estático como fallback e adicionar modo `--renderer fumadocs`.
 
-**Recomendação:** começar com opção 3. Ela reduz risco, preserva `peria build` atual e permite evoluir Fumadocs sem quebrar o publish.
+**Decisão em 2026-06-29:** seguir apenas com Fumadocs. O CLI aceita `fumadocs` como renderer e rejeita `static` com erro acionável. O renderer gera arquivos compatíveis para uma app Fumadocs existente; a app/preview completa ainda é próxima etapa.
 
 **Tarefas:**
 
-- [ ] Definir interface de renderer:
-  - [ ] `static`
-  - [ ] `fumadocs`
+- [x] Definir interface de renderer:
+  - [x] `fumadocs`
   - [ ] futuro `headless`
-- [ ] Modelar config:
-  - [ ] `docs.renderer`
-  - [ ] `docs.outputDir`
-  - [ ] `docs.assetsDir`
-  - [ ] `docs.basePath`
-- [ ] Decidir se o pacote `@peria/renderer` deve depender de Fumadocs diretamente ou gerar arquivos compatíveis.
+- [x] Modelar config:
+  - [x] `docs.renderer`
+  - [x] `docs.outputDir`
+  - [x] `docs.route` como base URL pública
+- [x] Decidir se o pacote `@peria/renderer` deve depender de Fumadocs diretamente ou gerar arquivos compatíveis.
 
 **Aceite:**
 
-- [ ] Existe ADR curta ou seção no `TASKS.md`/docs explicando a decisão.
-- [ ] CLI mostra erro acionável quando usuário seleciona renderer sem dependências necessárias.
+- [x] Existe ADR curta ou seção no `TASKS.md`/docs explicando a decisão.
+- [x] CLI mostra erro acionável quando usuário seleciona renderer não suportado.
 
 ### T1.2 Criar modo Fumadocs mínimo
 
 **Tarefas:**
 
-- [ ] Gerar estrutura de conteúdo compatível com Fumadocs.
-- [ ] Converter páginas wiki para MDX ou markdown aceito pelo Fumadocs.
-- [ ] Gerar árvore/sidebar a partir de `wiki-manifest.json`.
+- [x] Gerar estrutura de conteúdo compatível com Fumadocs.
+- [x] Converter páginas wiki para MDX ou markdown aceito pelo Fumadocs.
+- [x] Gerar árvore/sidebar a partir do manifest da wiki.
 - [ ] Preservar links para fontes:
-  - [ ] arquivos;
+  - [x] arquivos;
   - [ ] rotas;
   - [ ] schemas;
   - [ ] commits quando disponíveis.
-- [ ] Garantir que `llms.txt` continue sendo gerado no root esperado.
+- [x] Garantir que `llms.txt` continue sendo gerado no root esperado.
 
 **Aceite:**
 
-- [ ] `peria build --renderer fumadocs` gera uma documentação navegável.
-- [ ] O modo antigo continua funcionando.
+- [ ] `peria build --renderer fumadocs` gera uma documentação navegável em app Fumadocs.
+- [x] O modo antigo foi removido conforme decisão de produto.
 - [ ] Links internos entre páginas funcionam.
 
 **Validação:**
@@ -244,45 +244,45 @@ Objetivo: transformar a wiki em um mapa técnico navegável, não apenas página
 
 **Tarefas:**
 
-- [ ] Gerar diagramas durante `peria build` quando `features.mermaid = true`.
+- [x] Gerar diagramas durante `peria build` quando `features.mermaid = true`.
 - [ ] Incluir diagramas na página inicial.
-- [ ] Criar página `diagrams`.
+- [x] Criar página `diagrams`.
 - [ ] Linkar diagramas a entidades reais do manifest.
 - [ ] Permitir export:
   - [ ] `.mmd`;
-  - [ ] markdown embutido;
+  - [x] markdown embutido;
   - [ ] SVG/PNG somente se houver dependência justificada.
 
 **Diagramas mínimos:**
 
 - [ ] Fluxo de rotas.
-- [ ] Dependências entre pacotes.
+- [x] Dependências entre pacotes.
 - [ ] Relações entre schemas.
 - [ ] Mapa de módulos.
 - [ ] Mudanças por commit/área.
 
 **Aceite:**
 
-- [ ] `peria build` gera páginas que mostram os diagramas.
-- [ ] `peria diagram` e `peria build` compartilham o mesmo motor.
+- [x] `peria build` gera páginas que mostram os diagramas.
+- [x] `peria diagram` e `peria build` compartilham o mesmo motor.
 
 ### T2.2 Criar application map
 
 **Tarefas:**
 
-- [ ] Definir tipo `ApplicationMap`.
+- [x] Definir tipo `ApplicationMap`.
 - [ ] Agregar:
-  - [ ] entrypoints;
-  - [ ] frameworks;
-  - [ ] pacotes;
+  - [x] entrypoints;
+  - [x] frameworks;
+  - [x] pacotes;
   - [ ] rotas;
   - [ ] schemas;
-  - [ ] módulos;
-  - [ ] arquivos markdown;
+  - [x] módulos;
+  - [x] arquivos markdown;
   - [ ] OpenAPI;
-  - [ ] relações Git.
-- [ ] Serializar em `.peria/application-map.json`.
-- [ ] Renderizar página dedicada.
+  - [x] relações Git básicas.
+- [x] Serializar em `.peria/application-map.json`.
+- [x] Renderizar página dedicada.
 
 **Aceite:**
 
@@ -381,7 +381,7 @@ Objetivo: provar que adapters funcionam em apps reais e publicar apenas o que te
 **Aceite:**
 
 - [ ] `npm install @peria/adapters` funciona fora do monorepo.
-- [ ] Express, Fastify e NestJS conseguem servir `docs/index.html`, manifest e `llms.txt`.
+- [ ] Express, Fastify e NestJS conseguem servir manifest, `llms.txt` e artefatos Fumadocs gerados.
 
 ### T4.2 Dogfood em NestJS
 
@@ -395,7 +395,7 @@ Objetivo: provar que adapters funcionam em apps reais e publicar apenas o que te
   - [ ] `/docs`
   - [ ] `/docs/wiki-manifest.json`
   - [ ] `/docs/llms.txt`
-  - [ ] assets estáticos.
+  - [ ] artefatos Fumadocs.
 - [ ] Cobrir cenário com prefixo global de rota.
 - [ ] Cobrir cenário com app em subpath.
 
@@ -730,4 +730,3 @@ npx peria --version
 - Não faria GitHub Projects v2 agora.
 - Não substituiria o renderer atual de uma vez sem fallback.
 - Não prometeria "drift detection automático" sem explicar exatamente quais checks existem e seus limites.
-

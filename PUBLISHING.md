@@ -26,6 +26,19 @@ The monorepo uses scoped packages (`@peria/*`):
 | Adapters | `@peria/adapters` | Published ✅ |
 | SDK | `@peria/sdk` | Experimental |
 
+## Current Published Versions
+
+Verified on 2026-06-29:
+
+| Package | npm version | Local manifest |
+|---------|-------------|----------------|
+| `@peria/core` | `0.1.1` | `0.1.1` |
+| `@peria/cli` | `0.1.2` | `0.1.2` |
+| `@peria/renderer` | `0.1.1` | `0.1.1` |
+| `@peria/adapters` | `0.1.1` | `0.1.1` |
+
+Do not publish `@peria/sdk` or `@peria/api-reference` until their public contracts are stable and covered by external-consumer tests.
+
 ## Step 1: Reserve the @peria Organization (One-time)
 
 1. Go to [npmjs.com/org/create](https://www.npmjs.com/org/create)
@@ -95,7 +108,24 @@ npm publish --access public
 npm view @peria/renderer
 ```
 
-## Step 6: Publish @peria/cli
+## Step 6: Publish @peria/adapters
+
+Adapters can be published after their framework smoke tests pass:
+
+```sh
+cd packages/adapters
+
+# Dry run
+npm pack --dry-run
+
+# Publish
+npm publish --access public
+
+# Verify
+npm view @peria/adapters
+```
+
+## Step 7: Publish @peria/cli
 
 ```sh
 cd packages/cli
@@ -112,7 +142,7 @@ npm publish --access public
 npm view @peria/cli
 ```
 
-## Step 7: Test the Installation
+## Step 8: Test the Installation
 
 From a fresh directory:
 
@@ -125,9 +155,38 @@ npm install -D @peria/cli
 npx peria --help
 ```
 
+### Latest Published Fresh Install Check
+
+Verified on 2026-06-29 in a temporary npm project outside the monorepo:
+
+- `npm install -D @peria/cli@latest` installed without workspace links.
+- `npx peria --help` exited successfully.
+- `npx peria --version` returned `peria/0.1.2`.
+- `npx peria scan`, `npx peria build`, a second `npx peria scan`, and `npx peria check --json` completed.
+- `peria check --json` returned `passed: true` with one informational stale-page finding for `docs/index.html`, which reflects the currently published static renderer. The local branch now replaces that path with Fumadocs-compatible output.
+
+`peria init` remains interactive and should be validated manually or with a TTY harness before marking init dogfood fully automated.
+
 ## Versioning Strategy
 
-For experimental releases, use:
+Until changesets or release automation exist, versioning is manual and must follow this policy:
+
+1. Check npm before editing manifests:
+   ```sh
+   npm view @peria/core version
+   npm view @peria/renderer version
+   npm view @peria/adapters version
+   npm view @peria/cli version
+   ```
+2. Bump each package that will be published to a version greater than npm.
+3. Update internal published dependencies before packing:
+   - `@peria/cli` depends on the published `@peria/core` and `@peria/renderer` versions.
+   - `@peria/renderer` depends on the published `@peria/core` version.
+4. Run `bun install` so `bun.lock` reflects the manifest changes.
+5. Run build, typecheck, tests, and `npm pack --dry-run` for every publishable package.
+6. Publish dependencies first, then dependents.
+
+For experimental semver, use:
 
 ```
 0.0.1  - First experimental
@@ -200,22 +259,24 @@ Then in GitHub Settings > Secrets, add `NPM_TOKEN` with an npm automation token.
 
 ## Current Status
 
-As of Phase 8 completion:
-- Package metadata is prepared ✅
-- Build works ✅
-- CLI binary works ✅
-- Core, renderer, and CLI are the publishable packages for the first npm release ✅
-- SDK and API Reference remain future package targets
+As of 2026-06-29:
+
+- Package metadata is reconciled with npm for `@peria/core`, `@peria/cli`, `@peria/renderer`, and `@peria/adapters`.
+- Build and typecheck pass locally.
+- CLI binary works from the built package.
+- Core, renderer, adapters, and CLI are the current publishable packages.
+- SDK and API Reference remain future package targets.
 
 To publish when ready:
 ```sh
 bun run build
-npm pack --pack-destination /tmp packages/core packages/renderer packages/cli
+npm pack --pack-destination /tmp packages/core packages/renderer packages/adapters packages/cli
 # Test tarball installation
-cd /tmp && npm install peria-core-*.tgz peria-renderer-*.tgz peria-cli-*.tgz
+cd /tmp && npm install peria-core-*.tgz peria-renderer-*.tgz peria-adapters-*.tgz peria-cli-*.tgz
 npx peria --help
 # If tests pass, publish:
 cd packages/core && npm publish --access public
 cd packages/renderer && npm publish --access public
+cd packages/adapters && npm publish --access public
 cd packages/cli && npm publish --access public
 ```

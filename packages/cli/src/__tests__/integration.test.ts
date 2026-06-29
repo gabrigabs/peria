@@ -130,11 +130,33 @@ describe('CLI Integration Tests', () => {
       // Verify docs were created
       const docsDir = join(fixturePath, 'docs');
       expect(existsSync(docsDir)).toBe(true);
-      expect(existsSync(join(docsDir, 'index.html'))).toBe(true);
+      expect(existsSync(join(docsDir, 'content/docs/overview.mdx'))).toBe(true);
+      expect(existsSync(join(docsDir, 'content/docs/application-map.mdx'))).toBe(true);
+      expect(existsSync(join(docsDir, 'content/docs/meta.json'))).toBe(true);
+      expect(existsSync(join(docsDir, 'source.config.ts'))).toBe(true);
+      expect(existsSync(join(docsDir, 'lib/source.ts'))).toBe(true);
+      expect(existsSync(join(docsDir, 'pages/application-map.md'))).toBe(true);
       expect(existsSync(join(docsDir, 'wiki-manifest.json'))).toBe(true);
+      expect(existsSync(join(fixturePath, 'llms.txt'))).toBe(true);
+      expect(existsSync(join(fixturePath, '.peria/application-map.json'))).toBe(true);
+
+      const wikiManifest = JSON.parse(readFileSync(join(docsDir, 'wiki-manifest.json'), 'utf-8'));
+      expect(
+        wikiManifest.pages.some((page: { slug: string }) => page.slug === 'application-map')
+      ).toBe(true);
 
       const manifest = JSON.parse(readFileSync(join(fixturePath, '.peria/manifest.json'), 'utf-8'));
       expect(manifest.routes?.length).toBeGreaterThan(0);
+    });
+
+    it('should reject unsupported renderer modes', async () => {
+      const fixturePath = createFixtureCopy('nestjs-basic');
+
+      await runCli(['scan'], fixturePath);
+
+      const result = await runCli(['build', '--renderer', 'static'], fixturePath);
+      expect(result.exitCode).not.toBe(0);
+      expect(result.stderr).toContain('Unsupported renderer "static"');
     });
 
     // Skip test that creates docs without scan (implementation detail)

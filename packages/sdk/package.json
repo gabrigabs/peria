@@ -27,12 +27,12 @@
   "dependencies": {
     "@fastify/static": "^6.0.0",
     "@peria/api-reference": "0.1.0",
-    "@peria/core": "0.1.0",
+    "@peria/core": "0.1.1",
     "express": "^4.18.0"
   },
   "peerDependencies": {
     "@nestjs/core": "*",
-    "@peria/core": "0.1.0",
+    "@peria/core": "0.1.1",
     "elysia": "*",
     "fastify": "^4.0.0",
     "hono": "^3.0.0"

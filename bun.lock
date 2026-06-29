@@ -15,7 +15,7 @@
     },
     "packages/adapters": {
       "name": "@peria/adapters",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "dependencies": {
         "@fastify/static": "^9.1.3",
         "express": "^4.21.0",
@@ -54,8 +54,8 @@
       },
       "dependencies": {
         "@clack/prompts": "^0.8.2",
-        "@peria/core": "0.1.0",
-        "@peria/renderer": "0.1.0",
+        "@peria/core": "0.1.1",
+        "@peria/renderer": "0.1.1",
         "cac": "^6.7.14",
         "chalk": "^5.3.0",
       },
@@ -68,7 +68,7 @@
     },
     "packages/core": {
       "name": "@peria/core",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "dependencies": {
         "@apidevtools/swagger-parser": "^10.1.0",
         "remark": "^15.0.0",
@@ -89,7 +89,7 @@
       "name": "@peria/renderer",
       "version": "0.1.1",
       "dependencies": {
-        "@peria/core": "0.1.0",
+        "@peria/core": "0.1.1",
         "highlight.js": "^11.11.0",
         "marked": "^15.0.0",
       },
@@ -105,7 +105,7 @@
       "dependencies": {
         "@fastify/static": "^6.0.0",
         "@peria/api-reference": "0.1.0",
-        "@peria/core": "0.1.0",
+        "@peria/core": "0.1.1",
         "express": "^4.18.0",
       },
       "devDependencies": {
@@ -122,7 +122,7 @@
       },
       "peerDependencies": {
         "@nestjs/core": "*",
-        "@peria/core": "0.1.0",
+        "@peria/core": "0.1.1",
         "elysia": "*",
         "fastify": "^4.0.0",
         "hono": "^3.0.0",

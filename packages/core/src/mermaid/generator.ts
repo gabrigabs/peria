@@ -4,13 +4,19 @@
  * Main orchestrator for generating Mermaid diagrams.
  */
 
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { PeriaManifest } from '../types/manifest.js';
 import { generatePackageDepDiagrams } from './package-deps.js';
 import { generateRouteFlowDiagrams } from './route-flow.js';
 import { generateSchemaDiagrams } from './schema.js';
-import type { DiagramType, MermaidDiagram, MermaidOptions, MermaidResult } from './types.js';
+import type {
+  DiagramMetadata,
+  DiagramType,
+  MermaidDiagram,
+  MermaidOptions,
+  MermaidResult,
+} from './types.js';
 import { generateDiagramId } from './types.js';
 
 /**
@@ -43,7 +49,16 @@ export function generateDiagrams(manifest: PeriaManifest, options: MermaidOption
     diagrams.push(...schemaDiagrams);
   }
 
-  // Count by type
+  return {
+    diagrams,
+    metadata: createDiagramMetadata(diagrams),
+  };
+}
+
+function createDiagramMetadata(
+  diagrams: MermaidDiagram[],
+  generatedAt = new Date().toISOString()
+): DiagramMetadata {
   const byType: Record<DiagramType, number> = {
     'route-flow': 0,
     'module-graph': 0,
@@ -57,12 +72,9 @@ export function generateDiagrams(manifest: PeriaManifest, options: MermaidOption
   }
 
   return {
-    diagrams,
-    metadata: {
-      generatedAt: new Date().toISOString(),
-      totalDiagrams: diagrams.length,
-      byType,
-    },
+    generatedAt,
+    totalDiagrams: diagrams.length,
+    byType,
   };
 }
 
@@ -138,7 +150,7 @@ export function generateOverviewDiagram(manifest: PeriaManifest): MermaidDiagram
 export async function saveDiagrams(result: MermaidResult, outputDir?: string): Promise<void> {
   const dir = outputDir ?? DEFAULT_OUTPUT_DIR;
 
-  // Create output directory
+  await rm(dir, { recursive: true, force: true });
   await mkdir(dir, { recursive: true });
 
   // Group diagrams by type
@@ -186,6 +198,7 @@ export async function generateAndSaveDiagrams(
   const overview = generateOverviewDiagram(manifest);
   const result = generateDiagrams(manifest, options);
   result.diagrams.unshift(overview);
+  result.metadata = createDiagramMetadata(result.diagrams, result.metadata.generatedAt);
 
   await saveDiagrams(result, options.outputDir);
 

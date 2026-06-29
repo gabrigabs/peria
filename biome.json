@@ -12,8 +12,11 @@
       "**/*.tsx",
       "**/*.js",
       "**/*.jsx",
+      "!docs/source.config.ts",
+      "!docs/lib/source.ts",
       "!docs/assets/wiki.js",
-      "!packages/core/fixtures/**/docs/assets/wiki.js"
+      "!packages/core/fixtures/**/docs/assets/wiki.js",
+      "!execute-tasks-plan.js"
     ]
   },
   "formatter": {

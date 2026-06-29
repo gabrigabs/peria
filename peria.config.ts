@@ -15,10 +15,10 @@ export default defineConfig({
     problem:
       'Most generated docs flatten a repo into indexes. Peria should preserve intent, ownership boundaries, and change history.',
     currentFocus:
-      'Make the repository capable of documenting itself with a useful markdown wiki, visual reader, graph artifact, and agent context map.',
+      'Make the repository capable of documenting itself with a useful markdown wiki, Fumadocs-compatible output, graph artifact, and agent context map.',
     highlights: [
       'The human wiki in /docs is the source of truth.',
-      'The visual reader is generated from markdown instead of a parallel content model.',
+      'The Fumadocs-compatible content is generated from markdown instead of a parallel content model.',
       'Agent context files point back to the same wiki tree used by humans.',
       'Git metadata is part of the generated knowledge, not an afterthought.',
     ],
@@ -48,7 +48,7 @@ export default defineConfig({
         responsibilities: [
           'Initialize project configuration.',
           'Build the wiki and artifacts.',
-          'Serve the generated static docs locally.',
+          'Generate Fumadocs-compatible documentation locally.',
         ],
       },
       '@peria/adapters': {
@@ -74,6 +74,7 @@ export default defineConfig({
     enabled: true,
     route: '/docs',
     outputDir: 'docs',
+    renderer: 'fumadocs',
   },
 
   sources: {

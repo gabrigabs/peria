@@ -39,6 +39,13 @@ describe('mermaid types', () => {
       const id = generateDiagramId('schema', 'User Profile');
       expect(id).not.toContain(' ');
     });
+
+    it('should generate deterministic IDs', () => {
+      const first = generateDiagramId('schema', 'User Profile');
+      const second = generateDiagramId('schema', 'User Profile');
+
+      expect(first).toBe(second);
+    });
   });
 
   describe('DIAGRAM_TYPE_LABELS', () => {

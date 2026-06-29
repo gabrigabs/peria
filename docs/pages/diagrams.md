@@ -1,0 +1,162 @@
+# Diagrams
+
+These Mermaid diagrams are generated during `peria build` with the same Mermaid engine used by `peria diagram`.
+
+Generated at: 2026-06-29T14:07:09.335Z
+
+## Coverage
+
+| Diagram type | Count |
+| --- | --- |
+| `route-flow` | 1 |
+| `module-graph` | 0 |
+| `package-deps` | 4 |
+| `schema` | 0 |
+| `endpoint-handler` | 0 |
+
+## System Overview
+
+- ID: `diagram-route-flow-system-overview`
+- Type: `route-flow`
+- Confidence: high
+- Source entities: 7
+- Artifact: `.peria/diagrams/route-flow/diagram-route-flow-system-overview.md`
+
+```mermaid
+graph TD
+    subgraph "System Overview"
+        packages["📦 Packages"]
+        packages_text["7 modules"]
+        packages --> packages_text
+        style packages fill:#6366f1,stroke:#4338ca,color:#fff
+    end
+```
+
+## Package Dependencies: Overview
+
+- ID: `diagram-package-deps-overview`
+- Type: `package-deps`
+- Confidence: high
+- Source entities: 7
+- Artifact: `.peria/diagrams/package-deps/diagram-package-deps-overview.md`
+
+```mermaid
+graph LR
+    subgraph "Packages"
+        pkg_peria["peria"]
+        style pkg_peria fill:#6366f1,stroke:#4338ca,stroke-width:2px,color:#fff
+        pkg__peria_adapters["@peria/adapters"]
+        style pkg__peria_adapters fill:#6366f1,stroke:#4338ca,stroke-width:2px,color:#fff
+        pkg__peria_api_reference["@peria/api-reference"]
+        style pkg__peria_api_reference fill:#6366f1,stroke:#4338ca,stroke-width:2px,color:#fff
+        pkg__peria_cli["@peria/cli"]
+        style pkg__peria_cli fill:#6366f1,stroke:#4338ca,stroke-width:2px,color:#fff
+        pkg__peria_core["@peria/core"]
+        style pkg__peria_core fill:#6366f1,stroke:#4338ca,stroke-width:2px,color:#fff
+        pkg__peria_renderer["@peria/renderer"]
+        style pkg__peria_renderer fill:#6366f1,stroke:#4338ca,stroke-width:2px,color:#fff
+        pkg__peria_sdk["@peria/sdk"]
+        style pkg__peria_sdk fill:#6366f1,stroke:#4338ca,stroke-width:2px,color:#fff
+    end
+    pkg_peria --> pkg__peria_core
+    pkg_peria --> pkg__peria_renderer
+    pkg__peria_cli --> pkg__peria_core
+    pkg__peria_cli --> pkg__peria_renderer
+    pkg__peria_renderer --> pkg__peria_core
+    pkg__peria_sdk --> pkg__peria_api_reference
+    pkg__peria_sdk --> pkg__peria_core
+    pkg__peria_sdk --> pkg__peria_core
+```
+
+## Package Dependencies: peria
+
+- ID: `diagram-package-deps-peria`
+- Type: `package-deps`
+- Confidence: high
+- Source entities: 1
+- Artifact: `.peria/diagrams/package-deps/diagram-package-deps-peria.md`
+
+```mermaid
+graph TD
+    subgraph "peria"
+        pkg["📦 peria"]
+        style pkg fill:#6366f1,stroke:#4338ca,stroke-width:2px,color:#fff
+        version["v0.1.0"]
+        pkg --> version
+    end
+    subgraph "Dependencies"
+        dep__biomejs_biome["@biomejs/biome"]
+        dep__peria_core["@peria/core"]
+        dep__peria_renderer["@peria/renderer"]
+        dep_vitest["vitest"]
+    end
+```
+
+## Package Dependencies: @peria/adapters
+
+- ID: `diagram-package-deps--peria-adapters`
+- Type: `package-deps`
+- Confidence: high
+- Source entities: 1
+- Artifact: `.peria/diagrams/package-deps/diagram-package-deps--peria-adapters.md`
+
+```mermaid
+graph TD
+    subgraph "@peria/adapters"
+        pkg["📦 @peria/adapters"]
+        style pkg fill:#6366f1,stroke:#4338ca,stroke-width:2px,color:#fff
+        version["v0.1.1"]
+        pkg --> version
+        subgraph "Exports"
+            exp__["."]
+            pkg --> exp__
+            exp___express["./express"]
+            pkg --> exp___express
+            exp___fastify["./fastify"]
+            pkg --> exp___fastify
+            exp___nest["./nest"]
+            pkg --> exp___nest
+        end
+    end
+    subgraph "Dependencies"
+        dep__fastify_static["@fastify/static"]
+        dep__nestjs_core["@nestjs/core"]
+        dep__types_express["@types/express"]
+        dep__types_node["@types/node"]
+        dep_express["express"]
+        dep_fastify["fastify"]
+        dep_tsup["tsup"]
+        dep_typescript["typescript"]
+        dep_vitest["vitest"]
+    end
+```
+
+## Package Dependencies: @peria/api-reference
+
+- ID: `diagram-package-deps--peria-api-reference`
+- Type: `package-deps`
+- Confidence: high
+- Source entities: 1
+- Artifact: `.peria/diagrams/package-deps/diagram-package-deps--peria-api-reference.md`
+
+```mermaid
+graph TD
+    subgraph "@peria/api-reference"
+        pkg["📦 @peria/api-reference"]
+        style pkg fill:#6366f1,stroke:#4338ca,stroke-width:2px,color:#fff
+        version["v0.1.0"]
+        pkg --> version
+        subgraph "Exports"
+            exp__["."]
+            pkg --> exp__
+        end
+    end
+    subgraph "Dependencies"
+        dep__stoplight_elements["@stoplight/elements"]
+        dep__stoplight_elements_core["@stoplight/elements-core"]
+        dep__types_react["@types/react"]
+        dep_react["react"]
+        dep_react["react"]
+        dep_typescript["typescript"]
+    end
+```

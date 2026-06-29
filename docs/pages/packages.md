@@ -40,7 +40,7 @@ This package contributes 0 source modules and 0 exported declarations to the gen
 
 **Why it matters:**
 
-This package contributes 5 source modules and 17 exported declarations to the generated knowledge graph. Its manifest lives at `packages/adapters/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 6 source modules and 24 exported declarations to the generated knowledge graph. Its manifest lives at `packages/adapters/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 

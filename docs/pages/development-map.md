@@ -7,7 +7,7 @@ Use this page as the maintenance entrypoint before changing a package boundary, 
 | Package | Directory | Modules | Internal dependencies |
 | --- | --- | --- | --- |
 | peria | `.` | 0 | @peria/core, @peria/renderer |
-| @peria/adapters | `packages/adapters` | 5 | none |
+| @peria/adapters | `packages/adapters` | 6 | none |
 | @peria/api-reference | `packages/api-reference` | 2 | none |
 | @peria/cli | `packages/cli` | 17 | @peria/core, @peria/renderer |
 | @peria/core | `packages/core` | 118 | none |
@@ -19,7 +19,7 @@ Use this page as the maintenance entrypoint before changing a package boundary, 
 | Surface | Entries |
 | --- | --- |
 | CLI commands | `init`, `serve` |
-| Adapters | `express`, `fastify`, `nest`, `smoke.test` |
+| Adapters | `express`, `fastify`, `nest`, `shared`, `smoke.test` |
 | Docs renderer | `fumadocs` at `docs` |
 
 ## Suggested Reading Order

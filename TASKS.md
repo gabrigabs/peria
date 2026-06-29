@@ -369,19 +369,19 @@ Objetivo: provar que adapters funcionam em apps reais e publicar apenas o que te
 
 **Tarefas:**
 
-- [ ] Confirmar exports publicados:
-  - [ ] `.`
-  - [ ] `./express`
-  - [ ] `./fastify`
-  - [ ] `./nest`
-- [ ] Garantir que Hono/Elysia não aparecem em package exports se forem placeholders.
-- [ ] Testar consumo em app externo temporário.
-- [ ] Ajustar README com exemplos completos.
+- [x] Confirmar exports publicados:
+  - [x] `.`
+  - [x] `./express`
+  - [x] `./fastify`
+  - [x] `./nest`
+- [x] Garantir que Hono/Elysia não aparecem em package exports se forem placeholders.
+- [x] Testar consumo em app externo temporário.
+- [x] Ajustar README com exemplos completos.
 
 **Aceite:**
 
-- [ ] `npm install @peria/adapters` funciona fora do monorepo.
-- [ ] Express, Fastify e NestJS conseguem servir manifest, `llms.txt` e artefatos Fumadocs gerados.
+- [x] `npm install @peria/adapters` funciona fora do monorepo.
+- [x] Express, Fastify e NestJS conseguem servir manifest, `llms.txt` e artefatos Fumadocs gerados.
 
 ### T4.2 Dogfood em NestJS
 

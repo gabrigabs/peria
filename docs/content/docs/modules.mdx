@@ -9,15 +9,16 @@ This map is extracted with `ts-morph`. It is grouped by package so the reader ca
 
 ## @peria/adapters
 
-@peria/adapters contains 5 mapped modules and 17 exported declarations. Highest-signal files: `packages/adapters/src/index.ts`, `packages/adapters/src/fastify.ts`, `packages/adapters/src/nest.ts`. External libraries visible in source imports: `node:fs`, `node:os`, `node:path`, `vitest`, `express`, `node:fs/promises`, `@fastify/static`, `fastify`, `@nestjs/core`.
+@peria/adapters contains 6 mapped modules and 24 exported declarations. Highest-signal files: `packages/adapters/src/index.ts`, `packages/adapters/src/shared.ts`, `packages/adapters/src/fastify.ts`. External libraries visible in source imports: `node:fs`, `node:http`, `node:os`, `node:path`, `vitest`, `express`, `@fastify/static`, `fastify`, `@nestjs/core`, `node:fs/promises`.
 
 | Module | Exports | Imports |
 | --- | --- | --- |
-| `packages/adapters/src/__tests__/smoke.test.ts` | none | `node:fs`, `node:os`, `node:path`, `vitest` |
-| `packages/adapters/src/express.ts` | periaDocs (function:40), PeriaDocsOptions (interface:19) | `express`, `node:fs`, `node:fs/promises`, `node:path` |
-| `packages/adapters/src/fastify.ts` | FastifyInstance (interface:120), periaDocs (function:31), PeriaDocsOptions (interface:21) | `@fastify/static`, `fastify`, `node:fs/promises`, `node:path` |
-| `packages/adapters/src/index.ts` | expressPeriaDocs (function:40), ExpressPeriaDocsOptions (interface:19), FastifyInstance (interface:120), fastifyPeriaDocs (function:31), FastifyPeriaDocsOptions (interface:21), NestApplication (class:13), periaDocs (function:40), PeriaNestOptions (interface:22), setupPeriaDocs (function:32) | none |
-| `packages/adapters/src/nest.ts` | NestApplication (class:13), PeriaNestOptions (interface:22), setupPeriaDocs (function:32) | `@nestjs/core`, `express`, `node:fs/promises`, `node:path` |
+| `packages/adapters/src/__tests__/smoke.test.ts` | none | `node:fs`, `node:http`, `node:os`, `node:path`, `vitest` |
+| `packages/adapters/src/express.ts` | periaDocs (function:35), PeriaDocsOptions (interface:23) | `./shared.js`, `express` |
+| `packages/adapters/src/fastify.ts` | FastifyInstance (interface:120), periaDocs (function:38), PeriaDocsOptions (interface:26) | `./shared.js`, `@fastify/static`, `fastify` |
+| `packages/adapters/src/index.ts` | expressPeriaDocs (function:35), ExpressPeriaDocsOptions (interface:23), FastifyInstance (interface:120), fastifyPeriaDocs (function:38), FastifyPeriaDocsOptions (interface:26), NestApplication (class:13), periaDocs (function:35), PeriaNestOptions (interface:27), setupPeriaDocs (function:39) | none |
+| `packages/adapters/src/nest.ts` | NestApplication (class:13), PeriaNestOptions (interface:27), setupPeriaDocs (function:39) | `./shared.js`, `@nestjs/core`, `express` |
+| `packages/adapters/src/shared.ts` | missingDocsPayload (function:58), PeriaDocsPathOptions (interface:5), readLlmsText (function:40), readWikiManifest (function:35), resolveDocsPaths (function:15), ResolvedPeriaDocsPaths (interface:10), resolveFallbackFile (function:44) | `node:fs`, `node:fs/promises`, `node:path` |
 
 ## @peria/api-reference
 

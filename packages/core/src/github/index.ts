@@ -6,6 +6,14 @@ export {
   createDriftIssuesFromFindings,
 } from './issues.js';
 export {
+  createMilestoneProgress,
+  createRoadmapEntitiesFromTasks,
+  type GitHubIssueProgressStatus,
+  type GitHubMilestoneProgress,
+  type RoadmapSyncResult,
+  syncRoadmapMilestonesFromTasks,
+} from './milestones.js';
+export {
   type CreateGitHubCacheOptions,
   type CreateGitHubRelationsInput,
   createGitHubCacheFromManifest,

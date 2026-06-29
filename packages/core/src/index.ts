@@ -70,6 +70,8 @@ export type {
   CreateDriftIssuesResult,
   CreateGitHubCacheOptions,
   CreateGitHubRelationsInput,
+  GitHubIssueProgressStatus,
+  GitHubMilestoneProgress,
   GitHubCache,
   GitHubCommit,
   GitHubIssue,
@@ -81,15 +83,19 @@ export type {
   GitHubRelation,
   GitHubRelationType,
   GitHubRepository,
+  RoadmapSyncResult,
 } from './github/index.js';
 export {
   createDriftIssueFingerprint,
   createDriftIssuesFromFindings,
   createGitHubCacheFromManifest,
   createGitHubRelations,
+  createMilestoneProgress,
+  createRoadmapEntitiesFromTasks,
   GITHUB_CACHE_PATH,
   GITHUB_CACHE_VERSION,
   readGitHubCache,
+  syncRoadmapMilestonesFromTasks,
   writeGitHubCache,
 } from './github/index.js';
 export type { MatchingResult, MatchType, RouteOpenAPIMatch } from './matcher/index.js';

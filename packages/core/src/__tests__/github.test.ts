@@ -3,7 +3,13 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { createDriftIssuesFromFindings, createGitHubCacheFromManifest } from '../github/index.js';
+import {
+  createDriftIssuesFromFindings,
+  createGitHubCacheFromManifest,
+  createMilestoneProgress,
+  createRoadmapEntitiesFromTasks,
+  syncRoadmapMilestonesFromTasks,
+} from '../github/index.js';
 import type {
   DriftFinding,
   GraphRelation,
@@ -80,6 +86,45 @@ describe('github cache', () => {
       expect.arrayContaining(['peria', 'docs-drift', 'severity:warning', 'team-docs'])
     );
     expect(driftIssue?.body).toContain('peria check --json');
+  });
+
+  it('syncs roadmap milestones from TASKS markdown', () => {
+    const manifest = createManifest();
+    const markdown = [
+      '## Milestone 5 - GitHub sync',
+      '',
+      '### T5.4 Criar issues',
+      '',
+      '- [x] Adicionar comando',
+      '- [x] Deduplicar issues',
+      '',
+      '### T5.5 Milestones',
+      '',
+      '- [x] Expor página "Milestones"',
+      '- [ ] Linkar commits',
+      '',
+      '## Milestone 6 - DX',
+      '',
+      '### T6.1 Blocked item',
+      '',
+      '- [ ] blocked by external token',
+    ].join('\n');
+    const parsed = createRoadmapEntitiesFromTasks(markdown, '2026-06-29T00:00:00.000Z');
+    const result = syncRoadmapMilestonesFromTasks(
+      manifest,
+      null,
+      markdown,
+      '2026-06-29T00:00:00.000Z'
+    );
+    const progress = createMilestoneProgress(result.cache);
+
+    expect(parsed.milestones).toHaveLength(2);
+    expect(parsed.issues).toHaveLength(3);
+    expect(result.milestones).toBe(2);
+    expect(result.issues).toBe(3);
+    expect(progress[0]?.status.done).toBe(1);
+    expect(progress[0]?.status.open).toBe(1);
+    expect(progress[1]?.status.blocked).toBe(1);
   });
 });
 

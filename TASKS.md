@@ -387,26 +387,26 @@ Objetivo: provar que adapters funcionam em apps reais e publicar apenas o que te
 
 **Tarefas:**
 
-- [ ] Criar fixture NestJS realista ou usar fixture existente.
-- [ ] Instalar `@peria/cli` e `@peria/adapters`.
-- [ ] Gerar docs.
-- [ ] Servir docs dentro da aplicação NestJS.
-- [ ] Validar endpoint:
-  - [ ] `/docs`
-  - [ ] `/docs/wiki-manifest.json`
-  - [ ] `/docs/llms.txt`
-  - [ ] artefatos Fumadocs.
-- [ ] Cobrir cenário com prefixo global de rota.
-- [ ] Cobrir cenário com app em subpath.
+- [x] Criar fixture NestJS realista ou usar fixture existente.
+- [x] Instalar `@peria/cli` e `@peria/adapters`.
+- [x] Gerar docs.
+- [x] Servir docs dentro da aplicação NestJS.
+- [x] Validar endpoint:
+  - [x] `/docs`
+  - [x] `/docs/wiki-manifest.json`
+  - [x] `/docs/llms.txt`
+  - [x] artefatos Fumadocs.
+- [x] Cobrir cenário com prefixo global de rota.
+- [x] Cobrir cenário com app em subpath.
 
 **Aceite:**
 
-- [ ] O adapter NestJS funciona com app real, não só teste smoke.
-- [ ] Erros comuns são acionáveis:
-  - [ ] docs não gerados;
-  - [ ] caminho errado;
-  - [ ] asset ausente;
-  - [ ] permissão de leitura.
+- [x] O adapter NestJS funciona com app real, não só teste smoke.
+- [x] Erros comuns são acionáveis:
+  - [x] docs não gerados;
+  - [x] caminho errado;
+  - [x] asset ausente;
+  - [x] permissão de leitura.
 
 ### T4.3 Decidir futuro do SDK
 
@@ -705,7 +705,7 @@ npx peria --version
 - [ ] Wiki renderizada é útil para humanos.
 - [ ] `llms.txt` e context packs são úteis para agentes.
 - [ ] Diagramas aparecem no fluxo principal.
-- [ ] Adapter NestJS serve docs reais.
+- [x] Adapter NestJS serve docs reais.
 - [ ] README descreve apenas o que funciona.
 - [ ] Limitações conhecidas estão documentadas.
 - [ ] CI pega regressão de pacote publicado.

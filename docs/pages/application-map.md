@@ -7,7 +7,7 @@ The application map is the compact artifact for answering what exists, where it 
 - Name: Peria
 - Framework: `other`
 - Entrypoint: `packages/cli/src/index.ts`
-- Generated at: 2026-06-29T14:51:17.519Z
+- Generated at: 2026-06-29T15:01:41.707Z
 
 ## Summary
 
@@ -32,7 +32,7 @@ The application map is the compact artifact for answering what exists, where it 
 | Package | Directory | Dependencies | Exports |
 | --- | --- | --- | --- |
 | peria | `.` | 4 | 0 |
-| @peria/adapters | `packages/adapters` | 9 | 4 |
+| @peria/adapters | `packages/adapters` | 10 | 4 |
 | @peria/api-reference | `packages/api-reference` | 5 | 1 |
 | @peria/cli | `packages/cli` | 9 | 0 |
 | @peria/core | `packages/core` | 11 | 4 |
@@ -118,5 +118,5 @@ _No entries found._
 ## Git Context
 
 - Branch: `feat/planning`
-- Commit: `b9e8d6c87ff44cf9ddec5ce22170c215d65bbf40`
-- Working tree: 32 changed files
+- Commit: `cf0d4895da4fb60cf78a0720e74a09255f0ab2c4`
+- Working tree: 13 changed files

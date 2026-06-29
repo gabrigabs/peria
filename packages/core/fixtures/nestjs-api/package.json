@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Test fixture for Peria NestJS adapter",
   "private": true,
+  "type": "module",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",

@@ -15,6 +15,6 @@ Configured docs route: `/docs`
 | --- | --- | --- | --- |
 | express | implemented | `packages/adapters/src/express.ts` | periaDocs (function), PeriaDocsOptions (interface) |
 | fastify | implemented | `packages/adapters/src/fastify.ts` | FastifyInstance (interface), periaDocs (function), PeriaDocsOptions (interface) |
-| nest | implemented | `packages/adapters/src/nest.ts` | NestApplication (class), PeriaNestOptions (interface), setupPeriaDocs (function) |
+| nest | implemented | `packages/adapters/src/nest.ts` | INestApplication (interface), PeriaNestOptions (interface), setupPeriaDocs (function) |
 | shared | implemented | `packages/adapters/src/shared.ts` | missingDocsPayload (function), PeriaDocsPathOptions (interface), readLlmsText (function), readWikiManifest (function), resolveDocsPaths (function), ResolvedPeriaDocsPaths (interface), resolveFallbackFile (function) |
 | smoke.test | implemented | `packages/adapters/src/__tests__/smoke.test.ts` | none |

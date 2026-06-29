@@ -10,51 +10,33 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 ## Current Revision
 
 - Branch: `feat/planning`
-- Commit: `b9e8d6c87ff44cf9ddec5ce22170c215d65bbf40`
-- Subject: test(dogfood): add npm cli validation
+- Commit: `cf0d4895da4fb60cf78a0720e74a09255f0ab2c4`
+- Subject: fix(adapters): serve fumadocs docs artifacts
 - Author: Gabriel Bezerra Rodrigues &lt;gabrielbrodrigues1@gmail.com&gt;
-- Authored at: 2026-06-29T11:25:27-03:00
-- Working tree: 32 changed files
+- Authored at: 2026-06-29T11:51:49-03:00
+- Working tree: 13 changed files
 
 ## Working Tree Changes
 
 - `M .peria/manifest.json`
+- `M PUBLISHING.md`
 - `M TASKS.md`
 - `M bun.lock`
-- `M docs/content/docs/adapters.mdx`
-- `M docs/content/docs/ai-context.mdx`
-- `M docs/content/docs/application-map.mdx`
-- `M docs/content/docs/development-map.mdx`
-- `M docs/content/docs/diagrams.mdx`
-- `M docs/content/docs/history.mdx`
-- `M docs/content/docs/modules.mdx`
-- `M docs/content/docs/overview.mdx`
-- `M docs/content/docs/packages.mdx`
-- `M docs/content/docs/release-status.mdx`
-- `M docs/pages/adapters.md`
-- `M docs/pages/ai-context.md`
-- `M docs/pages/application-map.md`
-- `M docs/pages/development-map.md`
-- `M docs/pages/diagrams.md`
-- `M docs/pages/history.md`
-- `M docs/pages/modules.md`
-- `M docs/pages/overview.md`
-- `M docs/pages/packages.md`
-- `M docs/pages/release-status.md`
-- `M docs/wiki-manifest.json`
-- `M packages/adapters/README.md`
+- `M package.json`
 - `M packages/adapters/package.json`
 - `M packages/adapters/src/__tests__/smoke.test.ts`
-- `M packages/adapters/src/express.ts`
-- `M packages/adapters/src/fastify.ts`
+- `M packages/adapters/src/index.ts`
 - `M packages/adapters/src/nest.ts`
+- `M packages/core/fixtures/nestjs-api/package.json`
+- `M packages/core/fixtures/nestjs-api/src/users/dto/approve-user-request.dto.ts`
 - `?? execute-tasks-plan.js`
-- `?? packages/adapters/src/shared.ts`
+- `?? scripts/dogfood-nest.ts`
 
 ## Recent Commits
 
 | Commit | Date | Author | Subject |
 | --- | --- | --- | --- |
+| `cf0d489` | 2026-06-29 | Gabriel Bezerra Rodrigues | fix(adapters): serve fumadocs docs artifacts |
 | `b9e8d6c` | 2026-06-29 | Gabriel Bezerra Rodrigues | test(dogfood): add npm cli validation |
 | `131eeea` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(wiki): add navigation maps and search index |
 | `0be7c0b` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(docs): switch wiki build to fumadocs output |
@@ -66,10 +48,10 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 | `42ecdb6` | 2026-06-27 | Gabriel Bezerra Rodrigues | feat(renderer): add renderer mode selection (T1.1) |
 | `053366c` | 2026-06-27 | Gabriel Bezerra Rodrigues | test: add fresh npm install dogfood validation script (T0.4) |
 | `799cca2` | 2026-06-27 | Gabriel Bezerra Rodrigues | chore: reconcile published package versions (T0.1) |
-| `006a961` | 2026-06-27 | Gabriel Bezerra Rodrigues | docs: align public docs with shipped package behavior |
 
 ## Raw Log Snapshot
 
+- cf0d489 2026-06-29 fix(adapters): serve fumadocs docs artifacts
 - b9e8d6c 2026-06-29 test(dogfood): add npm cli validation
 - 131eeea 2026-06-29 feat(wiki): add navigation maps and search index
 - 0be7c0b 2026-06-29 feat(docs): switch wiki build to fumadocs output
@@ -81,7 +63,6 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 - 42ecdb6 2026-06-27 feat(renderer): add renderer mode selection (T1.1)
 - 053366c 2026-06-27 test: add fresh npm install dogfood validation script (T0.4)
 - 799cca2 2026-06-27 chore: reconcile published package versions (T0.1)
-- 006a961 2026-06-27 docs: align public docs with shipped package behavior
 
 
 ## Sources

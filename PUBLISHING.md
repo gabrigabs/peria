@@ -175,6 +175,14 @@ bun run dogfood:npm
 
 It installs `@peria/cli@latest` in a temporary project, copies the NestJS fixture, runs `scan`, `build`, `scan`, and `check --json`, and validates generated artifacts without workspace links.
 
+The repeatable local NestJS adapter dogfood command is:
+
+```sh
+bun run dogfood:nest
+```
+
+It packs the local `@peria/core`, `@peria/renderer`, `@peria/cli`, and `@peria/adapters` packages into a temporary NestJS fixture, generates Fumadocs output, compiles and starts the app, then validates `/docs`, `/docs/wiki-manifest.json`, `/docs/llms.txt`, a generated MDX artifact, a global API prefix, a docs subpath, and common missing/unreadable docs errors.
+
 ## Versioning Strategy
 
 Until changesets or release automation exist, versioning is manual and must follow this policy:

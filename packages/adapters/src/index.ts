@@ -15,5 +15,5 @@ export { periaDocs as expressPeriaDocs, periaDocs } from './express.js';
 export type { FastifyInstance, PeriaDocsOptions as FastifyPeriaDocsOptions } from './fastify.js';
 export { periaDocs as fastifyPeriaDocs } from './fastify.js';
 // NestJS adapter
-export type { NestApplication, PeriaNestOptions } from './nest.js';
+export type { INestApplication, PeriaNestOptions } from './nest.js';
 export { setupPeriaDocs } from './nest.js';

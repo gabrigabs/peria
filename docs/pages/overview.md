@@ -23,10 +23,10 @@ Engineers maintaining a codebase and AI agents that need source-backed context b
 
 ## Current Snapshot
 
-- Generated at: 2026-06-29T14:51:17.519Z
+- Generated at: 2026-06-29T15:01:41.707Z
 - Git branch: feat/planning
-- Git commit: b9e8d6c87ff44cf9ddec5ce22170c215d65bbf40
-- Working tree: 32 changed files
+- Git commit: cf0d4895da4fb60cf78a0720e74a09255f0ab2c4
+- Working tree: 13 changed files
 - Framework: `other`
 - Primary entrypoint: `packages/cli/src/index.ts`
 - Packages documented: 7

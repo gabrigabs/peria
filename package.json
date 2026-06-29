@@ -13,6 +13,7 @@
     "docs:check": "node packages/cli/bin/peria.js check --json",
     "docs:serve": "node packages/cli/bin/peria.js serve",
     "dogfood:npm": "bun scripts/dogfood-npm.ts",
+    "dogfood:nest": "bun scripts/dogfood-nest.ts",
     "release:patch": "bun scripts/version.ts patch",
     "release:minor": "bun scripts/version.ts minor",
     "release:major": "bun scripts/version.ts major",

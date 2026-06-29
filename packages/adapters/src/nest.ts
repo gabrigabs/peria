@@ -12,7 +12,7 @@
  * ```
  */
 
-import type { NestApplication } from '@nestjs/core';
+import type { INestApplication } from '@nestjs/common';
 import express, { type Request, type Response } from 'express';
 import {
   missingDocsPayload,
@@ -22,7 +22,7 @@ import {
   resolveFallbackFile,
 } from './shared.js';
 
-export type { NestApplication } from '@nestjs/core';
+export type { INestApplication } from '@nestjs/common';
 
 export interface PeriaNestOptions {
   /** Route path for docs (default: '/docs') */
@@ -36,7 +36,7 @@ export interface PeriaNestOptions {
 /**
  * Set up Peria documentation middleware in a NestJS application
  */
-export function setupPeriaDocs(app: NestApplication, options: PeriaNestOptions = {}): void {
+export function setupPeriaDocs(app: INestApplication, options: PeriaNestOptions = {}): void {
   const { docsDir, llmsPath } = resolveDocsPaths(options);
   const route = options.route ?? '/docs';
 

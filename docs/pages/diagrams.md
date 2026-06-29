@@ -2,7 +2,7 @@
 
 These Mermaid diagrams are generated during `peria build` with the same Mermaid engine used by `peria diagram`.
 
-Generated at: 2026-06-29T14:51:23.922Z
+Generated at: 2026-06-29T15:01:46.909Z
 
 ## Coverage
 
@@ -123,6 +123,7 @@ graph TD
     end
     subgraph "Dependencies"
         dep__fastify_static["@fastify/static"]
+        dep__nestjs_common["@nestjs/common"]
         dep__nestjs_core["@nestjs/core"]
         dep__types_express["@types/express"]
         dep__types_node["@types/node"]

@@ -1,4 +1,4 @@
 export class ApproveUserRequestDto {
-  approvedAt: Date;
+  approvedAt!: Date;
   approvedBy?: string;
 }

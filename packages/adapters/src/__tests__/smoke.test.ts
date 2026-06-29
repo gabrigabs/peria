@@ -213,7 +213,7 @@ describe('NestJS adapter', () => {
     expect(typeof setupPeriaDocs).toBe('function');
   });
 
-  it('should export NestApplication type', async () => {
+  it('should export INestApplication type', async () => {
     const mod = await import('../nest.js');
     expect(mod).toBeDefined();
   });

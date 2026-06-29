@@ -8,7 +8,9 @@
 import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { createGitHubCacheFromManifest, writeGitHubCache } from '@peria/core';
 import { logger } from '../utils/logger.js';
+import { readManifest } from '../utils/manifest.js';
 
 export type GitHubAuthSource = 'GITHUB_TOKEN' | 'local-config' | 'gh';
 
@@ -100,9 +102,16 @@ export async function githubCommand(args: string[], cwd: string): Promise<void> 
     return;
   }
 
+  if (group === 'cache' && action === 'write' && rest.length === 0) {
+    await githubCacheWriteCommand(cwd);
+    return;
+  }
+
   logger.header('GitHub');
   logger.error(`Unknown GitHub command: ${args.join(' ') || '(none)'}`);
-  logger.info('Available commands: peria github auth status, peria github auth login');
+  logger.info(
+    'Available commands: peria github auth status, peria github auth login, peria github cache write'
+  );
   process.exitCode = 1;
 }
 
@@ -128,6 +137,26 @@ export async function githubAuthLoginCommand(cwd: string): Promise<void> {
   }
 
   logger.success('GitHub CLI login completed.');
+}
+
+export async function githubCacheWriteCommand(cwd: string): Promise<void> {
+  logger.header('GitHub Cache');
+
+  const manifest = await readManifest(cwd);
+  if (!manifest) {
+    logger.error('Could not find .peria/manifest.json.');
+    logger.info('Run "peria scan" before writing the GitHub cache.');
+    process.exitCode = 1;
+    return;
+  }
+
+  const cache = createGitHubCacheFromManifest(manifest);
+  const path = await writeGitHubCache(cwd, cache);
+
+  logger.success(`Wrote ${path}`);
+  logger.info(
+    `Cached ${cache.commits.length} commits, ${cache.pullRequests.length} pull requests, ${cache.issues.length} issues, ${cache.milestones.length} milestones, and ${cache.relations.length} relations.`
+  );
 }
 
 function hasToken(value: string | undefined): boolean {

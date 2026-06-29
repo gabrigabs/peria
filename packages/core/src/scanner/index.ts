@@ -95,12 +95,18 @@ export function runGit(cwd: string, args: string[]): Promise<string | null> {
  * Collect Git metadata
  */
 async function collectGitMetadata(cwd: string): Promise<GitMetadata> {
-  const [lastCommit, shortCommit, branch, status, recentCommits] = await Promise.all([
+  const [lastCommit, shortCommit, branch, status, recentChangesLog] = await Promise.all([
     runGit(cwd, ['rev-parse', 'HEAD']),
     runGit(cwd, ['rev-parse', '--short', 'HEAD']),
     runGit(cwd, ['branch', '--show-current']),
-    runGit(cwd, ['status', '--short']),
-    runGit(cwd, ['log', '--oneline', '-20']),
+    runGit(cwd, ['status', '--short', '--untracked-files=no']),
+    runGit(cwd, [
+      'log',
+      '--name-status',
+      '--pretty=format:commit:%H%x09%an%x09%ad%x09%s',
+      '--date=iso-strict',
+      '-20',
+    ]),
   ]);
 
   const changedFiles = (status || '')
@@ -108,19 +114,7 @@ async function collectGitMetadata(cwd: string): Promise<GitMetadata> {
     .filter(Boolean)
     .map((line) => line.slice(3));
 
-  const recentChanges = (recentCommits || '')
-    .split('\n')
-    .filter(Boolean)
-    .map((line) => {
-      const [hash, ...subjectParts] = line.split(' ');
-      return {
-        id: hash,
-        path: '',
-        type: 'modified' as const,
-        commit: hash,
-        subject: subjectParts.join(' '),
-      };
-    });
+  const recentChanges = parseRecentChanges(recentChangesLog);
 
   return {
     lastCommit: lastCommit || 'unknown',
@@ -130,6 +124,74 @@ async function collectGitMetadata(cwd: string): Promise<GitMetadata> {
     changedFiles,
     recentChanges,
   };
+}
+
+function parseRecentChanges(log: string | null): GitMetadata['recentChanges'] {
+  const changes: GitMetadata['recentChanges'] = [];
+  let currentCommit:
+    | {
+        hash: string;
+        author?: string;
+        date?: string;
+        subject?: string;
+      }
+    | undefined;
+
+  for (const line of (log || '').split('\n')) {
+    if (!line.trim()) {
+      continue;
+    }
+
+    if (line.startsWith('commit:')) {
+      const [hash, author, date, ...subjectParts] = line.slice('commit:'.length).split('\t');
+      currentCommit = {
+        hash,
+        author,
+        date,
+        subject: subjectParts.join('\t'),
+      };
+      continue;
+    }
+
+    if (!currentCommit) {
+      continue;
+    }
+
+    const [status, path, nextPath] = line.split('\t');
+    const changedPath = nextPath || path;
+    if (!changedPath) {
+      continue;
+    }
+
+    changes.push({
+      id: `${currentCommit.hash}:${changedPath}`,
+      path: changedPath,
+      type: toGitChangeType(status),
+      status,
+      commit: currentCommit.hash,
+      author: currentCommit.author,
+      date: currentCommit.date,
+      subject: currentCommit.subject,
+    });
+  }
+
+  return changes;
+}
+
+function toGitChangeType(status: string): GitMetadata['recentChanges'][number]['type'] {
+  if (status.startsWith('A')) {
+    return 'added';
+  }
+
+  if (status.startsWith('D')) {
+    return 'deleted';
+  }
+
+  if (status.startsWith('R')) {
+    return 'renamed';
+  }
+
+  return 'modified';
 }
 
 /**
@@ -365,7 +427,7 @@ async function getRepoInfo(cwd: string): Promise<RepoInfo> {
   const [commit, branch, status] = await Promise.all([
     runGit(cwd, ['rev-parse', 'HEAD']),
     runGit(cwd, ['branch', '--show-current']),
-    runGit(cwd, ['status', '--porcelain']),
+    runGit(cwd, ['status', '--porcelain', '--untracked-files=no']),
   ]);
 
   return {

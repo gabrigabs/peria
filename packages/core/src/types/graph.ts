@@ -32,7 +32,12 @@ export type RelationType =
   | 'doc_page_references_schema'
   | 'doc_page_references_source'
   | 'schema_referenced_by_openapi'
-  | 'package_exports_module';
+  | 'package_exports_module'
+  | 'entity_changed_by_commit'
+  | 'commit_belongs_to_pr'
+  | 'pr_fixes_issue'
+  | 'issue_belongs_to_milestone'
+  | 'drift_finding_opens_issue';
 
 // Source reference for provenance
 export interface SourceRef {

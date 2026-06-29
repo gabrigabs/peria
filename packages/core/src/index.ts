@@ -65,6 +65,29 @@ export {
   saveEnrichedOpenAPI,
   summarizeEnrichment,
 } from './generators/index.js';
+export type {
+  CreateGitHubCacheOptions,
+  CreateGitHubRelationsInput,
+  GitHubCache,
+  GitHubCommit,
+  GitHubIssue,
+  GitHubIssueState,
+  GitHubMilestone,
+  GitHubMilestoneState,
+  GitHubPullRequest,
+  GitHubPullRequestState,
+  GitHubRelation,
+  GitHubRelationType,
+  GitHubRepository,
+} from './github/index.js';
+export {
+  createGitHubCacheFromManifest,
+  createGitHubRelations,
+  GITHUB_CACHE_PATH,
+  GITHUB_CACHE_VERSION,
+  readGitHubCache,
+  writeGitHubCache,
+} from './github/index.js';
 export type { MatchingResult, MatchType, RouteOpenAPIMatch } from './matcher/index.js';
 // Matcher (Phase 3)
 export { matchRoutesToOpenAPI, summarizeMatching } from './matcher/index.js';

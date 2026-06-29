@@ -13,7 +13,7 @@ export async function collectGitMetadata(cwd: string): Promise<GitMetadata> {
     runGit(cwd, ['rev-parse', 'HEAD']),
     runGit(cwd, ['rev-parse', '--short', 'HEAD']),
     runGit(cwd, ['branch', '--show-current']),
-    runGit(cwd, ['status', '--short']),
+    runGit(cwd, ['status', '--short', '--untracked-files=no']),
     runGit(cwd, ['log', '--oneline', '-20']),
   ]);
 
@@ -31,6 +31,7 @@ export async function collectGitMetadata(cwd: string): Promise<GitMetadata> {
         id: hash,
         path: '',
         type: 'modified' as const,
+        status: 'M',
         commit: hash,
         subject: subjectParts.join(' '),
       };

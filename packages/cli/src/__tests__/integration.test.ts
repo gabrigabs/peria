@@ -310,5 +310,38 @@ describe('CLI Integration Tests', () => {
     });
   });
 
+  describe('github cache command', () => {
+    it('writes a GitHub cache from the scanned manifest', async () => {
+      const fixturePath = createFixtureCopy('nestjs-basic');
+
+      await runCli(['scan'], fixturePath);
+
+      const result = await runCli(['github', 'cache', 'write'], fixturePath);
+
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toContain('Wrote');
+
+      const cachePath = join(fixturePath, '.peria/github.json');
+      expect(existsSync(cachePath)).toBe(true);
+
+      const cache = JSON.parse(readFileSync(cachePath, 'utf-8'));
+      expect(cache.cacheVersion).toBe('0.1.0');
+      expect(cache.repository.name).toBe(fixturePath.split('/').at(-1));
+      expect(Array.isArray(cache.commits)).toBe(true);
+      expect(Array.isArray(cache.relations)).toBe(true);
+    });
+
+    it('fails with an actionable message when manifest is missing', async () => {
+      const fixturePath = join(tempDir, 'missing-manifest');
+      mkdirSync(fixturePath, { recursive: true });
+
+      const result = await runCli(['github', 'cache', 'write'], fixturePath);
+
+      expect(result.exitCode).toBe(1);
+      expect(result.stderr).toContain('Could not find .peria/manifest.json');
+      expect(result.stdout).toContain('Run "peria scan"');
+    });
+  });
+
   // Skip init test - requires interactive tty
 });

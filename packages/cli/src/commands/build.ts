@@ -676,6 +676,7 @@ function createDiagramManifest(
         id: commit.hash,
         path: '',
         type: 'modified',
+        status: 'M',
         commit: commit.hash,
         author: commit.author,
         date: commit.date,

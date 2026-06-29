@@ -19,6 +19,7 @@
 | `peria check` | Audit for drift with 10 checks (`--json` for CI) |
 | `peria context` | Generate context packs for agents |
 | `peria diagram` | Generate Mermaid diagrams |
+| `peria github` | Diagnose auth and write local GitHub provenance cache |
 
 ### Framework Adapters ✅
 
@@ -109,6 +110,15 @@ peria github auth login
 ```
 
 Peria checks `GITHUB_TOKEN`, `.peria/github.local.json`, then `gh auth token`. Token values are never printed or written to generated artifacts.
+
+### 6. Write GitHub Provenance Cache
+
+```bash
+peria scan
+peria github cache write
+```
+
+This writes `.peria/github.json` with typed issues, pull requests, milestones, commits, and relations inferred from the manifest and local Git history. It does not call the GitHub API or persist credentials.
 
 ---
 

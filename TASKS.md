@@ -468,19 +468,19 @@ Objetivo: conectar provenance e planejamento ao GitHub sem transformar Peria em 
 
 **Tarefas:**
 
-- [ ] Criar tipos:
-  - [ ] `GitHubIssue`
-  - [ ] `GitHubPullRequest`
-  - [ ] `GitHubMilestone`
-  - [ ] `GitHubCommit`
-  - [ ] `GitHubRelation`
-- [ ] Persistir cache em `.peria/github.json`.
-- [ ] Linkar GitHub ao knowledge graph:
-  - [ ] `entity changed_by commit`
-  - [ ] `commit belongs_to pr`
-  - [ ] `pr fixes issue`
-  - [ ] `issue belongs_to milestone`
-  - [ ] `drift finding opens issue`
+- [x] Criar tipos:
+  - [x] `GitHubIssue`
+  - [x] `GitHubPullRequest`
+  - [x] `GitHubMilestone`
+  - [x] `GitHubCommit`
+  - [x] `GitHubRelation`
+- [x] Persistir cache em `.peria/github.json`.
+- [x] Linkar GitHub ao knowledge graph:
+  - [x] `entity changed_by commit`
+  - [x] `commit belongs_to pr`
+  - [x] `pr fixes issue`
+  - [x] `issue belongs_to milestone`
+  - [x] `drift finding opens issue`
 
 **Aceite:**
 

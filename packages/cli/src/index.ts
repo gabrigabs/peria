@@ -102,6 +102,7 @@ cli
   .option('--labels <labels>', 'Comma-separated extra labels for GitHub issue creation')
   .option('--severity <level>', 'Minimum severity for issue creation')
   .option('--checks <names>', 'Comma-separated checks for issue creation')
+  .option('--file <path>', 'Roadmap file for milestone sync')
   .allowUnknownOptions()
   .action(
     async (
@@ -112,6 +113,7 @@ cli
         labels?: string;
         severity?: string;
         checks?: string;
+        file?: string;
       }
     ) => {
       await githubCommand(appendGitHubOptions(args ?? [], opts), opts.cwd);
@@ -125,6 +127,7 @@ function appendGitHubOptions(
     labels?: string;
     severity?: string;
     checks?: string;
+    file?: string;
   }
 ): string[] {
   const nextArgs = [...args];
@@ -144,6 +147,10 @@ function appendGitHubOptions(
 
   if (opts.checks) {
     nextArgs.push('--checks', opts.checks);
+  }
+
+  if (opts.file) {
+    nextArgs.push('--file', opts.file);
   }
 
   return nextArgs;

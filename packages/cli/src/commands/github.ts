@@ -7,12 +7,14 @@
 
 import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
+import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import {
   createDriftIssuesFromFindings,
   createGitHubCacheFromManifest,
   readGitHubCache,
   runAuditChecks,
+  syncRoadmapMilestonesFromTasks,
   writeGitHubCache,
 } from '@peria/core';
 import { logger } from '../utils/logger.js';
@@ -38,6 +40,10 @@ interface CreateIssuesFromCheckOptions {
   labels: string[];
   severity?: 'error' | 'warning' | 'info';
   checks?: string[];
+}
+
+interface SyncMilestonesFromTasksOptions {
+  file: string;
 }
 
 export function resolveGitHubAuthStatus(
@@ -130,10 +136,21 @@ export async function githubCommand(args: string[], cwd: string): Promise<void> 
     return;
   }
 
+  if (group === 'milestones' && action === 'sync-from-tasks') {
+    const options = parseSyncMilestonesFromTasksOptions(rest);
+    if (!options) {
+      process.exitCode = 1;
+      return;
+    }
+
+    await githubMilestonesSyncFromTasksCommand(cwd, options);
+    return;
+  }
+
   logger.header('GitHub');
   logger.error(`Unknown GitHub command: ${args.join(' ') || '(none)'}`);
   logger.info(
-    'Available commands: peria github auth status, peria github auth login, peria github cache write, peria github issues create-from-check'
+    'Available commands: peria github auth status, peria github auth login, peria github cache write, peria github issues create-from-check, peria github milestones sync-from-tasks'
   );
   process.exitCode = 1;
 }
@@ -218,6 +235,39 @@ export async function githubIssuesCreateFromCheckCommand(
   if (result.findings === 0) {
     logger.success('No drift findings detected.');
   }
+}
+
+export async function githubMilestonesSyncFromTasksCommand(
+  cwd: string,
+  options: SyncMilestonesFromTasksOptions = { file: 'TASKS.md' }
+): Promise<void> {
+  logger.header('GitHub Milestones From Tasks');
+
+  const manifest = await readManifest(cwd);
+  if (!manifest) {
+    logger.error('Could not find .peria/manifest.json.');
+    logger.info('Run "peria scan" before syncing roadmap milestones.');
+    process.exitCode = 1;
+    return;
+  }
+
+  const tasksPath = join(cwd, options.file);
+  let tasksMarkdown: string;
+  try {
+    tasksMarkdown = await readFile(tasksPath, 'utf-8');
+  } catch {
+    logger.error(`Could not read ${options.file}.`);
+    logger.info('Pass --file <path> or create TASKS.md in the project root.');
+    process.exitCode = 1;
+    return;
+  }
+
+  const existingCache = await readGitHubCache(cwd);
+  const result = syncRoadmapMilestonesFromTasks(manifest, existingCache, tasksMarkdown);
+  const path = await writeGitHubCache(cwd, result.cache);
+
+  logger.success(`Wrote ${path}`);
+  logger.info(`Synced ${result.milestones} milestones and ${result.issues} roadmap issues.`);
 }
 
 function hasToken(value: string | undefined): boolean {
@@ -321,6 +371,34 @@ function parseCreateIssuesFromCheckOptions(args: string[]): CreateIssuesFromChec
   }
 
   options.labels = splitList(options.labels.join(','));
+  return options;
+}
+
+function parseSyncMilestonesFromTasksOptions(
+  args: string[]
+): SyncMilestonesFromTasksOptions | null {
+  const options: SyncMilestonesFromTasksOptions = {
+    file: 'TASKS.md',
+  };
+
+  for (let index = 0; index < args.length; index++) {
+    const arg = args[index];
+    const value = args[index + 1];
+
+    if (arg === '--file') {
+      if (!value) {
+        logger.error('Missing value for --file.');
+        return null;
+      }
+      options.file = value;
+      index++;
+      continue;
+    }
+
+    logger.error(`Unknown option for sync-from-tasks: ${arg}`);
+    return null;
+  }
+
   return options;
 }
 

@@ -1,35 +1,41 @@
 {
   "title": "Peria Wiki",
   "tagline": "Human-readable by default. LLM-ready by design.",
-  "generatedAt": "2026-06-29T15:01:41.707Z",
+  "generatedAt": "2026-06-29T15:05:07.798Z",
   "periaVersion": "0.1.0",
   "manifestVersion": "0.1.0",
-  "commit": "cf0d4895da4fb60cf78a0720e74a09255f0ab2c4",
+  "commit": "7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
   "git": {
     "branch": "feat/planning",
-    "commit": "cf0d4895da4fb60cf78a0720e74a09255f0ab2c4",
-    "shortCommit": "cf0d489",
+    "commit": "7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
+    "shortCommit": "7e52595",
     "author": "Gabriel Bezerra Rodrigues",
     "authorEmail": "gabrielbrodrigues1@gmail.com",
-    "authoredAt": "2026-06-29T11:51:49-03:00",
-    "subject": "fix(adapters): serve fumadocs docs artifacts",
+    "authoredAt": "2026-06-29T12:02:48-03:00",
+    "subject": "test(adapters): dogfood nestjs adapter",
     "isDirty": true,
     "changedFiles": [
       "M .peria/manifest.json",
       "M PUBLISHING.md",
+      "M README.md",
       "M TASKS.md",
       "M bun.lock",
-      "M package.json",
-      "M packages/adapters/package.json",
-      "M packages/adapters/src/__tests__/smoke.test.ts",
-      "M packages/adapters/src/index.ts",
-      "M packages/adapters/src/nest.ts",
-      "M packages/core/fixtures/nestjs-api/package.json",
-      "M packages/core/fixtures/nestjs-api/src/users/dto/approve-user-request.dto.ts",
-      "?? execute-tasks-plan.js",
-      "?? scripts/dogfood-nest.ts"
+      "M packages/sdk/README.md",
+      "M packages/sdk/package.json",
+      "D packages/sdk/src/api-reference.ts",
+      "M packages/sdk/src/index.ts",
+      "D packages/sdk/src/server/embed.ts",
+      "D packages/sdk/src/types.ts",
+      "M packages/sdk/tsup.config.ts",
+      "?? execute-tasks-plan.js"
     ],
     "recentCommits": [
+      {
+        "hash": "7e52595",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "test(adapters): dogfood nestjs adapter"
+      },
       {
         "hash": "cf0d489",
         "date": "2026-06-29",
@@ -95,12 +101,6 @@
         "date": "2026-06-27",
         "author": "Gabriel Bezerra Rodrigues",
         "subject": "test: add fresh npm install dogfood validation script (T0.4)"
-      },
-      {
-        "hash": "799cca2",
-        "date": "2026-06-27",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "chore: reconcile published package versions (T0.1)"
       }
     ]
   },

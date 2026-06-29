@@ -1,25 +1,20 @@
 # @peria/sdk
 
-Embedded Peria server SDK for integrating documentation into your application.
+Deferred private package reserved for a future Peria programmatic API.
 
-## Installation
+## Status
 
-```bash
-npm install @peria/sdk
-```
+Do not publish or install this package yet. The current public integration paths are:
 
-## Usage
+- `@peria/cli` for `scan`, `build`, `check`, `context`, and `diagram`
+- `@peria/adapters` for serving generated docs in Express, Fastify, and NestJS
+- `@peria/renderer` for Fumadocs-compatible generated output
 
-```typescript
-import { createPeriaServer } from '@peria/sdk';
+The future SDK should be a programmatic API for scan/build/check orchestration. It should not become a framework adapter layer.
 
-const server = createPeriaServer({
-  port: 3000,
-  manifest: manifest,
-});
+## Current Export
 
-await server.start();
-```
+The package only exports `periaSdkRoadmap` so local builds can keep the workspace shape while making the deferred status explicit.
 
 ## License
 

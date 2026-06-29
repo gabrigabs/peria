@@ -173,7 +173,7 @@ export default defineConfig({
 | [`packages/core`](packages/core/) | Engine — types, config, scanners, parsers, generators |
 | [`packages/cli`](packages/cli/) | CLI commands |
 | [`packages/adapters`](packages/adapters/) | Express, Fastify, NestJS middleware |
-| [`packages/sdk`](packages/sdk/) | Programmatic API |
+| [`packages/sdk`](packages/sdk/) | Deferred private programmatic API |
 | [`packages/renderer`](packages/renderer/) | Fumadocs-compatible wiki renderer |
 | [`packages/api-reference`](packages/api-reference/) | Stoplight Elements integration |
 

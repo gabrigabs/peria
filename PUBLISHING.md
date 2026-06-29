@@ -24,7 +24,7 @@ The monorepo uses scoped packages (`@peria/*`):
 | Core | `@peria/core` | Dependency |
 | Renderer | `@peria/renderer` | Dependency |
 | Adapters | `@peria/adapters` | Published ✅ |
-| SDK | `@peria/sdk` | Experimental |
+| SDK | `@peria/sdk` | Private / deferred |
 
 ## Current Published Versions
 
@@ -37,7 +37,7 @@ Verified on 2026-06-29:
 | `@peria/renderer` | `0.1.1` | `0.1.1` |
 | `@peria/adapters` | `0.1.1` | `0.1.1` |
 
-Do not publish `@peria/sdk` or `@peria/api-reference` until their public contracts are stable and covered by external-consumer tests.
+Do not publish `@peria/sdk` or `@peria/api-reference` until their public contracts are stable and covered by external-consumer tests. `@peria/sdk` is marked private locally to enforce this.
 
 ## Step 1: Reserve the @peria Organization (One-time)
 
@@ -281,7 +281,7 @@ As of 2026-06-29:
 - Build and typecheck pass locally.
 - CLI binary works from the built package.
 - Core, renderer, adapters, and CLI are the current publishable packages.
-- SDK and API Reference remain future package targets.
+- SDK is private/deferred; API Reference remains a future package target.
 
 To publish when ready:
 ```sh

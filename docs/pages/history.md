@@ -5,32 +5,33 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 ## Current Revision
 
 - Branch: `feat/planning`
-- Commit: `cf0d4895da4fb60cf78a0720e74a09255f0ab2c4`
-- Subject: fix(adapters): serve fumadocs docs artifacts
+- Commit: `7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0`
+- Subject: test(adapters): dogfood nestjs adapter
 - Author: Gabriel Bezerra Rodrigues <gabrielbrodrigues1@gmail.com>
-- Authored at: 2026-06-29T11:51:49-03:00
+- Authored at: 2026-06-29T12:02:48-03:00
 - Working tree: 13 changed files
 
 ## Working Tree Changes
 
 - `M .peria/manifest.json`
 - `M PUBLISHING.md`
+- `M README.md`
 - `M TASKS.md`
 - `M bun.lock`
-- `M package.json`
-- `M packages/adapters/package.json`
-- `M packages/adapters/src/__tests__/smoke.test.ts`
-- `M packages/adapters/src/index.ts`
-- `M packages/adapters/src/nest.ts`
-- `M packages/core/fixtures/nestjs-api/package.json`
-- `M packages/core/fixtures/nestjs-api/src/users/dto/approve-user-request.dto.ts`
+- `M packages/sdk/README.md`
+- `M packages/sdk/package.json`
+- `D packages/sdk/src/api-reference.ts`
+- `M packages/sdk/src/index.ts`
+- `D packages/sdk/src/server/embed.ts`
+- `D packages/sdk/src/types.ts`
+- `M packages/sdk/tsup.config.ts`
 - `?? execute-tasks-plan.js`
-- `?? scripts/dogfood-nest.ts`
 
 ## Recent Commits
 
 | Commit | Date | Author | Subject |
 | --- | --- | --- | --- |
+| `7e52595` | 2026-06-29 | Gabriel Bezerra Rodrigues | test(adapters): dogfood nestjs adapter |
 | `cf0d489` | 2026-06-29 | Gabriel Bezerra Rodrigues | fix(adapters): serve fumadocs docs artifacts |
 | `b9e8d6c` | 2026-06-29 | Gabriel Bezerra Rodrigues | test(dogfood): add npm cli validation |
 | `131eeea` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(wiki): add navigation maps and search index |
@@ -42,10 +43,10 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 | `a95ae0e` | 2026-06-27 | Gabriel Bezerra Rodrigues | feat(renderer): generate fumadocs-compatible MDX output (T1.2) |
 | `42ecdb6` | 2026-06-27 | Gabriel Bezerra Rodrigues | feat(renderer): add renderer mode selection (T1.1) |
 | `053366c` | 2026-06-27 | Gabriel Bezerra Rodrigues | test: add fresh npm install dogfood validation script (T0.4) |
-| `799cca2` | 2026-06-27 | Gabriel Bezerra Rodrigues | chore: reconcile published package versions (T0.1) |
 
 ## Raw Log Snapshot
 
+- 7e52595 2026-06-29 test(adapters): dogfood nestjs adapter
 - cf0d489 2026-06-29 fix(adapters): serve fumadocs docs artifacts
 - b9e8d6c 2026-06-29 test(dogfood): add npm cli validation
 - 131eeea 2026-06-29 feat(wiki): add navigation maps and search index
@@ -57,4 +58,3 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 - a95ae0e 2026-06-27 feat(renderer): generate fumadocs-compatible MDX output (T1.2)
 - 42ecdb6 2026-06-27 feat(renderer): add renderer mode selection (T1.1)
 - 053366c 2026-06-27 test: add fresh npm install dogfood validation script (T0.4)
-- 799cca2 2026-06-27 chore: reconcile published package versions (T0.1)

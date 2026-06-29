@@ -414,16 +414,16 @@ Objetivo: provar que adapters funcionam em apps reais e publicar apenas o que te
 
 **Tarefas:**
 
-- [ ] Mapear diferenças entre `@peria/sdk` e `@peria/adapters`.
-- [ ] Decidir se SDK será:
-  - [ ] API programática para scan/build/check;
-  - [ ] camada de adapters;
-  - [ ] pacote removido por enquanto.
-- [ ] Remover dependências prematuras se não houver caso real.
+- [x] Mapear diferenças entre `@peria/sdk` e `@peria/adapters`.
+- [x] Decidir se SDK será:
+  - [x] API programática futura para scan/build/check;
+  - [x] não será camada de adapters;
+  - [x] pacote privado/deferido por enquanto.
+- [x] Remover dependências prematuras se não houver caso real.
 
 **Aceite:**
 
-- [ ] SDK não é publicado até ter contrato e teste de consumo.
+- [x] SDK não é publicado até ter contrato e teste de consumo.
 
 ---
 

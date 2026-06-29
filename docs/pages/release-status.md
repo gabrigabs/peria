@@ -4,9 +4,9 @@ This generated status is intentionally conservative. It reports what the current
 
 ## Snapshot
 
-- Generated at: 2026-06-29T15:01:41.707Z
+- Generated at: 2026-06-29T15:05:07.798Z
 - Git branch: `feat/planning`
-- Git commit: `cf0d4895da4fb60cf78a0720e74a09255f0ab2c4`
+- Git commit: `7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0`
 - Working tree: 13 changed files
 - Documentation pages: 14
 - Renderer: `fumadocs`
@@ -21,7 +21,7 @@ This generated status is intentionally conservative. It reports what the current
 | @peria/cli | `packages/cli` | internal or app package | 9 |
 | @peria/core | `packages/core` | public surface | 11 |
 | @peria/renderer | `packages/renderer` | public surface | 6 |
-| @peria/sdk | `packages/sdk` | public surface | 12 |
+| @peria/sdk | `packages/sdk` | public surface | 3 |
 
 ## Release Gates Still Worth Checking
 

@@ -2,7 +2,7 @@
 
 These Mermaid diagrams are generated during `peria build` with the same Mermaid engine used by `peria diagram`.
 
-Generated at: 2026-06-29T15:01:46.909Z
+Generated at: 2026-06-29T15:05:13.038Z
 
 ## Coverage
 
@@ -65,8 +65,6 @@ graph LR
     pkg__peria_cli --> pkg__peria_core
     pkg__peria_cli --> pkg__peria_renderer
     pkg__peria_renderer --> pkg__peria_core
-    pkg__peria_sdk --> pkg__peria_api_reference
-    pkg__peria_sdk --> pkg__peria_core
 ```
 
 ## Package Dependencies: peria

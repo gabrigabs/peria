@@ -18,24 +18,24 @@ This guide covers publishing Peria packages to the npm registry.
 
 The monorepo uses scoped packages (`@peria/*`):
 
-| Package | Full Name | Status |
-|---------|-----------|--------|
-| CLI | `@peria/cli` | Primary install target |
-| Core | `@peria/core` | Dependency |
-| Renderer | `@peria/renderer` | Dependency |
-| Adapters | `@peria/adapters` | Published ✅ |
-| SDK | `@peria/sdk` | Private / deferred |
+| Package  | Full Name         | Status                 |
+| -------- | ----------------- | ---------------------- |
+| CLI      | `@peria/cli`      | Primary install target |
+| Core     | `@peria/core`     | Dependency             |
+| Renderer | `@peria/renderer` | Dependency             |
+| Adapters | `@peria/adapters` | Published ✅           |
+| SDK      | `@peria/sdk`      | Private / deferred     |
 
 ## Current Published Versions
 
 Verified on 2026-06-29:
 
-| Package | npm version | Local manifest |
-|---------|-------------|----------------|
-| `@peria/core` | `0.1.1` | `0.1.1` |
-| `@peria/cli` | `0.1.2` | `0.1.2` |
-| `@peria/renderer` | `0.1.1` | `0.1.1` |
-| `@peria/adapters` | `0.1.1` | `0.1.1` |
+| Package           | npm version | Local manifest |
+| ----------------- | ----------- | -------------- |
+| `@peria/core`     | `0.1.1`     | `0.1.1`        |
+| `@peria/cli`      | `0.1.2`     | `0.1.2`        |
+| `@peria/renderer` | `0.1.1`     | `0.1.1`        |
+| `@peria/adapters` | `0.1.1`     | `0.1.1`        |
 
 Do not publish `@peria/sdk` or `@peria/api-reference` until their public contracts are stable and covered by external-consumer tests. `@peria/sdk` is marked private locally to enforce this.
 
@@ -91,14 +91,19 @@ npm view @peria/core
 
 ## Step 5: Publish @peria/renderer
 
-Renderer must be published before CLI (CLI depends on it):
+Renderer must be published before CLI (CLI depends on it).
+
+The renderer ships a bundled TanStack Start + Fumadocs preview app in
+`app-template/`. `peria serve` copies it to `.peria/preview-app/`, installs
+deps and runs `vite dev` against the generated `content/docs`. Ensure
+`npm pack --dry-run` lists `app-template/**` alongside `dist/**`.
 
 ```sh
 cd packages/renderer
 
 # Version must match core and CLI
 
-# Dry run
+# Dry run (confirm dist/** and app-template/** are included)
 npm pack --dry-run
 
 # Publish
@@ -284,6 +289,7 @@ As of 2026-06-29:
 - SDK is private/deferred; API Reference remains a future package target.
 
 To publish when ready:
+
 ```sh
 bun run build
 npm pack --pack-destination /tmp packages/core packages/renderer packages/adapters packages/cli

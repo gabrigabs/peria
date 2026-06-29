@@ -11,18 +11,18 @@ Peria já tem um núcleo promissor: CLI, scanner, gerador de wiki, auditoria de 
 
 Estado verificado nesta revisão:
 
-| Área | Status realista | Observação |
-| --- | --- | --- |
-| `@peria/core` | Publicado e reconciliado localmente | npm reportou `0.1.1`; manifesto local ajustado para `0.1.1`. |
-| `@peria/cli` | Publicado e instalável | npm reportou `0.1.2`. |
-| `@peria/renderer` | Publicado e agora focado em Fumadocs | npm reportou `0.1.1`; código local removeu o caminho público de renderer estático. |
-| `@peria/adapters` | Publicado, mas precisa dogfood e documentação final | npm reportou `0.1.1`; manifesto local ajustado para `0.1.1`. |
-| `@peria/sdk` | Não pronto para publicar | API pública e dependências ainda parecem prematuras. |
-| `@peria/api-reference` | Não pronto para publicar | Precisa decisão de produto e integração real antes de virar pacote público. |
-| Renderer/Fumadocs | Conteúdo compatível gerado | `peria build` gera MDX, meta e source config compatíveis com Fumadocs; ainda falta app/preview Fumadocs completo. |
-| Diagramas | Integrado ao build da wiki | `peria build` gera página `diagrams`, links para entidades detectadas, `.mmd` e grafo de módulos quando `features.mermaid = true`; ainda faltam commits/áreas e fixtures com schemas. |
-| Dogfooding | Incompleto | Precisa usar pacotes publicados e validar Peria documentando Peria. |
-| GitHub sync | Ideia correta, ainda não produto | Precisa design de modelo, auth, issues/milestones e rastreabilidade. |
+| Área                   | Status realista                                     | Observação                                                                                                                                                                            |
+| ---------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@peria/core`          | Publicado e reconciliado localmente                 | npm reportou `0.1.1`; manifesto local ajustado para `0.1.1`.                                                                                                                          |
+| `@peria/cli`           | Publicado e instalável                              | npm reportou `0.1.2`.                                                                                                                                                                 |
+| `@peria/renderer`      | Publicado e agora focado em Fumadocs                | npm reportou `0.1.1`; bundla app-template TanStack Start + Fumadocs; `peria serve` sobe a app real.                                                                                   |
+| `@peria/adapters`      | Publicado, mas precisa dogfood e documentação final | npm reportou `0.1.1`; manifesto local ajustado para `0.1.1`.                                                                                                                          |
+| `@peria/sdk`           | Não pronto para publicar                            | API pública e dependências ainda parecem prematuras.                                                                                                                                  |
+| `@peria/api-reference` | Não pronto para publicar                            | Precisa decisão de produto e integração real antes de virar pacote público.                                                                                                           |
+| Renderer/Fumadocs      | Conteúdo compatível gerado                          | `peria build` gera MDX, meta e source config compatíveis com Fumadocs; ainda falta app/preview Fumadocs completo.                                                                     |
+| Diagramas              | Integrado ao build da wiki                          | `peria build` gera página `diagrams`, links para entidades detectadas, `.mmd` e grafo de módulos quando `features.mermaid = true`; ainda faltam commits/áreas e fixtures com schemas. |
+| Dogfooding             | Incompleto                                          | Precisa usar pacotes publicados e validar Peria documentando Peria.                                                                                                                   |
+| GitHub sync            | Ideia correta, ainda não produto                    | Precisa design de modelo, auth, issues/milestones e rastreabilidade.                                                                                                                  |
 
 ## Princípios de execução
 
@@ -180,12 +180,36 @@ Objetivo: substituir o renderer estático atual por uma experiência Fumadocs re
   - [ ] schemas;
   - [ ] commits quando disponíveis.
 - [x] Garantir que `llms.txt` continue sendo gerado no root esperado.
+- [x] App Fumadocs real (TanStack Start) embutida em `@peria/renderer` e servida por `peria serve` (ver T1.5).
 
 **Aceite:**
 
-- [ ] `peria build --renderer fumadocs` gera uma documentação navegável em app Fumadocs.
+- [x] `peria build --renderer fumadocs` gera uma documentação navegável em app Fumadocs.
 - [x] O modo antigo foi removido conforme decisão de produto.
 - [x] Links internos entre páginas funcionam.
+
+### T1.5 Embutir app TanStack Start + Fumadocs e ligar `peria serve`
+
+**Problema:** `peria serve` era um servidor de arquivos estáticos que servia `docs/README.md` (texto cru), não o conteúdo Fumadocs em `docs/content/docs/*.mdx`. Sem uma app Fumadocs real, o critério "navegável" de T1.2 não era satisfeito.
+
+**Decisão (2026-06-29):** bundlar uma app-template TanStack Start + Fumadocs em `@peria/renderer/app-template/`; `peria serve` copia a template para `.peria/preview-app/`, instala deps, symlinks `docs/content/docs` e sobe `vite dev`.
+
+**Tarefas:**
+
+- [x] Criar `packages/renderer/app-template/` (vite.config, source.config, src/routes, lib/source, tsconfig, package.json).
+- [x] Exportar `previewAppDir` de `@peria/renderer/preview`.
+- [x] Atualizar `packages/renderer/package.json` (`files: app-template`, export `./preview`).
+- [x] Reescrever `packages/cli/src/commands/serve.ts` para spawnar Vite na app-template.
+- [x] Parar de emitir `source.config.ts`/`lib/source.ts` em `docs/` (a app-template é dona).
+- [x] Atualizar teste de integração do CLI (remover asserts de `source.config.ts`/`lib/source.ts` em `docs/`).
+- [ ] Validar `dogfood:npm` após próximo release (a apptemplate precisa estar no tarball publicado).
+
+**Aceite:**
+
+- [x] `peria serve` sobe uma app Fumadocs real com SSR, sidebar e navegação.
+- [x] `/docs/<slug>` retorna HTML renderizado (não markdown cru).
+- [x] `/api/search` responde 200.
+- [x] `bun run build && bun run typecheck && bun run test` passam.
 
 **Validação:**
 
@@ -336,10 +360,10 @@ Objetivo: Peria precisa documentar Peria usando o pacote instalado como um usuá
   - [ ] release artifact;
   - [ ] todos, em fases.
 - [x] Garantir que docs gerados não geram ruído impossível de revisar.
-- [ ] Criar comando:
+- [x] Criar comando:
   - [x] `bun run docs:generate`;
   - [x] `bun run docs:check`;
-  - [x] `bun run docs:serve`.
+  - [x] `bun run docs:serve` (agora sobe app Fumadocs real via T1.5).
 
 **Aceite:**
 

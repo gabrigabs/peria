@@ -134,9 +134,11 @@ describe('CLI Integration Tests', () => {
       expect(existsSync(join(docsDir, 'content/docs/overview.mdx'))).toBe(true);
       expect(existsSync(join(docsDir, 'content/docs/application-map.mdx'))).toBe(true);
       expect(existsSync(join(docsDir, 'content/docs/meta.json'))).toBe(true);
-      expect(existsSync(join(docsDir, 'source.config.ts'))).toBe(true);
-      expect(existsSync(join(docsDir, 'lib/source.ts'))).toBe(true);
       expect(existsSync(join(docsDir, 'search-index.json'))).toBe(true);
+      // The bundled TanStack Start + Fumadocs preview app in @peria/renderer now
+      // owns source.config.ts and lib/source.ts; peria build no longer emits them.
+      expect(existsSync(join(docsDir, 'source.config.ts'))).toBe(false);
+      expect(existsSync(join(docsDir, 'lib/source.ts'))).toBe(false);
       expect(existsSync(join(docsDir, 'pages/application-map.md'))).toBe(true);
       expect(existsSync(join(docsDir, 'wiki-manifest.json'))).toBe(true);
       expect(existsSync(join(fixturePath, 'llms.txt'))).toBe(true);

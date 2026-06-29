@@ -5,7 +5,7 @@
  */
 
 import { spawn } from 'node:child_process';
-import { cpSync, existsSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -36,12 +36,13 @@ function createFixtureCopy(name: string): string {
 
 function runCli(
   args: string[],
-  cwd: string
+  cwd: string,
+  env: Record<string, string> = {}
 ): Promise<{ stdout: string; stderr: string; exitCode: number }> {
   return new Promise((resolve) => {
-    const child = spawn('node', [CLI, ...args], {
+    const child = spawn(process.execPath, [CLI, ...args], {
       cwd,
-      env: { ...process.env, FORCE_COLOR: '0' },
+      env: { ...process.env, FORCE_COLOR: '0', ...env },
     });
 
     let stdout = '';
@@ -263,6 +264,49 @@ describe('CLI Integration Tests', () => {
       // --help should exit with 0
       expect(result.exitCode).toBe(0);
       expect(result.stdout).toContain('Usage');
+    });
+  });
+
+  describe('github auth status command', () => {
+    it('reports GITHUB_TOKEN without leaking the token value', async () => {
+      const result = await runCli(['github', 'auth', 'status'], MONOREPO_ROOT, {
+        GITHUB_TOKEN: 'secret-token-value',
+        PATH: '',
+      });
+
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toContain('GITHUB_TOKEN environment variable');
+      expect(result.stdout).not.toContain('secret-token-value');
+    });
+
+    it('reports local config without leaking the token value', async () => {
+      const fixturePath = createFixtureCopy('nestjs-basic');
+      mkdirSync(join(fixturePath, '.peria'), { recursive: true });
+      writeFileSync(
+        join(fixturePath, '.peria/github.local.json'),
+        JSON.stringify({ token: 'local-secret-token' })
+      );
+
+      const result = await runCli(['github', 'auth', 'status'], fixturePath, {
+        GITHUB_TOKEN: '',
+        PATH: '',
+      });
+
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toContain('.peria/github.local.json');
+      expect(result.stdout).not.toContain('local-secret-token');
+    });
+
+    it('suggests actionable fixes when no credential is available', async () => {
+      const result = await runCli(['github', 'auth', 'status'], MONOREPO_ROOT, {
+        GITHUB_TOKEN: '',
+        PATH: '',
+      });
+
+      expect(result.exitCode).toBe(1);
+      expect(result.stdout).toContain('Checked: GITHUB_TOKEN');
+      expect(result.stdout).toContain('export GITHUB_TOKEN');
+      expect(result.stdout).toContain('gh auth login');
     });
   });
 

@@ -7,20 +7,20 @@ The application map is the compact artifact for answering what exists, where it 
 - Name: Peria
 - Framework: `other`
 - Entrypoint: `packages/cli/src/index.ts`
-- Generated at: 2026-06-29T15:05:07.798Z
+- Generated at: 2026-06-29T15:11:11.571Z
 
 ## Summary
 
 | Area | Count |
 | --- | --- |
 | packages | 7 |
-| modules | 152 |
+| modules | 153 |
 | routes | 0 |
 | schemas | 0 |
 | commands | 2 |
 | adapters | 5 |
 | pages | 14 |
-| claims | 893 |
+| claims | 900 |
 
 ## Entrypoints
 
@@ -57,11 +57,12 @@ The application map is the compact artifact for answering what exists, where it 
 | `packages/cli/src/commands/check.ts` | @peria/cli | 3 | 1 |
 | `packages/cli/src/commands/context.ts` | @peria/cli | 3 | 1 |
 | `packages/cli/src/commands/diagram.ts` | @peria/cli | 3 | 1 |
+| `packages/cli/src/commands/github.ts` | @peria/cli | 4 | 6 |
 | `packages/cli/src/commands/init.ts` | @peria/cli | 9 | 4 |
 | `packages/cli/src/commands/scan.ts` | @peria/cli | 4 | 1 |
 | `packages/cli/src/commands/serve.ts` | @peria/cli | 5 | 1 |
 | `packages/cli/src/generators/config.ts` | @peria/cli | 3 | 2 |
-| `packages/cli/src/index.ts` | @peria/cli | 9 | 0 |
+| `packages/cli/src/index.ts` | @peria/cli | 10 | 0 |
 | `packages/cli/src/prompts/entrypoint.ts` | @peria/cli | 2 | 1 |
 | `packages/cli/src/prompts/features.ts` | @peria/cli | 1 | 3 |
 | `packages/cli/src/prompts/framework.ts` | @peria/cli | 2 | 2 |
@@ -82,7 +83,6 @@ The application map is the compact artifact for answering what exists, where it 
 | `packages/core/fixtures/nestjs-basic/src/users/dto/create-user.dto.ts` | @peria/core | 0 | 1 |
 | `packages/core/fixtures/nestjs-basic/src/users/dto/update-user.dto.ts` | @peria/core | 0 | 1 |
 | `packages/core/fixtures/nestjs-basic/src/users/users.controller.ts` | @peria/core | 5 | 1 |
-| `packages/core/fixtures/nestjs-basic/src/users/users.module.ts` | @peria/core | 3 | 1 |
 
 ## Routes
 
@@ -118,5 +118,5 @@ _No entries found._
 ## Git Context
 
 - Branch: `feat/planning`
-- Commit: `7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0`
-- Working tree: 13 changed files
+- Commit: `f98a3f1ab9fb0079e9d97d7defa4cd0ff959e550`
+- Working tree: 8 changed files

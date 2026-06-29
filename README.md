@@ -101,6 +101,15 @@ peria check --json | jq .
 peria check --json --severity error
 ```
 
+### 5. Diagnose GitHub Auth
+
+```bash
+peria github auth status
+peria github auth login
+```
+
+Peria checks `GITHUB_TOKEN`, `.peria/github.local.json`, then `gh auth token`. Token values are never printed or written to generated artifacts.
+
 ---
 
 ## Drift Checks

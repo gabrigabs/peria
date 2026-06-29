@@ -4,6 +4,7 @@ import { buildCommand } from './commands/build.js';
 import { checkCommand } from './commands/check.js';
 import { contextCommand } from './commands/context.js';
 import { diagramCommand } from './commands/diagram.js';
+import { githubCommand } from './commands/github.js';
 import { initCommand } from './commands/init.js';
 import { scanCommand } from './commands/scan.js';
 import { serveCommand } from './commands/serve.js';
@@ -92,6 +93,13 @@ cli
         | undefined,
       output: opts.output,
     });
+  });
+
+// GitHub commands
+cli
+  .command('github [...args]', 'GitHub auth and sync commands')
+  .action(async (args: string[] | undefined, opts: { cwd: string }) => {
+    await githubCommand(args ?? [], opts.cwd);
   });
 
 // Help

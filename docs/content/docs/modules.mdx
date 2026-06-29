@@ -31,7 +31,7 @@ This map is extracted with `ts-morph`. It is grouped by package so the reader ca
 
 ## @peria/cli
 
-@peria/cli contains 17 mapped modules and 26 exported declarations. Highest-signal files: `packages/cli/src/commands/init.ts`, `packages/cli/src/utils/manifest.ts`, `packages/cli/src/prompts/features.ts`. External libraries visible in source imports: `node:child_process`, `node:fs`, `node:os`, `node:path`, `node:url`, `vitest`, `node:fs/promises`, `@clack/prompts`, `chalk`, `node:http`, `cac`, `node:module`.
+@peria/cli contains 18 mapped modules and 32 exported declarations. Highest-signal files: `packages/cli/src/commands/github.ts`, `packages/cli/src/commands/init.ts`, `packages/cli/src/utils/manifest.ts`. External libraries visible in source imports: `node:child_process`, `node:fs`, `node:os`, `node:path`, `node:url`, `vitest`, `node:fs/promises`, `@clack/prompts`, `chalk`, `node:http`, `cac`, `node:module`.
 
 | Module | Exports | Imports |
 | --- | --- | --- |
@@ -41,11 +41,12 @@ This map is extracted with `ts-morph`. It is grouped by package so the reader ca
 | `packages/cli/src/commands/check.ts` | checkCommand (function:21) | `../utils/logger.js`, `../utils/manifest.js`, `@peria/core` |
 | `packages/cli/src/commands/context.ts` | contextCommand (function:23) | `../utils/logger.js`, `../utils/manifest.js`, `@peria/core` |
 | `packages/cli/src/commands/diagram.ts` | diagramCommand (function:21) | `../utils/logger.js`, `../utils/manifest.js`, `@peria/core` |
+| `packages/cli/src/commands/github.ts` | githubAuthLoginCommand (function:109), GitHubAuthSource (type:13), GitHubAuthStatus (interface:15), githubAuthStatusCommand (function:70), githubCommand (function:90), resolveGitHubAuthStatus (function:29) | `../utils/logger.js`, `node:child_process`, `node:fs`, `node:path` |
 | `packages/cli/src/commands/init.ts` | detectEntrypoint (function:7), detectFramework (function:34), Framework (type:4), initCommand (function:19) | `../generators/config.js`, `../prompts/entrypoint.js`, `../prompts/features.js`, `../prompts/framework.js`, `../prompts/route.js`, `../utils/logger.js`, `@clack/prompts`, `@peria/core`, `chalk` |
 | `packages/cli/src/commands/scan.ts` | scanCommand (function:13) | `../utils/logger.js`, `@peria/core`, `node:fs/promises`, `node:path` |
 | `packages/cli/src/commands/serve.ts` | serveCommand (function:13) | `../utils/logger.js`, `@peria/core`, `node:fs/promises`, `node:http`, `node:path` |
 | `packages/cli/src/generators/config.ts` | generateConfig (function:27), writeConfigFile (function:63) | `../prompts/features.js`, `../prompts/framework.js`, `node:fs/promises` |
-| `packages/cli/src/index.ts` | none | `./commands/build.js`, `./commands/check.js`, `./commands/context.js`, `./commands/diagram.js`, `./commands/init.js`, `./commands/scan.js`, `./commands/serve.js`, `cac`, `node:module` |
+| `packages/cli/src/index.ts` | none | `./commands/build.js`, `./commands/check.js`, `./commands/context.js`, `./commands/diagram.js`, `./commands/github.js`, `./commands/init.js`, `./commands/scan.js`, `./commands/serve.js`, `cac`, `node:module` |
 | `packages/cli/src/prompts/entrypoint.ts` | promptEntrypoint (function:10) | `@clack/prompts`, `@peria/core` |
 | `packages/cli/src/prompts/features.ts` | FeatureFlags (interface:7), getFeatureSummary (function:176), promptFeatures (function:123) | `@clack/prompts` |
 | `packages/cli/src/prompts/framework.ts` | DetectedFramework (type:8), promptFramework (function:28) | `@clack/prompts`, `@peria/core` |

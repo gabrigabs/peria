@@ -84,7 +84,7 @@ This package contributes 2 source modules and 0 exported declarations to the gen
 
 **Why it matters:**
 
-This package contributes 17 source modules and 26 exported declarations to the generated knowledge graph. Its manifest lives at `packages/cli/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 18 source modules and 32 exported declarations to the generated knowledge graph. Its manifest lives at `packages/cli/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 

@@ -1,35 +1,36 @@
 {
   "title": "Peria Wiki",
   "tagline": "Human-readable by default. LLM-ready by design.",
-  "generatedAt": "2026-06-29T15:05:07.798Z",
+  "generatedAt": "2026-06-29T15:11:11.571Z",
   "periaVersion": "0.1.0",
   "manifestVersion": "0.1.0",
-  "commit": "7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
+  "commit": "f98a3f1ab9fb0079e9d97d7defa4cd0ff959e550",
   "git": {
     "branch": "feat/planning",
-    "commit": "7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
-    "shortCommit": "7e52595",
+    "commit": "f98a3f1ab9fb0079e9d97d7defa4cd0ff959e550",
+    "shortCommit": "f98a3f1",
     "author": "Gabriel Bezerra Rodrigues",
     "authorEmail": "gabrielbrodrigues1@gmail.com",
-    "authoredAt": "2026-06-29T12:02:48-03:00",
-    "subject": "test(adapters): dogfood nestjs adapter",
+    "authoredAt": "2026-06-29T12:06:06-03:00",
+    "subject": "chore(sdk): defer public sdk contract",
     "isDirty": true,
     "changedFiles": [
       "M .peria/manifest.json",
-      "M PUBLISHING.md",
       "M README.md",
       "M TASKS.md",
-      "M bun.lock",
-      "M packages/sdk/README.md",
-      "M packages/sdk/package.json",
-      "D packages/sdk/src/api-reference.ts",
-      "M packages/sdk/src/index.ts",
-      "D packages/sdk/src/server/embed.ts",
-      "D packages/sdk/src/types.ts",
-      "M packages/sdk/tsup.config.ts",
-      "?? execute-tasks-plan.js"
+      "M packages/cli/src/__tests__/integration.test.ts",
+      "M packages/cli/src/__tests__/smoke.test.ts",
+      "M packages/cli/src/index.ts",
+      "?? execute-tasks-plan.js",
+      "?? packages/cli/src/commands/github.ts"
     ],
     "recentCommits": [
+      {
+        "hash": "f98a3f1",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "chore(sdk): defer public sdk contract"
+      },
       {
         "hash": "7e52595",
         "date": "2026-06-29",
@@ -95,12 +96,6 @@
         "date": "2026-06-27",
         "author": "Gabriel Bezerra Rodrigues",
         "subject": "feat(renderer): add renderer mode selection (T1.1)"
-      },
-      {
-        "hash": "053366c",
-        "date": "2026-06-27",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "test: add fresh npm install dogfood validation script (T0.4)"
       }
     ]
   },

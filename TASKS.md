@@ -451,18 +451,18 @@ Objetivo: conectar provenance e planejamento ao GitHub sem transformar Peria em 
 
 **Tarefas:**
 
-- [ ] Suportar `gh auth token` quando GitHub CLI estiver logado.
-- [ ] Suportar `GITHUB_TOKEN`.
-- [ ] Suportar token em config local ignorada por git, se necessário.
-- [ ] Nunca gravar token em `.peria/manifest.json`, docs ou logs.
-- [ ] Adicionar comando de diagnóstico:
-  - [ ] `peria github auth status`
-  - [ ] `peria github auth login` somente se fizer sentido delegar ao `gh`.
+- [x] Suportar `gh auth token` quando GitHub CLI estiver logado.
+- [x] Suportar `GITHUB_TOKEN`.
+- [x] Suportar token em config local ignorada por git, se necessário.
+- [x] Nunca gravar token em `.peria/manifest.json`, docs ou logs.
+- [x] Adicionar comando de diagnóstico:
+  - [x] `peria github auth status`
+  - [x] `peria github auth login` somente se fizer sentido delegar ao `gh`.
 
 **Aceite:**
 
-- [ ] Usuário entende exatamente qual credencial está sendo usada.
-- [ ] Falha de auth sugere correção objetiva.
+- [x] Usuário entende exatamente qual credencial está sendo usada.
+- [x] Falha de auth sugere correção objetiva.
 
 ### T5.3 Modelo de dados GitHub
 

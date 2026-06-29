@@ -53,8 +53,14 @@ function pathForPage(contentDir: string, page: WikiPage): string {
   return `${contentDir}/${normalizeSlug(page.slug)}.mdx`;
 }
 
-function convertMarkdownToMdx(markdown: string): string {
-  return markdown.replace(/<([^>\n]+@[^>\n]+)>/g, '&lt;$1&gt;');
+function convertMarkdownToMdx(markdown: string, title: string): string {
+  const escaped = markdown.replace(/<([^>\n]+@[^>\n]+)>/g, '&lt;$1&gt;');
+  const titlePattern = /^#\s+(.+?)\s*$/m;
+  const match = escaped.match(titlePattern);
+  if (match && match[1].trim().toLowerCase() === title.trim().toLowerCase()) {
+    return escaped.replace(titlePattern, '').replace(/^\n+/, '');
+  }
+  return escaped;
 }
 
 function renderSources(page: WikiPage): string {
@@ -77,7 +83,7 @@ function renderMdxPage(page: WikiPage): string {
     `description: "${escapeYaml(page.description)}"`,
     '---',
     '',
-    convertMarkdownToMdx(page.body),
+    convertMarkdownToMdx(page.body, page.title),
     renderSources(page),
     '',
   ].join('\n');
@@ -152,28 +158,6 @@ function buildMetaJson(manifest: WikiManifest): string {
   )}\n`;
 }
 
-function buildSourceConfig(contentDir: string): string {
-  return `import { defineConfig, defineDocs } from 'fumadocs-mdx/config';
-
-export const docs = defineDocs({
-  dir: '${contentDir}',
-});
-
-export default defineConfig();
-`;
-}
-
-function buildSourceModule(baseUrl: string): string {
-  return `import { docs } from 'collections/server';
-import { loader } from 'fumadocs-core/source';
-
-export const source = loader({
-  baseUrl: '${baseUrl}',
-  source: docs.toFumadocsSource(),
-});
-`;
-}
-
 function buildReadme(manifest: WikiManifest): string {
   return [
     `# ${manifest.title}`,
@@ -184,12 +168,20 @@ function buildReadme(manifest: WikiManifest): string {
     '',
     '- `content/docs/**/*.mdx` wiki pages',
     '- `content/docs/meta.json` sidebar metadata',
-    '- `source.config.ts` Fumadocs MDX collection config',
-    '- `lib/source.ts` loader module for a Next/Fumadocs app',
     '- `search-index.json` compact page/entity search index',
     '- `wiki-manifest.json` Peria page manifest',
+    '- `pages/**/*.md` raw markdown mirror (also available via `@peria/adapters`)',
     '',
-    'Install the Fumadocs app dependencies in the host project and import `source` from `lib/source.ts`.',
+    'Preview locally:',
+    '',
+    '```sh',
+    'peria serve',
+    '```',
+    '',
+    'This serves the bundled TanStack Start + Fumadocs preview app from',
+    '`@peria/renderer` against `content/docs`. To consume the content from a',
+    'custom Fumadocs/Next app, point its `fumadocs-mdx` collection `dir` at',
+    '`content/docs` and reuse these MDX files directly.',
     '',
   ].join('\n');
 }
@@ -205,14 +197,6 @@ export function generateFumadocsContent(options: FumadocsContentOptions): Fumado
     {
       path: `${contentDir}/meta.json`,
       content: buildMetaJson(manifest),
-    },
-    {
-      path: 'source.config.ts',
-      content: buildSourceConfig(contentDir),
-    },
-    {
-      path: 'lib/source.ts',
-      content: buildSourceModule(baseUrl),
     },
     {
       path: 'README.md',

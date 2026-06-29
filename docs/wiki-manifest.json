@@ -1,129 +1,147 @@
 {
   "title": "Peria Wiki",
   "tagline": "Human-readable by default. LLM-ready by design.",
-  "generatedAt": "2026-06-29T18:31:24.713Z",
+  "generatedAt": "2026-06-29T21:34:30.993Z",
   "periaVersion": "0.1.0",
   "manifestVersion": "0.1.0",
-  "commit": "67ac65b8416ffe0e096598a05c74991e2fb66f8d",
+  "commit": "6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6",
   "git": {
     "branch": "feat/planning",
-    "commit": "67ac65b8416ffe0e096598a05c74991e2fb66f8d",
-    "shortCommit": "67ac65b",
+    "commit": "6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6",
+    "shortCommit": "6e3e5b5",
     "author": "Gabriel Bezerra Rodrigues",
     "authorEmail": "gabrielbrodrigues1@gmail.com",
-    "authoredAt": "2026-06-29T12:38:12-03:00",
-    "subject": "feat(github): draft drift issues from checks",
+    "authoredAt": "2026-06-29T15:54:00-03:00",
+    "subject": "feat(renderer): render Mermaid diagrams in preview app",
     "isDirty": true,
     "changedFiles": [
+      "M .github/workflows/ci.yml",
+      "M .github/workflows/publish.yml",
+      "M .peria/github.json",
       "M .peria/manifest.json",
+      "M CHANGELOG.md",
       "M PUBLISHING.md",
+      "M README.md",
       "M TASKS.md",
-      "M docs/README.md",
       "M docs/content/docs/ai-context.mdx",
       "M docs/content/docs/application-map.mdx",
       "M docs/content/docs/development-map.mdx",
       "M docs/content/docs/diagrams.mdx",
+      "M docs/content/docs/github-issues.mdx",
       "M docs/content/docs/history.mdx",
+      "M docs/content/docs/known-gaps.mdx",
+      "M docs/content/docs/meta.json",
       "M docs/content/docs/modules.mdx",
       "M docs/content/docs/overview.mdx",
       "M docs/content/docs/packages.mdx",
       "M docs/content/docs/release-status.mdx",
-      "D docs/lib/source.ts",
+      "M docs/content/docs/wiki-ui.mdx",
       "M docs/pages/ai-context.md",
       "M docs/pages/application-map.md",
       "M docs/pages/development-map.md",
       "M docs/pages/diagrams.md",
+      "M docs/pages/github-issues.md",
       "M docs/pages/history.md",
+      "M docs/pages/known-gaps.md",
       "M docs/pages/modules.md",
       "M docs/pages/overview.md",
       "M docs/pages/packages.md",
       "M docs/pages/release-status.md",
-      "D docs/source.config.ts",
+      "M docs/pages/wiki-ui.md",
+      "M docs/search-index.json",
       "M docs/wiki-manifest.json",
+      "M package.json",
+      "M packages/api-reference/package.json",
       "M packages/cli/src/__tests__/integration.test.ts",
       "M packages/cli/src/commands/build.ts",
-      "M packages/cli/src/commands/github.ts",
       "M packages/cli/src/commands/serve.ts",
-      "M packages/cli/src/index.ts",
       "M packages/core/src/__tests__/github.test.ts",
-      "M packages/core/src/github/index.ts",
-      "M packages/core/src/index.ts",
-      "M packages/renderer/package.json",
-      "M packages/renderer/src/fumadocs.ts",
-      "M packages/renderer/tsup.config.ts"
+      "M packages/core/src/__tests__/markdown-parser.test.ts",
+      "M packages/core/src/application-map.ts",
+      "M packages/core/src/audit/docs-routes.ts",
+      "M packages/core/src/audit/openapi-docs.ts",
+      "M packages/core/src/audit/routes-undocumented.ts",
+      "M packages/core/src/audit/schema-coverage.ts",
+      "M packages/core/src/audit/stale-openapi.ts",
+      "M packages/core/src/github/relations.ts",
+      "M packages/core/src/parsers/markdown.ts",
+      "M packages/core/src/scanner/markdown.ts",
+      "M packages/core/src/types/wiki.ts",
+      "M packages/core/src/wiki/collectors/packages.ts",
+      "M packages/core/src/wiki/pages.ts"
     ],
     "recentCommits": [
+      {
+        "hash": "6e3e5b5",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(renderer): render Mermaid diagrams in preview app"
+      },
+      {
+        "hash": "18e9c5e",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "chore(docs): regenerate wiki artifacts"
+      },
+      {
+        "hash": "c23ceab",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "docs: update TASKS and PUBLISHING for preview app"
+      },
+      {
+        "hash": "591a8b2",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "test(cli): drop removed artifact assertions"
+      },
+      {
+        "hash": "31abbba",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "fix(renderer): drop emitted source.config/lib/source and duplicate h1"
+      },
+      {
+        "hash": "ba78017",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "fix(cli): clean source.config.ts and lib/ from old builds"
+      },
+      {
+        "hash": "83ee570",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(cli): rewrite serve to spawn preview app"
+      },
+      {
+        "hash": "7715d31",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(renderer): support ./preview subpath export"
+      },
+      {
+        "hash": "b15170c",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(renderer): add TanStack Start + Fumadocs preview app"
+      },
+      {
+        "hash": "27958d0",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(cli): add milestones sync command"
+      },
+      {
+        "hash": "3e377d3",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(core): add roadmap milestone sync"
+      },
       {
         "hash": "67ac65b",
         "date": "2026-06-29",
         "author": "Gabriel Bezerra Rodrigues",
         "subject": "feat(github): draft drift issues from checks"
-      },
-      {
-        "hash": "7e7434c",
-        "date": "2026-06-29",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "feat(github): add provenance cache model"
-      },
-      {
-        "hash": "22d7d9c",
-        "date": "2026-06-29",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "feat(github): add auth diagnostics"
-      },
-      {
-        "hash": "f98a3f1",
-        "date": "2026-06-29",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "chore(sdk): defer public sdk contract"
-      },
-      {
-        "hash": "7e52595",
-        "date": "2026-06-29",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "test(adapters): dogfood nestjs adapter"
-      },
-      {
-        "hash": "cf0d489",
-        "date": "2026-06-29",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "fix(adapters): serve fumadocs docs artifacts"
-      },
-      {
-        "hash": "b9e8d6c",
-        "date": "2026-06-29",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "test(dogfood): add npm cli validation"
-      },
-      {
-        "hash": "131eeea",
-        "date": "2026-06-29",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "feat(wiki): add navigation maps and search index"
-      },
-      {
-        "hash": "0be7c0b",
-        "date": "2026-06-29",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "feat(docs): switch wiki build to fumadocs output"
-      },
-      {
-        "hash": "a391352",
-        "date": "2026-06-28",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "docs: align public docs with shipped package behavior"
-      },
-      {
-        "hash": "6b56872",
-        "date": "2026-06-27",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "feat(core): integrate Mermaid diagrams in build (T2.1)"
-      },
-      {
-        "hash": "77ea4b3",
-        "date": "2026-06-27",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "fix: multiple bug fixes from code review"
       }
     ]
   },
@@ -273,6 +291,12 @@
       "path": "pages/known-gaps.md"
     },
     {
+      "title": "GitHub Map",
+      "slug": "github-map",
+      "description": "Cached GitHub provenance map for commits, pull requests, issues, milestones, and relations.",
+      "path": "pages/github-map.md"
+    },
+    {
       "title": "GitHub Issues",
       "slug": "github-issues",
       "description": "Cached GitHub issues created or synchronized from Peria drift findings.",
@@ -317,6 +341,7 @@
       "title": "Provenance",
       "pages": [
         "history",
+        "github-map",
         "github-issues"
       ]
     }

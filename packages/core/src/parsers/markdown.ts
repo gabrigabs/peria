@@ -16,7 +16,7 @@ import type { Heading, RouteMention, SchemaReference, SourceRef } from '../types
 import type { MarkdownSource } from '../types/source.js';
 
 // Pattern for route mentions: METHOD /path or just /path
-const ROUTE_PATTERN = /\b(GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\s+(\/[^\s\])}]+)/gi;
+const ROUTE_PATTERN = /\b(GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\s+(\/[^\s\])}`"']+)/gi;
 
 // Pattern for schema references: PascalCase words that look like DTOs/types
 const SCHEMA_PATTERN =
@@ -120,6 +120,7 @@ function extractFrontmatterFromContent(content: string): Record<string, unknown>
 function extractRouteMentions(content: string): RouteMention[] {
   const mentions: RouteMention[] = [];
   const seen = new Set<string>();
+  const seenPaths = new Set<string>();
 
   // Find METHOD /path patterns
   let match: RegExpExecArray | null;
@@ -130,11 +131,12 @@ function extractRouteMentions(content: string): RouteMention[] {
     if (match === null) break;
 
     const method = match[1].toUpperCase() as RouteMention['method'];
-    const path = match[2];
+    const path = normalizeRoutePath(match[2]);
     const key = `${method}:${path}`;
 
     if (!seen.has(key)) {
       seen.add(key);
+      seenPaths.add(path);
 
       // Get context around the mention (50 chars before and after)
       const start = Math.max(0, match.index - 50);
@@ -146,17 +148,23 @@ function extractRouteMentions(content: string): RouteMention[] {
   }
 
   // Also find standalone paths (starting with /)
-  const standalonePathPattern = /(?<![a-zA-Z])\/[\w/:-{}?*[\]]+(?![a-zA-Z/])/g;
+  const standalonePathPattern = /(?<![a-zA-Z:/])\/[\w/:-{}?*[\]]+(?![a-zA-Z/])/g;
   let standaloneMatch: RegExpExecArray | null;
 
   while (true) {
     standaloneMatch = standalonePathPattern.exec(content);
     if (standaloneMatch === null) break;
 
-    const path = standaloneMatch[0];
+    const path = normalizeRoutePath(standaloneMatch[0]);
     const key = `PATH:${path}`;
 
-    if (!seen.has(key) && !path.includes('{{')) {
+    if (
+      !seen.has(key) &&
+      !seenPaths.has(path) &&
+      !path.includes('{{') &&
+      !path.startsWith('//') &&
+      !isWithinUrl(content, standaloneMatch.index)
+    ) {
       // Skip template-like paths
       seen.add(key);
 
@@ -169,6 +177,20 @@ function extractRouteMentions(content: string): RouteMention[] {
   }
 
   return mentions;
+}
+
+function normalizeRoutePath(path: string): string {
+  return path.replace(/[`'",.;:]+$/g, '');
+}
+
+function isWithinUrl(content: string, index: number): boolean {
+  const tokenStart = Math.max(
+    content.lastIndexOf(' ', index),
+    content.lastIndexOf('\n', index),
+    content.lastIndexOf('\t', index)
+  );
+  const tokenPrefix = content.slice(tokenStart + 1, index);
+  return tokenPrefix.includes('://');
 }
 
 /**

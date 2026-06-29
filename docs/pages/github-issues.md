@@ -4,12 +4,31 @@ This page is generated from `.peria/github.json`. It shows cached issue records 
 
 ## Snapshot
 
-- Generated at: 2026-06-29T15:36:41.320Z
+- Generated at: 2026-06-29T21:34:30.646Z
 - Repository: peria
-- Open issues: 0
-- Total cached issues: 0
-- Relations: 276
+- Open issues: 18
+- Total cached issues: 30
+- Relations: 121
 
 ## Open Drift Issues
 
-_No entries found._
+| Issue | Title | Labels | Drift finding | Source |
+| --- | --- | --- | --- | --- |
+| #10004 | T0.4 Fresh install real com pacotes publicados | `peria`, `roadmap`, `status:open` | none | `TASKS.md` |
+| #10101 | T1.1 Decidir arquitetura do renderer | `peria`, `roadmap`, `status:open` | none | `TASKS.md` |
+| #10102 | T1.2 Criar modo Fumadocs mínimo | `peria`, `roadmap`, `status:open` | none | `TASKS.md` |
+| #10103 | T1.5 Embutir app TanStack Start + Fumadocs e ligar `peria serve` | `peria`, `roadmap`, `status:open` | none | `TASKS.md` |
+| #10104 | T1.3 Melhorar UX da documentação gerada | `peria`, `roadmap`, `status:open` | none | `TASKS.md` |
+| #10105 | T1.4 Busca e navegação | `peria`, `roadmap`, `status:open` | none | `TASKS.md` |
+| #10201 | T2.1 Incorporar Mermaid no build principal | `peria`, `roadmap`, `status:open` | none | `TASKS.md` |
+| #10203 | T2.3 Melhorar qualidade das claims | `peria`, `roadmap`, `status:open` | none | `TASKS.md` |
+| #10301 | T3.1 Dogfood usando npm, não workspace | `peria`, `roadmap`, `status:open` | none | `TASKS.md` |
+| #10302 | T3.2 Publicar os docs dogfoodados | `peria`, `roadmap`, `status:open` | none | `TASKS.md` |
+| #10303 | T3.3 Usar a wiki para guiar desenvolvimento | `peria`, `roadmap`, `status:open` | none | `TASKS.md` |
+| #10501 | T5.1 Definir escopo do GitHub sync | `peria`, `roadmap`, `status:open` | none | `TASKS.md` |
+| #10504 | T5.4 Criar issues a partir de drift | `peria`, `roadmap`, `status:open` | none | `TASKS.md` |
+| #10505 | T5.5 Milestones e organização de tarefas | `peria`, `roadmap`, `status:blocked` | none | `TASKS.md` |
+| #10506 | T5.6 Logs de commits melhores | `peria`, `roadmap`, `status:open` | none | `TASKS.md` |
+| #10601 | T6.1 Melhorar `peria init` | `peria`, `roadmap`, `status:open` | none | `TASKS.md` |
+| #10602 | T6.2 Melhorar mensagens de erro | `peria`, `roadmap`, `status:open` | none | `TASKS.md` |
+| #10703 | T7.3 Release notes e changelog | `peria`, `roadmap`, `status:open` | none | `TASKS.md` |

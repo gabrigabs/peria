@@ -22,8 +22,10 @@ This package contributes 0 source modules and 0 exported declarations to the gen
 
 - Directory: `.`
 - Version: 0.1.0
-- Scripts: `build`, `lint`, `typecheck`, `test`, `dev`, `docs:generate`, `docs:check`, `docs:serve`, `dogfood:npm`, `dogfood:nest`, `release:patch`, `release:minor`, `release:major`, `release:dry`
+- Publish status: private/deferred
+- Scripts: `build`, `lint`, `typecheck`, `test`, `dev`, `docs:generate`, `docs:check`, `docs:serve`, `dogfood:npm`, `dogfood:preview`, `dogfood:nest`, `example:nest`, `pack:check`, `release:patch`, `release:minor`, `release:major`, `release:dry`
 - Package exports: none
+- CLI bins: none
 - Internal package imports: none detected
 - External dependencies: `@biomejs/biome`, `@peria/core`, `@peria/renderer`, `vitest`
 
@@ -46,14 +48,16 @@ This package contributes 6 source modules and 24 exported declarations to the ge
 
 - Directory: `packages/adapters`
 - Version: 0.1.1
+- Publish status: public
 - Scripts: `build`, `typecheck`, `test`, `dev`
 - Package exports: `.`, `./express`, `./fastify`, `./nest`
+- CLI bins: none
 - Internal package imports: none detected
 - External dependencies: `@fastify/static`, `@nestjs/common`, `@nestjs/core`, `@types/express`, `@types/node`, `express`, `fastify`, `tsup`, `typescript`, `vitest`
 
 ## @peria/api-reference
 
-**Role:** Stoplight Elements integration for Peria API reference
+**Role:** Deferred API reference integration for future Peria OpenAPI rendering.
 
 **Audience:** Contributors working in this package.
 
@@ -65,8 +69,10 @@ This package contributes 2 source modules and 0 exported declarations to the gen
 
 - Directory: `packages/api-reference`
 - Version: 0.1.0
+- Publish status: private/deferred
 - Scripts: `build`, `dev`, `typecheck`
 - Package exports: `.`
+- CLI bins: none
 - Internal package imports: none detected
 - External dependencies: `@stoplight/elements`, `@stoplight/elements-core`, `@types/react`, `react`, `typescript`
 
@@ -90,8 +96,10 @@ This package contributes 18 source modules and 35 exported declarations to the g
 
 - Directory: `packages/cli`
 - Version: 0.1.2
+- Publish status: public
 - Scripts: `build`, `typecheck`, `test`, `dev`, `prepublishOnly`
 - Package exports: none
+- CLI bins: `peria`
 - Internal package imports: `@peria/core`, `@peria/renderer`, `@peria/renderer/preview`
 - External dependencies: `@clack/prompts`, `@peria/core`, `@peria/renderer`, `@types/node`, `cac`, `chalk`, `tsup`, `typescript`, `vitest`
 
@@ -109,14 +117,16 @@ This package contributes 18 source modules and 35 exported declarations to the g
 
 **Why it matters:**
 
-This package contributes 125 source modules and 629 exported declarations to the generated knowledge graph. Its manifest lives at `packages/core/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 127 source modules and 633 exported declarations to the generated knowledge graph. Its manifest lives at `packages/core/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
 - Directory: `packages/core`
 - Version: 0.1.1
+- Publish status: public
 - Scripts: `build`, `typecheck`, `test`, `test:run`, `dev`
 - Package exports: `.`, `./build`, `./config`, `./detectors`
+- CLI bins: none
 - Internal package imports: none detected
 - External dependencies: `@apidevtools/swagger-parser`, `@types/node`, `remark`, `remark-frontmatter`, `remark-parse`, `ts-morph`, `tsup`, `typescript`, `unified`, `vitest`, `zod`
 
@@ -134,8 +144,10 @@ This package contributes 11 source modules and 105 exported declarations to the 
 
 - Directory: `packages/renderer`
 - Version: 0.1.1
+- Publish status: public
 - Scripts: `build`, `typecheck`, `dev`, `test`
 - Package exports: `.`, `./preview`
+- CLI bins: none
 - Internal package imports: `@peria/core`
 - External dependencies: `@peria/core`, `@types/node`, `highlight.js`, `marked`, `tsup`, `typescript`
 
@@ -158,7 +170,9 @@ This package contributes 1 source modules and 2 exported declarations to the gen
 
 - Directory: `packages/sdk`
 - Version: 0.1.0
+- Publish status: private/deferred
 - Scripts: `build`, `typecheck`, `test`, `dev`
 - Package exports: `.`
+- CLI bins: none
 - Internal package imports: none detected
 - External dependencies: `@types/node`, `tsup`, `typescript`

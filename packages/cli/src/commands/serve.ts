@@ -6,7 +6,7 @@
 import { spawn } from 'node:child_process'
 import { existsSync } from 'node:fs'
 import { cp, mkdir, readFile, rm, symlink } from 'node:fs/promises'
-import { dirname, join, resolve } from 'node:path'
+import { dirname, join, relative, resolve } from 'node:path'
 import { createHash } from 'node:crypto'
 import { defineConfig, loadConfig } from '@peria/core'
 import { previewAppDir } from '@peria/renderer/preview'
@@ -85,10 +85,17 @@ async function syncAppTemplate(templateDir: string, cacheDir: string): Promise<v
   await mkdir(cacheDir, { recursive: true })
   await cp(templateDir, cacheDir, {
     recursive: true,
-    filter: (src) => !src.includes('node_modules') && !src.includes('.git'),
+    filter: (src) => shouldCopyTemplatePath(templateDir, src),
   })
   await installDeps(cacheDir)
   await writeFileAtomic(versionFile, templateVersion)
+}
+
+function shouldCopyTemplatePath(templateDir: string, sourcePath: string): boolean {
+  const relPath = relative(templateDir, sourcePath)
+  if (!relPath) return true
+  const segments = relPath.split(/[\\/]/)
+  return !segments.includes('node_modules') && !segments.includes('.git')
 }
 
 async function readTemplateVersion(templateDir: string): Promise<string> {
@@ -142,7 +149,9 @@ function installDeps(cacheDir: string): Promise<void> {
       stdio: 'inherit',
       shell: true,
     })
-    child.on('exit', (code) => (code === 0 ? res() : rej(new Error(`${pm} install exited with ${code}`))))
+    child.on('exit', (code) =>
+      code === 0 ? res() : rej(new Error(`${pm} install exited with ${code}`))
+    )
     child.on('error', rej)
   })
 }

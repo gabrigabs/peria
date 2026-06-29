@@ -17,6 +17,14 @@ function generateId(prefix: string, index: number): string {
   return `audit-${prefix}-${Date.now().toString(36)}-${index}`;
 }
 
+function routeKey(method: string | undefined, path: string): string {
+  return `${method || 'GET'}:${normalizePath(path)}`.toLowerCase();
+}
+
+function normalizePath(path: string): string {
+  return path.replace(/\{([^}]+)\}/g, ':$1').replace(/[`'",.;:]+$/g, '');
+}
+
 /**
  * OpenAPI vs Docs audit check
  */
@@ -33,7 +41,7 @@ export const runOpenAPIDocsCheck: AuditCheck = {
     const documentedRoutes = new Set<string>();
     for (const page of manifest.docsPages ?? []) {
       for (const mention of page.routeMentions ?? []) {
-        const key = `${mention.method ?? ''}:${mention.path}`.toLowerCase();
+        const key = routeKey(mention.method, mention.path);
         documentedRoutes.add(key);
       }
     }
@@ -51,8 +59,8 @@ export const runOpenAPIDocsCheck: AuditCheck = {
 
     // Check 1: OpenAPI operations without documentation (warning)
     for (const op of manifest.openapiOps ?? []) {
-      const routeKey = `${op.method}:${op.path}`.toLowerCase();
-      if (!documentedRoutes.has(routeKey)) {
+      const key = routeKey(op.method, op.path);
+      if (!documentedRoutes.has(key)) {
         findings.push({
           id: generateId('openapi-not-documented', index++),
           severity: 'warning',

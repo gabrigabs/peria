@@ -126,6 +126,37 @@ describe('github cache', () => {
     expect(progress[0]?.status.open).toBe(1);
     expect(progress[1]?.status.blocked).toBe(1);
   });
+
+  it('preserves milestone zero roadmap relations', () => {
+    const manifest = createManifest();
+    const markdown = [
+      '## Milestone 0 - Release hygiene',
+      '',
+      '### T0.1 Reconciliar versões',
+      '',
+      '- [x] Verificar versões',
+    ].join('\n');
+    const result = syncRoadmapMilestonesFromTasks(
+      manifest,
+      null,
+      markdown,
+      '2026-06-29T00:00:00.000Z'
+    );
+
+    const roadmapIssue = result.cache.issues.find((issue) => issue.id === 'issue:task:T0.1');
+
+    expect(result.cache.milestones[0]?.number).toBe(0);
+    expect(roadmapIssue?.milestoneNumber).toBe(0);
+    expect(result.cache.relations).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          type: 'issue_belongs_to_milestone',
+          sourceId: 'issue:task:T0.1',
+          targetId: 'milestone:tasks:0',
+        }),
+      ])
+    );
+  });
 });
 
 function createManifest(): PeriaManifest {

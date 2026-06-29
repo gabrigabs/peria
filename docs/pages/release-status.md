@@ -4,28 +4,40 @@ This generated status is intentionally conservative. It reports what the current
 
 ## Snapshot
 
-- Generated at: 2026-06-29T18:31:24.713Z
+- Generated at: 2026-06-29T21:34:30.993Z
 - Git branch: `feat/planning`
-- Git commit: `67ac65b8416ffe0e096598a05c74991e2fb66f8d`
-- Working tree: 36 changed files
-- Documentation pages: 15
+- Git commit: `6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6`
+- Working tree: 54 changed files
+- Documentation pages: 16
 - Renderer: `fumadocs`
+- Claim provenance: 1009/1009 claims have source provenance.
 
 ## Package Surface
 
 | Package | Directory | Surface | Dependencies |
 | --- | --- | --- | --- |
-| peria | `.` | internal or app package | 4 |
-| @peria/adapters | `packages/adapters` | public surface | 10 |
-| @peria/api-reference | `packages/api-reference` | public surface | 5 |
-| @peria/cli | `packages/cli` | internal or app package | 9 |
-| @peria/core | `packages/core` | public surface | 11 |
-| @peria/renderer | `packages/renderer` | public surface | 6 |
-| @peria/sdk | `packages/sdk` | public surface | 3 |
+| peria | `.` | private/deferred | 4 |
+| @peria/adapters | `packages/adapters` | public exports | 10 |
+| @peria/api-reference | `packages/api-reference` | private/deferred | 5 |
+| @peria/cli | `packages/cli` | CLI bin | 9 |
+| @peria/core | `packages/core` | public exports | 11 |
+| @peria/renderer | `packages/renderer` | public exports | 6 |
+| @peria/sdk | `packages/sdk` | private/deferred | 3 |
+
+## Generated Release Signals
+
+| Signal | Status | Detail |
+| --- | --- | --- |
+| Public package exports | ready | 4/4 releasable packages expose exports or CLI bins. |
+| CLI command handlers | ready | 2/2 CLI commands have implemented handlers. |
+| Adapter placeholders | ready | No placeholder adapters detected. |
+| Route coverage | missing | No routes are present in the latest scan manifest. |
+| Schema coverage | missing | No schemas are present in the latest scan manifest. |
+| OpenAPI coverage | missing | No OpenAPI operations are present in the latest scan manifest. |
 
 ## Release Gates Still Worth Checking
 
 - Fresh npm install outside the monorepo.
 - `npm pack --dry-run` for every package intended for publication.
-- A generated Fumadocs host app or documented integration harness.
-- Adapter dogfood against a real NestJS app.
+- Published tarball validation for the bundled Fumadocs preview app.
+- Dogfood docs drift check in CI.

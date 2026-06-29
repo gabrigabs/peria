@@ -159,6 +159,23 @@ describe('CLI Integration Tests', () => {
       );
       expect(appMap.summary.routes).toBeGreaterThan(0);
       expect(appMap.routes.length).toBeGreaterThan(0);
+      expect(appMap.areas.length).toBeGreaterThan(0);
+      expect(appMap.claimStatus.total).toBeGreaterThan(0);
+      expect(appMap.claimStatus.sourced).toBe(appMap.claimStatus.total);
+      expect(appMap.releaseSignals.length).toBeGreaterThan(0);
+      expect(appMap.recentChanges).toBeDefined();
+
+      const applicationMapPage = readFileSync(
+        join(fixturePath, 'docs/pages/application-map.md'),
+        'utf-8'
+      );
+      expect(applicationMapPage).toContain('## Release Signals');
+      expect(applicationMapPage).toContain('## Claim Quality');
+      expect(applicationMapPage).toContain('## Application Areas');
+
+      const wikiUiPage = readFileSync(join(fixturePath, 'docs/pages/wiki-ui.md'), 'utf-8');
+      expect(wikiUiPage).toContain('The bundled `@peria/renderer` preview app owns');
+      expect(wikiUiPage).not.toContain('`source.config.ts` and `lib/source.ts` provide');
 
       const manifest = JSON.parse(readFileSync(join(fixturePath, '.peria/manifest.json'), 'utf-8'));
       expect(manifest.routes?.length).toBeGreaterThan(0);
@@ -178,7 +195,7 @@ describe('CLI Integration Tests', () => {
   });
 
   describe('check command', () => {
-    it('should check a NestJS fixture and output findings', async () => {
+    it('should check a NestJS fixture and pass when generated docs are current', async () => {
       const fixturePath = createFixtureCopy('nestjs-basic');
 
       // First scan and build
@@ -187,7 +204,7 @@ describe('CLI Integration Tests', () => {
 
       // Then check
       const result = await runCli(['check'], fixturePath);
-      expect(result.exitCode).toBe(1);
+      expect(result.exitCode).toBe(0);
       expect(result.stdout).toContain('Peria Check');
     });
 
@@ -200,13 +217,14 @@ describe('CLI Integration Tests', () => {
 
       // Check with JSON output
       const result = await runCli(['check', '--json'], fixturePath);
-      expect(result.exitCode).toBe(1);
+      expect(result.exitCode).toBe(0);
 
       // Output should start with valid JSON object
       const trimmed = result.stdout.trim();
       expect(trimmed).toMatch(/^\{/);
       const parsed = JSON.parse(trimmed);
       expect(parsed.version).toBe('1.0.0');
+      expect(parsed.passed).toBe(true);
       expect(Array.isArray(parsed.checks)).toBe(true);
     });
 
@@ -217,12 +235,13 @@ describe('CLI Integration Tests', () => {
       await runCli(['build'], fixturePath);
 
       const result = await runCli(['check', '--json', '--severity', 'error'], fixturePath);
-      expect(result.exitCode).toBe(1);
+      expect(result.exitCode).toBe(0);
 
       // Output should be valid JSON
       const trimmed = result.stdout.trim();
       expect(trimmed).toMatch(/^\{/);
-      expect(() => JSON.parse(trimmed)).not.toThrow();
+      const parsed = JSON.parse(trimmed);
+      expect(parsed.summary.errors).toBe(0);
     });
   });
 
@@ -382,6 +401,18 @@ describe('CLI Integration Tests', () => {
       const issuesPage = readFileSync(join(fixturePath, 'docs/pages/github-issues.md'), 'utf-8');
       expect(issuesPage).toContain('# GitHub Issues');
       expect(issuesPage).toContain(firstCache.issues[0].title);
+
+      const githubMapPage = readFileSync(join(fixturePath, 'docs/pages/github-map.md'), 'utf-8');
+      expect(githubMapPage).toContain('# GitHub Map');
+      expect(githubMapPage).toContain('## Relationship Diagram');
+      expect(githubMapPage).toContain('```mermaid');
+
+      const wikiManifest = JSON.parse(
+        readFileSync(join(fixturePath, 'docs/wiki-manifest.json'), 'utf-8')
+      );
+      expect(wikiManifest.pages.some((page: { slug: string }) => page.slug === 'github-map')).toBe(
+        true
+      );
     });
   });
 

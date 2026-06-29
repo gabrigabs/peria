@@ -180,6 +180,22 @@ bun run dogfood:npm
 
 It installs `@peria/cli@latest` in a temporary project, copies the NestJS fixture, runs `scan`, `build`, `scan`, and `check --json`, and validates generated artifacts without workspace links.
 
+The repeatable local preview-app dogfood command is:
+
+```sh
+bun run dogfood:preview
+```
+
+It packs the local `@peria/core`, `@peria/renderer`, and `@peria/cli` packages into a temporary fixture, asserts the renderer tarball includes `app-template/**` and `dist/preview.js`, generates Fumadocs output, runs `peria serve` from the packed CLI, then validates `/docs/overview` and `/api/search`.
+
+The repeatable package-content validation command is:
+
+```sh
+bun run pack:check
+```
+
+It runs `npm pack --dry-run --json` for the current publishable packages and verifies required files such as the CLI bin, core declarations, adapter entrypoints, and renderer preview app are present before publish.
+
 The repeatable local NestJS adapter dogfood command is:
 
 ```sh
@@ -187,6 +203,14 @@ bun run dogfood:nest
 ```
 
 It packs the local `@peria/core`, `@peria/renderer`, `@peria/cli`, and `@peria/adapters` packages into a temporary NestJS fixture, generates Fumadocs output, compiles and starts the app, then validates `/docs`, `/docs/wiki-manifest.json`, `/docs/llms.txt`, a generated MDX artifact, a global API prefix, a docs subpath, and common missing/unreadable docs errors.
+
+The repeatable public example validation command is:
+
+```sh
+bun run example:nest
+```
+
+It copies `examples/nestjs-api` to a temporary directory, installs local packed Peria packages, regenerates docs, runs `peria check --json`, compiles and starts the NestJS app, then validates `/api/users`, `/docs`, `/docs/wiki-manifest.json`, `/docs/content/docs/overview.mdx`, and `/docs/llms.txt`.
 
 ## Versioning Strategy
 
@@ -204,7 +228,7 @@ Until changesets or release automation exist, versioning is manual and must foll
    - `@peria/cli` depends on the published `@peria/core` and `@peria/renderer` versions.
    - `@peria/renderer` depends on the published `@peria/core` version.
 4. Run `bun install` so `bun.lock` reflects the manifest changes.
-5. Run build, typecheck, tests, and `npm pack --dry-run` for every publishable package.
+5. Run build, typecheck, tests, `dogfood:preview`, `dogfood:nest`, `example:nest`, and `npm pack --dry-run` for every publishable package.
 6. Publish dependencies first, then dependents.
 
 For experimental semver, use:

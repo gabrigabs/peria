@@ -16,6 +16,7 @@ import {
   buildApplicationMap,
   buildWiki,
   createLlmsText,
+  createMilestoneProgress,
   defineConfig,
   type GitHubCache,
   type GitHubIssue,
@@ -239,6 +240,13 @@ function createGitHubPages(cache: GitHubCache | null): WikiPage[] {
 
   return [
     createWikiPage(
+      'github-map',
+      'GitHub Map',
+      'Cached GitHub provenance map for commits, pull requests, issues, milestones, and relations.',
+      renderGitHubMapPage(cache),
+      ['.peria/github.json']
+    ),
+    createWikiPage(
       'github-issues',
       'GitHub Issues',
       'Cached GitHub issues created or synchronized from Peria drift findings.',
@@ -295,7 +303,7 @@ function appendPagesToManifest(manifest: WikiManifest, pages: WikiPage[]): WikiM
   const provenancePages = new Set(['history']);
 
   for (const page of pages) {
-    if (page.slug === 'github-issues') {
+    if (page.slug === 'github-issues' || page.slug === 'github-map') {
       provenancePages.add(page.slug);
       continue;
     }
@@ -419,11 +427,20 @@ function renderDiagramsPage(result: MermaidResult, diagramsDir: string, baseRout
 
 function renderApplicationMapPage(appMap: ApplicationMap): string {
   const summaryRows = Object.entries(appMap.summary).map(([key, value]) => [key, String(value)]);
+  const areaRows = appMap.areas.map((area) => [
+    area.name,
+    area.directory ? `\`${area.directory}\`` : 'unknown',
+    String(area.moduleCount),
+    String(area.exportCount),
+    area.internalDependencies.map((dependency) => `\`${dependency}\``).join(', ') || 'none',
+  ]);
   const packageRows = appMap.packages.map((pkg) => [
     pkg.name,
     `\`${pkg.directory}\``,
+    pkg.private ? 'private' : (pkg.publishAccess ?? 'public/default'),
     String(pkg.dependencies.length),
     String(pkg.exports.length),
+    pkg.bins.map((bin) => `\`${bin}\``).join(', ') || 'none',
   ]);
   const moduleRows = appMap.modules
     .slice(0, 40)
@@ -455,11 +472,33 @@ function renderApplicationMapPage(appMap: ApplicationMap): string {
     `\`${page.slug}\``,
     `\`${page.path}\``,
   ]);
+  const claimRows = [
+    ['Total claims', String(appMap.claimStatus.total)],
+    ['Sourced claims', String(appMap.claimStatus.sourced)],
+    ['Unsourced claims', String(appMap.claimStatus.unsourced)],
+    ['High confidence', String(appMap.claimStatus.highConfidence)],
+    ['Medium confidence', String(appMap.claimStatus.mediumConfidence)],
+    ['Low confidence', String(appMap.claimStatus.lowConfidence)],
+  ];
+  const releaseRows = appMap.releaseSignals.map((signal) => [
+    signal.name,
+    signal.status,
+    signal.detail,
+  ]);
+  const recentRows = appMap.recentChanges
+    .slice(0, 8)
+    .map((change) => [
+      `\`${change.hash}\``,
+      change.date,
+      change.author,
+      change.referencedIssues.map((issue) => `\`${issue}\``).join(', ') || 'none',
+      change.subject,
+    ]);
 
   return [
     '# Application Map',
     '',
-    'The application map is the compact artifact for answering what exists, where it lives, and how the current wiki output is connected.',
+    'The application map is the compact artifact for answering what exists, where it lives, how mature it is, and how the current wiki output is connected.',
     '',
     '## Project',
     '',
@@ -472,6 +511,18 @@ function renderApplicationMapPage(appMap: ApplicationMap): string {
     '',
     markdownTable(['Area', 'Count'], summaryRows),
     '',
+    '## Release Signals',
+    '',
+    markdownTable(['Signal', 'Status', 'Detail'], releaseRows),
+    '',
+    '## Claim Quality',
+    '',
+    markdownTable(['Metric', 'Count'], claimRows),
+    '',
+    '## Application Areas',
+    '',
+    markdownTable(['Area', 'Directory', 'Modules', 'Exports', 'Internal dependencies'], areaRows),
+    '',
     '## Entrypoints',
     '',
     `- CLI commands: ${appMap.entrypoints.cli.map((item) => `\`${item}\``).join(', ') || 'none'}`,
@@ -479,7 +530,10 @@ function renderApplicationMapPage(appMap: ApplicationMap): string {
     '',
     '## Packages',
     '',
-    markdownTable(['Package', 'Directory', 'Dependencies', 'Exports'], packageRows),
+    markdownTable(
+      ['Package', 'Directory', 'Publish', 'Dependencies', 'Exports', 'Bins'],
+      packageRows
+    ),
     '',
     '## Modules',
     '',
@@ -501,6 +555,10 @@ function renderApplicationMapPage(appMap: ApplicationMap): string {
     '',
     markdownTable(['Title', 'Slug', 'Path'], pageRows),
     '',
+    '## Recent Changes',
+    '',
+    markdownTable(['Commit', 'Date', 'Author', 'Issue refs', 'Subject'], recentRows),
+    '',
     '## Git Context',
     '',
     `- Branch: \`${appMap.git.branch ?? 'unknown'}\``,
@@ -511,21 +569,26 @@ function renderApplicationMapPage(appMap: ApplicationMap): string {
 }
 
 function renderDevelopmentMapPage(appMap: ApplicationMap): string {
-  const packageRows = appMap.packages.map((pkg) => {
-    const moduleCount = appMap.modules.filter((module) => module.packageName === pkg.name).length;
-    return [
-      pkg.name,
-      `\`${pkg.directory}\``,
-      String(moduleCount),
-      pkg.dependencies.filter((dependency) => dependency.startsWith('@peria/')).join(', ') ||
-        'none',
-    ];
-  });
+  const areaRows = appMap.areas.map((area) => [
+    area.name,
+    area.directory ? `\`${area.directory}\`` : 'unknown',
+    String(area.moduleCount),
+    String(area.exportCount),
+    area.internalDependencies.map((dependency) => `\`${dependency}\``).join(', ') || 'none',
+  ]);
   const entryRows = [
     ['CLI commands', appMap.entrypoints.cli.map((item) => `\`${item}\``).join(', ') || 'none'],
     ['Adapters', appMap.entrypoints.adapters.map((item) => `\`${item}\``).join(', ') || 'none'],
     ['Docs renderer', `\`${appMap.docs.renderer}\` at \`${appMap.docs.outputDir}\``],
   ];
+  const impactRows = appMap.areas.map((area) => [
+    area.name,
+    area.sourceFiles
+      .slice(0, 5)
+      .map((file) => `\`${file}\``)
+      .join(', ') || 'none',
+    area.sourceFiles.length > 5 ? `${area.sourceFiles.length - 5} more files` : 'complete',
+  ]);
 
   return [
     '# Development Map',
@@ -534,11 +597,15 @@ function renderDevelopmentMapPage(appMap: ApplicationMap): string {
     '',
     '## Change Areas',
     '',
-    markdownTable(['Package', 'Directory', 'Modules', 'Internal dependencies'], packageRows),
+    markdownTable(['Area', 'Directory', 'Modules', 'Exports', 'Internal dependencies'], areaRows),
     '',
     '## Entrypoints',
     '',
     markdownTable(['Surface', 'Entries'], entryRows),
+    '',
+    '## Impact Reading Map',
+    '',
+    markdownTable(['Area', 'Start with', 'Coverage'], impactRows),
     '',
     '## Suggested Reading Order',
     '',
@@ -555,9 +622,18 @@ function renderReleaseStatusPage(appMap: ApplicationMap): string {
   const packageRows = appMap.packages.map((pkg) => [
     pkg.name,
     `\`${pkg.directory}\``,
-    pkg.exports.length > 0 ? 'public surface' : 'internal or app package',
+    describePackageSurface(pkg),
     String(pkg.dependencies.length),
   ]);
+  const releaseRows = appMap.releaseSignals.map((signal) => [
+    signal.name,
+    signal.status,
+    signal.detail,
+  ]);
+  const claimCompleteness =
+    appMap.claimStatus.total === 0
+      ? 'No claims generated.'
+      : `${appMap.claimStatus.sourced}/${appMap.claimStatus.total} claims have source provenance.`;
 
   return [
     '# Release Status',
@@ -572,17 +648,22 @@ function renderReleaseStatusPage(appMap: ApplicationMap): string {
     `- Working tree: ${appMap.git.isDirty ? `${appMap.git.changedFiles.length} changed files` : 'clean'}`,
     `- Documentation pages: ${appMap.summary.pages}`,
     `- Renderer: \`${appMap.docs.renderer}\``,
+    `- Claim provenance: ${claimCompleteness}`,
     '',
     '## Package Surface',
     '',
     markdownTable(['Package', 'Directory', 'Surface', 'Dependencies'], packageRows),
     '',
+    '## Generated Release Signals',
+    '',
+    markdownTable(['Signal', 'Status', 'Detail'], releaseRows),
+    '',
     '## Release Gates Still Worth Checking',
     '',
     '- Fresh npm install outside the monorepo.',
     '- `npm pack --dry-run` for every package intended for publication.',
-    '- A generated Fumadocs host app or documented integration harness.',
-    '- Adapter dogfood against a real NestJS app.',
+    '- Published tarball validation for the bundled Fumadocs preview app.',
+    '- Dogfood docs drift check in CI.',
     '',
   ].join('\n');
 }
@@ -617,6 +698,183 @@ function renderGitHubIssuesPage(cache: GitHubCache): string {
   ].join('\n');
 }
 
+function renderGitHubMapPage(cache: GitHubCache): string {
+  const milestoneProgress = createMilestoneProgress(cache);
+  const summaryRows = [
+    ['Issues', String(cache.issues.length)],
+    ['Pull requests', String(cache.pullRequests.length)],
+    ['Milestones', String(cache.milestones.length)],
+    ['Commits', String(cache.commits.length)],
+    ['Relations', String(cache.relations.length)],
+  ];
+  const relationRows = Object.entries(
+    countBy(cache.relations.map((relation) => relation.type))
+  ).map(([type, count]) => [`\`${type}\``, String(count)]);
+  const milestoneRows = milestoneProgress.map((item) => [
+    formatMilestoneNumber(item.milestone),
+    item.milestone.title,
+    item.milestone.state,
+    String(item.issues.length),
+    String(item.status.done),
+    String(item.status.open),
+    String(item.status.blocked),
+    String(item.pullRequests.length),
+    String(item.commits.length),
+  ]);
+  const pullRequestRows = cache.pullRequests
+    .slice(0, 20)
+    .map((pr) => [
+      formatPullRequestNumber(pr),
+      pr.title,
+      pr.state,
+      pr.labels.map((label) => `\`${label}\``).join(', ') || 'none',
+      pr.issueNumbers.map((issue) => `#${issue}`).join(', ') || 'none',
+      pr.commits.map((commit) => `\`${commit.slice(0, 7)}\``).join(', ') || 'none',
+    ]);
+  const issueRows = cache.issues
+    .slice(0, 30)
+    .map((issue) => [
+      formatIssueNumber(issue),
+      issue.title,
+      issue.state,
+      issue.labels.map((label) => `\`${label}\``).join(', ') || 'none',
+      typeof issue.milestoneNumber === 'number' ? `#${issue.milestoneNumber}` : 'none',
+      issue.source ? `\`${formatSourceRef(issue)}\`` : 'none',
+    ]);
+  const commitRows = cache.commits
+    .slice(0, 20)
+    .map((commit) => [
+      commit.url ? `[${commit.shortSha}](${commit.url})` : `\`${commit.shortSha}\``,
+      commit.date ?? 'unknown',
+      commit.author ?? 'unknown',
+      commit.issueNumbers.map((issue) => `#${issue}`).join(', ') || 'none',
+      String(commit.files.length),
+      commit.subject,
+    ]);
+
+  return [
+    '# GitHub Map',
+    '',
+    'This page is generated from `.peria/github.json`. It is cache-first: Peria can render local commit provenance, roadmap milestones, drift issues, and inferred relations before any live GitHub synchronization exists.',
+    '',
+    '## Repository',
+    '',
+    `- Repository: ${cache.repository.owner ? `${cache.repository.owner}/` : ''}${cache.repository.name}`,
+    `- Current branch: \`${cache.repository.currentBranch ?? 'unknown'}\``,
+    `- Default branch: \`${cache.repository.defaultBranch ?? 'unknown'}\``,
+    `- Generated at: ${cache.generatedAt}`,
+    '',
+    '## Coverage',
+    '',
+    markdownTable(['Entity', 'Count'], summaryRows),
+    '',
+    '## Relationship Diagram',
+    '',
+    renderGitHubMermaid(cache),
+    '',
+    '## Relation Types',
+    '',
+    markdownTable(['Relation', 'Count'], relationRows),
+    '',
+    '## Milestones',
+    '',
+    markdownTable(
+      ['Milestone', 'Title', 'State', 'Issues', 'Done', 'Open', 'Blocked', 'PRs', 'Commits'],
+      milestoneRows
+    ),
+    '',
+    '## Pull Requests',
+    '',
+    markdownTable(['PR', 'Title', 'State', 'Labels', 'Issues', 'Commits'], pullRequestRows),
+    '',
+    '## Issues',
+    '',
+    markdownTable(['Issue', 'Title', 'State', 'Labels', 'Milestone', 'Source'], issueRows),
+    '',
+    '## Recent Commits',
+    '',
+    markdownTable(['Commit', 'Date', 'Author', 'Issues', 'Files', 'Subject'], commitRows),
+    '',
+  ].join('\n');
+}
+
+function renderGitHubMermaid(cache: GitHubCache): string {
+  const lines = [
+    '```mermaid',
+    'flowchart LR',
+    `  repo["${escapeMermaidLabel(cache.repository.name)}"]`,
+    '  repo --> commits["Commits"]',
+    '  repo --> prs["Pull Requests"]',
+    '  repo --> issues["Issues"]',
+    '  repo --> milestones["Milestones"]',
+  ];
+  const relationLines = cache.relations.slice(0, 40).map((relation, index) => {
+    const source = mermaidNodeId(`source_${index}`);
+    const target = mermaidNodeId(`target_${index}`);
+    return [
+      `  ${source}["${escapeMermaidLabel(shortGitHubId(relation.sourceId))}"]`,
+      `  ${target}["${escapeMermaidLabel(shortGitHubId(relation.targetId))}"]`,
+      `  ${source} -->|${escapeMermaidLabel(relation.type)}| ${target}`,
+    ].join('\n');
+  });
+
+  if (relationLines.length === 0) {
+    lines.push('  commits -. inferred from .peria/manifest.json .-> issues');
+  } else {
+    lines.push(...relationLines);
+  }
+
+  lines.push('```');
+  return lines.join('\n');
+}
+
+function countBy(values: string[]): Record<string, number> {
+  return values.reduce<Record<string, number>>((counts, value) => {
+    counts[value] = (counts[value] ?? 0) + 1;
+    return counts;
+  }, {});
+}
+
+function formatMilestoneNumber(milestone: GitHubCache['milestones'][number]): string {
+  return milestone.url ? `[#${milestone.number}](${milestone.url})` : `#${milestone.number}`;
+}
+
+function formatPullRequestNumber(pr: GitHubCache['pullRequests'][number]): string {
+  return pr.url ? `[#${pr.number}](${pr.url})` : `#${pr.number}`;
+}
+
+function shortGitHubId(id: string): string {
+  return id.length > 34 ? `${id.slice(0, 31)}...` : id;
+}
+
+function mermaidNodeId(value: string): string {
+  return value.replace(/[^A-Za-z0-9_]/g, '_');
+}
+
+function escapeMermaidLabel(value: string): string {
+  return value.replace(/"/g, '\\"');
+}
+
+function describePackageSurface(pkg: ApplicationMap['packages'][number]): string {
+  if (pkg.private) {
+    return 'private/deferred';
+  }
+
+  if (pkg.bins.length > 0 && pkg.exports.length > 0) {
+    return 'public exports and CLI bin';
+  }
+
+  if (pkg.bins.length > 0) {
+    return 'CLI bin';
+  }
+
+  if (pkg.exports.length > 0) {
+    return 'public exports';
+  }
+
+  return 'missing public surface';
+}
+
 function formatIssueNumber(issue: GitHubIssue): string {
   return issue.url ? `[#${issue.number}](${issue.url})` : `#${issue.number}`;
 }
@@ -633,7 +891,10 @@ function formatSourceRef(issue: GitHubIssue): string {
 }
 
 function renderKnownGapsPage(appMap: ApplicationMap): string {
-  const gaps = [
+  const generatedGaps = appMap.releaseSignals
+    .filter((signal) => signal.status !== 'ready')
+    .map((signal) => [signal.name, signal.detail]);
+  const coverageGaps = [
     appMap.summary.routes === 0
       ? [
           'API routes',
@@ -653,11 +914,15 @@ function renderKnownGapsPage(appMap: ApplicationMap): string {
         ]
       : ['OpenAPI', `${appMap.openapi.length} operations are present.`],
     [
-      'Fumadocs app',
-      'Peria generates Fumadocs-compatible content, but does not yet scaffold or run a full host app.',
+      'Fumadocs preview tarball',
+      'The preview app is bundled locally; the next release still needs `dogfood:npm` validation against the published tarball.',
     ],
-    ['GitHub sync', 'Issues, PRs, milestones, and auth are still roadmap work.'],
+    [
+      'GitHub sync',
+      'Issue cache and auth exist, but PR/milestone synchronization still needs a live GitHub-backed flow.',
+    ],
   ];
+  const gaps = [...generatedGaps, ...coverageGaps];
 
   return [
     '# Known Gaps',
@@ -670,7 +935,7 @@ function renderKnownGapsPage(appMap: ApplicationMap): string {
     '',
     '- Package, module, CLI, adapter, history, diagram, and docs-page knowledge is available in this build.',
     '- Route, schema, and OpenAPI completeness depends on a current scan manifest with those entities.',
-    '- Public adoption still needs a Fumadocs host app story, adapter dogfood, and changelog/release notes.',
+    '- Public adoption still needs published-package dogfood, docs drift CI, and live GitHub milestone synchronization.',
     '',
   ].join('\n');
 }

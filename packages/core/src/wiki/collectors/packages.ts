@@ -10,11 +10,16 @@ interface PackageJson {
   name?: string;
   version?: string;
   description?: string;
+  private?: boolean;
+  publishConfig?: {
+    access?: string;
+  };
   scripts?: Record<string, string>;
   dependencies?: Record<string, string>;
   devDependencies?: Record<string, string>;
   peerDependencies?: Record<string, string>;
   exports?: string[] | Record<string, unknown>;
+  bin?: string | Record<string, string>;
 }
 
 function normalizePath(path: string): string {
@@ -26,6 +31,12 @@ function getExportKeys(exportsField: PackageJson['exports']): string[] {
   if (!exportsField) return [];
   if (Array.isArray(exportsField)) return exportsField;
   return Object.keys(exportsField).sort();
+}
+
+function getBinKeys(binField: PackageJson['bin']): string[] {
+  if (!binField) return [];
+  if (typeof binField === 'string') return ['default'];
+  return Object.keys(binField).sort();
 }
 
 async function readJsonFile<T>(path: string): Promise<T | null> {
@@ -73,9 +84,12 @@ export async function collectPackages(cwd: string): Promise<PackageSummary[]> {
       directory: normalizePath(dirname(manifestPath)),
       manifestPath,
       description: pkg.description,
+      private: pkg.private ?? false,
+      publishAccess: pkg.publishConfig?.access,
       scripts: pkg.scripts ?? {},
       dependencies,
       exports: getExportKeys(pkg.exports),
+      bins: getBinKeys(pkg.bin),
     });
   }
 

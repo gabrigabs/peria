@@ -1,0 +1,24 @@
+{
+  "title": "Peria NestJS API Example Wiki",
+  "pages": [
+    "---Start here---",
+    "overview",
+    "ai-context",
+    "---Product surface---",
+    "packages",
+    "cli",
+    "configuration",
+    "---Code map---",
+    "modules",
+    "adapters",
+    "wiki-ui",
+    "diagrams",
+    "application-map",
+    "---Maintenance---",
+    "development-map",
+    "release-status",
+    "known-gaps",
+    "---Provenance---",
+    "history"
+  ]
+}

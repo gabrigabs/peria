@@ -240,12 +240,14 @@ function renderPackages(input: {
       '',
       `- Directory: \`${pkg.directory}\``,
       `- Version: ${pkg.version ?? 'unknown'}`,
+      `- Publish status: ${pkg.private ? 'private/deferred' : (pkg.publishAccess ?? 'public/default')}`,
       `- Scripts: ${
         Object.keys(pkg.scripts)
           .map((script) => `\`${script}\``)
           .join(', ') || 'none'
       }`,
       `- Package exports: ${pkg.exports.map((item) => `\`${item}\``).join(', ') || 'none'}`,
+      `- CLI bins: ${pkg.bins.map((item) => `\`${item}\``).join(', ') || 'none'}`,
       `- Internal package imports: ${internalImports.map((item) => `\`${item}\``).join(', ') || 'none detected'}`,
       `- External dependencies: ${pkg.dependencies.map((dependency) => `\`${dependency}\``).join(', ') || 'none'}`,
       '',
@@ -440,7 +442,7 @@ function renderWikiUi(config: ResolvedPeriaConfig): string {
     '- Markdown pages remain the source of truth.',
     '- `content/docs/**/*.mdx` contains the Fumadocs-compatible page content.',
     '- `content/docs/meta.json` carries sidebar ordering from the wiki manifest.',
-    '- `source.config.ts` and `lib/source.ts` provide the Fumadocs collection and loader bridge.',
+    '- The bundled `@peria/renderer` preview app owns `source.config.ts` and the Fumadocs loader bridge.',
     '- `search-index.json` provides a compact index of page titles, headings, URLs, and source paths.',
     '- `wiki-manifest.json` remains the Peria-owned page registry for agents and tooling.',
     '',

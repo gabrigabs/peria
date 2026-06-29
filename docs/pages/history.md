@@ -5,79 +5,97 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 ## Current Revision
 
 - Branch: `feat/planning`
-- Commit: `67ac65b8416ffe0e096598a05c74991e2fb66f8d`
-- Subject: feat(github): draft drift issues from checks
+- Commit: `6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6`
+- Subject: feat(renderer): render Mermaid diagrams in preview app
 - Author: Gabriel Bezerra Rodrigues <gabrielbrodrigues1@gmail.com>
-- Authored at: 2026-06-29T12:38:12-03:00
-- Working tree: 36 changed files
+- Authored at: 2026-06-29T15:54:00-03:00
+- Working tree: 54 changed files
 
 ## Working Tree Changes
 
+- `M .github/workflows/ci.yml`
+- `M .github/workflows/publish.yml`
+- `M .peria/github.json`
 - `M .peria/manifest.json`
+- `M CHANGELOG.md`
 - `M PUBLISHING.md`
+- `M README.md`
 - `M TASKS.md`
-- `M docs/README.md`
 - `M docs/content/docs/ai-context.mdx`
 - `M docs/content/docs/application-map.mdx`
 - `M docs/content/docs/development-map.mdx`
 - `M docs/content/docs/diagrams.mdx`
+- `M docs/content/docs/github-issues.mdx`
 - `M docs/content/docs/history.mdx`
+- `M docs/content/docs/known-gaps.mdx`
+- `M docs/content/docs/meta.json`
 - `M docs/content/docs/modules.mdx`
 - `M docs/content/docs/overview.mdx`
 - `M docs/content/docs/packages.mdx`
 - `M docs/content/docs/release-status.mdx`
-- `D docs/lib/source.ts`
+- `M docs/content/docs/wiki-ui.mdx`
 - `M docs/pages/ai-context.md`
 - `M docs/pages/application-map.md`
 - `M docs/pages/development-map.md`
 - `M docs/pages/diagrams.md`
+- `M docs/pages/github-issues.md`
 - `M docs/pages/history.md`
+- `M docs/pages/known-gaps.md`
 - `M docs/pages/modules.md`
 - `M docs/pages/overview.md`
 - `M docs/pages/packages.md`
 - `M docs/pages/release-status.md`
-- `D docs/source.config.ts`
+- `M docs/pages/wiki-ui.md`
+- `M docs/search-index.json`
 - `M docs/wiki-manifest.json`
+- `M package.json`
+- `M packages/api-reference/package.json`
 - `M packages/cli/src/__tests__/integration.test.ts`
 - `M packages/cli/src/commands/build.ts`
-- `M packages/cli/src/commands/github.ts`
 - `M packages/cli/src/commands/serve.ts`
-- `M packages/cli/src/index.ts`
 - `M packages/core/src/__tests__/github.test.ts`
-- `M packages/core/src/github/index.ts`
-- `M packages/core/src/index.ts`
-- `M packages/renderer/package.json`
-- `M packages/renderer/src/fumadocs.ts`
-- `M packages/renderer/tsup.config.ts`
+- `M packages/core/src/__tests__/markdown-parser.test.ts`
+- `M packages/core/src/application-map.ts`
+- `M packages/core/src/audit/docs-routes.ts`
+- `M packages/core/src/audit/openapi-docs.ts`
+- `M packages/core/src/audit/routes-undocumented.ts`
+- `M packages/core/src/audit/schema-coverage.ts`
+- `M packages/core/src/audit/stale-openapi.ts`
+- `M packages/core/src/github/relations.ts`
+- `M packages/core/src/parsers/markdown.ts`
+- `M packages/core/src/scanner/markdown.ts`
+- `M packages/core/src/types/wiki.ts`
+- `M packages/core/src/wiki/collectors/packages.ts`
+- `M packages/core/src/wiki/pages.ts`
 
 ## Recent Commits
 
 | Commit | Date | Author | Subject |
 | --- | --- | --- | --- |
+| `6e3e5b5` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(renderer): render Mermaid diagrams in preview app |
+| `18e9c5e` | 2026-06-29 | Gabriel Bezerra Rodrigues | chore(docs): regenerate wiki artifacts |
+| `c23ceab` | 2026-06-29 | Gabriel Bezerra Rodrigues | docs: update TASKS and PUBLISHING for preview app |
+| `591a8b2` | 2026-06-29 | Gabriel Bezerra Rodrigues | test(cli): drop removed artifact assertions |
+| `31abbba` | 2026-06-29 | Gabriel Bezerra Rodrigues | fix(renderer): drop emitted source.config/lib/source and duplicate h1 |
+| `ba78017` | 2026-06-29 | Gabriel Bezerra Rodrigues | fix(cli): clean source.config.ts and lib/ from old builds |
+| `83ee570` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(cli): rewrite serve to spawn preview app |
+| `7715d31` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(renderer): support ./preview subpath export |
+| `b15170c` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(renderer): add TanStack Start + Fumadocs preview app |
+| `27958d0` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(cli): add milestones sync command |
+| `3e377d3` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(core): add roadmap milestone sync |
 | `67ac65b` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(github): draft drift issues from checks |
-| `7e7434c` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(github): add provenance cache model |
-| `22d7d9c` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(github): add auth diagnostics |
-| `f98a3f1` | 2026-06-29 | Gabriel Bezerra Rodrigues | chore(sdk): defer public sdk contract |
-| `7e52595` | 2026-06-29 | Gabriel Bezerra Rodrigues | test(adapters): dogfood nestjs adapter |
-| `cf0d489` | 2026-06-29 | Gabriel Bezerra Rodrigues | fix(adapters): serve fumadocs docs artifacts |
-| `b9e8d6c` | 2026-06-29 | Gabriel Bezerra Rodrigues | test(dogfood): add npm cli validation |
-| `131eeea` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(wiki): add navigation maps and search index |
-| `0be7c0b` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(docs): switch wiki build to fumadocs output |
-| `a391352` | 2026-06-28 | Gabriel Bezerra Rodrigues | docs: align public docs with shipped package behavior |
-| `6b56872` | 2026-06-27 | Gabriel Bezerra Rodrigues | feat(core): integrate Mermaid diagrams in build (T2.1) |
-| `77ea4b3` | 2026-06-27 | Gabriel Bezerra Rodrigues | fix: multiple bug fixes from code review |
 
 ## Raw Log Snapshot
 
+- 6e3e5b5 2026-06-29 feat(renderer): render Mermaid diagrams in preview app
+- 18e9c5e 2026-06-29 chore(docs): regenerate wiki artifacts
+- c23ceab 2026-06-29 docs: update TASKS and PUBLISHING for preview app
+- 591a8b2 2026-06-29 test(cli): drop removed artifact assertions
+- 31abbba 2026-06-29 fix(renderer): drop emitted source.config/lib/source and duplicate h1
+- ba78017 2026-06-29 fix(cli): clean source.config.ts and lib/ from old builds
+- 83ee570 2026-06-29 feat(cli): rewrite serve to spawn preview app
+- 7715d31 2026-06-29 feat(renderer): support ./preview subpath export
+- b15170c 2026-06-29 feat(renderer): add TanStack Start + Fumadocs preview app
+- 27958d0 2026-06-29 feat(cli): add milestones sync command
+- 3e377d3 2026-06-29 feat(core): add roadmap milestone sync
 - 67ac65b 2026-06-29 feat(github): draft drift issues from checks
-- 7e7434c 2026-06-29 feat(github): add provenance cache model
-- 22d7d9c 2026-06-29 feat(github): add auth diagnostics
-- f98a3f1 2026-06-29 chore(sdk): defer public sdk contract
-- 7e52595 2026-06-29 test(adapters): dogfood nestjs adapter
-- cf0d489 2026-06-29 fix(adapters): serve fumadocs docs artifacts
-- b9e8d6c 2026-06-29 test(dogfood): add npm cli validation
-- 131eeea 2026-06-29 feat(wiki): add navigation maps and search index
-- 0be7c0b 2026-06-29 feat(docs): switch wiki build to fumadocs output
-- a391352 2026-06-28 docs: align public docs with shipped package behavior
-- 6b56872 2026-06-27 feat(core): integrate Mermaid diagrams in build (T2.1)
-- 77ea4b3 2026-06-27 fix: multiple bug fixes from code review

@@ -167,6 +167,9 @@
     "headings": [
       "Project",
       "Summary",
+      "Release Signals",
+      "Claim Quality",
+      "Application Areas",
       "Entrypoints",
       "Packages",
       "Modules",
@@ -174,6 +177,7 @@
       "Schemas",
       "OpenAPI Operations",
       "Documentation Pages",
+      "Recent Changes",
       "Git Context"
     ],
     "sources": [
@@ -189,6 +193,7 @@
     "headings": [
       "Change Areas",
       "Entrypoints",
+      "Impact Reading Map",
       "Suggested Reading Order"
     ],
     "sources": [
@@ -204,6 +209,7 @@
     "headings": [
       "Snapshot",
       "Package Surface",
+      "Generated Release Signals",
       "Release Gates Still Worth Checking"
     ],
     "sources": [
@@ -223,6 +229,25 @@
     "sources": [
       "TASKS.md",
       ".peria/application-map.json"
+    ]
+  },
+  {
+    "title": "GitHub Map",
+    "slug": "github-map",
+    "url": "/docs/github-map",
+    "description": "Cached GitHub provenance map for commits, pull requests, issues, milestones, and relations.",
+    "headings": [
+      "Repository",
+      "Coverage",
+      "Relationship Diagram",
+      "Relation Types",
+      "Milestones",
+      "Pull Requests",
+      "Issues",
+      "Recent Commits"
+    ],
+    "sources": [
+      ".peria/github.json"
     ]
   },
   {

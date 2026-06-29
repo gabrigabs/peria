@@ -151,7 +151,7 @@ export function createGitHubRelations(input: CreateGitHubRelationsInput): GitHub
   }
 
   for (const issue of input.issues) {
-    if (issue.milestoneNumber) {
+    if (typeof issue.milestoneNumber === 'number') {
       const milestone = input.milestones.find((item) => item.number === issue.milestoneNumber);
       if (milestone) {
         relations.push(

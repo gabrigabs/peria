@@ -20,9 +20,12 @@ export interface PackageSummary {
   directory: string;
   manifestPath: string;
   description?: string;
+  private: boolean;
+  publishAccess?: string;
   scripts: Record<string, string>;
   dependencies: string[];
   exports: string[];
+  bins: string[];
 }
 
 export interface ExportSummary {

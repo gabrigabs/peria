@@ -1,7 +1,8 @@
 {
   "name": "@peria/api-reference",
   "version": "0.1.0",
-  "description": "Stoplight Elements integration for Peria API reference",
+  "private": true,
+  "description": "Deferred API reference integration for future Peria OpenAPI rendering.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -36,8 +37,5 @@
     "type": "git",
     "url": "git+https://github.com/gabrigabs/peria.git",
     "directory": "packages/api-reference"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

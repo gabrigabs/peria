@@ -202,6 +202,7 @@ Objetivo: substituir o renderer estático atual por uma experiência Fumadocs re
 - [x] Reescrever `packages/cli/src/commands/serve.ts` para spawnar Vite na app-template.
 - [x] Parar de emitir `source.config.ts`/`lib/source.ts` em `docs/` (a app-template é dona).
 - [x] Atualizar teste de integração do CLI (remover asserts de `source.config.ts`/`lib/source.ts` em `docs/`).
+- [x] Adicionar `bun run dogfood:preview` para empacotar `@peria/core`, `@peria/renderer` e `@peria/cli`, validar `app-template/**` no tarball e exercer `peria serve` fora do workspace.
 - [ ] Validar `dogfood:npm` após próximo release (a apptemplate precisa estar no tarball publicado).
 
 **Aceite:**
@@ -505,10 +506,11 @@ Objetivo: conectar provenance e planejamento ao GitHub sem transformar Peria em 
   - [x] `pr fixes issue`
   - [x] `issue belongs_to milestone`
   - [x] `drift finding opens issue`
+- [x] Renderizar página `github-map` com commits, PRs, issues, milestones e relações do cache.
 
 **Aceite:**
 
-- [ ] A UI consegue mostrar por que uma rota/schema/módulo mudou.
+- [x] A UI consegue mostrar por que uma entidade mudou quando o cache contém relações `entity_changed_by_commit`.
 
 ### T5.4 Criar issues a partir de drift
 
@@ -546,7 +548,7 @@ Objetivo: conectar provenance e planejamento ao GitHub sem transformar Peria em 
   - [ ] closed;
   - [ ] done;
   - [ ] blocked, via label se existir.
-- [ ] Expor página "Milestones".
+- [x] Expor milestones no `github-map`.
 - [ ] Linkar commits e PRs recentes a cada milestone.
 
 **Aceite:**
@@ -609,18 +611,20 @@ Objetivo: reduzir atrito para o primeiro usuário real.
 
 **Tarefas:**
 
-- [ ] Rodar em CI:
-  - [ ] `bun install`
-  - [ ] `bun run build`
-  - [ ] `bun run typecheck`
-  - [ ] `bun run test`
-  - [ ] dogfood npm fresh install.
-- [ ] Adicionar job de pack validation.
-- [ ] Adicionar job de docs drift.
+- [x] Rodar em CI:
+  - [x] `bun install`
+  - [x] `bun run build`
+  - [x] `bun run typecheck`
+  - [x] `bun run test`
+  - [x] dogfood preview com tarballs locais.
+  - [x] dogfood NestJS adapter com tarballs locais.
+  - [x] dogfood npm fresh install.
+- [x] Adicionar job de pack validation.
+- [x] Adicionar job de docs drift.
 
 **Aceite:**
 
-- [ ] Nenhum pacote novo é publicado sem teste de consumo.
+- [x] Nenhum pacote novo é publicado sem teste de consumo.
 
 ---
 
@@ -632,47 +636,47 @@ Objetivo: transformar o projeto em algo que outra pessoa consegue experimentar, 
 
 **Tarefas:**
 
-- [ ] Separar "shipped" de "roadmap".
-- [ ] Adicionar exemplo real de saída.
-- [ ] Adicionar screenshot ou GIF da wiki gerada quando renderer estiver bom.
-- [ ] Adicionar seção "When to use Peria".
-- [ ] Adicionar seção "Limitations".
+- [x] Separar "shipped" de "roadmap".
+- [x] Adicionar exemplo real de saída.
+- [x] Adicionar screenshot ou GIF da wiki gerada quando renderer estiver bom.
+- [x] Adicionar seção "When to use Peria".
+- [x] Adicionar seção "Limitations".
 
 **Aceite:**
 
-- [ ] README não parece maior que o produto.
-- [ ] Limitações aumentam confiança em vez de esconder lacunas.
+- [x] README não parece maior que o produto.
+- [x] Limitações aumentam confiança em vez de esconder lacunas.
 
 ### T7.2 Exemplo end-to-end
 
 **Tarefas:**
 
-- [ ] Criar exemplo `examples/nestjs-api`.
-- [ ] Incluir:
-  - [ ] rotas;
-  - [ ] DTOs/schemas;
-  - [ ] OpenAPI;
-  - [ ] README;
-  - [ ] docs gerados;
-  - [ ] adapter NestJS.
-- [ ] Adicionar script de validação do exemplo.
+- [x] Criar exemplo `examples/nestjs-api`.
+- [x] Incluir:
+  - [x] rotas;
+  - [x] DTOs/schemas;
+  - [x] OpenAPI;
+  - [x] README;
+  - [x] docs gerados;
+  - [x] adapter NestJS.
+- [x] Adicionar script de validação do exemplo.
 
 **Aceite:**
 
-- [ ] O exemplo é o principal caminho para testar Peria.
+- [x] O exemplo é o principal caminho para testar Peria.
 
 ### T7.3 Release notes e changelog
 
 **Tarefas:**
 
-- [ ] Criar `CHANGELOG.md`.
-- [ ] Documentar versões já publicadas.
-- [ ] Registrar breaking changes enquanto API ainda é experimental.
-- [ ] Definir política de beta.
+- [x] Criar `CHANGELOG.md`.
+- [x] Documentar versões já publicadas.
+- [x] Registrar breaking changes enquanto API ainda é experimental.
+- [x] Definir política de beta.
 
 **Aceite:**
 
-- [ ] Usuário sabe o que mudou entre `0.1.x`.
+- [x] Usuário sabe o que mudou entre `0.1.x`.
 
 ---
 
@@ -726,27 +730,27 @@ npx peria --version
 
 ## Critérios para dizer "pronto para dogfooding"
 
-- [ ] Instalação via npm funciona fora do monorepo.
+- [x] Instalação via npm funciona fora do monorepo.
 - [ ] `peria init -> scan -> build -> serve -> check` funciona em projeto real.
 - [ ] Wiki renderizada é útil para humanos.
 - [ ] `llms.txt` e context packs são úteis para agentes.
 - [ ] Diagramas aparecem no fluxo principal.
 - [x] Adapter NestJS serve docs reais.
-- [ ] README descreve apenas o que funciona.
-- [ ] Limitações conhecidas estão documentadas.
-- [ ] CI pega regressão de pacote publicado.
+- [x] README descreve apenas o que funciona.
+- [x] Limitações conhecidas estão documentadas.
+- [x] CI pega regressão de pacote publicado.
 
 ## Critérios para dizer "pronto para beta público"
 
-- [ ] Dogfood em Peria passa no CI.
-- [ ] Dogfood em NestJS passa no CI.
-- [ ] Renderer Fumadocs ou fallback estático tem qualidade aceitável.
-- [ ] GitHub sync read-only funciona ou está claramente marcado como futuro.
+- [x] Dogfood em Peria passa no CI.
+- [x] Dogfood em NestJS passa no CI.
+- [x] Renderer Fumadocs ou fallback estático tem qualidade aceitável.
+- [x] GitHub sync read-only funciona ou está claramente marcado como futuro.
 - [ ] Issues criadas por drift têm deduplicação.
-- [ ] Pacotes publicados têm versões coerentes.
-- [ ] Changelog existe.
-- [ ] Exemplo end-to-end existe.
-- [ ] Não há placeholders publicados como API estável.
+- [x] Pacotes publicados têm versões coerentes.
+- [x] Changelog existe.
+- [x] Exemplo end-to-end existe.
+- [x] Não há placeholders publicados como API estável.
 
 ## O que eu não faria agora
 

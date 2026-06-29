@@ -1,0 +1,37 @@
+# Release Status
+
+This generated status is intentionally conservative. It reports what the current repository can prove from package manifests and generated wiki output.
+
+## Snapshot
+
+- Generated at: 2026-06-29T21:28:14.881Z
+- Git branch: `feat/planning`
+- Git commit: `6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6`
+- Working tree: 54 changed files
+- Documentation pages: 14
+- Renderer: `fumadocs`
+- Claim provenance: 24/24 claims have source provenance.
+
+## Package Surface
+
+| Package | Directory | Surface | Dependencies |
+| --- | --- | --- | --- |
+| peria-example-nestjs-api | `.` | private/deferred | 10 |
+
+## Generated Release Signals
+
+| Signal | Status | Detail |
+| --- | --- | --- |
+| Public package exports | ready | 0/0 releasable packages expose exports or CLI bins. |
+| CLI command handlers | ready | 0/0 CLI commands have implemented handlers. |
+| Adapter placeholders | ready | No placeholder adapters detected. |
+| Route coverage | ready | 4 routes are present in the latest scan manifest. |
+| Schema coverage | ready | 9 schemas are present in the latest scan manifest. |
+| OpenAPI coverage | ready | 4 OpenAPI operations are present in the latest scan manifest. |
+
+## Release Gates Still Worth Checking
+
+- Fresh npm install outside the monorepo.
+- `npm pack --dry-run` for every package intended for publication.
+- Published tarball validation for the bundled Fumadocs preview app.
+- Dogfood docs drift check in CI.

@@ -6,9 +6,17 @@ Generated files:
 
 - `content/docs/**/*.mdx` wiki pages
 - `content/docs/meta.json` sidebar metadata
-- `source.config.ts` Fumadocs MDX collection config
-- `lib/source.ts` loader module for a Next/Fumadocs app
 - `search-index.json` compact page/entity search index
 - `wiki-manifest.json` Peria page manifest
+- `pages/**/*.md` raw markdown mirror (also available via `@peria/adapters`)
 
-Install the Fumadocs app dependencies in the host project and import `source` from `lib/source.ts`.
+Preview locally:
+
+```sh
+peria serve
+```
+
+This serves the bundled TanStack Start + Fumadocs preview app from
+`@peria/renderer` against `content/docs`. To consume the content from a
+custom Fumadocs/Next app, point its `fumadocs-mdx` collection `dir` at
+`content/docs` and reuse these MDX files directly.

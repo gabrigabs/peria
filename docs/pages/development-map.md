@@ -10,8 +10,8 @@ Use this page as the maintenance entrypoint before changing a package boundary, 
 | @peria/adapters | `packages/adapters` | 6 | none |
 | @peria/api-reference | `packages/api-reference` | 2 | none |
 | @peria/cli | `packages/cli` | 18 | @peria/core, @peria/renderer |
-| @peria/core | `packages/core` | 124 | none |
-| @peria/renderer | `packages/renderer` | 8 | @peria/core |
+| @peria/core | `packages/core` | 125 | none |
+| @peria/renderer | `packages/renderer` | 11 | @peria/core |
 | @peria/sdk | `packages/sdk` | 1 | none |
 
 ## Entrypoints

@@ -3,8 +3,6 @@ title: "Packages"
 description: "Workspace packages, manifests, scripts, dependencies, and package exports."
 ---
 
-# Packages
-
 Packages are documented as ownership boundaries, not just manifest rows. Each section combines package.json metadata, TypeScript source coverage, internal imports, and configured editorial context.
 
 ## peria
@@ -89,7 +87,7 @@ This package contributes 2 source modules and 0 exported declarations to the gen
 
 **Why it matters:**
 
-This package contributes 18 source modules and 34 exported declarations to the generated knowledge graph. Its manifest lives at `packages/cli/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 18 source modules and 35 exported declarations to the generated knowledge graph. Its manifest lives at `packages/cli/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
@@ -97,7 +95,7 @@ This package contributes 18 source modules and 34 exported declarations to the g
 - Version: 0.1.2
 - Scripts: `build`, `typecheck`, `test`, `dev`, `prepublishOnly`
 - Package exports: none
-- Internal package imports: `@peria/core`, `@peria/renderer`
+- Internal package imports: `@peria/core`, `@peria/renderer`, `@peria/renderer/preview`
 - External dependencies: `@clack/prompts`, `@peria/core`, `@peria/renderer`, `@types/node`, `cac`, `chalk`, `tsup`, `typescript`, `vitest`
 
 ## @peria/core
@@ -114,7 +112,7 @@ This package contributes 18 source modules and 34 exported declarations to the g
 
 **Why it matters:**
 
-This package contributes 124 source modules and 611 exported declarations to the generated knowledge graph. Its manifest lives at `packages/core/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 125 source modules and 629 exported declarations to the generated knowledge graph. Its manifest lives at `packages/core/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
@@ -133,14 +131,14 @@ This package contributes 124 source modules and 611 exported declarations to the
 
 **Why it matters:**
 
-This package contributes 8 source modules and 102 exported declarations to the generated knowledge graph. Its manifest lives at `packages/renderer/package.json`, so package metadata and scripts remain traceable to source.
+This package contributes 11 source modules and 105 exported declarations to the generated knowledge graph. Its manifest lives at `packages/renderer/package.json`, so package metadata and scripts remain traceable to source.
 
 **Surface:**
 
 - Directory: `packages/renderer`
 - Version: 0.1.1
 - Scripts: `build`, `typecheck`, `dev`, `test`
-- Package exports: `.`
+- Package exports: `.`, `./preview`
 - Internal package imports: `@peria/core`
 - External dependencies: `@peria/core`, `@types/node`, `highlight.js`, `marked`, `tsup`, `typescript`
 

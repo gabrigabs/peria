@@ -135,6 +135,7 @@ describe('CLI Integration Tests', () => {
       expect(existsSync(join(docsDir, 'content/docs/meta.json'))).toBe(true);
       expect(existsSync(join(docsDir, 'source.config.ts'))).toBe(true);
       expect(existsSync(join(docsDir, 'lib/source.ts'))).toBe(true);
+      expect(existsSync(join(docsDir, 'search-index.json'))).toBe(true);
       expect(existsSync(join(docsDir, 'pages/application-map.md'))).toBe(true);
       expect(existsSync(join(docsDir, 'wiki-manifest.json'))).toBe(true);
       expect(existsSync(join(fixturePath, 'llms.txt'))).toBe(true);
@@ -144,6 +145,17 @@ describe('CLI Integration Tests', () => {
       expect(
         wikiManifest.pages.some((page: { slug: string }) => page.slug === 'application-map')
       ).toBe(true);
+
+      const searchIndex = JSON.parse(readFileSync(join(docsDir, 'search-index.json'), 'utf-8'));
+      expect(searchIndex.some((entry: { slug: string }) => entry.slug === 'application-map')).toBe(
+        true
+      );
+
+      const appMap = JSON.parse(
+        readFileSync(join(fixturePath, '.peria/application-map.json'), 'utf-8')
+      );
+      expect(appMap.summary.routes).toBeGreaterThan(0);
+      expect(appMap.routes.length).toBeGreaterThan(0);
 
       const manifest = JSON.parse(readFileSync(join(fixturePath, '.peria/manifest.json'), 'utf-8'));
       expect(manifest.routes?.length).toBeGreaterThan(0);
@@ -238,6 +250,9 @@ describe('CLI Integration Tests', () => {
       // Verify diagrams directory was created
       const diagramsDir = join(fixturePath, '.peria/diagrams');
       expect(existsSync(diagramsDir)).toBe(true);
+      expect(
+        existsSync(join(diagramsDir, 'route-flow/diagram-route-flow-system-overview.mmd'))
+      ).toBe(true);
     });
   });
 

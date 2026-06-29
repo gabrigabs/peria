@@ -8,6 +8,7 @@ Generated files:
 - `content/docs/meta.json` sidebar metadata
 - `source.config.ts` Fumadocs MDX collection config
 - `lib/source.ts` loader module for a Next/Fumadocs app
+- `search-index.json` compact page/entity search index
 - `wiki-manifest.json` Peria page manifest
 
 Install the Fumadocs app dependencies in the host project and import `source` from `lib/source.ts`.

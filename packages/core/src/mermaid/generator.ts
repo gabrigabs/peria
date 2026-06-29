@@ -7,6 +7,7 @@
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { PeriaManifest } from '../types/manifest.js';
+import { generateModuleGraphDiagrams } from './module-graph.js';
 import { generatePackageDepDiagrams } from './package-deps.js';
 import { generateRouteFlowDiagrams } from './route-flow.js';
 import { generateSchemaDiagrams } from './schema.js';
@@ -29,7 +30,7 @@ const DEFAULT_OUTPUT_DIR = '.peria/diagrams';
  */
 export function generateDiagrams(manifest: PeriaManifest, options: MermaidOptions): MermaidResult {
   const diagrams: MermaidDiagram[] = [];
-  const types = options.types ?? ['route-flow', 'package-deps', 'schema'];
+  const types = options.types ?? ['route-flow', 'package-deps', 'schema', 'module-graph'];
 
   // Route flow diagrams
   if (types.includes('route-flow')) {
@@ -47,6 +48,12 @@ export function generateDiagrams(manifest: PeriaManifest, options: MermaidOption
   if (types.includes('schema')) {
     const schemaDiagrams = generateSchemaDiagrams(manifest, options);
     diagrams.push(...schemaDiagrams);
+  }
+
+  // Module graph diagrams
+  if (types.includes('module-graph')) {
+    const moduleDiagrams = generateModuleGraphDiagrams(manifest, options);
+    diagrams.push(...moduleDiagrams);
   }
 
   return {
@@ -144,6 +151,11 @@ export function generateOverviewDiagram(manifest: PeriaManifest): MermaidDiagram
   };
 }
 
+function toMermaidSource(content: string): string {
+  const match = content.match(/^```mermaid\n([\s\S]*?)\n```$/);
+  return match ? `${match[1]}\n` : `${content}\n`;
+}
+
 /**
  * Save diagrams to disk
  */
@@ -169,9 +181,10 @@ export async function saveDiagrams(result: MermaidResult, outputDir?: string): P
     await mkdir(typeDir, { recursive: true });
 
     for (const diagram of diagrams) {
-      const filename = `${diagram.id}.md`;
-      const filepath = join(typeDir, filename);
-      await writeFile(filepath, diagram.content, 'utf-8');
+      await Promise.all([
+        writeFile(join(typeDir, `${diagram.id}.md`), diagram.content, 'utf-8'),
+        writeFile(join(typeDir, `${diagram.id}.mmd`), toMermaidSource(diagram.content), 'utf-8'),
+      ]);
     }
   }
 

@@ -7,20 +7,20 @@ The application map is the compact artifact for answering what exists, where it 
 - Name: Peria
 - Framework: `other`
 - Entrypoint: `packages/cli/src/index.ts`
-- Generated at: 2026-06-29T14:07:03.855Z
+- Generated at: 2026-06-29T14:20:30.451Z
 
 ## Summary
 
 | Area | Count |
 | --- | --- |
 | packages | 7 |
-| modules | 153 |
+| modules | 154 |
 | routes | 0 |
 | schemas | 0 |
 | commands | 2 |
 | adapters | 4 |
-| pages | 11 |
-| claims | 907 |
+| pages | 14 |
+| claims | 911 |
 
 ## Entrypoints
 
@@ -33,11 +33,11 @@ The application map is the compact artifact for answering what exists, where it 
 | --- | --- | --- | --- |
 | peria | `.` | 4 | 0 |
 | @peria/adapters | `packages/adapters` | 9 | 4 |
-| @peria/api-reference | `packages/api-reference` | 6 | 1 |
+| @peria/api-reference | `packages/api-reference` | 5 | 1 |
 | @peria/cli | `packages/cli` | 9 | 0 |
 | @peria/core | `packages/core` | 11 | 4 |
 | @peria/renderer | `packages/renderer` | 6 | 1 |
-| @peria/sdk | `packages/sdk` | 19 | 2 |
+| @peria/sdk | `packages/sdk` | 12 | 2 |
 
 ## Modules
 
@@ -52,7 +52,7 @@ The application map is the compact artifact for answering what exists, where it 
 | `packages/api-reference/src/types/stoplight.d.ts` | @peria/api-reference | 0 | 0 |
 | `packages/cli/src/__tests__/integration.test.ts` | @peria/cli | 6 | 0 |
 | `packages/cli/src/__tests__/smoke.test.ts` | @peria/cli | 1 | 0 |
-| `packages/cli/src/commands/build.ts` | @peria/cli | 5 | 1 |
+| `packages/cli/src/commands/build.ts` | @peria/cli | 6 | 1 |
 | `packages/cli/src/commands/check.ts` | @peria/cli | 3 | 1 |
 | `packages/cli/src/commands/context.ts` | @peria/cli | 3 | 1 |
 | `packages/cli/src/commands/diagram.ts` | @peria/cli | 3 | 1 |
@@ -84,6 +84,18 @@ The application map is the compact artifact for answering what exists, where it 
 | `packages/core/fixtures/nestjs-basic/src/users/users.module.ts` | @peria/core | 3 | 1 |
 | `packages/core/fixtures/nestjs-basic/src/users/users.service.ts` | @peria/core | 1 | 3 |
 
+## Routes
+
+_No entries found._
+
+## Schemas
+
+_No entries found._
+
+## OpenAPI Operations
+
+_No entries found._
+
 ## Documentation Pages
 
 | Title | Slug | Path |
@@ -99,9 +111,12 @@ The application map is the compact artifact for answering what exists, where it 
 | AI Context Map | `ai-context` | `pages/ai-context.md` |
 | Diagrams | `diagrams` | `pages/diagrams.md` |
 | Application Map | `application-map` | `pages/application-map.md` |
+| Development Map | `development-map` | `pages/development-map.md` |
+| Release Status | `release-status` | `pages/release-status.md` |
+| Known Gaps | `known-gaps` | `pages/known-gaps.md` |
 
 ## Git Context
 
 - Branch: `feat/planning`
-- Commit: `a391352a9beb6ee38f239a9d3b93db2748947161`
-- Working tree: 57 changed files
+- Commit: `0be7c0b32428e4e3329f2507a205e12b7fdbca00`
+- Working tree: 41 changed files

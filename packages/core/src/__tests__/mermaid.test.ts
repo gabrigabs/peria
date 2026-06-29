@@ -8,6 +8,7 @@ import {
   DIAGRAM_TYPE_LABELS,
   generateDiagramId,
   generateDiagrams,
+  generateModuleGraphDiagrams,
   generatePackageDepDiagrams,
   generateRouteFlowDiagrams,
   generateSchemaDiagrams,
@@ -81,6 +82,10 @@ describe('mermaid types', () => {
 
     it('should export generatePackageDepDiagrams', () => {
       expect(typeof generatePackageDepDiagrams).toBe('function');
+    });
+
+    it('should export generateModuleGraphDiagrams', () => {
+      expect(typeof generateModuleGraphDiagrams).toBe('function');
     });
 
     it('should export generateSchemaDiagrams', () => {

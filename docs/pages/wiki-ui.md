@@ -8,4 +8,5 @@ The generated wiki is written into `docs` as source-backed markdown plus Fumadoc
 - `content/docs/**/*.mdx` contains the Fumadocs-compatible page content.
 - `content/docs/meta.json` carries sidebar ordering from the wiki manifest.
 - `source.config.ts` and `lib/source.ts` provide the Fumadocs collection and loader bridge.
+- `search-index.json` provides a compact index of page titles, headings, URLs, and source paths.
 - `wiki-manifest.json` remains the Peria-owned page registry for agents and tooling.

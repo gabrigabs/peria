@@ -20,7 +20,7 @@ Estado verificado nesta revisão:
 | `@peria/sdk` | Não pronto para publicar | API pública e dependências ainda parecem prematuras. |
 | `@peria/api-reference` | Não pronto para publicar | Precisa decisão de produto e integração real antes de virar pacote público. |
 | Renderer/Fumadocs | Conteúdo compatível gerado | `peria build` gera MDX, meta e source config compatíveis com Fumadocs; ainda falta app/preview Fumadocs completo. |
-| Diagramas | Integrado ao build da wiki | `peria build` gera página `diagrams` quando `features.mermaid = true`; ainda faltam módulos, schemas, commits e links navegáveis por entidade. |
+| Diagramas | Integrado ao build da wiki | `peria build` gera página `diagrams`, links para entidades detectadas, `.mmd` e grafo de módulos quando `features.mermaid = true`; ainda faltam commits/áreas e fixtures com schemas. |
 | Dogfooding | Incompleto | Precisa usar pacotes publicados e validar Peria documentando Peria. |
 | GitHub sync | Ideia correta, ainda não produto | Precisa design de modelo, auth, issues/milestones e rastreabilidade. |
 
@@ -185,7 +185,7 @@ Objetivo: substituir o renderer estático atual por uma experiência Fumadocs re
 
 - [ ] `peria build --renderer fumadocs` gera uma documentação navegável em app Fumadocs.
 - [x] O modo antigo foi removido conforme decisão de produto.
-- [ ] Links internos entre páginas funcionam.
+- [x] Links internos entre páginas funcionam.
 
 **Validação:**
 
@@ -203,16 +203,16 @@ node packages/cli/bin/peria.js build --renderer fumadocs
 **Tarefas:**
 
 - [ ] Página inicial com:
-  - [ ] resumo do projeto;
-  - [ ] stack detectada;
-  - [ ] comandos disponíveis;
+  - [x] resumo do projeto;
+  - [x] stack detectada;
+  - [x] comandos disponíveis;
   - [ ] últimos commits relevantes;
-  - [ ] riscos/drift encontrados.
+  - [x] riscos/drift encontrados.
 - [ ] Página de rotas com filtros por método/status/fonte.
 - [ ] Página de pacotes com grafo de dependência.
-- [ ] Página de módulos com responsabilidade, exports e relações.
+- [x] Página de módulos com responsabilidade, exports e relações.
 - [ ] Página de drift com severidade e ação recomendada.
-- [ ] Página de contexto para agentes.
+- [x] Página de contexto para agentes.
 
 **Aceite:**
 
@@ -223,7 +223,7 @@ node packages/cli/bin/peria.js build --renderer fumadocs
 
 **Tarefas:**
 
-- [ ] Integrar busca do Fumadocs ou gerar índice compatível.
+- [x] Integrar busca do Fumadocs ou gerar índice compatível.
 - [ ] Indexar entidades, rotas, schemas, pacotes e páginas.
 - [ ] Adicionar breadcrumbs e relações "related".
 - [ ] Garantir que nomes canônicos resolvem aliases.
@@ -245,11 +245,11 @@ Objetivo: transformar a wiki em um mapa técnico navegável, não apenas página
 **Tarefas:**
 
 - [x] Gerar diagramas durante `peria build` quando `features.mermaid = true`.
-- [ ] Incluir diagramas na página inicial.
+- [x] Incluir diagramas na página inicial.
 - [x] Criar página `diagrams`.
-- [ ] Linkar diagramas a entidades reais do manifest.
+- [x] Linkar diagramas a entidades reais do manifest.
 - [ ] Permitir export:
-  - [ ] `.mmd`;
+  - [x] `.mmd`;
   - [x] markdown embutido;
   - [ ] SVG/PNG somente se houver dependência justificada.
 
@@ -258,7 +258,7 @@ Objetivo: transformar a wiki em um mapa técnico navegável, não apenas página
 - [ ] Fluxo de rotas.
 - [x] Dependências entre pacotes.
 - [ ] Relações entre schemas.
-- [ ] Mapa de módulos.
+- [x] Mapa de módulos.
 - [ ] Mudanças por commit/área.
 
 **Aceite:**
@@ -271,22 +271,22 @@ Objetivo: transformar a wiki em um mapa técnico navegável, não apenas página
 **Tarefas:**
 
 - [x] Definir tipo `ApplicationMap`.
-- [ ] Agregar:
+- [x] Agregar:
   - [x] entrypoints;
   - [x] frameworks;
   - [x] pacotes;
-  - [ ] rotas;
-  - [ ] schemas;
+  - [x] rotas;
+  - [x] schemas;
   - [x] módulos;
   - [x] arquivos markdown;
-  - [ ] OpenAPI;
+  - [x] OpenAPI;
   - [x] relações Git básicas.
 - [x] Serializar em `.peria/application-map.json`.
 - [x] Renderizar página dedicada.
 
 **Aceite:**
 
-- [ ] O mapa responde "quais partes existem e como se conectam?" sem ler o código.
+- [x] O mapa responde "quais partes existem e como se conectam?" sem ler o código.
 
 ### T2.3 Melhorar qualidade das claims
 
@@ -350,14 +350,14 @@ Objetivo: Peria precisa documentar Peria usando o pacote instalado como um usuá
 
 **Tarefas:**
 
-- [ ] Criar página "Development Map".
-- [ ] Criar página "Release Status".
-- [ ] Criar página "Known Gaps".
+- [x] Criar página "Development Map".
+- [x] Criar página "Release Status".
+- [x] Criar página "Known Gaps".
 - [ ] Linkar issues/milestones quando GitHub sync existir.
 
 **Aceite:**
 
-- [ ] A documentação gerada passa a ser insumo real de manutenção, não vitrine.
+- [x] A documentação gerada passa a ser insumo real de manutenção, não vitrine.
 
 ---
 

@@ -22,6 +22,7 @@ export {
   generateOverviewDiagram,
   saveDiagrams,
 } from './generator.js';
+export { generateModuleGraphDiagrams } from './module-graph.js';
 export { generatePackageDepDiagrams } from './package-deps.js';
 // Generators
 export { generateRouteFlowDiagrams } from './route-flow.js';

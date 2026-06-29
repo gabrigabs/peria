@@ -32,6 +32,15 @@ export interface PageTreeNode {
   children?: PageTreeNode[];
 }
 
+export interface SearchIndexEntry {
+  title: string;
+  slug: string;
+  url: string;
+  description: string;
+  headings: string[];
+  sources: string[];
+}
+
 function escapeYaml(value: string): string {
   return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, ' ');
 }
@@ -72,6 +81,32 @@ function renderMdxPage(page: WikiPage): string {
     renderSources(page),
     '',
   ].join('\n');
+}
+
+function buildUrl(baseUrl: string, slug: string): string {
+  const base = baseUrl.replace(/\/+$/g, '');
+  return `${base}/${normalizeSlug(slug)}`;
+}
+
+function extractHeadings(markdown: string): string[] {
+  return markdown
+    .split('\n')
+    .filter((line) => /^#{2,4}\s+/.test(line))
+    .map((line) => line.replace(/^#+\s+/, '').trim())
+    .filter(Boolean);
+}
+
+function buildSearchIndex(baseUrl: string, pages: WikiPage[]): string {
+  const entries: SearchIndexEntry[] = pages.map((page) => ({
+    title: page.title,
+    slug: page.slug,
+    url: buildUrl(baseUrl, page.slug),
+    description: page.description,
+    headings: extractHeadings(page.body),
+    sources: page.sourcePaths,
+  }));
+
+  return `${JSON.stringify(entries, null, 2)}\n`;
 }
 
 function buildPageTree(manifest: WikiManifest): PageTreeNode[] {
@@ -151,6 +186,7 @@ function buildReadme(manifest: WikiManifest): string {
     '- `content/docs/meta.json` sidebar metadata',
     '- `source.config.ts` Fumadocs MDX collection config',
     '- `lib/source.ts` loader module for a Next/Fumadocs app',
+    '- `search-index.json` compact page/entity search index',
     '- `wiki-manifest.json` Peria page manifest',
     '',
     'Install the Fumadocs app dependencies in the host project and import `source` from `lib/source.ts`.',
@@ -181,6 +217,10 @@ export function generateFumadocsContent(options: FumadocsContentOptions): Fumado
     {
       path: 'README.md',
       content: buildReadme(manifest),
+    },
+    {
+      path: 'search-index.json',
+      content: buildSearchIndex(baseUrl, pages),
     },
   ];
 

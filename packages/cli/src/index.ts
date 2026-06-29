@@ -78,12 +78,18 @@ cli
 
 // Diagram command
 cli
-  .command('diagram', 'Generate Mermaid diagrams for routes, packages, and schemas')
-  .option('--type <type>', 'Diagram type (route-flow, package-deps, schema, all)')
+  .command('diagram', 'Generate Mermaid diagrams for routes, packages, modules, and schemas')
+  .option('--type <type>', 'Diagram type (route-flow, package-deps, module-graph, schema, all)')
   .option('--output <dir>', 'Output directory (default: .peria/diagrams)')
   .action(async (opts: { cwd: string; type?: string; output?: string }) => {
     await diagramCommand(opts.cwd, {
-      type: opts.type as 'route-flow' | 'package-deps' | 'schema' | 'all' | undefined,
+      type: opts.type as
+        | 'route-flow'
+        | 'package-deps'
+        | 'schema'
+        | 'module-graph'
+        | 'all'
+        | undefined,
       output: opts.output,
     });
   });

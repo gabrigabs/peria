@@ -10,7 +10,7 @@ import { readManifest } from '../utils/manifest.js';
  * CLI options for the diagram command
  */
 interface DiagramOptions {
-  type?: 'route-flow' | 'package-deps' | 'schema' | 'all';
+  type?: 'route-flow' | 'package-deps' | 'schema' | 'module-graph' | 'all';
   output?: string;
   watch?: boolean;
 }
@@ -31,10 +31,10 @@ export async function diagramCommand(cwd: string, options: DiagramOptions = {}):
   const outputDir = options.output ?? '.peria/diagrams';
 
   // Determine diagram types
-  const defaultTypes = ['route-flow', 'package-deps', 'schema'] as const;
+  const defaultTypes = ['route-flow', 'package-deps', 'schema', 'module-graph'] as const;
   const types =
     options.type && options.type !== 'all'
-      ? [options.type as 'route-flow' | 'package-deps' | 'schema']
+      ? [options.type as 'route-flow' | 'package-deps' | 'schema' | 'module-graph']
       : [...defaultTypes];
 
   // Generate diagrams
@@ -51,8 +51,9 @@ export async function diagramCommand(cwd: string, options: DiagramOptions = {}):
   console.log(`  Route flow diagrams:  ${result.metadata.byType['route-flow']}`);
   console.log(`  Package dep diagrams: ${result.metadata.byType['package-deps']}`);
   console.log(`  Schema diagrams:     ${result.metadata.byType.schema}`);
+  console.log(`  Module graphs:       ${result.metadata.byType['module-graph']}`);
   console.log('');
 
   logger.info(`Diagrams saved to: ${outputDir}`);
-  logger.info('Include in docs: ```mermaid blocks from these files');
+  logger.info('Include in docs: `.md` Mermaid blocks or `.mmd` source files from this directory');
 }

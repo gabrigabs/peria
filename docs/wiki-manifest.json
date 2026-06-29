@@ -1,79 +1,69 @@
 {
   "title": "Peria Wiki",
   "tagline": "Human-readable by default. LLM-ready by design.",
-  "generatedAt": "2026-06-29T14:07:03.855Z",
+  "generatedAt": "2026-06-29T14:20:30.451Z",
   "periaVersion": "0.1.0",
   "manifestVersion": "0.1.0",
-  "commit": "a391352a9beb6ee38f239a9d3b93db2748947161",
+  "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00",
   "git": {
     "branch": "feat/planning",
-    "commit": "a391352a9beb6ee38f239a9d3b93db2748947161",
-    "shortCommit": "a391352",
+    "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+    "shortCommit": "0be7c0b",
     "author": "Gabriel Bezerra Rodrigues",
     "authorEmail": "gabrielbrodrigues1@gmail.com",
-    "authoredAt": "2026-06-28T12:25:54-03:00",
-    "subject": "docs: align public docs with shipped package behavior",
+    "authoredAt": "2026-06-29T11:08:05-03:00",
+    "subject": "feat(docs): switch wiki build to fumadocs output",
     "isDirty": true,
     "changedFiles": [
       "M .peria/manifest.json",
-      "M CLAUDE.md",
-      "M PLANNING.md",
-      "M PUBLISHING.md",
-      "M README.md",
       "M TASKS.md",
-      "M biome.json",
-      "M bun.lock",
-      "D docs/assets/wiki.css",
-      "D docs/assets/wiki.js",
-      "D docs/content.config.ts",
-      "D docs/content/overview.mdx",
-      "D docs/index.html",
+      "M docs/README.md",
+      "M docs/content/docs/ai-context.mdx",
+      "M docs/content/docs/application-map.mdx",
+      "M docs/content/docs/diagrams.mdx",
+      "M docs/content/docs/history.mdx",
+      "M docs/content/docs/meta.json",
+      "M docs/content/docs/modules.mdx",
+      "M docs/content/docs/overview.mdx",
+      "M docs/content/docs/packages.mdx",
+      "M docs/content/docs/wiki-ui.mdx",
       "M docs/pages/ai-context.md",
-      "M docs/pages/cli.md",
-      "M docs/pages/configuration.md",
+      "M docs/pages/application-map.md",
+      "M docs/pages/diagrams.md",
       "M docs/pages/history.md",
       "M docs/pages/modules.md",
       "M docs/pages/overview.md",
       "M docs/pages/packages.md",
       "M docs/pages/wiki-ui.md",
       "M docs/wiki-manifest.json",
-      "M packages/adapters/package.json",
-      "M packages/cli/package.json",
       "M packages/cli/src/__tests__/integration.test.ts",
       "M packages/cli/src/commands/build.ts",
-      "M packages/cli/src/commands/serve.ts",
+      "M packages/cli/src/commands/diagram.ts",
       "M packages/cli/src/index.ts",
-      "M packages/core/package.json",
       "M packages/core/src/__tests__/mermaid.test.ts",
-      "M packages/core/src/__tests__/nestjs-parser.test.ts",
-      "M packages/core/src/index.ts",
+      "M packages/core/src/application-map.ts",
       "M packages/core/src/mermaid/generator.ts",
-      "M packages/core/src/mermaid/types.ts",
-      "M packages/core/src/scanner/index.ts",
-      "M packages/core/src/types/config.ts",
+      "M packages/core/src/mermaid/index.ts",
+      "M packages/core/src/wiki/collectors/packages.ts",
       "M packages/core/src/wiki/pages.ts",
-      "M packages/renderer/README.md",
-      "M packages/renderer/package.json",
-      "M packages/renderer/src/config.ts",
-      "D packages/renderer/src/css.ts",
       "M packages/renderer/src/fumadocs.ts",
-      "D packages/renderer/src/html.ts",
-      "M packages/renderer/src/index.ts",
-      "D packages/renderer/src/js.ts",
-      "D packages/renderer/src/renderer.ts",
-      "D packages/renderer/src/static.ts",
-      "M packages/sdk/package.json",
-      "M peria.config.ts",
-      "?? docs/README.md",
-      "?? docs/content/docs/",
-      "?? docs/lib/",
-      "?? docs/pages/application-map.md",
-      "?? docs/pages/diagrams.md",
-      "?? docs/source.config.ts",
+      "?? docs/content/docs/development-map.mdx",
+      "?? docs/content/docs/known-gaps.mdx",
+      "?? docs/content/docs/release-status.mdx",
+      "?? docs/pages/development-map.md",
+      "?? docs/pages/known-gaps.md",
+      "?? docs/pages/release-status.md",
+      "?? docs/search-index.json",
       "?? execute-tasks-plan.js",
-      "?? packages/core/src/application-map.ts"
+      "?? packages/core/src/mermaid/module-graph.ts"
     ],
     "recentCommits": [
+      {
+        "hash": "0be7c0b",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(docs): switch wiki build to fumadocs output"
+      },
       {
         "hash": "a391352",
         "date": "2026-06-28",
@@ -139,12 +129,6 @@
         "date": "2026-06-27",
         "author": "Gabriel Bezerra Rodrigues",
         "subject": "docs: add execution plan based on research findings"
-      },
-      {
-        "hash": "4b7ea52",
-        "date": "2026-06-27",
-        "author": "Gabriel Bezerra Rodrigues",
-        "subject": "docs: add detailed product task backlog"
       }
     ]
   },
@@ -274,6 +258,24 @@
       "slug": "application-map",
       "description": "Aggregate map of project packages, modules, entrypoints, docs, and Git context.",
       "path": "pages/application-map.md"
+    },
+    {
+      "title": "Development Map",
+      "slug": "development-map",
+      "description": "Maintenance-oriented map of packages, modules, entrypoints, and likely change areas.",
+      "path": "pages/development-map.md"
+    },
+    {
+      "title": "Release Status",
+      "slug": "release-status",
+      "description": "Generated release-readiness summary based on package metadata and wiki output.",
+      "path": "pages/release-status.md"
+    },
+    {
+      "title": "Known Gaps",
+      "slug": "known-gaps",
+      "description": "Detected gaps that keep the generated wiki from being a complete adoption artifact.",
+      "path": "pages/known-gaps.md"
     }
   ],
   "tree": [
@@ -300,6 +302,14 @@
         "wiki-ui",
         "diagrams",
         "application-map"
+      ]
+    },
+    {
+      "title": "Maintenance",
+      "pages": [
+        "development-map",
+        "release-status",
+        "known-gaps"
       ]
     },
     {

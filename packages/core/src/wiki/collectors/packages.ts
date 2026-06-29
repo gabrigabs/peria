@@ -59,11 +59,13 @@ export async function collectPackages(cwd: string): Promise<PackageSummary[]> {
     const pkg = await readJsonFile<PackageJson>(absolutePath);
     if (!pkg?.name) continue;
 
-    const dependencies = [
-      ...Object.keys(pkg.dependencies ?? {}),
-      ...Object.keys(pkg.devDependencies ?? {}),
-      ...Object.keys(pkg.peerDependencies ?? {}),
-    ].sort();
+    const dependencies = Array.from(
+      new Set([
+        ...Object.keys(pkg.dependencies ?? {}),
+        ...Object.keys(pkg.devDependencies ?? {}),
+        ...Object.keys(pkg.peerDependencies ?? {}),
+      ])
+    ).sort();
 
     summaries.push({
       name: pkg.name,

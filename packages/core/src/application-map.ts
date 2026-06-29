@@ -2,6 +2,7 @@
  * Application map - aggregated view of the generated Peria knowledge surface.
  */
 
+import type { PeriaManifest } from './types/manifest.js';
 import type { WikiBuildResult } from './types/wiki.js';
 
 export interface ApplicationMap {
@@ -34,6 +35,23 @@ export interface ApplicationMap {
     imports: string[];
     exports: string[];
   }>;
+  routes: Array<{
+    method: string;
+    path: string;
+    handler?: string;
+    source: string;
+  }>;
+  schemas: Array<{
+    name: string;
+    type: string;
+    source?: string;
+  }>;
+  openapi: Array<{
+    method: string;
+    path: string;
+    operationId?: string;
+    source: string;
+  }>;
   entrypoints: {
     cli: string[];
     adapters: string[];
@@ -56,7 +74,10 @@ export interface ApplicationMap {
   };
 }
 
-export function buildApplicationMap(result: WikiBuildResult): ApplicationMap {
+export function buildApplicationMap(
+  result: WikiBuildResult,
+  scannedManifest?: PeriaManifest | null
+): ApplicationMap {
   return {
     version: result.manifest.periaVersion,
     generatedAt: result.generatedAt,
@@ -68,8 +89,8 @@ export function buildApplicationMap(result: WikiBuildResult): ApplicationMap {
     summary: {
       packages: result.packages.length,
       modules: result.modules.length,
-      routes: 0,
-      schemas: 0,
+      routes: scannedManifest?.routes.length ?? 0,
+      schemas: scannedManifest?.schemas.length ?? 0,
       commands: result.cliCommands.length,
       adapters: result.adapters.length,
       pages: result.pages.length,
@@ -86,6 +107,29 @@ export function buildApplicationMap(result: WikiBuildResult): ApplicationMap {
       packageName: module.packageName,
       imports: module.imports,
       exports: module.exports.map((item) => item.name),
+    })),
+    routes: (scannedManifest?.routes ?? []).map((route) => ({
+      method: route.method,
+      path: route.path,
+      handler: route.handler?.name,
+      source: route.source.line ? `${route.source.file}:${route.source.line}` : route.source.file,
+    })),
+    schemas: (scannedManifest?.schemas ?? []).map((schema) => ({
+      name: schema.name,
+      type: schema.type,
+      source: schema.file
+        ? schema.line
+          ? `${schema.file}:${schema.line}`
+          : schema.file
+        : undefined,
+    })),
+    openapi: (scannedManifest?.openapiOps ?? []).map((operation) => ({
+      method: operation.method,
+      path: operation.path,
+      operationId: operation.operationId,
+      source: operation.source.line
+        ? `${operation.source.file}:${operation.source.line}`
+        : operation.source.file,
     })),
     entrypoints: {
       cli: result.cliCommands.map((command) => command.name),

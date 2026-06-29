@@ -142,6 +142,8 @@ async function removeStaticRendererArtifacts(docsDir: string): Promise<void> {
     rm(join(docsDir, 'index.html'), { force: true }),
     rm(join(docsDir, 'assets'), { recursive: true, force: true }),
     rm(join(docsDir, 'content.config.ts'), { force: true }),
+    rm(join(docsDir, 'source.config.ts'), { force: true }),
+    rm(join(docsDir, 'lib'), { recursive: true, force: true }),
     rm(join(docsDir, 'content', 'docs'), { recursive: true, force: true }),
     removeLegacyTopLevelMdx(join(docsDir, 'content')),
   ]);

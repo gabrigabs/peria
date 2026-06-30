@@ -17,6 +17,12 @@ function generateId(prefix: string, index: number): string {
   return `audit-${prefix}-${Date.now().toString(36)}-${index}`;
 }
 
+function toSchemaId(nameOrId: string): string {
+  return nameOrId.startsWith('schema:') || nameOrId.startsWith('param:')
+    ? nameOrId
+    : `schema:${nameOrId}`;
+}
+
 /**
  * Schema coverage audit check
  */
@@ -29,8 +35,19 @@ export const runSchemaCoverageCheck: AuditCheck = {
     const findings: DriftFinding[] = [];
     let index = 0;
 
-    // Build set of defined schema IDs
-    const definedSchemas = new Set(manifest.schemas?.map((s) => s.id) ?? []);
+    // Build set of defined schema IDs. Route parameters are emitted as inline
+    // route schemas, so they count as defined even when they are not duplicated
+    // in manifest.schemas.
+    const definedSchemas = new Set<string>();
+    for (const schema of manifest.schemas ?? []) {
+      definedSchemas.add(schema.id);
+      definedSchemas.add(toSchemaId(schema.name));
+    }
+    for (const route of manifest.routes ?? []) {
+      for (const schema of route.schemas ?? []) {
+        definedSchemas.add(schema.id);
+      }
+    }
 
     // Collect all schema references from routes
     const routeSchemaRefs = new Set<string>();
@@ -44,11 +61,11 @@ export const runSchemaCoverageCheck: AuditCheck = {
     const openapiSchemaRefs = new Set<string>();
     for (const op of manifest.openapiOps ?? []) {
       if (op.requestBody?.schema) {
-        openapiSchemaRefs.add(op.requestBody.schema);
+        openapiSchemaRefs.add(toSchemaId(op.requestBody.schema));
       }
       for (const response of op.responses ?? []) {
         if (response.schema) {
-          openapiSchemaRefs.add(response.schema);
+          openapiSchemaRefs.add(toSchemaId(response.schema));
         }
       }
     }
@@ -82,7 +99,7 @@ export const runSchemaCoverageCheck: AuditCheck = {
 
     // Check 2: Undefined schema references in OpenAPI (error)
     for (const op of manifest.openapiOps ?? []) {
-      if (op.requestBody?.schema && !definedSchemas.has(op.requestBody.schema)) {
+      if (op.requestBody?.schema && !definedSchemas.has(toSchemaId(op.requestBody.schema))) {
         findings.push({
           id: generateId('schema-undefined', index++),
           severity: 'error',
@@ -97,12 +114,12 @@ export const runSchemaCoverageCheck: AuditCheck = {
             `Define schema "${op.requestBody.schema}" in your code or OpenAPI spec`,
             'Or remove the schema reference',
           ],
-          relatedEntities: [op.requestBody.schema],
+          relatedEntities: [toSchemaId(op.requestBody.schema)],
         });
       }
 
       for (const response of op.responses ?? []) {
-        if (response.schema && !definedSchemas.has(response.schema)) {
+        if (response.schema && !definedSchemas.has(toSchemaId(response.schema))) {
           findings.push({
             id: generateId('schema-undefined', index++),
             severity: 'error',
@@ -117,7 +134,7 @@ export const runSchemaCoverageCheck: AuditCheck = {
               `Define schema "${response.schema}" in your code or OpenAPI spec`,
               'Or remove the schema reference',
             ],
-            relatedEntities: [response.schema],
+            relatedEntities: [toSchemaId(response.schema)],
           });
         }
       }

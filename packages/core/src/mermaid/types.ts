@@ -68,9 +68,8 @@ export interface MermaidResult {
  * Generate a unique diagram ID
  */
 export function generateDiagramId(type: DiagramType, entityId?: string): string {
-  const timestamp = Date.now().toString(36);
-  const entity = entityId ? `-${entityId.replace(/[^a-zA-Z0-9]/g, '-')}` : '';
-  return `diagram-${type}-${timestamp}${entity}`;
+  const entity = entityId ? entityId.replace(/[^a-zA-Z0-9]/g, '-') : 'overview';
+  return `diagram-${type}-${entity}`;
 }
 
 /**

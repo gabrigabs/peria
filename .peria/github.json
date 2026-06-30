@@ -1,0 +1,2895 @@
+{
+  "cacheVersion": "0.1.0",
+  "generatedAt": "2026-06-29T21:34:30.646Z",
+  "repository": {
+    "name": "peria",
+    "currentBranch": "feat/planning"
+  },
+  "issues": [
+    {
+      "id": "issue:task:T0.1",
+      "number": 10001,
+      "title": "T0.1 Reconciliar versões locais com npm",
+      "state": "closed",
+      "body": "## Roadmap task\n\n- Task: `T0.1`\n- Milestone: `0`\n- Status: `done`\n- Done checklist items: 11\n- Open checklist items: 0\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Problema:** npm mostra versões mais novas do que alguns manifests locais. Isso cria risco de publicar patch errado ou instalar dependência inesperada.\n\n**Tarefas:**\n\n- [x] Verificar versões atuais:\n  - [x] `npm view @peria/core version` → 0.1.1 ✅\n  - [x] `npm view @peria/cli version` → 0.1.2 ✅\n  - [x] `npm view @peria/renderer version` → 0.1.1 ✅\n  - [x] `npm view @peria/adapters version` → 0.1.1 ✅\n- [x] Atualizar manifests locais para refletir a verdade publicada ou preparar bump coerente.\n- [x] Garantir que dependências internas apontam para versões publicadas corretas quando o pacote for publicado.\n- [x] Documentar a política de versionamento enquanto não houver changesets/release automation.\n\n**Nota:** versões npm verificadas em 2026-06-29 com `npm view`.\n\n**Aceite:**\n\n- [x] `package.json` dos pacotes publicados não divergem silenciosamente do npm.\n- [x] `npm pack --dry-run` mostra conteúdo esperado em cada pacote.\n- [x] `PUBLISHING.md` descreve a ordem real de publicação.\n\n**Validação:**\n\n```sh\nbun run build\nbun run typecheck\nbun run test\nnpm view @peria/core version\nnpm view @peria/cli version\nnpm view @peria/renderer version\nnpm view @peria/adapters version\n```\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:done"
+      ],
+      "milestoneNumber": 0,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T0.2",
+      "number": 10002,
+      "title": "T0.2 Corrigir documentação pública que promete mais do que existe",
+      "state": "closed",
+      "body": "## Roadmap task\n\n- Task: `T0.2`\n- Milestone: `0`\n- Status: `done`\n- Done checklist items: 8\n- Open checklist items: 0\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Problema:** `README.md` e `packages/renderer/README.md` ainda podem induzir o usuário a acreditar que Fumadocs já está integrado ao renderer.\n\n**Tarefas:**\n\n- [x] Corrigir o README do renderer para dizer o comportamento atual ou implementar Fumadocs antes.\n- [x] Atualizar `PUBLISHING.md` para remover \"Adapters = Future\" se o pacote já estiver publicado.\n- [x] Revisar a tabela de adapters do README:\n  - [x] manter somente Express, Fastify e NestJS se Hono/Elysia não estiverem no pacote;\n  - [x] mover Hono/Elysia para roadmap, não para status principal.\n- [x] Revisar a seção \"Self-Documentation\" para garantir que números de módulos/testes sejam gerados ou fáceis de atualizar.\n\n**Aceite:**\n\n- [x] Um usuário novo consegue ler o README e executar exatamente o que está documentado.\n- [x] Nenhum README mostra import inexistente ou feature ainda não implementada como entregue.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:done"
+      ],
+      "milestoneNumber": 0,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T0.3",
+      "number": 10003,
+      "title": "T0.3 Limpar artefatos acidentais do repositório",
+      "state": "closed",
+      "body": "## Roadmap task\n\n- Task: `T0.3`\n- Milestone: `0`\n- Status: `done`\n- Done checklist items: 4\n- Open checklist items: 0\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Problema:** existe tarball dentro de `packages/renderer` (`peria-renderer-0.1.1.tgz`). Artefatos de release não devem ficar versionados no pacote fonte.\n\n**Tarefas:**\n\n- [x] Remover tarballs e outputs locais do repositório.\n- [x] Garantir `.gitignore` cobre `*.tgz`, `dist`, caches e artefatos temporários relevantes.\n- [x] Rodar `git status --short` antes e depois.\n\n**Aceite:**\n\n- [x] `rg --files | rg '\\.tgz$'` não retorna artefatos de pacote.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:done"
+      ],
+      "milestoneNumber": 0,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T0.4",
+      "number": 10004,
+      "title": "T0.4 Fresh install real com pacotes publicados",
+      "state": "open",
+      "body": "## Roadmap task\n\n- Task: `T0.4`\n- Milestone: `0`\n- Status: `open`\n- Done checklist items: 7\n- Open checklist items: 2\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Problema:** build local não prova que npm está bom.\n\n**Tarefas:**\n\n- [x] Criar diretório temporário limpo.\n- [x] Instalar `@peria/cli@latest`.\n- [x] Rodar `npx peria --help`.\n- [x] Rodar `npx peria --version`.\n- [ ] Rodar `npx peria init`, `scan`, `build`, `check` em fixture mínima.\n  - [ ] `init` ainda precisa harness TTY ou validação manual.\n  - [x] `scan`, `build`, `scan`, `check --json` passaram em fixture mínima com config manual.\n- [x] Registrar resultado no `PUBLISHING.md`.\n\n**Aceite:**\n\n- [x] A instalação via npm funciona sem workspace, sem Bun global e sem links locais.\n\n---\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:open"
+      ],
+      "milestoneNumber": 0,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T1.1",
+      "number": 10101,
+      "title": "T1.1 Decidir arquitetura do renderer",
+      "state": "open",
+      "body": "## Roadmap task\n\n- Task: `T1.1`\n- Milestone: `1`\n- Status: `open`\n- Done checklist items: 9\n- Open checklist items: 1\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Decisão necessária:** Fumadocs pode entrar de três formas:\n\n1. Gerar um app Fumadocs/Next em `docs/`.\n2. Gerar uma pasta consumível por uma app Fumadocs existente.\n3. Manter renderer estático como fallback e adicionar modo `--renderer fumadocs`.\n\n**Decisão em 2026-06-29:** seguir apenas com Fumadocs. O CLI aceita `fumadocs` como renderer e rejeita `static` com erro acionável. O renderer gera arquivos compatíveis para uma app Fumadocs existente; a app/preview completa ainda é próxima etapa.\n\n**Tarefas:**\n\n- [x] Definir interface de renderer:\n  - [x] `fumadocs`\n  - [ ] futuro `headless`\n- [x] Modelar config:\n  - [x] `docs.renderer`\n  - [x] `docs.outputDir`\n  - [x] `docs.route` como base URL pública\n- [x] Decidir se o pacote `@peria/renderer` deve depender de Fumadocs diretamente ou gerar arquivos compatíveis.\n\n**Aceite:**\n\n- [x] Existe ADR curta ou seção no `TASKS.md`/docs explicando a decisão.\n- [x] CLI mostra erro acionável quando usuário seleciona renderer não suportado.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:open"
+      ],
+      "milestoneNumber": 1,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T1.2",
+      "number": 10102,
+      "title": "T1.2 Criar modo Fumadocs mínimo",
+      "state": "open",
+      "body": "## Roadmap task\n\n- Task: `T1.2`\n- Milestone: `1`\n- Status: `open`\n- Done checklist items: 9\n- Open checklist items: 4\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [x] Gerar estrutura de conteúdo compatível com Fumadocs.\n- [x] Converter páginas wiki para MDX ou markdown aceito pelo Fumadocs.\n- [x] Gerar árvore/sidebar a partir do manifest da wiki.\n- [ ] Preservar links para fontes:\n  - [x] arquivos;\n  - [ ] rotas;\n  - [ ] schemas;\n  - [ ] commits quando disponíveis.\n- [x] Garantir que `llms.txt` continue sendo gerado no root esperado.\n- [x] App Fumadocs real (TanStack Start) embutida em `@peria/renderer` e servida por `peria serve` (ver T1.5).\n\n**Aceite:**\n\n- [x] `peria build --renderer fumadocs` gera uma documentação navegável em app Fumadocs.\n- [x] O modo antigo foi removido conforme decisão de produto.\n- [x] Links internos entre páginas funcionam.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:open"
+      ],
+      "milestoneNumber": 1,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T1.5",
+      "number": 10103,
+      "title": "T1.5 Embutir app TanStack Start + Fumadocs e ligar `peria serve`",
+      "state": "open",
+      "body": "## Roadmap task\n\n- Task: `T1.5`\n- Milestone: `1`\n- Status: `open`\n- Done checklist items: 11\n- Open checklist items: 1\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Problema:** `peria serve` era um servidor de arquivos estáticos que servia `docs/README.md` (texto cru), não o conteúdo Fumadocs em `docs/content/docs/*.mdx`. Sem uma app Fumadocs real, o critério \"navegável\" de T1.2 não era satisfeito.\n\n**Decisão (2026-06-29):** bundlar uma app-template TanStack Start + Fumadocs em `@peria/renderer/app-template/`; `peria serve` copia a template para `.peria/preview-app/`, instala deps, symlinks `docs/content/docs` e sobe `vite dev`.\n\n**Tarefas:**\n\n- [x] Criar `packages/renderer/app-template/` (vite.config, source.config, src/routes, lib/source, tsconfig, package.json).\n- [x] Exportar `previewAppDir` de `@peria/renderer/preview`.\n- [x] Atualizar `packages/renderer/package.json` (`files: app-template`, export `./preview`).\n- [x] Reescrever `packages/cli/src/commands/serve.ts` para spawnar Vite na app-template.\n- [x] Parar de emitir `source.config.ts`/`lib/source.ts` em `docs/` (a app-template é dona).\n- [x] Atualizar teste de integração do CLI (remover asserts de `source.config.ts`/`lib/source.ts` em `docs/`).\n- [x] Adicionar `bun run dogfood:preview` para empacotar `@peria/core`, `@peria/renderer` e `@peria/cli`, validar `app-template/**` no tarball e exercer `peria serve` fora do workspace.\n- [ ] Validar `dogfood:npm` após próximo release (a apptemplate precisa estar no tarball publicado).\n\n**Aceite:**\n\n- [x] `peria serve` sobe uma app Fumadocs real com SSR, sidebar e navegação.\n- [x] `/docs/<slug>` retorna HTML renderizado (não markdown cru).\n- [x] `/api/search` responde 200.\n- [x] `bun run build && bun run typecheck && bun run test` passam.\n\n**Validação:**\n\n```sh\nbun run build\nbun run typecheck\nbun run test\nnode packages/cli/bin/peria.js build --renderer fumadocs\n```\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:open"
+      ],
+      "milestoneNumber": 1,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T1.3",
+      "number": 10104,
+      "title": "T1.3 Melhorar UX da documentação gerada",
+      "state": "open",
+      "body": "## Roadmap task\n\n- Task: `T1.3`\n- Milestone: `1`\n- Status: `open`\n- Done checklist items: 6\n- Open checklist items: 7\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Problema:** a utilidade do Peria depende de leitura rápida, não só de gerar arquivos.\n\n**Tarefas:**\n\n- [ ] Página inicial com:\n  - [x] resumo do projeto;\n  - [x] stack detectada;\n  - [x] comandos disponíveis;\n  - [ ] últimos commits relevantes;\n  - [x] riscos/drift encontrados.\n- [ ] Página de rotas com filtros por método/status/fonte.\n- [ ] Página de pacotes com grafo de dependência.\n- [x] Página de módulos com responsabilidade, exports e relações.\n- [ ] Página de drift com severidade e ação recomendada.\n- [x] Página de contexto para agentes.\n\n**Aceite:**\n\n- [ ] Um mantenedor consegue responder \"o que eu posso mudar sem quebrar?\" olhando a wiki.\n- [ ] Cada afirmação importante aponta para fonte verificável.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:open"
+      ],
+      "milestoneNumber": 1,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T1.4",
+      "number": 10105,
+      "title": "T1.4 Busca e navegação",
+      "state": "open",
+      "body": "## Roadmap task\n\n- Task: `T1.4`\n- Milestone: `1`\n- Status: `open`\n- Done checklist items: 1\n- Open checklist items: 4\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [x] Integrar busca do Fumadocs ou gerar índice compatível.\n- [ ] Indexar entidades, rotas, schemas, pacotes e páginas.\n- [ ] Adicionar breadcrumbs e relações \"related\".\n- [ ] Garantir que nomes canônicos resolvem aliases.\n\n**Aceite:**\n\n- [ ] Buscar por uma rota, service, schema ou pacote leva a uma página útil.\n\n---\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:open"
+      ],
+      "milestoneNumber": 1,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T2.1",
+      "number": 10201,
+      "title": "T2.1 Incorporar Mermaid no build principal",
+      "state": "open",
+      "body": "## Roadmap task\n\n- Task: `T2.1`\n- Milestone: `2`\n- Status: `open`\n- Done checklist items: 10\n- Open checklist items: 5\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Problema:** o módulo Mermaid existe, mas precisa entrar no fluxo normal da documentação.\n\n**Tarefas:**\n\n- [x] Gerar diagramas durante `peria build` quando `features.mermaid = true`.\n- [x] Incluir diagramas na página inicial.\n- [x] Criar página `diagrams`.\n- [x] Linkar diagramas a entidades reais do manifest.\n- [ ] Permitir export:\n  - [x] `.mmd`;\n  - [x] markdown embutido;\n  - [ ] SVG/PNG somente se houver dependência justificada.\n\n**Diagramas mínimos:**\n\n- [ ] Fluxo de rotas.\n- [x] Dependências entre pacotes.\n- [ ] Relações entre schemas.\n- [x] Mapa de módulos.\n- [ ] Mudanças por commit/área.\n\n**Aceite:**\n\n- [x] `peria build` gera páginas que mostram os diagramas.\n- [x] `peria diagram` e `peria build` compartilham o mesmo motor.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:open"
+      ],
+      "milestoneNumber": 2,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T2.2",
+      "number": 10202,
+      "title": "T2.2 Criar application map",
+      "state": "closed",
+      "body": "## Roadmap task\n\n- Task: `T2.2`\n- Milestone: `2`\n- Status: `done`\n- Done checklist items: 14\n- Open checklist items: 0\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [x] Definir tipo `ApplicationMap`.\n- [x] Agregar:\n  - [x] entrypoints;\n  - [x] frameworks;\n  - [x] pacotes;\n  - [x] rotas;\n  - [x] schemas;\n  - [x] módulos;\n  - [x] arquivos markdown;\n  - [x] OpenAPI;\n  - [x] relações Git básicas.\n- [x] Serializar em `.peria/application-map.json`.\n- [x] Renderizar página dedicada.\n\n**Aceite:**\n\n- [x] O mapa responde \"quais partes existem e como se conectam?\" sem ler o código.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:done"
+      ],
+      "milestoneNumber": 2,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T2.3",
+      "number": 10203,
+      "title": "T2.3 Melhorar qualidade das claims",
+      "state": "open",
+      "body": "## Roadmap task\n\n- Task: `T2.3`\n- Milestone: `2`\n- Status: `open`\n- Done checklist items: 0\n- Open checklist items: 9\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [ ] Cada claim relevante deve ter:\n  - [ ] texto específico;\n  - [ ] fonte;\n  - [ ] data/contexto;\n  - [ ] relação com entidade;\n  - [ ] confiança.\n- [ ] Criar teste para impedir claim sem fonte.\n- [ ] Expor claims na UI.\n\n**Aceite:**\n\n- [ ] A wiki deixa claro o que foi detectado, inferido ou configurado manualmente.\n\n---\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:open"
+      ],
+      "milestoneNumber": 2,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T3.1",
+      "number": 10301,
+      "title": "T3.1 Dogfood usando npm, não workspace",
+      "state": "open",
+      "body": "## Roadmap task\n\n- Task: `T3.1`\n- Milestone: `3`\n- Status: `open`\n- Done checklist items: 6\n- Open checklist items: 1\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [x] Criar script de dogfood que instala `@peria/cli@latest` em ambiente temporário.\n- [ ] Rodar contra o próprio checkout do Peria.\n- [x] Gerar docs em diretório controlado.\n- [x] Comparar saída com fixtures esperadas.\n- [x] Rodar `peria check` contra a saída gerada.\n\n**Aceite:**\n\n- [x] O resultado não depende de `workspace:*`.\n- [x] O comando falha se pacote publicado estiver quebrado.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:open"
+      ],
+      "milestoneNumber": 3,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T3.2",
+      "number": 10302,
+      "title": "T3.2 Publicar os docs dogfoodados",
+      "state": "open",
+      "body": "## Roadmap task\n\n- Task: `T3.2`\n- Milestone: `3`\n- Status: `open`\n- Done checklist items: 8\n- Open checklist items: 4\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [x] Decidir destino:\n  - [x] `docs/` versionado;\n  - [ ] GitHub Pages;\n  - [ ] release artifact;\n  - [ ] todos, em fases.\n- [x] Garantir que docs gerados não geram ruído impossível de revisar.\n- [x] Criar comando:\n  - [x] `bun run docs:generate`;\n  - [x] `bun run docs:check`;\n  - [x] `bun run docs:serve` (agora sobe app Fumadocs real via T1.5).\n\n**Aceite:**\n\n- [x] Um contribuidor consegue abrir a documentação do próprio Peria localmente.\n- [ ] CI consegue detectar quando docs estão obsoletos.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:open"
+      ],
+      "milestoneNumber": 3,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T3.3",
+      "number": 10303,
+      "title": "T3.3 Usar a wiki para guiar desenvolvimento",
+      "state": "open",
+      "body": "## Roadmap task\n\n- Task: `T3.3`\n- Milestone: `3`\n- Status: `open`\n- Done checklist items: 4\n- Open checklist items: 1\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [x] Criar página \"Development Map\".\n- [x] Criar página \"Release Status\".\n- [x] Criar página \"Known Gaps\".\n- [ ] Linkar issues/milestones quando GitHub sync existir.\n\n**Aceite:**\n\n- [x] A documentação gerada passa a ser insumo real de manutenção, não vitrine.\n\n---\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:open"
+      ],
+      "milestoneNumber": 3,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T4.1",
+      "number": 10401,
+      "title": "T4.1 Revalidar pacote `@peria/adapters`",
+      "state": "closed",
+      "body": "## Roadmap task\n\n- Task: `T4.1`\n- Milestone: `4`\n- Status: `done`\n- Done checklist items: 10\n- Open checklist items: 0\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [x] Confirmar exports publicados:\n  - [x] `.`\n  - [x] `./express`\n  - [x] `./fastify`\n  - [x] `./nest`\n- [x] Garantir que Hono/Elysia não aparecem em package exports se forem placeholders.\n- [x] Testar consumo em app externo temporário.\n- [x] Ajustar README com exemplos completos.\n\n**Aceite:**\n\n- [x] `npm install @peria/adapters` funciona fora do monorepo.\n- [x] Express, Fastify e NestJS conseguem servir manifest, `llms.txt` e artefatos Fumadocs gerados.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:done"
+      ],
+      "milestoneNumber": 4,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T4.2",
+      "number": 10402,
+      "title": "T4.2 Dogfood em NestJS",
+      "state": "closed",
+      "body": "## Roadmap task\n\n- Task: `T4.2`\n- Milestone: `4`\n- Status: `done`\n- Done checklist items: 17\n- Open checklist items: 0\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [x] Criar fixture NestJS realista ou usar fixture existente.\n- [x] Instalar `@peria/cli` e `@peria/adapters`.\n- [x] Gerar docs.\n- [x] Servir docs dentro da aplicação NestJS.\n- [x] Validar endpoint:\n  - [x] `/docs`\n  - [x] `/docs/wiki-manifest.json`\n  - [x] `/docs/llms.txt`\n  - [x] artefatos Fumadocs.\n- [x] Cobrir cenário com prefixo global de rota.\n- [x] Cobrir cenário com app em subpath.\n\n**Aceite:**\n\n- [x] O adapter NestJS funciona com app real, não só teste smoke.\n- [x] Erros comuns são acionáveis:\n  - [x] docs não gerados;\n  - [x] caminho errado;\n  - [x] asset ausente;\n  - [x] permissão de leitura.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:done"
+      ],
+      "milestoneNumber": 4,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T4.3",
+      "number": 10403,
+      "title": "T4.3 Decidir futuro do SDK",
+      "state": "closed",
+      "body": "## Roadmap task\n\n- Task: `T4.3`\n- Milestone: `4`\n- Status: `done`\n- Done checklist items: 7\n- Open checklist items: 0\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Problema:** SDK e adapters se sobrepõem. Publicar SDK cedo pode congelar uma API errada.\n\n**Tarefas:**\n\n- [x] Mapear diferenças entre `@peria/sdk` e `@peria/adapters`.\n- [x] Decidir se SDK será:\n  - [x] API programática futura para scan/build/check;\n  - [x] não será camada de adapters;\n  - [x] pacote privado/deferido por enquanto.\n- [x] Remover dependências prematuras se não houver caso real.\n\n**Aceite:**\n\n- [x] SDK não é publicado até ter contrato e teste de consumo.\n\n---\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:done"
+      ],
+      "milestoneNumber": 4,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T5.1",
+      "number": 10501,
+      "title": "T5.1 Definir escopo do GitHub sync",
+      "state": "open",
+      "body": "## Roadmap task\n\n- Task: `T5.1`\n- Milestone: `5`\n- Status: `open`\n- Done checklist items: 0\n- Open checklist items: 0\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Escopo recomendado para primeira versão:**\n\n- Ler issues, PRs, milestones e commits.\n- Relacionar entidades detectadas a commits/PRs/issues.\n- Criar issues a partir de drift findings.\n- Sincronizar status de tasks na documentação.\n\n**Fora de escopo inicialmente:**\n\n- Editar PRs complexos.\n- Gerenciar projetos GitHub Projects v2.\n- Fazer automação de release completa.\n- Substituir Linear/Jira.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:open"
+      ],
+      "milestoneNumber": 5,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T5.2",
+      "number": 10502,
+      "title": "T5.2 Autenticação GitHub",
+      "state": "closed",
+      "body": "## Roadmap task\n\n- Task: `T5.2`\n- Milestone: `5`\n- Status: `done`\n- Done checklist items: 9\n- Open checklist items: 0\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [x] Suportar `gh auth token` quando GitHub CLI estiver logado.\n- [x] Suportar `GITHUB_TOKEN`.\n- [x] Suportar token em config local ignorada por git, se necessário.\n- [x] Nunca gravar token em `.peria/manifest.json`, docs ou logs.\n- [x] Adicionar comando de diagnóstico:\n  - [x] `peria github auth status`\n  - [x] `peria github auth login` somente se fizer sentido delegar ao `gh`.\n\n**Aceite:**\n\n- [x] Usuário entende exatamente qual credencial está sendo usada.\n- [x] Falha de auth sugere correção objetiva.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:done"
+      ],
+      "milestoneNumber": 5,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T5.3",
+      "number": 10503,
+      "title": "T5.3 Modelo de dados GitHub",
+      "state": "closed",
+      "body": "## Roadmap task\n\n- Task: `T5.3`\n- Milestone: `5`\n- Status: `done`\n- Done checklist items: 15\n- Open checklist items: 0\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [x] Criar tipos:\n  - [x] `GitHubIssue`\n  - [x] `GitHubPullRequest`\n  - [x] `GitHubMilestone`\n  - [x] `GitHubCommit`\n  - [x] `GitHubRelation`\n- [x] Persistir cache em `.peria/github.json`.\n- [x] Linkar GitHub ao knowledge graph:\n  - [x] `entity changed_by commit`\n  - [x] `commit belongs_to pr`\n  - [x] `pr fixes issue`\n  - [x] `issue belongs_to milestone`\n  - [x] `drift finding opens issue`\n- [x] Renderizar página `github-map` com commits, PRs, issues, milestones e relações do cache.\n\n**Aceite:**\n\n- [x] A UI consegue mostrar por que uma entidade mudou quando o cache contém relações `entity_changed_by_commit`.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:done"
+      ],
+      "milestoneNumber": 5,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T5.4",
+      "number": 10504,
+      "title": "T5.4 Criar issues a partir de drift",
+      "state": "open",
+      "body": "## Roadmap task\n\n- Task: `T5.4`\n- Milestone: `5`\n- Status: `open`\n- Done checklist items: 15\n- Open checklist items: 1\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [x] Adicionar comando:\n  - [x] `peria github issues create-from-check`\n  - [ ] ou `peria check --create-issues`\n- [x] Deduplicar issues por fingerprint.\n- [x] Adicionar labels configuráveis:\n  - [x] `peria`\n  - [x] `docs-drift`\n  - [x] severidade.\n- [x] Escrever corpo da issue com:\n  - [x] achado;\n  - [x] fonte;\n  - [x] impacto;\n  - [x] comando para reproduzir;\n  - [x] sugestão de correção.\n\n**Nota:** primeira versão é cache-first: cria registros `GitHubIssue` em `.peria/github.json` para sincronização posterior, sem chamar a API do GitHub.\n\n**Aceite:**\n\n- [x] Rodar duas vezes não duplica issues.\n- [x] Issues abertas aparecem na wiki.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:open"
+      ],
+      "milestoneNumber": 5,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T5.5",
+      "number": 10505,
+      "title": "T5.5 Milestones e organização de tarefas",
+      "state": "open",
+      "body": "## Roadmap task\n\n- Task: `T5.5`\n- Milestone: `5`\n- Status: `blocked`\n- Done checklist items: 1\n- Open checklist items: 8\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [ ] Mapear milestones GitHub para páginas de roadmap.\n- [ ] Sincronizar status:\n  - [ ] open;\n  - [ ] closed;\n  - [ ] done;\n  - [ ] blocked, via label se existir.\n- [x] Expor milestones no `github-map`.\n- [ ] Linkar commits e PRs recentes a cada milestone.\n\n**Aceite:**\n\n- [ ] Peria consegue gerar um relatório de progresso técnico rastreável.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:blocked"
+      ],
+      "milestoneNumber": 5,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T5.6",
+      "number": 10506,
+      "title": "T5.6 Logs de commits melhores",
+      "state": "open",
+      "body": "## Roadmap task\n\n- Task: `T5.6`\n- Milestone: `5`\n- Status: `open`\n- Done checklist items: 0\n- Open checklist items: 6\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [ ] Melhorar extração de commits locais.\n- [ ] Agrupar commits por pacote/área afetada.\n- [ ] Detectar Conventional Commits.\n- [ ] Relacionar commits a issues por referência `#123`.\n- [ ] Mostrar impacto esperado do diff.\n\n**Aceite:**\n\n- [ ] A documentação responde \"o que mudou recentemente e que docs/rotas isso afeta?\".\n\n---\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:open"
+      ],
+      "milestoneNumber": 5,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T6.1",
+      "number": 10601,
+      "title": "T6.1 Melhorar `peria init`",
+      "state": "open",
+      "body": "## Roadmap task\n\n- Task: `T6.1`\n- Milestone: `6`\n- Status: `open`\n- Done checklist items: 0\n- Open checklist items: 6\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [ ] Detectar framework com confiança.\n- [ ] Sugerir config mínima.\n- [ ] Explicar o que será criado.\n- [ ] Não sobrescrever arquivo sem confirmação.\n- [ ] Gerar config com comentários úteis e poucos campos.\n\n**Aceite:**\n\n- [ ] Um usuário consegue iniciar em menos de 2 minutos.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:open"
+      ],
+      "milestoneNumber": 6,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T6.2",
+      "number": 10602,
+      "title": "T6.2 Melhorar mensagens de erro",
+      "state": "open",
+      "body": "## Roadmap task\n\n- Task: `T6.2`\n- Milestone: `6`\n- Status: `open`\n- Done checklist items: 0\n- Open checklist items: 10\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [ ] Revisar erros de:\n  - [ ] config ausente;\n  - [ ] package.json ausente;\n  - [ ] OpenAPI inválido;\n  - [ ] docs ausentes;\n  - [ ] renderer inválido;\n  - [ ] token GitHub ausente.\n- [ ] Adicionar código de erro quando útil.\n- [ ] Garantir que cada erro tem próxima ação.\n\n**Aceite:**\n\n- [ ] Um erro comum não exige abrir o código-fonte para resolver.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:open"
+      ],
+      "milestoneNumber": 6,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T6.3",
+      "number": 10603,
+      "title": "T6.3 CI de qualidade",
+      "state": "closed",
+      "body": "## Roadmap task\n\n- Task: `T6.3`\n- Milestone: `6`\n- Status: `done`\n- Done checklist items: 11\n- Open checklist items: 0\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [x] Rodar em CI:\n  - [x] `bun install`\n  - [x] `bun run build`\n  - [x] `bun run typecheck`\n  - [x] `bun run test`\n  - [x] dogfood preview com tarballs locais.\n  - [x] dogfood NestJS adapter com tarballs locais.\n  - [x] dogfood npm fresh install.\n- [x] Adicionar job de pack validation.\n- [x] Adicionar job de docs drift.\n\n**Aceite:**\n\n- [x] Nenhum pacote novo é publicado sem teste de consumo.\n\n---\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:done"
+      ],
+      "milestoneNumber": 6,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T7.1",
+      "number": 10701,
+      "title": "T7.1 README orientado a uso real",
+      "state": "closed",
+      "body": "## Roadmap task\n\n- Task: `T7.1`\n- Milestone: `7`\n- Status: `done`\n- Done checklist items: 7\n- Open checklist items: 0\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [x] Separar \"shipped\" de \"roadmap\".\n- [x] Adicionar exemplo real de saída.\n- [x] Adicionar screenshot ou GIF da wiki gerada quando renderer estiver bom.\n- [x] Adicionar seção \"When to use Peria\".\n- [x] Adicionar seção \"Limitations\".\n\n**Aceite:**\n\n- [x] README não parece maior que o produto.\n- [x] Limitações aumentam confiança em vez de esconder lacunas.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:done"
+      ],
+      "milestoneNumber": 7,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T7.2",
+      "number": 10702,
+      "title": "T7.2 Exemplo end-to-end",
+      "state": "closed",
+      "body": "## Roadmap task\n\n- Task: `T7.2`\n- Milestone: `7`\n- Status: `done`\n- Done checklist items: 10\n- Open checklist items: 0\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [x] Criar exemplo `examples/nestjs-api`.\n- [x] Incluir:\n  - [x] rotas;\n  - [x] DTOs/schemas;\n  - [x] OpenAPI;\n  - [x] README;\n  - [x] docs gerados;\n  - [x] adapter NestJS.\n- [x] Adicionar script de validação do exemplo.\n\n**Aceite:**\n\n- [x] O exemplo é o principal caminho para testar Peria.\n\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:done"
+      ],
+      "milestoneNumber": 7,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "issue:task:T7.3",
+      "number": 10703,
+      "title": "T7.3 Release notes e changelog",
+      "state": "open",
+      "body": "## Roadmap task\n\n- Task: `T7.3`\n- Milestone: `7`\n- Status: `open`\n- Done checklist items: 18\n- Open checklist items: 5\n\n## Source\n\n- File: `TASKS.md`\n\n## Original section\n\n\n**Tarefas:**\n\n- [x] Criar `CHANGELOG.md`.\n- [x] Documentar versões já publicadas.\n- [x] Registrar breaking changes enquanto API ainda é experimental.\n- [x] Definir política de beta.\n\n**Aceite:**\n\n- [x] Usuário sabe o que mudou entre `0.1.x`.\n\n---\n\n## Ordem de commits sugerida\n\n1. `docs: add detailed product task backlog`\n2. `chore: reconcile published package versions`\n3. `docs: align public docs with shipped package behavior`\n4. `chore: remove release artifacts from source tree`\n5. `test: add fresh npm install dogfood validation`\n6. `feat(renderer): add renderer mode selection`\n7. `feat(renderer): generate fumadocs-compatible output`\n8. `feat(core): embed mermaid diagrams into wiki build`\n9. `feat(core): add application map artifact`\n10. `test(adapters): dogfood nestjs adapter with generated docs`\n11. `feat(github): add auth status and read-only sync`\n12. `feat(github): create issues from drift findings`\n\n## Comandos de validação padrão\n\nUse este bloco no fim de cada mudança relevante:\n\n```sh\nbun run build\nbun run typecheck\nbun run test\nnode packages/cli/bin/peria.js scan\nnode packages/cli/bin/peria.js build\nnode packages/cli/bin/peria.js check --json\n```\n\nPara release:\n\n```sh\nnpm pack --dry-run --workspace packages/core\nnpm pack --dry-run --workspace packages/renderer\nnpm pack --dry-run --workspace packages/cli\nnpm pack --dry-run --workspace packages/adapters\n```\n\nPara dogfood publicado:\n\n```sh\ntmpdir=\"$(mktemp -d)\"\ncd \"$tmpdir\"\nnpm init -y\nnpm install -D @peria/cli@latest @peria/adapters@latest\nnpx peria --help\nnpx peria --version\n",
+      "labels": [
+        "peria",
+        "roadmap",
+        "status:open"
+      ],
+      "milestoneNumber": 7,
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    }
+  ],
+  "pullRequests": [],
+  "milestones": [
+    {
+      "id": "milestone:tasks:0",
+      "number": 0,
+      "title": "Higiene de release e verdade pública",
+      "state": "open",
+      "description": "Roadmap milestone parsed from TASKS.md (4 tasks).",
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "milestone:tasks:1",
+      "number": 1,
+      "title": "Renderer Fumadocs de verdade",
+      "state": "open",
+      "description": "Roadmap milestone parsed from TASKS.md (5 tasks).",
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "milestone:tasks:2",
+      "number": 2,
+      "title": "Mais conteúdo, diagramas e mapa da aplicação",
+      "state": "open",
+      "description": "Roadmap milestone parsed from TASKS.md (3 tasks).",
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "milestone:tasks:3",
+      "number": 3,
+      "title": "Dogfood real em Peria",
+      "state": "open",
+      "description": "Roadmap milestone parsed from TASKS.md (3 tasks).",
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "milestone:tasks:4",
+      "number": 4,
+      "title": "Adapters e dogfood NestJS",
+      "state": "closed",
+      "description": "Roadmap milestone parsed from TASKS.md (3 tasks).",
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "milestone:tasks:5",
+      "number": 5,
+      "title": "GitHub auth, issues, milestones e sincronização",
+      "state": "open",
+      "description": "Roadmap milestone parsed from TASKS.md (6 tasks).",
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "milestone:tasks:6",
+      "number": 6,
+      "title": "Usabilidade e DX",
+      "state": "open",
+      "description": "Roadmap milestone parsed from TASKS.md (3 tasks).",
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    },
+    {
+      "id": "milestone:tasks:7",
+      "number": 7,
+      "title": "Preparação para adoção pública",
+      "state": "open",
+      "description": "Roadmap milestone parsed from TASKS.md (3 tasks).",
+      "createdAt": "2026-06-29T21:34:30.646Z",
+      "updatedAt": "2026-06-29T21:34:30.646Z",
+      "source": {
+        "file": "TASKS.md"
+      }
+    }
+  ],
+  "commits": [
+    {
+      "id": "commit:6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6",
+      "sha": "6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6",
+      "shortSha": "6e3e5b5",
+      "subject": "feat(renderer): render Mermaid diagrams in preview app",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T15:54:00-03:00",
+      "files": [
+        "packages/renderer/app-template/package.json",
+        "packages/renderer/app-template/source.config.ts",
+        "packages/renderer/app-template/src/components/mermaid.tsx",
+        "packages/renderer/app-template/src/routes/docs/$.tsx"
+      ],
+      "issueNumbers": []
+    },
+    {
+      "id": "commit:18e9c5ec4532effc452577495eedba4c7727d67e",
+      "sha": "18e9c5ec4532effc452577495eedba4c7727d67e",
+      "shortSha": "18e9c5e",
+      "subject": "chore(docs): regenerate wiki artifacts",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T15:46:44-03:00",
+      "files": [
+        ".peria/manifest.json",
+        "docs/README.md",
+        "docs/content/docs/adapters.mdx",
+        "docs/content/docs/ai-context.mdx",
+        "docs/content/docs/application-map.mdx",
+        "docs/content/docs/cli.mdx",
+        "docs/content/docs/configuration.mdx",
+        "docs/content/docs/development-map.mdx",
+        "docs/content/docs/diagrams.mdx",
+        "docs/content/docs/github-issues.mdx",
+        "docs/content/docs/history.mdx",
+        "docs/content/docs/known-gaps.mdx",
+        "docs/content/docs/modules.mdx",
+        "docs/content/docs/overview.mdx",
+        "docs/content/docs/packages.mdx",
+        "docs/content/docs/release-status.mdx",
+        "docs/content/docs/wiki-ui.mdx",
+        "docs/lib/source.ts",
+        "docs/pages/ai-context.md",
+        "docs/pages/application-map.md",
+        "docs/pages/development-map.md",
+        "docs/pages/diagrams.md",
+        "docs/pages/history.md",
+        "docs/pages/modules.md",
+        "docs/pages/overview.md",
+        "docs/pages/packages.md",
+        "docs/pages/release-status.md",
+        "docs/source.config.ts",
+        "docs/wiki-manifest.json"
+      ],
+      "issueNumbers": []
+    },
+    {
+      "id": "commit:c23ceab361ce5ca854a3dce0edc345c08161227c",
+      "sha": "c23ceab361ce5ca854a3dce0edc345c08161227c",
+      "shortSha": "c23ceab",
+      "subject": "docs: update TASKS and PUBLISHING for preview app",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T15:45:59-03:00",
+      "files": [
+        "PUBLISHING.md",
+        "TASKS.md"
+      ],
+      "issueNumbers": []
+    },
+    {
+      "id": "commit:591a8b28c2242a762785c8c08898b02fe9a769a0",
+      "sha": "591a8b28c2242a762785c8c08898b02fe9a769a0",
+      "shortSha": "591a8b2",
+      "subject": "test(cli): drop removed artifact assertions",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T15:45:57-03:00",
+      "files": [
+        "packages/cli/src/__tests__/integration.test.ts"
+      ],
+      "issueNumbers": []
+    },
+    {
+      "id": "commit:31abbba56bd71e94fc01484a5db1757b3e7d9e57",
+      "sha": "31abbba56bd71e94fc01484a5db1757b3e7d9e57",
+      "shortSha": "31abbba",
+      "subject": "fix(renderer): drop emitted source.config/lib/source and duplicate h1",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T15:45:55-03:00",
+      "files": [
+        "packages/renderer/src/fumadocs.ts"
+      ],
+      "issueNumbers": []
+    },
+    {
+      "id": "commit:ba78017310c1e1f6c411f366851240ffe77df8a4",
+      "sha": "ba78017310c1e1f6c411f366851240ffe77df8a4",
+      "shortSha": "ba78017",
+      "subject": "fix(cli): clean source.config.ts and lib/ from old builds",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T15:45:53-03:00",
+      "files": [
+        "packages/cli/src/commands/build.ts"
+      ],
+      "issueNumbers": []
+    },
+    {
+      "id": "commit:83ee5701cdc5707f27128de2a022b052d418ff81",
+      "sha": "83ee5701cdc5707f27128de2a022b052d418ff81",
+      "shortSha": "83ee570",
+      "subject": "feat(cli): rewrite serve to spawn preview app",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T15:45:51-03:00",
+      "files": [
+        "packages/cli/src/commands/serve.ts"
+      ],
+      "issueNumbers": []
+    },
+    {
+      "id": "commit:7715d31622bba7db8f0dd313557e1953cbb6f2fb",
+      "sha": "7715d31622bba7db8f0dd313557e1953cbb6f2fb",
+      "shortSha": "7715d31",
+      "subject": "feat(renderer): support ./preview subpath export",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T15:45:49-03:00",
+      "files": [
+        "packages/renderer/package.json",
+        "packages/renderer/tsup.config.ts"
+      ],
+      "issueNumbers": []
+    },
+    {
+      "id": "commit:b15170c420bbfd5af0ac8567079e4b6312aa263f",
+      "sha": "b15170c420bbfd5af0ac8567079e4b6312aa263f",
+      "shortSha": "b15170c",
+      "subject": "feat(renderer): add TanStack Start + Fumadocs preview app",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T15:45:47-03:00",
+      "files": [
+        "packages/renderer/app-template/.gitignore",
+        "packages/renderer/app-template/package.json",
+        "packages/renderer/app-template/source.config.ts",
+        "packages/renderer/app-template/src/lib/source.ts",
+        "packages/renderer/app-template/src/router.tsx",
+        "packages/renderer/app-template/src/routes/__root.tsx",
+        "packages/renderer/app-template/src/routes/api/search.ts",
+        "packages/renderer/app-template/src/routes/docs/$.tsx",
+        "packages/renderer/app-template/src/routes/index.tsx",
+        "packages/renderer/app-template/src/styles/app.css",
+        "packages/renderer/app-template/tsconfig.json",
+        "packages/renderer/app-template/vite.config.ts",
+        "packages/renderer/src/preview.ts"
+      ],
+      "issueNumbers": []
+    },
+    {
+      "id": "commit:27958d077464e7329413e5a0c225ff9b7210094d",
+      "sha": "27958d077464e7329413e5a0c225ff9b7210094d",
+      "shortSha": "27958d0",
+      "subject": "feat(cli): add milestones sync command",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T15:45:46-03:00",
+      "files": [
+        "packages/cli/src/commands/github.ts",
+        "packages/cli/src/index.ts"
+      ],
+      "issueNumbers": []
+    },
+    {
+      "id": "commit:3e377d3ee903ce68bde60b93f77cbda17e9ab5e0",
+      "sha": "3e377d3ee903ce68bde60b93f77cbda17e9ab5e0",
+      "shortSha": "3e377d3",
+      "subject": "feat(core): add roadmap milestone sync",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T15:45:43-03:00",
+      "files": [
+        "packages/core/src/__tests__/github.test.ts",
+        "packages/core/src/github/index.ts",
+        "packages/core/src/github/milestones.ts",
+        "packages/core/src/index.ts"
+      ],
+      "issueNumbers": []
+    },
+    {
+      "id": "commit:67ac65b8416ffe0e096598a05c74991e2fb66f8d",
+      "sha": "67ac65b8416ffe0e096598a05c74991e2fb66f8d",
+      "shortSha": "67ac65b",
+      "subject": "feat(github): draft drift issues from checks",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T12:38:12-03:00",
+      "files": [
+        ".peria/github.json",
+        ".peria/manifest.json",
+        "README.md",
+        "TASKS.md",
+        "docs/content/docs/ai-context.mdx",
+        "docs/content/docs/application-map.mdx",
+        "docs/content/docs/development-map.mdx",
+        "docs/content/docs/diagrams.mdx",
+        "docs/content/docs/github-issues.mdx",
+        "docs/content/docs/history.mdx",
+        "docs/content/docs/meta.json",
+        "docs/content/docs/modules.mdx",
+        "docs/content/docs/overview.mdx",
+        "docs/content/docs/packages.mdx",
+        "docs/content/docs/release-status.mdx",
+        "docs/pages/ai-context.md",
+        "docs/pages/application-map.md",
+        "docs/pages/development-map.md",
+        "docs/pages/diagrams.md",
+        "docs/pages/github-issues.md",
+        "docs/pages/history.md",
+        "docs/pages/modules.md",
+        "docs/pages/overview.md",
+        "docs/pages/packages.md",
+        "docs/pages/release-status.md",
+        "docs/search-index.json",
+        "docs/wiki-manifest.json",
+        "packages/cli/README.md",
+        "packages/cli/src/__tests__/integration.test.ts",
+        "packages/cli/src/commands/build.ts",
+        "packages/cli/src/commands/github.ts",
+        "packages/cli/src/index.ts",
+        "packages/core/src/__tests__/github.test.ts",
+        "packages/core/src/github/index.ts",
+        "packages/core/src/github/issues.ts",
+        "packages/core/src/github/types.ts",
+        "packages/core/src/index.ts"
+      ],
+      "issueNumbers": []
+    },
+    {
+      "id": "commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "sha": "7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "shortSha": "7e7434c",
+      "subject": "feat(github): add provenance cache model",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T12:25:20-03:00",
+      "files": [
+        ".peria/manifest.json",
+        "README.md",
+        "TASKS.md",
+        "docs/content/docs/ai-context.mdx",
+        "docs/content/docs/application-map.mdx",
+        "docs/content/docs/development-map.mdx",
+        "docs/content/docs/diagrams.mdx",
+        "docs/content/docs/history.mdx",
+        "docs/content/docs/modules.mdx",
+        "docs/content/docs/overview.mdx",
+        "docs/content/docs/packages.mdx",
+        "docs/content/docs/release-status.mdx",
+        "docs/pages/ai-context.md",
+        "docs/pages/application-map.md",
+        "docs/pages/development-map.md",
+        "docs/pages/diagrams.md",
+        "docs/pages/history.md",
+        "docs/pages/modules.md",
+        "docs/pages/overview.md",
+        "docs/pages/packages.md",
+        "docs/pages/release-status.md",
+        "docs/wiki-manifest.json",
+        "packages/cli/README.md",
+        "packages/cli/src/__tests__/integration.test.ts",
+        "packages/cli/src/commands/build.ts",
+        "packages/cli/src/commands/github.ts",
+        "packages/core/src/__tests__/github.test.ts",
+        "packages/core/src/github/cache.ts",
+        "packages/core/src/github/index.ts",
+        "packages/core/src/github/relations.ts",
+        "packages/core/src/github/types.ts",
+        "packages/core/src/index.ts",
+        "packages/core/src/scanner/git.ts",
+        "packages/core/src/scanner/index.ts",
+        "packages/core/src/types/graph.ts",
+        "packages/core/src/types/manifest.ts",
+        "packages/core/src/wiki/collectors/git.ts"
+      ],
+      "issueNumbers": []
+    },
+    {
+      "id": "commit:22d7d9c47d831a1803b8e7545c1882d242b3cb4d",
+      "sha": "22d7d9c47d831a1803b8e7545c1882d242b3cb4d",
+      "shortSha": "22d7d9c",
+      "subject": "feat(github): add auth diagnostics",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T12:12:02-03:00",
+      "files": [
+        ".peria/manifest.json",
+        "README.md",
+        "TASKS.md",
+        "docs/content/docs/ai-context.mdx",
+        "docs/content/docs/application-map.mdx",
+        "docs/content/docs/cli.mdx",
+        "docs/content/docs/development-map.mdx",
+        "docs/content/docs/diagrams.mdx",
+        "docs/content/docs/history.mdx",
+        "docs/content/docs/modules.mdx",
+        "docs/content/docs/overview.mdx",
+        "docs/content/docs/packages.mdx",
+        "docs/content/docs/release-status.mdx",
+        "docs/pages/ai-context.md",
+        "docs/pages/application-map.md",
+        "docs/pages/cli.md",
+        "docs/pages/development-map.md",
+        "docs/pages/diagrams.md",
+        "docs/pages/history.md",
+        "docs/pages/modules.md",
+        "docs/pages/overview.md",
+        "docs/pages/packages.md",
+        "docs/pages/release-status.md",
+        "docs/wiki-manifest.json",
+        "packages/cli/src/__tests__/integration.test.ts",
+        "packages/cli/src/__tests__/smoke.test.ts",
+        "packages/cli/src/commands/github.ts",
+        "packages/cli/src/index.ts"
+      ],
+      "issueNumbers": []
+    },
+    {
+      "id": "commit:f98a3f1ab9fb0079e9d97d7defa4cd0ff959e550",
+      "sha": "f98a3f1ab9fb0079e9d97d7defa4cd0ff959e550",
+      "shortSha": "f98a3f1",
+      "subject": "chore(sdk): defer public sdk contract",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T12:06:06-03:00",
+      "files": [
+        ".peria/manifest.json",
+        "PUBLISHING.md",
+        "README.md",
+        "TASKS.md",
+        "bun.lock",
+        "docs/content/docs/ai-context.mdx",
+        "docs/content/docs/application-map.mdx",
+        "docs/content/docs/development-map.mdx",
+        "docs/content/docs/diagrams.mdx",
+        "docs/content/docs/history.mdx",
+        "docs/content/docs/modules.mdx",
+        "docs/content/docs/overview.mdx",
+        "docs/content/docs/packages.mdx",
+        "docs/content/docs/release-status.mdx",
+        "docs/pages/ai-context.md",
+        "docs/pages/application-map.md",
+        "docs/pages/development-map.md",
+        "docs/pages/diagrams.md",
+        "docs/pages/history.md",
+        "docs/pages/modules.md",
+        "docs/pages/overview.md",
+        "docs/pages/packages.md",
+        "docs/pages/release-status.md",
+        "docs/wiki-manifest.json",
+        "packages/sdk/README.md",
+        "packages/sdk/package.json",
+        "packages/sdk/src/api-reference.ts",
+        "packages/sdk/src/index.ts",
+        "packages/sdk/src/server/embed.ts",
+        "packages/sdk/src/types.ts",
+        "packages/sdk/tsup.config.ts"
+      ],
+      "issueNumbers": []
+    },
+    {
+      "id": "commit:7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
+      "sha": "7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
+      "shortSha": "7e52595",
+      "subject": "test(adapters): dogfood nestjs adapter",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T12:02:48-03:00",
+      "files": [
+        ".peria/manifest.json",
+        "PUBLISHING.md",
+        "TASKS.md",
+        "bun.lock",
+        "docs/content/docs/adapters.mdx",
+        "docs/content/docs/ai-context.mdx",
+        "docs/content/docs/application-map.mdx",
+        "docs/content/docs/diagrams.mdx",
+        "docs/content/docs/history.mdx",
+        "docs/content/docs/modules.mdx",
+        "docs/content/docs/overview.mdx",
+        "docs/content/docs/packages.mdx",
+        "docs/content/docs/release-status.mdx",
+        "docs/pages/adapters.md",
+        "docs/pages/ai-context.md",
+        "docs/pages/application-map.md",
+        "docs/pages/diagrams.md",
+        "docs/pages/history.md",
+        "docs/pages/modules.md",
+        "docs/pages/overview.md",
+        "docs/pages/packages.md",
+        "docs/pages/release-status.md",
+        "docs/wiki-manifest.json",
+        "package.json",
+        "packages/adapters/package.json",
+        "packages/adapters/src/__tests__/smoke.test.ts",
+        "packages/adapters/src/index.ts",
+        "packages/adapters/src/nest.ts",
+        "packages/core/fixtures/nestjs-api/package.json",
+        "packages/core/fixtures/nestjs-api/src/users/dto/approve-user-request.dto.ts",
+        "scripts/dogfood-nest.ts"
+      ],
+      "issueNumbers": []
+    },
+    {
+      "id": "commit:cf0d4895da4fb60cf78a0720e74a09255f0ab2c4",
+      "sha": "cf0d4895da4fb60cf78a0720e74a09255f0ab2c4",
+      "shortSha": "cf0d489",
+      "subject": "fix(adapters): serve fumadocs docs artifacts",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T11:51:49-03:00",
+      "files": [
+        ".peria/manifest.json",
+        "TASKS.md",
+        "bun.lock",
+        "docs/content/docs/adapters.mdx",
+        "docs/content/docs/ai-context.mdx",
+        "docs/content/docs/application-map.mdx",
+        "docs/content/docs/development-map.mdx",
+        "docs/content/docs/diagrams.mdx",
+        "docs/content/docs/history.mdx",
+        "docs/content/docs/modules.mdx",
+        "docs/content/docs/overview.mdx",
+        "docs/content/docs/packages.mdx",
+        "docs/content/docs/release-status.mdx",
+        "docs/pages/adapters.md",
+        "docs/pages/ai-context.md",
+        "docs/pages/application-map.md",
+        "docs/pages/development-map.md",
+        "docs/pages/diagrams.md",
+        "docs/pages/history.md",
+        "docs/pages/modules.md",
+        "docs/pages/overview.md",
+        "docs/pages/packages.md",
+        "docs/pages/release-status.md",
+        "docs/wiki-manifest.json",
+        "packages/adapters/README.md",
+        "packages/adapters/package.json",
+        "packages/adapters/src/__tests__/smoke.test.ts",
+        "packages/adapters/src/express.ts",
+        "packages/adapters/src/fastify.ts",
+        "packages/adapters/src/nest.ts",
+        "packages/adapters/src/shared.ts"
+      ],
+      "issueNumbers": []
+    },
+    {
+      "id": "commit:b9e8d6c87ff44cf9ddec5ce22170c215d65bbf40",
+      "sha": "b9e8d6c87ff44cf9ddec5ce22170c215d65bbf40",
+      "shortSha": "b9e8d6c",
+      "subject": "test(dogfood): add npm cli validation",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T11:25:27-03:00",
+      "files": [
+        ".peria/manifest.json",
+        "PUBLISHING.md",
+        "TASKS.md",
+        "docs/content/docs/ai-context.mdx",
+        "docs/content/docs/application-map.mdx",
+        "docs/content/docs/diagrams.mdx",
+        "docs/content/docs/history.mdx",
+        "docs/content/docs/overview.mdx",
+        "docs/content/docs/packages.mdx",
+        "docs/content/docs/release-status.mdx",
+        "docs/pages/ai-context.md",
+        "docs/pages/application-map.md",
+        "docs/pages/diagrams.md",
+        "docs/pages/history.md",
+        "docs/pages/overview.md",
+        "docs/pages/packages.md",
+        "docs/pages/release-status.md",
+        "docs/wiki-manifest.json",
+        "package.json",
+        "scripts/dogfood-npm.ts"
+      ],
+      "issueNumbers": []
+    },
+    {
+      "id": "commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "sha": "131eeead638586b6325e9adddafa8937e530e9b1",
+      "shortSha": "131eeea",
+      "subject": "feat(wiki): add navigation maps and search index",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T11:21:55-03:00",
+      "files": [
+        ".peria/manifest.json",
+        "TASKS.md",
+        "docs/README.md",
+        "docs/content/docs/ai-context.mdx",
+        "docs/content/docs/application-map.mdx",
+        "docs/content/docs/development-map.mdx",
+        "docs/content/docs/diagrams.mdx",
+        "docs/content/docs/history.mdx",
+        "docs/content/docs/known-gaps.mdx",
+        "docs/content/docs/meta.json",
+        "docs/content/docs/modules.mdx",
+        "docs/content/docs/overview.mdx",
+        "docs/content/docs/packages.mdx",
+        "docs/content/docs/release-status.mdx",
+        "docs/content/docs/wiki-ui.mdx",
+        "docs/pages/ai-context.md",
+        "docs/pages/application-map.md",
+        "docs/pages/development-map.md",
+        "docs/pages/diagrams.md",
+        "docs/pages/history.md",
+        "docs/pages/known-gaps.md",
+        "docs/pages/modules.md",
+        "docs/pages/overview.md",
+        "docs/pages/packages.md",
+        "docs/pages/release-status.md",
+        "docs/pages/wiki-ui.md",
+        "docs/search-index.json",
+        "docs/wiki-manifest.json",
+        "packages/cli/src/__tests__/integration.test.ts",
+        "packages/cli/src/commands/build.ts",
+        "packages/cli/src/commands/diagram.ts",
+        "packages/cli/src/index.ts",
+        "packages/core/src/__tests__/mermaid.test.ts",
+        "packages/core/src/application-map.ts",
+        "packages/core/src/mermaid/generator.ts",
+        "packages/core/src/mermaid/index.ts",
+        "packages/core/src/mermaid/module-graph.ts",
+        "packages/core/src/wiki/collectors/packages.ts",
+        "packages/core/src/wiki/pages.ts",
+        "packages/renderer/src/fumadocs.ts"
+      ],
+      "issueNumbers": []
+    },
+    {
+      "id": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sha": "0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "shortSha": "0be7c0b",
+      "subject": "feat(docs): switch wiki build to fumadocs output",
+      "author": "Gabriel Bezerra Rodrigues",
+      "date": "2026-06-29T11:08:05-03:00",
+      "files": [
+        ".peria/manifest.json",
+        "CLAUDE.md",
+        "PLANNING.md",
+        "PUBLISHING.md",
+        "README.md",
+        "TASKS.md",
+        "biome.json",
+        "bun.lock",
+        "docs/README.md",
+        "docs/assets/wiki.css",
+        "docs/assets/wiki.js",
+        "docs/content.config.ts",
+        "docs/content/docs/adapters.mdx",
+        "docs/content/docs/ai-context.mdx",
+        "docs/content/docs/application-map.mdx",
+        "docs/content/docs/cli.mdx",
+        "docs/content/docs/configuration.mdx",
+        "docs/content/docs/diagrams.mdx",
+        "docs/content/docs/history.mdx",
+        "docs/content/docs/meta.json",
+        "docs/content/docs/modules.mdx",
+        "docs/content/docs/overview.mdx",
+        "docs/content/docs/packages.mdx",
+        "docs/content/docs/wiki-ui.mdx",
+        "docs/content/overview.mdx",
+        "docs/index.html",
+        "docs/lib/source.ts",
+        "docs/pages/ai-context.md",
+        "docs/pages/application-map.md",
+        "docs/pages/cli.md",
+        "docs/pages/configuration.md",
+        "docs/pages/diagrams.md",
+        "docs/pages/history.md",
+        "docs/pages/modules.md",
+        "docs/pages/overview.md",
+        "docs/pages/packages.md",
+        "docs/pages/wiki-ui.md",
+        "docs/source.config.ts",
+        "docs/wiki-manifest.json",
+        "packages/adapters/package.json",
+        "packages/cli/package.json",
+        "packages/cli/src/__tests__/integration.test.ts",
+        "packages/cli/src/commands/build.ts",
+        "packages/cli/src/commands/serve.ts",
+        "packages/cli/src/index.ts",
+        "packages/core/package.json",
+        "packages/core/src/__tests__/mermaid.test.ts",
+        "packages/core/src/__tests__/nestjs-parser.test.ts",
+        "packages/core/src/application-map.ts",
+        "packages/core/src/index.ts",
+        "packages/core/src/mermaid/generator.ts",
+        "packages/core/src/mermaid/types.ts",
+        "packages/core/src/scanner/index.ts",
+        "packages/core/src/types/config.ts",
+        "packages/core/src/wiki/pages.ts",
+        "packages/renderer/README.md",
+        "packages/renderer/package.json",
+        "packages/renderer/src/config.ts",
+        "packages/renderer/src/css.ts",
+        "packages/renderer/src/fumadocs.ts",
+        "packages/renderer/src/html.ts",
+        "packages/renderer/src/index.ts",
+        "packages/renderer/src/js.ts",
+        "packages/renderer/src/renderer.ts",
+        "packages/renderer/src/static.ts",
+        "packages/sdk/package.json",
+        "peria.config.ts"
+      ],
+      "issueNumbers": []
+    }
+  ],
+  "relations": [
+    {
+      "id": "entity_changed_by_commit:package:-peria/renderer-preview-app:commit:6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6",
+      "sourceId": "package:@peria/renderer-preview-app",
+      "targetId": "commit:6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "@peria/renderer-preview-app is backed by packages/renderer/app-template/package.json, changed by commit 6e3e5b5.",
+      "evidence": [
+        {
+          "file": "packages/renderer/app-template/package.json",
+          "commit": "6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/renderer/app-template/source.config.ts:commit:6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6",
+      "sourceId": "file:packages/renderer/app-template/source.config.ts",
+      "targetId": "commit:6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/renderer/app-template/source.config.ts is backed by packages/renderer/app-template/source.config.ts, changed by commit 6e3e5b5.",
+      "evidence": [
+        {
+          "file": "packages/renderer/app-template/source.config.ts",
+          "commit": "6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/renderer/src/fumadocs.ts:commit:31abbba56bd71e94fc01484a5db1757b3e7d9e57",
+      "sourceId": "file:packages/renderer/src/fumadocs.ts",
+      "targetId": "commit:31abbba56bd71e94fc01484a5db1757b3e7d9e57",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/renderer/src/fumadocs.ts is backed by packages/renderer/src/fumadocs.ts, changed by commit 31abbba.",
+      "evidence": [
+        {
+          "file": "packages/renderer/src/fumadocs.ts",
+          "commit": "31abbba56bd71e94fc01484a5db1757b3e7d9e57"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/cli/src/commands/build.ts:commit:ba78017310c1e1f6c411f366851240ffe77df8a4",
+      "sourceId": "file:packages/cli/src/commands/build.ts",
+      "targetId": "commit:ba78017310c1e1f6c411f366851240ffe77df8a4",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/cli/src/commands/build.ts is backed by packages/cli/src/commands/build.ts, changed by commit ba78017.",
+      "evidence": [
+        {
+          "file": "packages/cli/src/commands/build.ts",
+          "commit": "ba78017310c1e1f6c411f366851240ffe77df8a4"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/cli/src/commands/serve.ts:commit:83ee5701cdc5707f27128de2a022b052d418ff81",
+      "sourceId": "file:packages/cli/src/commands/serve.ts",
+      "targetId": "commit:83ee5701cdc5707f27128de2a022b052d418ff81",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/cli/src/commands/serve.ts is backed by packages/cli/src/commands/serve.ts, changed by commit 83ee570.",
+      "evidence": [
+        {
+          "file": "packages/cli/src/commands/serve.ts",
+          "commit": "83ee5701cdc5707f27128de2a022b052d418ff81"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:package:-peria/renderer:commit:7715d31622bba7db8f0dd313557e1953cbb6f2fb",
+      "sourceId": "package:@peria/renderer",
+      "targetId": "commit:7715d31622bba7db8f0dd313557e1953cbb6f2fb",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "@peria/renderer is backed by packages/renderer/package.json, changed by commit 7715d31.",
+      "evidence": [
+        {
+          "file": "packages/renderer/package.json",
+          "commit": "7715d31622bba7db8f0dd313557e1953cbb6f2fb"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/renderer/tsup.config.ts:commit:7715d31622bba7db8f0dd313557e1953cbb6f2fb",
+      "sourceId": "file:packages/renderer/tsup.config.ts",
+      "targetId": "commit:7715d31622bba7db8f0dd313557e1953cbb6f2fb",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/renderer/tsup.config.ts is backed by packages/renderer/tsup.config.ts, changed by commit 7715d31.",
+      "evidence": [
+        {
+          "file": "packages/renderer/tsup.config.ts",
+          "commit": "7715d31622bba7db8f0dd313557e1953cbb6f2fb"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:package:-peria/renderer-preview-app:commit:b15170c420bbfd5af0ac8567079e4b6312aa263f",
+      "sourceId": "package:@peria/renderer-preview-app",
+      "targetId": "commit:b15170c420bbfd5af0ac8567079e4b6312aa263f",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "@peria/renderer-preview-app is backed by packages/renderer/app-template/package.json, changed by commit b15170c.",
+      "evidence": [
+        {
+          "file": "packages/renderer/app-template/package.json",
+          "commit": "b15170c420bbfd5af0ac8567079e4b6312aa263f"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/renderer/app-template/source.config.ts:commit:b15170c420bbfd5af0ac8567079e4b6312aa263f",
+      "sourceId": "file:packages/renderer/app-template/source.config.ts",
+      "targetId": "commit:b15170c420bbfd5af0ac8567079e4b6312aa263f",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/renderer/app-template/source.config.ts is backed by packages/renderer/app-template/source.config.ts, changed by commit b15170c.",
+      "evidence": [
+        {
+          "file": "packages/renderer/app-template/source.config.ts",
+          "commit": "b15170c420bbfd5af0ac8567079e4b6312aa263f"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/renderer/app-template/src/lib/source.ts:commit:b15170c420bbfd5af0ac8567079e4b6312aa263f",
+      "sourceId": "file:packages/renderer/app-template/src/lib/source.ts",
+      "targetId": "commit:b15170c420bbfd5af0ac8567079e4b6312aa263f",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/renderer/app-template/src/lib/source.ts is backed by packages/renderer/app-template/src/lib/source.ts, changed by commit b15170c.",
+      "evidence": [
+        {
+          "file": "packages/renderer/app-template/src/lib/source.ts",
+          "commit": "b15170c420bbfd5af0ac8567079e4b6312aa263f"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/renderer/app-template/src/routes/api/search.ts:commit:b15170c420bbfd5af0ac8567079e4b6312aa263f",
+      "sourceId": "file:packages/renderer/app-template/src/routes/api/search.ts",
+      "targetId": "commit:b15170c420bbfd5af0ac8567079e4b6312aa263f",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/renderer/app-template/src/routes/api/search.ts is backed by packages/renderer/app-template/src/routes/api/search.ts, changed by commit b15170c.",
+      "evidence": [
+        {
+          "file": "packages/renderer/app-template/src/routes/api/search.ts",
+          "commit": "b15170c420bbfd5af0ac8567079e4b6312aa263f"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/renderer/app-template/vite.config.ts:commit:b15170c420bbfd5af0ac8567079e4b6312aa263f",
+      "sourceId": "file:packages/renderer/app-template/vite.config.ts",
+      "targetId": "commit:b15170c420bbfd5af0ac8567079e4b6312aa263f",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/renderer/app-template/vite.config.ts is backed by packages/renderer/app-template/vite.config.ts, changed by commit b15170c.",
+      "evidence": [
+        {
+          "file": "packages/renderer/app-template/vite.config.ts",
+          "commit": "b15170c420bbfd5af0ac8567079e4b6312aa263f"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/renderer/src/preview.ts:commit:b15170c420bbfd5af0ac8567079e4b6312aa263f",
+      "sourceId": "file:packages/renderer/src/preview.ts",
+      "targetId": "commit:b15170c420bbfd5af0ac8567079e4b6312aa263f",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/renderer/src/preview.ts is backed by packages/renderer/src/preview.ts, changed by commit b15170c.",
+      "evidence": [
+        {
+          "file": "packages/renderer/src/preview.ts",
+          "commit": "b15170c420bbfd5af0ac8567079e4b6312aa263f"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/cli/src/commands/github.ts:commit:27958d077464e7329413e5a0c225ff9b7210094d",
+      "sourceId": "file:packages/cli/src/commands/github.ts",
+      "targetId": "commit:27958d077464e7329413e5a0c225ff9b7210094d",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/cli/src/commands/github.ts is backed by packages/cli/src/commands/github.ts, changed by commit 27958d0.",
+      "evidence": [
+        {
+          "file": "packages/cli/src/commands/github.ts",
+          "commit": "27958d077464e7329413e5a0c225ff9b7210094d"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/cli/src/index.ts:commit:27958d077464e7329413e5a0c225ff9b7210094d",
+      "sourceId": "file:packages/cli/src/index.ts",
+      "targetId": "commit:27958d077464e7329413e5a0c225ff9b7210094d",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/cli/src/index.ts is backed by packages/cli/src/index.ts, changed by commit 27958d0.",
+      "evidence": [
+        {
+          "file": "packages/cli/src/index.ts",
+          "commit": "27958d077464e7329413e5a0c225ff9b7210094d"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/github/index.ts:commit:3e377d3ee903ce68bde60b93f77cbda17e9ab5e0",
+      "sourceId": "file:packages/core/src/github/index.ts",
+      "targetId": "commit:3e377d3ee903ce68bde60b93f77cbda17e9ab5e0",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/github/index.ts is backed by packages/core/src/github/index.ts, changed by commit 3e377d3.",
+      "evidence": [
+        {
+          "file": "packages/core/src/github/index.ts",
+          "commit": "3e377d3ee903ce68bde60b93f77cbda17e9ab5e0"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/github/milestones.ts:commit:3e377d3ee903ce68bde60b93f77cbda17e9ab5e0",
+      "sourceId": "file:packages/core/src/github/milestones.ts",
+      "targetId": "commit:3e377d3ee903ce68bde60b93f77cbda17e9ab5e0",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/github/milestones.ts is backed by packages/core/src/github/milestones.ts, changed by commit 3e377d3.",
+      "evidence": [
+        {
+          "file": "packages/core/src/github/milestones.ts",
+          "commit": "3e377d3ee903ce68bde60b93f77cbda17e9ab5e0"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/index.ts:commit:3e377d3ee903ce68bde60b93f77cbda17e9ab5e0",
+      "sourceId": "file:packages/core/src/index.ts",
+      "targetId": "commit:3e377d3ee903ce68bde60b93f77cbda17e9ab5e0",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/index.ts is backed by packages/core/src/index.ts, changed by commit 3e377d3.",
+      "evidence": [
+        {
+          "file": "packages/core/src/index.ts",
+          "commit": "3e377d3ee903ce68bde60b93f77cbda17e9ab5e0"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:doc:README.md:commit:67ac65b8416ffe0e096598a05c74991e2fb66f8d",
+      "sourceId": "doc:README.md",
+      "targetId": "commit:67ac65b8416ffe0e096598a05c74991e2fb66f8d",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "README is backed by README.md, changed by commit 67ac65b.",
+      "evidence": [
+        {
+          "file": "README.md",
+          "commit": "67ac65b8416ffe0e096598a05c74991e2fb66f8d"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/cli/src/commands/build.ts:commit:67ac65b8416ffe0e096598a05c74991e2fb66f8d",
+      "sourceId": "file:packages/cli/src/commands/build.ts",
+      "targetId": "commit:67ac65b8416ffe0e096598a05c74991e2fb66f8d",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/cli/src/commands/build.ts is backed by packages/cli/src/commands/build.ts, changed by commit 67ac65b.",
+      "evidence": [
+        {
+          "file": "packages/cli/src/commands/build.ts",
+          "commit": "67ac65b8416ffe0e096598a05c74991e2fb66f8d"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/cli/src/commands/github.ts:commit:67ac65b8416ffe0e096598a05c74991e2fb66f8d",
+      "sourceId": "file:packages/cli/src/commands/github.ts",
+      "targetId": "commit:67ac65b8416ffe0e096598a05c74991e2fb66f8d",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/cli/src/commands/github.ts is backed by packages/cli/src/commands/github.ts, changed by commit 67ac65b.",
+      "evidence": [
+        {
+          "file": "packages/cli/src/commands/github.ts",
+          "commit": "67ac65b8416ffe0e096598a05c74991e2fb66f8d"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/cli/src/index.ts:commit:67ac65b8416ffe0e096598a05c74991e2fb66f8d",
+      "sourceId": "file:packages/cli/src/index.ts",
+      "targetId": "commit:67ac65b8416ffe0e096598a05c74991e2fb66f8d",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/cli/src/index.ts is backed by packages/cli/src/index.ts, changed by commit 67ac65b.",
+      "evidence": [
+        {
+          "file": "packages/cli/src/index.ts",
+          "commit": "67ac65b8416ffe0e096598a05c74991e2fb66f8d"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/github/index.ts:commit:67ac65b8416ffe0e096598a05c74991e2fb66f8d",
+      "sourceId": "file:packages/core/src/github/index.ts",
+      "targetId": "commit:67ac65b8416ffe0e096598a05c74991e2fb66f8d",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/github/index.ts is backed by packages/core/src/github/index.ts, changed by commit 67ac65b.",
+      "evidence": [
+        {
+          "file": "packages/core/src/github/index.ts",
+          "commit": "67ac65b8416ffe0e096598a05c74991e2fb66f8d"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/github/issues.ts:commit:67ac65b8416ffe0e096598a05c74991e2fb66f8d",
+      "sourceId": "file:packages/core/src/github/issues.ts",
+      "targetId": "commit:67ac65b8416ffe0e096598a05c74991e2fb66f8d",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/github/issues.ts is backed by packages/core/src/github/issues.ts, changed by commit 67ac65b.",
+      "evidence": [
+        {
+          "file": "packages/core/src/github/issues.ts",
+          "commit": "67ac65b8416ffe0e096598a05c74991e2fb66f8d"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/github/types.ts:commit:67ac65b8416ffe0e096598a05c74991e2fb66f8d",
+      "sourceId": "file:packages/core/src/github/types.ts",
+      "targetId": "commit:67ac65b8416ffe0e096598a05c74991e2fb66f8d",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/github/types.ts is backed by packages/core/src/github/types.ts, changed by commit 67ac65b.",
+      "evidence": [
+        {
+          "file": "packages/core/src/github/types.ts",
+          "commit": "67ac65b8416ffe0e096598a05c74991e2fb66f8d"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/index.ts:commit:67ac65b8416ffe0e096598a05c74991e2fb66f8d",
+      "sourceId": "file:packages/core/src/index.ts",
+      "targetId": "commit:67ac65b8416ffe0e096598a05c74991e2fb66f8d",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/index.ts is backed by packages/core/src/index.ts, changed by commit 67ac65b.",
+      "evidence": [
+        {
+          "file": "packages/core/src/index.ts",
+          "commit": "67ac65b8416ffe0e096598a05c74991e2fb66f8d"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:doc:README.md:commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "sourceId": "doc:README.md",
+      "targetId": "commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "README is backed by README.md, changed by commit 7e7434c.",
+      "evidence": [
+        {
+          "file": "README.md",
+          "commit": "7e7434c5b7ea284a221fd7269afccc300e2adfb6"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/cli/src/commands/build.ts:commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "sourceId": "file:packages/cli/src/commands/build.ts",
+      "targetId": "commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/cli/src/commands/build.ts is backed by packages/cli/src/commands/build.ts, changed by commit 7e7434c.",
+      "evidence": [
+        {
+          "file": "packages/cli/src/commands/build.ts",
+          "commit": "7e7434c5b7ea284a221fd7269afccc300e2adfb6"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/cli/src/commands/github.ts:commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "sourceId": "file:packages/cli/src/commands/github.ts",
+      "targetId": "commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/cli/src/commands/github.ts is backed by packages/cli/src/commands/github.ts, changed by commit 7e7434c.",
+      "evidence": [
+        {
+          "file": "packages/cli/src/commands/github.ts",
+          "commit": "7e7434c5b7ea284a221fd7269afccc300e2adfb6"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/github/cache.ts:commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "sourceId": "file:packages/core/src/github/cache.ts",
+      "targetId": "commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/github/cache.ts is backed by packages/core/src/github/cache.ts, changed by commit 7e7434c.",
+      "evidence": [
+        {
+          "file": "packages/core/src/github/cache.ts",
+          "commit": "7e7434c5b7ea284a221fd7269afccc300e2adfb6"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/github/index.ts:commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "sourceId": "file:packages/core/src/github/index.ts",
+      "targetId": "commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/github/index.ts is backed by packages/core/src/github/index.ts, changed by commit 7e7434c.",
+      "evidence": [
+        {
+          "file": "packages/core/src/github/index.ts",
+          "commit": "7e7434c5b7ea284a221fd7269afccc300e2adfb6"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/github/relations.ts:commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "sourceId": "file:packages/core/src/github/relations.ts",
+      "targetId": "commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/github/relations.ts is backed by packages/core/src/github/relations.ts, changed by commit 7e7434c.",
+      "evidence": [
+        {
+          "file": "packages/core/src/github/relations.ts",
+          "commit": "7e7434c5b7ea284a221fd7269afccc300e2adfb6"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/github/types.ts:commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "sourceId": "file:packages/core/src/github/types.ts",
+      "targetId": "commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/github/types.ts is backed by packages/core/src/github/types.ts, changed by commit 7e7434c.",
+      "evidence": [
+        {
+          "file": "packages/core/src/github/types.ts",
+          "commit": "7e7434c5b7ea284a221fd7269afccc300e2adfb6"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/index.ts:commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "sourceId": "file:packages/core/src/index.ts",
+      "targetId": "commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/index.ts is backed by packages/core/src/index.ts, changed by commit 7e7434c.",
+      "evidence": [
+        {
+          "file": "packages/core/src/index.ts",
+          "commit": "7e7434c5b7ea284a221fd7269afccc300e2adfb6"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/scanner/git.ts:commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "sourceId": "file:packages/core/src/scanner/git.ts",
+      "targetId": "commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/scanner/git.ts is backed by packages/core/src/scanner/git.ts, changed by commit 7e7434c.",
+      "evidence": [
+        {
+          "file": "packages/core/src/scanner/git.ts",
+          "commit": "7e7434c5b7ea284a221fd7269afccc300e2adfb6"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/scanner/index.ts:commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "sourceId": "file:packages/core/src/scanner/index.ts",
+      "targetId": "commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/scanner/index.ts is backed by packages/core/src/scanner/index.ts, changed by commit 7e7434c.",
+      "evidence": [
+        {
+          "file": "packages/core/src/scanner/index.ts",
+          "commit": "7e7434c5b7ea284a221fd7269afccc300e2adfb6"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/types/graph.ts:commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "sourceId": "file:packages/core/src/types/graph.ts",
+      "targetId": "commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/types/graph.ts is backed by packages/core/src/types/graph.ts, changed by commit 7e7434c.",
+      "evidence": [
+        {
+          "file": "packages/core/src/types/graph.ts",
+          "commit": "7e7434c5b7ea284a221fd7269afccc300e2adfb6"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/types/manifest.ts:commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "sourceId": "file:packages/core/src/types/manifest.ts",
+      "targetId": "commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/types/manifest.ts is backed by packages/core/src/types/manifest.ts, changed by commit 7e7434c.",
+      "evidence": [
+        {
+          "file": "packages/core/src/types/manifest.ts",
+          "commit": "7e7434c5b7ea284a221fd7269afccc300e2adfb6"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/wiki/collectors/git.ts:commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "sourceId": "file:packages/core/src/wiki/collectors/git.ts",
+      "targetId": "commit:7e7434c5b7ea284a221fd7269afccc300e2adfb6",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/wiki/collectors/git.ts is backed by packages/core/src/wiki/collectors/git.ts, changed by commit 7e7434c.",
+      "evidence": [
+        {
+          "file": "packages/core/src/wiki/collectors/git.ts",
+          "commit": "7e7434c5b7ea284a221fd7269afccc300e2adfb6"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:doc:README.md:commit:22d7d9c47d831a1803b8e7545c1882d242b3cb4d",
+      "sourceId": "doc:README.md",
+      "targetId": "commit:22d7d9c47d831a1803b8e7545c1882d242b3cb4d",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "README is backed by README.md, changed by commit 22d7d9c.",
+      "evidence": [
+        {
+          "file": "README.md",
+          "commit": "22d7d9c47d831a1803b8e7545c1882d242b3cb4d"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/cli/src/commands/github.ts:commit:22d7d9c47d831a1803b8e7545c1882d242b3cb4d",
+      "sourceId": "file:packages/cli/src/commands/github.ts",
+      "targetId": "commit:22d7d9c47d831a1803b8e7545c1882d242b3cb4d",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/cli/src/commands/github.ts is backed by packages/cli/src/commands/github.ts, changed by commit 22d7d9c.",
+      "evidence": [
+        {
+          "file": "packages/cli/src/commands/github.ts",
+          "commit": "22d7d9c47d831a1803b8e7545c1882d242b3cb4d"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/cli/src/index.ts:commit:22d7d9c47d831a1803b8e7545c1882d242b3cb4d",
+      "sourceId": "file:packages/cli/src/index.ts",
+      "targetId": "commit:22d7d9c47d831a1803b8e7545c1882d242b3cb4d",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/cli/src/index.ts is backed by packages/cli/src/index.ts, changed by commit 22d7d9c.",
+      "evidence": [
+        {
+          "file": "packages/cli/src/index.ts",
+          "commit": "22d7d9c47d831a1803b8e7545c1882d242b3cb4d"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:doc:README.md:commit:f98a3f1ab9fb0079e9d97d7defa4cd0ff959e550",
+      "sourceId": "doc:README.md",
+      "targetId": "commit:f98a3f1ab9fb0079e9d97d7defa4cd0ff959e550",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "README is backed by README.md, changed by commit f98a3f1.",
+      "evidence": [
+        {
+          "file": "README.md",
+          "commit": "f98a3f1ab9fb0079e9d97d7defa4cd0ff959e550"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:package:-peria/sdk:commit:f98a3f1ab9fb0079e9d97d7defa4cd0ff959e550",
+      "sourceId": "package:@peria/sdk",
+      "targetId": "commit:f98a3f1ab9fb0079e9d97d7defa4cd0ff959e550",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "@peria/sdk is backed by packages/sdk/package.json, changed by commit f98a3f1.",
+      "evidence": [
+        {
+          "file": "packages/sdk/package.json",
+          "commit": "f98a3f1ab9fb0079e9d97d7defa4cd0ff959e550"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/sdk/src/index.ts:commit:f98a3f1ab9fb0079e9d97d7defa4cd0ff959e550",
+      "sourceId": "file:packages/sdk/src/index.ts",
+      "targetId": "commit:f98a3f1ab9fb0079e9d97d7defa4cd0ff959e550",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/sdk/src/index.ts is backed by packages/sdk/src/index.ts, changed by commit f98a3f1.",
+      "evidence": [
+        {
+          "file": "packages/sdk/src/index.ts",
+          "commit": "f98a3f1ab9fb0079e9d97d7defa4cd0ff959e550"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/sdk/tsup.config.ts:commit:f98a3f1ab9fb0079e9d97d7defa4cd0ff959e550",
+      "sourceId": "file:packages/sdk/tsup.config.ts",
+      "targetId": "commit:f98a3f1ab9fb0079e9d97d7defa4cd0ff959e550",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/sdk/tsup.config.ts is backed by packages/sdk/tsup.config.ts, changed by commit f98a3f1.",
+      "evidence": [
+        {
+          "file": "packages/sdk/tsup.config.ts",
+          "commit": "f98a3f1ab9fb0079e9d97d7defa4cd0ff959e550"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:package:peria:commit:7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
+      "sourceId": "package:peria",
+      "targetId": "commit:7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "peria is backed by package.json, changed by commit 7e52595.",
+      "evidence": [
+        {
+          "file": "package.json",
+          "commit": "7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:package:-peria/adapters:commit:7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
+      "sourceId": "package:@peria/adapters",
+      "targetId": "commit:7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "@peria/adapters is backed by packages/adapters/package.json, changed by commit 7e52595.",
+      "evidence": [
+        {
+          "file": "packages/adapters/package.json",
+          "commit": "7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/adapters/src/index.ts:commit:7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
+      "sourceId": "file:packages/adapters/src/index.ts",
+      "targetId": "commit:7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/adapters/src/index.ts is backed by packages/adapters/src/index.ts, changed by commit 7e52595.",
+      "evidence": [
+        {
+          "file": "packages/adapters/src/index.ts",
+          "commit": "7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/adapters/src/nest.ts:commit:7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
+      "sourceId": "file:packages/adapters/src/nest.ts",
+      "targetId": "commit:7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/adapters/src/nest.ts is backed by packages/adapters/src/nest.ts, changed by commit 7e52595.",
+      "evidence": [
+        {
+          "file": "packages/adapters/src/nest.ts",
+          "commit": "7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:package:nestjs-api-fixture:commit:7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
+      "sourceId": "package:nestjs-api-fixture",
+      "targetId": "commit:7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "nestjs-api-fixture is backed by packages/core/fixtures/nestjs-api/package.json, changed by commit 7e52595.",
+      "evidence": [
+        {
+          "file": "packages/core/fixtures/nestjs-api/package.json",
+          "commit": "7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/fixtures/nestjs-api/src/users/dto/approve-user-request.dto.ts:commit:7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
+      "sourceId": "file:packages/core/fixtures/nestjs-api/src/users/dto/approve-user-request.dto.ts",
+      "targetId": "commit:7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/fixtures/nestjs-api/src/users/dto/approve-user-request.dto.ts is backed by packages/core/fixtures/nestjs-api/src/users/dto/approve-user-request.dto.ts, changed by commit 7e52595.",
+      "evidence": [
+        {
+          "file": "packages/core/fixtures/nestjs-api/src/users/dto/approve-user-request.dto.ts",
+          "commit": "7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:scripts/dogfood-nest.ts:commit:7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
+      "sourceId": "file:scripts/dogfood-nest.ts",
+      "targetId": "commit:7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "scripts/dogfood-nest.ts is backed by scripts/dogfood-nest.ts, changed by commit 7e52595.",
+      "evidence": [
+        {
+          "file": "scripts/dogfood-nest.ts",
+          "commit": "7e52595050d9485dd0fdf2fd7efa7f798ad0fbf0"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:package:-peria/adapters:commit:cf0d4895da4fb60cf78a0720e74a09255f0ab2c4",
+      "sourceId": "package:@peria/adapters",
+      "targetId": "commit:cf0d4895da4fb60cf78a0720e74a09255f0ab2c4",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "@peria/adapters is backed by packages/adapters/package.json, changed by commit cf0d489.",
+      "evidence": [
+        {
+          "file": "packages/adapters/package.json",
+          "commit": "cf0d4895da4fb60cf78a0720e74a09255f0ab2c4"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/adapters/src/express.ts:commit:cf0d4895da4fb60cf78a0720e74a09255f0ab2c4",
+      "sourceId": "file:packages/adapters/src/express.ts",
+      "targetId": "commit:cf0d4895da4fb60cf78a0720e74a09255f0ab2c4",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/adapters/src/express.ts is backed by packages/adapters/src/express.ts, changed by commit cf0d489.",
+      "evidence": [
+        {
+          "file": "packages/adapters/src/express.ts",
+          "commit": "cf0d4895da4fb60cf78a0720e74a09255f0ab2c4"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/adapters/src/fastify.ts:commit:cf0d4895da4fb60cf78a0720e74a09255f0ab2c4",
+      "sourceId": "file:packages/adapters/src/fastify.ts",
+      "targetId": "commit:cf0d4895da4fb60cf78a0720e74a09255f0ab2c4",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/adapters/src/fastify.ts is backed by packages/adapters/src/fastify.ts, changed by commit cf0d489.",
+      "evidence": [
+        {
+          "file": "packages/adapters/src/fastify.ts",
+          "commit": "cf0d4895da4fb60cf78a0720e74a09255f0ab2c4"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/adapters/src/nest.ts:commit:cf0d4895da4fb60cf78a0720e74a09255f0ab2c4",
+      "sourceId": "file:packages/adapters/src/nest.ts",
+      "targetId": "commit:cf0d4895da4fb60cf78a0720e74a09255f0ab2c4",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/adapters/src/nest.ts is backed by packages/adapters/src/nest.ts, changed by commit cf0d489.",
+      "evidence": [
+        {
+          "file": "packages/adapters/src/nest.ts",
+          "commit": "cf0d4895da4fb60cf78a0720e74a09255f0ab2c4"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/adapters/src/shared.ts:commit:cf0d4895da4fb60cf78a0720e74a09255f0ab2c4",
+      "sourceId": "file:packages/adapters/src/shared.ts",
+      "targetId": "commit:cf0d4895da4fb60cf78a0720e74a09255f0ab2c4",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/adapters/src/shared.ts is backed by packages/adapters/src/shared.ts, changed by commit cf0d489.",
+      "evidence": [
+        {
+          "file": "packages/adapters/src/shared.ts",
+          "commit": "cf0d4895da4fb60cf78a0720e74a09255f0ab2c4"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:package:peria:commit:b9e8d6c87ff44cf9ddec5ce22170c215d65bbf40",
+      "sourceId": "package:peria",
+      "targetId": "commit:b9e8d6c87ff44cf9ddec5ce22170c215d65bbf40",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "peria is backed by package.json, changed by commit b9e8d6c.",
+      "evidence": [
+        {
+          "file": "package.json",
+          "commit": "b9e8d6c87ff44cf9ddec5ce22170c215d65bbf40"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:scripts/dogfood-npm.ts:commit:b9e8d6c87ff44cf9ddec5ce22170c215d65bbf40",
+      "sourceId": "file:scripts/dogfood-npm.ts",
+      "targetId": "commit:b9e8d6c87ff44cf9ddec5ce22170c215d65bbf40",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "scripts/dogfood-npm.ts is backed by scripts/dogfood-npm.ts, changed by commit b9e8d6c.",
+      "evidence": [
+        {
+          "file": "scripts/dogfood-npm.ts",
+          "commit": "b9e8d6c87ff44cf9ddec5ce22170c215d65bbf40"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/cli/src/commands/build.ts:commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "sourceId": "file:packages/cli/src/commands/build.ts",
+      "targetId": "commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/cli/src/commands/build.ts is backed by packages/cli/src/commands/build.ts, changed by commit 131eeea.",
+      "evidence": [
+        {
+          "file": "packages/cli/src/commands/build.ts",
+          "commit": "131eeead638586b6325e9adddafa8937e530e9b1"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/cli/src/commands/diagram.ts:commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "sourceId": "file:packages/cli/src/commands/diagram.ts",
+      "targetId": "commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/cli/src/commands/diagram.ts is backed by packages/cli/src/commands/diagram.ts, changed by commit 131eeea.",
+      "evidence": [
+        {
+          "file": "packages/cli/src/commands/diagram.ts",
+          "commit": "131eeead638586b6325e9adddafa8937e530e9b1"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/cli/src/index.ts:commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "sourceId": "file:packages/cli/src/index.ts",
+      "targetId": "commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/cli/src/index.ts is backed by packages/cli/src/index.ts, changed by commit 131eeea.",
+      "evidence": [
+        {
+          "file": "packages/cli/src/index.ts",
+          "commit": "131eeead638586b6325e9adddafa8937e530e9b1"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/application-map.ts:commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "sourceId": "file:packages/core/src/application-map.ts",
+      "targetId": "commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/application-map.ts is backed by packages/core/src/application-map.ts, changed by commit 131eeea.",
+      "evidence": [
+        {
+          "file": "packages/core/src/application-map.ts",
+          "commit": "131eeead638586b6325e9adddafa8937e530e9b1"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/mermaid/generator.ts:commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "sourceId": "file:packages/core/src/mermaid/generator.ts",
+      "targetId": "commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/mermaid/generator.ts is backed by packages/core/src/mermaid/generator.ts, changed by commit 131eeea.",
+      "evidence": [
+        {
+          "file": "packages/core/src/mermaid/generator.ts",
+          "commit": "131eeead638586b6325e9adddafa8937e530e9b1"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/mermaid/index.ts:commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "sourceId": "file:packages/core/src/mermaid/index.ts",
+      "targetId": "commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/mermaid/index.ts is backed by packages/core/src/mermaid/index.ts, changed by commit 131eeea.",
+      "evidence": [
+        {
+          "file": "packages/core/src/mermaid/index.ts",
+          "commit": "131eeead638586b6325e9adddafa8937e530e9b1"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/mermaid/module-graph.ts:commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "sourceId": "file:packages/core/src/mermaid/module-graph.ts",
+      "targetId": "commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/mermaid/module-graph.ts is backed by packages/core/src/mermaid/module-graph.ts, changed by commit 131eeea.",
+      "evidence": [
+        {
+          "file": "packages/core/src/mermaid/module-graph.ts",
+          "commit": "131eeead638586b6325e9adddafa8937e530e9b1"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/wiki/collectors/packages.ts:commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "sourceId": "file:packages/core/src/wiki/collectors/packages.ts",
+      "targetId": "commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/wiki/collectors/packages.ts is backed by packages/core/src/wiki/collectors/packages.ts, changed by commit 131eeea.",
+      "evidence": [
+        {
+          "file": "packages/core/src/wiki/collectors/packages.ts",
+          "commit": "131eeead638586b6325e9adddafa8937e530e9b1"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/wiki/pages.ts:commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "sourceId": "file:packages/core/src/wiki/pages.ts",
+      "targetId": "commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/wiki/pages.ts is backed by packages/core/src/wiki/pages.ts, changed by commit 131eeea.",
+      "evidence": [
+        {
+          "file": "packages/core/src/wiki/pages.ts",
+          "commit": "131eeead638586b6325e9adddafa8937e530e9b1"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/renderer/src/fumadocs.ts:commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "sourceId": "file:packages/renderer/src/fumadocs.ts",
+      "targetId": "commit:131eeead638586b6325e9adddafa8937e530e9b1",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/renderer/src/fumadocs.ts is backed by packages/renderer/src/fumadocs.ts, changed by commit 131eeea.",
+      "evidence": [
+        {
+          "file": "packages/renderer/src/fumadocs.ts",
+          "commit": "131eeead638586b6325e9adddafa8937e530e9b1"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:doc:CLAUDE.md:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "doc:CLAUDE.md",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "CLAUDE is backed by CLAUDE.md, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "CLAUDE.md",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:doc:README.md:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "doc:README.md",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "README is backed by README.md, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "README.md",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:package:-peria/adapters:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "package:@peria/adapters",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "@peria/adapters is backed by packages/adapters/package.json, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "packages/adapters/package.json",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:package:-peria/cli:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "package:@peria/cli",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "@peria/cli is backed by packages/cli/package.json, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "packages/cli/package.json",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/cli/src/commands/build.ts:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "file:packages/cli/src/commands/build.ts",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/cli/src/commands/build.ts is backed by packages/cli/src/commands/build.ts, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "packages/cli/src/commands/build.ts",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/cli/src/commands/serve.ts:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "file:packages/cli/src/commands/serve.ts",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/cli/src/commands/serve.ts is backed by packages/cli/src/commands/serve.ts, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "packages/cli/src/commands/serve.ts",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/cli/src/index.ts:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "file:packages/cli/src/index.ts",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/cli/src/index.ts is backed by packages/cli/src/index.ts, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "packages/cli/src/index.ts",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:package:-peria/core:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "package:@peria/core",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "@peria/core is backed by packages/core/package.json, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "packages/core/package.json",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/application-map.ts:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "file:packages/core/src/application-map.ts",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/application-map.ts is backed by packages/core/src/application-map.ts, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "packages/core/src/application-map.ts",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/index.ts:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "file:packages/core/src/index.ts",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/index.ts is backed by packages/core/src/index.ts, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "packages/core/src/index.ts",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/mermaid/generator.ts:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "file:packages/core/src/mermaid/generator.ts",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/mermaid/generator.ts is backed by packages/core/src/mermaid/generator.ts, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "packages/core/src/mermaid/generator.ts",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/mermaid/types.ts:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "file:packages/core/src/mermaid/types.ts",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/mermaid/types.ts is backed by packages/core/src/mermaid/types.ts, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "packages/core/src/mermaid/types.ts",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/scanner/index.ts:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "file:packages/core/src/scanner/index.ts",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/scanner/index.ts is backed by packages/core/src/scanner/index.ts, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "packages/core/src/scanner/index.ts",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/types/config.ts:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "file:packages/core/src/types/config.ts",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/types/config.ts is backed by packages/core/src/types/config.ts, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "packages/core/src/types/config.ts",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/core/src/wiki/pages.ts:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "file:packages/core/src/wiki/pages.ts",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/core/src/wiki/pages.ts is backed by packages/core/src/wiki/pages.ts, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "packages/core/src/wiki/pages.ts",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:package:-peria/renderer:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "package:@peria/renderer",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "@peria/renderer is backed by packages/renderer/package.json, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "packages/renderer/package.json",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/renderer/src/config.ts:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "file:packages/renderer/src/config.ts",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/renderer/src/config.ts is backed by packages/renderer/src/config.ts, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "packages/renderer/src/config.ts",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/renderer/src/fumadocs.ts:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "file:packages/renderer/src/fumadocs.ts",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/renderer/src/fumadocs.ts is backed by packages/renderer/src/fumadocs.ts, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "packages/renderer/src/fumadocs.ts",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:packages/renderer/src/index.ts:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "file:packages/renderer/src/index.ts",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "packages/renderer/src/index.ts is backed by packages/renderer/src/index.ts, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "packages/renderer/src/index.ts",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:package:-peria/sdk:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "package:@peria/sdk",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "@peria/sdk is backed by packages/sdk/package.json, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "packages/sdk/package.json",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "entity_changed_by_commit:file:peria.config.ts:commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "sourceId": "file:peria.config.ts",
+      "targetId": "commit:0be7c0b32428e4e3329f2507a205e12b7fdbca00",
+      "type": "entity_changed_by_commit",
+      "confidence": "high",
+      "reason": "peria.config.ts is backed by peria.config.ts, changed by commit 0be7c0b.",
+      "evidence": [
+        {
+          "file": "peria.config.ts",
+          "commit": "0be7c0b32428e4e3329f2507a205e12b7fdbca00"
+        }
+      ],
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T0.1:milestone:tasks:0",
+      "sourceId": "issue:task:T0.1",
+      "targetId": "milestone:tasks:0",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10001 belongs to milestone \"Higiene de release e verdade pública\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T0.2:milestone:tasks:0",
+      "sourceId": "issue:task:T0.2",
+      "targetId": "milestone:tasks:0",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10002 belongs to milestone \"Higiene de release e verdade pública\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T0.3:milestone:tasks:0",
+      "sourceId": "issue:task:T0.3",
+      "targetId": "milestone:tasks:0",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10003 belongs to milestone \"Higiene de release e verdade pública\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T0.4:milestone:tasks:0",
+      "sourceId": "issue:task:T0.4",
+      "targetId": "milestone:tasks:0",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10004 belongs to milestone \"Higiene de release e verdade pública\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T1.1:milestone:tasks:1",
+      "sourceId": "issue:task:T1.1",
+      "targetId": "milestone:tasks:1",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10101 belongs to milestone \"Renderer Fumadocs de verdade\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T1.2:milestone:tasks:1",
+      "sourceId": "issue:task:T1.2",
+      "targetId": "milestone:tasks:1",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10102 belongs to milestone \"Renderer Fumadocs de verdade\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T1.5:milestone:tasks:1",
+      "sourceId": "issue:task:T1.5",
+      "targetId": "milestone:tasks:1",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10103 belongs to milestone \"Renderer Fumadocs de verdade\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T1.3:milestone:tasks:1",
+      "sourceId": "issue:task:T1.3",
+      "targetId": "milestone:tasks:1",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10104 belongs to milestone \"Renderer Fumadocs de verdade\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T1.4:milestone:tasks:1",
+      "sourceId": "issue:task:T1.4",
+      "targetId": "milestone:tasks:1",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10105 belongs to milestone \"Renderer Fumadocs de verdade\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T2.1:milestone:tasks:2",
+      "sourceId": "issue:task:T2.1",
+      "targetId": "milestone:tasks:2",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10201 belongs to milestone \"Mais conteúdo, diagramas e mapa da aplicação\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T2.2:milestone:tasks:2",
+      "sourceId": "issue:task:T2.2",
+      "targetId": "milestone:tasks:2",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10202 belongs to milestone \"Mais conteúdo, diagramas e mapa da aplicação\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T2.3:milestone:tasks:2",
+      "sourceId": "issue:task:T2.3",
+      "targetId": "milestone:tasks:2",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10203 belongs to milestone \"Mais conteúdo, diagramas e mapa da aplicação\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T3.1:milestone:tasks:3",
+      "sourceId": "issue:task:T3.1",
+      "targetId": "milestone:tasks:3",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10301 belongs to milestone \"Dogfood real em Peria\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T3.2:milestone:tasks:3",
+      "sourceId": "issue:task:T3.2",
+      "targetId": "milestone:tasks:3",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10302 belongs to milestone \"Dogfood real em Peria\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T3.3:milestone:tasks:3",
+      "sourceId": "issue:task:T3.3",
+      "targetId": "milestone:tasks:3",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10303 belongs to milestone \"Dogfood real em Peria\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T4.1:milestone:tasks:4",
+      "sourceId": "issue:task:T4.1",
+      "targetId": "milestone:tasks:4",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10401 belongs to milestone \"Adapters e dogfood NestJS\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T4.2:milestone:tasks:4",
+      "sourceId": "issue:task:T4.2",
+      "targetId": "milestone:tasks:4",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10402 belongs to milestone \"Adapters e dogfood NestJS\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T4.3:milestone:tasks:4",
+      "sourceId": "issue:task:T4.3",
+      "targetId": "milestone:tasks:4",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10403 belongs to milestone \"Adapters e dogfood NestJS\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T5.1:milestone:tasks:5",
+      "sourceId": "issue:task:T5.1",
+      "targetId": "milestone:tasks:5",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10501 belongs to milestone \"GitHub auth, issues, milestones e sincronização\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T5.2:milestone:tasks:5",
+      "sourceId": "issue:task:T5.2",
+      "targetId": "milestone:tasks:5",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10502 belongs to milestone \"GitHub auth, issues, milestones e sincronização\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T5.3:milestone:tasks:5",
+      "sourceId": "issue:task:T5.3",
+      "targetId": "milestone:tasks:5",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10503 belongs to milestone \"GitHub auth, issues, milestones e sincronização\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T5.4:milestone:tasks:5",
+      "sourceId": "issue:task:T5.4",
+      "targetId": "milestone:tasks:5",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10504 belongs to milestone \"GitHub auth, issues, milestones e sincronização\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T5.5:milestone:tasks:5",
+      "sourceId": "issue:task:T5.5",
+      "targetId": "milestone:tasks:5",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10505 belongs to milestone \"GitHub auth, issues, milestones e sincronização\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T5.6:milestone:tasks:5",
+      "sourceId": "issue:task:T5.6",
+      "targetId": "milestone:tasks:5",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10506 belongs to milestone \"GitHub auth, issues, milestones e sincronização\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T6.1:milestone:tasks:6",
+      "sourceId": "issue:task:T6.1",
+      "targetId": "milestone:tasks:6",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10601 belongs to milestone \"Usabilidade e DX\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T6.2:milestone:tasks:6",
+      "sourceId": "issue:task:T6.2",
+      "targetId": "milestone:tasks:6",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10602 belongs to milestone \"Usabilidade e DX\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T6.3:milestone:tasks:6",
+      "sourceId": "issue:task:T6.3",
+      "targetId": "milestone:tasks:6",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10603 belongs to milestone \"Usabilidade e DX\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T7.1:milestone:tasks:7",
+      "sourceId": "issue:task:T7.1",
+      "targetId": "milestone:tasks:7",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10701 belongs to milestone \"Preparação para adoção pública\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T7.2:milestone:tasks:7",
+      "sourceId": "issue:task:T7.2",
+      "targetId": "milestone:tasks:7",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10702 belongs to milestone \"Preparação para adoção pública\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    },
+    {
+      "id": "issue_belongs_to_milestone:issue:task:T7.3:milestone:tasks:7",
+      "sourceId": "issue:task:T7.3",
+      "targetId": "milestone:tasks:7",
+      "type": "issue_belongs_to_milestone",
+      "confidence": "high",
+      "reason": "Issue #10703 belongs to milestone \"Preparação para adoção pública\".",
+      "createdAt": "2026-06-29T21:34:30.646Z"
+    }
+  ],
+  "sourceManifest": {
+    "generatedAt": "2026-06-29T21:34:29.975Z",
+    "commit": "6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6",
+    "branch": "feat/planning"
+  }
+}

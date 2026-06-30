@@ -2,8 +2,7 @@
  * Peria Documentation Renderer
  *
  * Provides documentation rendering for Peria generated wikis.
- * Generates static HTML that can be served without a framework.
- * Supports markdown parsing, syntax highlighting, and navigation.
+ * Generates Fumadocs-compatible MDX content and source config.
  */
 
 export type { KnowledgeGraphArtifact, WikiManifest, WikiPage } from '@peria/core';
@@ -14,9 +13,18 @@ export {
   encodePackageName,
   generateNavigation,
   type RendererConfigOptions,
+  type RendererMode,
 } from './config.js';
 // Content generation
 export { type ContentGenerationOptions, generatePagesFromManifest } from './content.js';
+// Fumadocs-compatible content generation
+export {
+  type FumadocsContentOptions,
+  type FumadocsOutput,
+  type FumadocsOutputFile,
+  generateFumadocsContent,
+  type PageTreeNode,
+} from './fumadocs.js';
 // Manifest utilities
 export {
   convertManifestToDocs,
@@ -25,15 +33,6 @@ export {
 } from './manifest.js';
 // Markdown utilities
 export { type MarkdownOptions, parseMarkdown, renderMarkdownToHtml } from './markdown.js';
-// Wiki renderer
-export {
-  type RenderedAssets,
-  type RenderOptions,
-  renderWikiAssets,
-  renderWikiCss,
-  renderWikiHtml,
-  renderWikiJs,
-} from './renderer.js';
 // Search index
 export {
   generateSearchIndex,
@@ -42,13 +41,6 @@ export {
   type SearchIndexOptions,
   searchEntries,
 } from './search.js';
-// Static HTML generation
-export {
-  generateIndexHtml,
-  generatePageHtml,
-  generateStaticDocs,
-  type StaticDocsOptions,
-} from './static.js';
 // Types
 export type {
   Confidence,

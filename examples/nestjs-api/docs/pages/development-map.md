@@ -1,0 +1,31 @@
+# Development Map
+
+Use this page as the maintenance entrypoint before changing a package boundary, CLI command, adapter, or generated docs contract.
+
+## Change Areas
+
+| Area | Directory | Modules | Exports | Internal dependencies |
+| --- | --- | --- | --- | --- |
+| peria-example-nestjs-api | `.` | 0 | 0 | none |
+
+## Entrypoints
+
+| Surface | Entries |
+| --- | --- |
+| CLI commands | none |
+| Adapters | none |
+| Docs renderer | `fumadocs` at `docs` |
+
+## Impact Reading Map
+
+| Area | Start with | Coverage |
+| --- | --- | --- |
+| peria-example-nestjs-api | none | complete |
+
+## Suggested Reading Order
+
+- Start with `application-map` to inspect the generated aggregate.
+- Use `packages` before changing public package exports or dependencies.
+- Use `modules` before moving source files or changing imports.
+- Use `diagrams` when dependency or module relationships are the risky part of a change.
+- Use `history` to connect the current working tree to recent commits.

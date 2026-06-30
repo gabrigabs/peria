@@ -69,6 +69,13 @@ describe('CLI commands', () => {
       expect(diagramCommand.length).toBeGreaterThanOrEqual(1);
     });
   });
+
+  describe('github command', () => {
+    it('should export githubAuthStatusCommand function', async () => {
+      const { githubAuthStatusCommand } = await import('../commands/github.js');
+      expect(typeof githubAuthStatusCommand).toBe('function');
+    });
+  });
 });
 
 describe('CLI utilities', () => {

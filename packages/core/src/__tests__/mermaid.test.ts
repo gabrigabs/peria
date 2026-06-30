@@ -8,6 +8,7 @@ import {
   DIAGRAM_TYPE_LABELS,
   generateDiagramId,
   generateDiagrams,
+  generateModuleGraphDiagrams,
   generatePackageDepDiagrams,
   generateRouteFlowDiagrams,
   generateSchemaDiagrams,
@@ -38,6 +39,13 @@ describe('mermaid types', () => {
     it('should sanitize entity IDs', () => {
       const id = generateDiagramId('schema', 'User Profile');
       expect(id).not.toContain(' ');
+    });
+
+    it('should generate deterministic IDs', () => {
+      const first = generateDiagramId('schema', 'User Profile');
+      const second = generateDiagramId('schema', 'User Profile');
+
+      expect(first).toBe(second);
     });
   });
 
@@ -74,6 +82,10 @@ describe('mermaid types', () => {
 
     it('should export generatePackageDepDiagrams', () => {
       expect(typeof generatePackageDepDiagrams).toBe('function');
+    });
+
+    it('should export generateModuleGraphDiagrams', () => {
+      expect(typeof generateModuleGraphDiagrams).toBe('function');
     });
 
     it('should export generateSchemaDiagrams', () => {

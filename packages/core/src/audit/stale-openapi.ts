@@ -62,9 +62,11 @@ export const runStaleOpenAPICheck: AuditCheck = {
     }
 
     const openapiPath = join(cwd, manifest.openapi.path);
-    const enrichedPath = manifest.openapi.enrichedPath
-      ? join(cwd, manifest.openapi.enrichedPath)
-      : join(cwd, '.peria', 'openapi.enriched.json');
+    if (!manifest.openapi.enrichedPath) {
+      return findings;
+    }
+
+    const enrichedPath = join(cwd, manifest.openapi.enrichedPath);
 
     const openapiExists = await fileExists(openapiPath);
     const enrichedExists = await fileExists(enrichedPath);

@@ -50,7 +50,7 @@ export async function collectGitMetadata(cwd: string): Promise<GitMetadata> {
     runGit(cwd, ['log', '-1', '--pretty=format:%ae']),
     runGit(cwd, ['log', '-1', '--date=iso-strict', '--pretty=format:%ad']),
     runGit(cwd, ['log', '-1', '--pretty=format:%s']),
-    runGit(cwd, ['status', '--short']),
+    runGit(cwd, ['status', '--short', '--untracked-files=no']),
     runGit(cwd, ['log', '--date=short', '--pretty=format:%h%x09%ad%x09%an%x09%s', '-12']),
   ]);
 

@@ -8,12 +8,12 @@ Peria is configured by `peria.config.ts` and resolved with defaults from `@peria
 - Tagline: Human-readable by default. LLM-ready by design.
 - Audience: Engineers maintaining a codebase and AI agents that need source-backed context before making changes.
 - Tone: Pragmatic, source-linked, and implementation-aware.
-- Current focus: Make the repository capable of documenting itself with a useful markdown wiki, visual reader, graph artifact, and agent context map.
+- Current focus: Make the repository capable of documenting itself with a useful markdown wiki, Fumadocs-compatible output, graph artifact, and agent context map.
 
 Configured highlights:
 
 - The human wiki in /docs is the source of truth.
-- The visual reader is generated from markdown instead of a parallel content model.
+- The Fumadocs-compatible content is generated from markdown instead of a parallel content model.
 - Agent context files point back to the same wiki tree used by humans.
 - Git metadata is part of the generated knowledge, not an afterthought.
 
@@ -30,16 +30,16 @@ Configured highlights:
 
 | Feature | State | Provenance |
 | --- | --- | --- |
-| apiReference | disabled | `peria.config.ts:93` |
-| changeMap | disabled | `peria.config.ts:101` |
-| codeMap | enabled | `peria.config.ts:88` |
-| contextPacks | disabled | `peria.config.ts:95` |
-| driftCheck | enabled | `peria.config.ts:94` |
-| embeddedDocs | enabled | `peria.config.ts:87` |
-| embeddedDocsAdapters | disabled | `peria.config.ts:97` |
-| gitDiff | disabled | `peria.config.ts:100` |
-| github | disabled | `peria.config.ts:103` |
-| llms | enabled | `peria.config.ts:90` |
-| mermaid | disabled | `peria.config.ts:96` |
-| patchNotes | disabled | `peria.config.ts:102` |
-| wiki | enabled | `peria.config.ts:89` |
+| apiReference | disabled | `peria.config.ts:94` |
+| changeMap | disabled | `peria.config.ts:102` |
+| codeMap | enabled | `peria.config.ts:89` |
+| contextPacks | disabled | `peria.config.ts:96` |
+| driftCheck | enabled | `peria.config.ts:95` |
+| embeddedDocs | enabled | `peria.config.ts:88` |
+| embeddedDocsAdapters | disabled | `peria.config.ts:98` |
+| gitDiff | disabled | `peria.config.ts:101` |
+| github | disabled | `peria.config.ts:104` |
+| llms | enabled | `peria.config.ts:91` |
+| mermaid | enabled | `peria.config.ts:97` |
+| patchNotes | disabled | `peria.config.ts:103` |
+| wiki | enabled | `peria.config.ts:90` |

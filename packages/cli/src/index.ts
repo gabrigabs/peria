@@ -4,6 +4,7 @@ import { buildCommand } from './commands/build.js';
 import { checkCommand } from './commands/check.js';
 import { contextCommand } from './commands/context.js';
 import { diagramCommand } from './commands/diagram.js';
+import { githubCommand } from './commands/github.js';
 import { initCommand } from './commands/init.js';
 import { scanCommand } from './commands/scan.js';
 import { serveCommand } from './commands/serve.js';
@@ -23,9 +24,12 @@ cli.command('init', 'Initialize Peria in your project').action(async (opts: { cw
   await initCommand(opts.cwd);
 });
 
-cli.command('build', 'Build documentation').action(async (opts: { cwd: string }) => {
-  await buildCommand(opts.cwd);
-});
+cli
+  .command('build', 'Build documentation')
+  .option('--renderer <mode>', 'Renderer mode (fumadocs)')
+  .action(async (opts: { cwd: string; renderer?: string }) => {
+    await buildCommand(opts.cwd, { renderer: opts.renderer });
+  });
 
 cli.command('serve', 'Serve documentation locally').action(async (opts: { cwd: string }) => {
   await serveCommand(opts.cwd);
@@ -75,15 +79,82 @@ cli
 
 // Diagram command
 cli
-  .command('diagram', 'Generate Mermaid diagrams for routes, packages, and schemas')
-  .option('--type <type>', 'Diagram type (route-flow, package-deps, schema, all)')
+  .command('diagram', 'Generate Mermaid diagrams for routes, packages, modules, and schemas')
+  .option('--type <type>', 'Diagram type (route-flow, package-deps, module-graph, schema, all)')
   .option('--output <dir>', 'Output directory (default: .peria/diagrams)')
   .action(async (opts: { cwd: string; type?: string; output?: string }) => {
     await diagramCommand(opts.cwd, {
-      type: opts.type as 'route-flow' | 'package-deps' | 'schema' | 'all' | undefined,
+      type: opts.type as
+        | 'route-flow'
+        | 'package-deps'
+        | 'schema'
+        | 'module-graph'
+        | 'all'
+        | undefined,
       output: opts.output,
     });
   });
+
+// GitHub commands
+cli
+  .command('github [...args]', 'GitHub auth and sync commands')
+  .option('--label <label>', 'Extra label for GitHub issue creation')
+  .option('--labels <labels>', 'Comma-separated extra labels for GitHub issue creation')
+  .option('--severity <level>', 'Minimum severity for issue creation')
+  .option('--checks <names>', 'Comma-separated checks for issue creation')
+  .option('--file <path>', 'Roadmap file for milestone sync')
+  .allowUnknownOptions()
+  .action(
+    async (
+      args: string[] | undefined,
+      opts: {
+        cwd: string;
+        label?: string | string[];
+        labels?: string;
+        severity?: string;
+        checks?: string;
+        file?: string;
+      }
+    ) => {
+      await githubCommand(appendGitHubOptions(args ?? [], opts), opts.cwd);
+    }
+  );
+
+function appendGitHubOptions(
+  args: string[],
+  opts: {
+    label?: string | string[];
+    labels?: string;
+    severity?: string;
+    checks?: string;
+    file?: string;
+  }
+): string[] {
+  const nextArgs = [...args];
+  const labels = Array.isArray(opts.label) ? opts.label : opts.label ? [opts.label] : [];
+
+  for (const label of labels) {
+    nextArgs.push('--label', label);
+  }
+
+  if (opts.labels) {
+    nextArgs.push('--labels', opts.labels);
+  }
+
+  if (opts.severity) {
+    nextArgs.push('--severity', opts.severity);
+  }
+
+  if (opts.checks) {
+    nextArgs.push('--checks', opts.checks);
+  }
+
+  if (opts.file) {
+    nextArgs.push('--file', opts.file);
+  }
+
+  return nextArgs;
+}
 
 // Help
 cli.help();

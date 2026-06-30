@@ -18,6 +18,14 @@ function generateId(prefix: string, index: number): string {
   return `audit-${prefix}-${Date.now().toString(36)}-${index}`;
 }
 
+function routeKey(method: string | undefined, path: string): string {
+  return `${method || 'GET'}:${normalizePath(path)}`.toLowerCase();
+}
+
+function normalizePath(path: string): string {
+  return path.replace(/\{([^}]+)\}/g, ':$1').replace(/[`'",.;:]+$/g, '');
+}
+
 /**
  * Docs vs Routes audit check
  */
@@ -35,7 +43,7 @@ export const runDocsRoutesCheck: AuditCheck = {
     }
 
     // Build a set of valid route IDs
-    const routeIds = new Set(manifest.routes.map((r) => `${r.method}:${r.path}`.toLowerCase()));
+    const routeIds = new Set(manifest.routes.map((r) => routeKey(r.method, r.path)));
 
     // Build a set of documented routes
     const documentedRoutes = new Set<string>();
@@ -43,7 +51,7 @@ export const runDocsRoutesCheck: AuditCheck = {
     // Check doc pages for route mentions
     for (const docPage of manifest.docsPages) {
       for (const mention of docPage.routeMentions) {
-        const key = `${mention.method || 'GET'}:${mention.path}`.toLowerCase();
+        const key = routeKey(mention.method, mention.path);
         documentedRoutes.add(key);
 
         // Skip if the path looks like a file path or CLI command (not an API route)
@@ -89,7 +97,7 @@ export const runDocsRoutesCheck: AuditCheck = {
     // Check routes without documentation (only report if we have docs)
     if (manifest.docsPages.length > 0) {
       for (const route of manifest.routes) {
-        const key = `${route.method}:${route.path}`.toLowerCase();
+        const key = routeKey(route.method, route.path);
         if (!documentedRoutes.has(key)) {
           findings.push({
             id: generateId('route-no-docs', index++),
@@ -127,12 +135,12 @@ export function getDocsCoverage(manifest: PeriaManifest): {
 
   for (const docPage of manifest.docsPages) {
     for (const mention of docPage.routeMentions) {
-      documentedRoutes.add(`${mention.method || 'GET'}:${mention.path}`.toLowerCase());
+      documentedRoutes.add(routeKey(mention.method, mention.path));
     }
   }
 
   const documented = manifest.routes.filter((r) =>
-    documentedRoutes.has(`${r.method}:${r.path}`.toLowerCase())
+    documentedRoutes.has(routeKey(r.method, r.path))
   ).length;
 
   return {

@@ -2,44 +2,71 @@
 
 > Human-readable by default. LLM-ready by design.
 
-**Peria** turns your backend codebase into a living technical wiki. Scan routes, schemas, and packages → generate docs, diagrams, and agent context → detect drift automatically.
+**Peria** turns your backend codebase into a living technical wiki. Scan packages, routes, schemas, OpenAPI specs, Git history, and local roadmap data; generate source-backed docs, diagrams, agent context, and drift checks.
 
 **Origin:** *peritia*, Latin for practical knowledge and expertise.
 
 ---
 
-## Status
+## What Ships Today
 
-### CLI Commands ✅
+Peria is ready for beta-style use on real repositories, with a narrow public surface and explicit limits.
+
+### Shipped
 
 | Command | Description |
 |---------|-------------|
 | `peria scan` | Scan codebase for packages, routes, schemas, OpenAPI specs |
-| `peria build` | Generate wiki pages, llms.txt, graph |
+| `peria build` | Generate wiki pages, Fumadocs content, llms.txt, graph, application map |
 | `peria check` | Audit for drift with 10 checks (`--json` for CI) |
 | `peria context` | Generate context packs for agents |
 | `peria diagram` | Generate Mermaid diagrams |
+| `peria github` | Diagnose auth, write provenance cache, and draft drift issues |
 
-### Framework Adapters ✅
+Peria also ships:
 
-All adapters serve static files + manifest + llms.txt:
+- Express, Fastify, and NestJS docs adapters through `@peria/adapters`
+- Fumadocs-compatible generated content through `@peria/renderer`
+- A bundled preview app used by `peria serve`
+- Cache-first GitHub provenance pages from `.peria/github.json`
+- CI-friendly pack checks and fresh-install dogfood scripts
 
-| Adapter | Status |
-|---------|--------|
-| Express | ✅ Works |
-| Fastify | ✅ Works |
-| NestJS | ✅ Works |
-| Hono | 🔜 Coming soon |
-| Elysia | 🔜 Coming soon |
+### Roadmap, Not Stable API Yet
 
-### Self-Documentation ✅
+- `@peria/sdk` is private/deferred until the programmatic contract is dogfooded.
+- `@peria/api-reference` is private/deferred until API reference rendering is a product decision, not a placeholder.
+- Hono, Elysia, and other adapters are not part of the published adapter surface yet.
+- Live GitHub issue/PR synchronization is still evolving. The shipped GitHub Map is generated from the local cache, local Git history, and TASKS-derived roadmap records.
+- Route/schema/OpenAPI extraction depends on available source conventions. Peria reports missing coverage instead of pretending it found more than it can prove.
 
-Peria uses itself to document Peria:
+### Self-Documentation
 
-- **153 TypeScript modules** extracted with ts-morph
+Peria uses itself to document this repository:
+
+- TypeScript modules extracted with ts-morph
 - **10 audit checks** for drift detection
-- **21 CLI tests** (smoke + integration)
-- Docs generated at `docs/pages/`
+- CLI smoke and integration tests
+- Docs generated as markdown pages and Fumadocs-compatible MDX content
+- GitHub Map generated from commits, roadmap issues, milestones, and inferred relations
+- Release Status page generated from package manifests and wiki output
+
+Run `peria build` to refresh the current module, package, command, Git, and page counts.
+
+![Peria generated wiki preview](docs/assets/peria-wiki-preview.png)
+
+---
+
+## When To Use Peria
+
+Use Peria when:
+
+- You want source-backed architecture docs that can be regenerated.
+- You need a wiki that agents can read through `llms.txt`, context packs, and structured manifests.
+- You want release and documentation drift checks in CI.
+- You want a local application map before investing in a heavier developer portal.
+- You need docs that stay close to code, package manifests, Git commits, and roadmap records.
+
+Peria is not a replacement for API gateways, observability platforms, or full developer portals. It is a local-first documentation and provenance layer that can feed those systems later.
 
 ---
 
@@ -54,23 +81,70 @@ npm install -D @peria/cli
 ### 2. Scan & Build
 
 ```bash
-peria scan
-peria build
+npx peria scan
+npx peria build --renderer fumadocs
+npx peria serve
 ```
 
 This generates:
 
-- `docs/pages/` — wiki pages
-- `docs/index.html` — visual wiki UI
+- `docs/pages/` — source-backed wiki pages
+- `docs/content/docs/` — Fumadocs-compatible MDX pages
+- `docs/content/docs/meta.json` — Fumadocs sidebar metadata
 - `docs/wiki-manifest.json` — page tree
 - `.peria/manifest.json` — full graph data
 - `.peria/graph.json` — entity relationships
+- `.peria/application-map.json` — aggregate application map
+- `.peria/github.json` — optional GitHub provenance cache
 - `.peria/ai-context.md` — AI context file
 - `.peria/context/` — agent context packs
 - `.peria/diagrams/` — Mermaid diagrams
 - `llms.txt` — compact AI reading map
 
-### 3. Integrate
+### 3. Example Output
+
+The Peria repo currently dogfoods the generated wiki. A generated Release Status page looks like this:
+
+```text
+Documentation pages: 16
+Renderer: fumadocs
+Claim provenance: all generated claims have source provenance
+Public package exports: ready
+Adapter placeholders: ready
+Route coverage: reported as missing when no routes are present
+```
+
+A generated GitHub Map page includes:
+
+```text
+Issues: TASKS-derived roadmap records and drift issues
+Milestones: roadmap milestone progress
+Commits: recent local Git history
+Relations: entity_changed_by_commit and issue_belongs_to_milestone
+```
+
+### 4. Try The End-To-End Example
+
+The main public example is [`examples/nestjs-api`](examples/nestjs-api/). It includes NestJS routes, DTO/schema source, OpenAPI, generated docs, and the NestJS docs adapter.
+
+```bash
+cd examples/nestjs-api
+npm install
+npm run peria:scan
+npm run peria:build
+npm run peria:scan
+npm run peria:check
+npm run build
+npm start
+```
+
+From the monorepo, the same example is validated with local packed Peria packages:
+
+```bash
+bun run example:nest
+```
+
+### 5. Integrate
 
 ```ts
 // Express
@@ -86,17 +160,44 @@ import { setupPeriaDocs } from '@peria/adapters/nest'
 setupPeriaDocs(app, { route: '/docs' })
 ```
 
-### 4. Check for Drift
+### 6. Check for Drift
 
 ```bash
-peria check
+npx peria check
 
 # JSON output for CI
-peria check --json | jq .
+npx peria check --json | jq .
 
 # Only errors
-peria check --json --severity error
+npx peria check --json --severity error
 ```
+
+### 7. Diagnose GitHub Auth
+
+```bash
+npx peria github auth status
+npx peria github auth login
+```
+
+Peria checks `GITHUB_TOKEN`, `.peria/github.local.json`, then `gh auth token`. Token values are never printed or written to generated artifacts.
+
+### 8. Write GitHub Provenance Cache
+
+```bash
+npx peria scan
+npx peria github cache write
+```
+
+This writes `.peria/github.json` with typed issues, pull requests, milestones, commits, and relations inferred from the manifest and local Git history. It does not call the GitHub API or persist credentials.
+
+### 9. Draft Drift Issues
+
+```bash
+npx peria github issues create-from-check --label team-docs
+npx peria build --renderer fumadocs
+```
+
+This runs the same checks as `peria check`, deduplicates findings by fingerprint, and stores open issue records in `.peria/github.json`. When the cache exists, `peria build` adds a GitHub Issues page to the generated wiki.
 
 ---
 
@@ -137,7 +238,8 @@ export default defineConfig({
   docs: {
     enabled: true,
     route: "/docs",
-    outputDir: "docs"
+    outputDir: "docs",
+    renderer: "fumadocs"
   },
 
   sources: {
@@ -164,14 +266,14 @@ export default defineConfig({
 
 ## Packages
 
-| Package | Description |
-|---------|-------------|
-| [`packages/core`](packages/core/) | Engine — types, config, scanners, parsers, generators |
-| [`packages/cli`](packages/cli/) | CLI commands |
-| [`packages/adapters`](packages/adapters/) | Express, Fastify, NestJS middleware |
-| [`packages/sdk`](packages/sdk/) | Programmatic API |
-| [`packages/renderer`](packages/renderer/) | Wiki UI renderer |
-| [`packages/api-reference`](packages/api-reference/) | Stoplight Elements integration |
+| Package | Public status | Description |
+|---------|---------------|-------------|
+| [`packages/core`](packages/core/) | Published | Engine: types, config, scanners, parsers, generators |
+| [`packages/cli`](packages/cli/) | Published | CLI commands and `peria` binary |
+| [`packages/adapters`](packages/adapters/) | Published | Express, Fastify, NestJS middleware |
+| [`packages/renderer`](packages/renderer/) | Published | Fumadocs-compatible wiki renderer and preview app |
+| [`packages/sdk`](packages/sdk/) | Private / deferred | Programmatic API, not a stable public contract yet |
+| [`packages/api-reference`](packages/api-reference/) | Private / deferred | API reference integration, not part of the beta publish surface |
 
 ---
 
@@ -189,13 +291,23 @@ Manifest (.peria/manifest.json)
     ▼
 Generators
 ├── Wiki pages (Markdown)
+├── Fumadocs content (MDX + meta)
 ├── llms.txt (LLM consumption)
 ├── Context Packs (task-optimized)
+├── GitHub Map (cache-first provenance)
 └── Mermaid Diagrams
-    │
-    ▼
-Adapters (serve docs at /docs)
 ```
+
+---
+
+## Limitations
+
+- Peria is still `0.x`; breaking changes can happen between minor releases.
+- Generated claims are only as complete as the source files Peria can scan.
+- GitHub pages are cache-first. Live PR/issue synchronization is not a stable public workflow yet.
+- The preview app is intended for local generated docs, not as a hosted documentation platform by itself.
+- `peria init` is still interactive and needs stronger automated coverage before being treated as a primary onboarding path.
+- The beta publish surface is `@peria/core`, `@peria/cli`, `@peria/renderer`, and `@peria/adapters`.
 
 ---
 

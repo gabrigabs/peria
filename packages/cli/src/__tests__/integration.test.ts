@@ -5,7 +5,7 @@
  */
 
 import { spawn } from 'node:child_process';
-import { cpSync, existsSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -36,12 +36,13 @@ function createFixtureCopy(name: string): string {
 
 function runCli(
   args: string[],
-  cwd: string
+  cwd: string,
+  env: Record<string, string> = {}
 ): Promise<{ stdout: string; stderr: string; exitCode: number }> {
   return new Promise((resolve) => {
-    const child = spawn('node', [CLI, ...args], {
+    const child = spawn(process.execPath, [CLI, ...args], {
       cwd,
-      env: { ...process.env, FORCE_COLOR: '0' },
+      env: { ...process.env, FORCE_COLOR: '0', ...env },
     });
 
     let stdout = '';
@@ -130,18 +131,71 @@ describe('CLI Integration Tests', () => {
       // Verify docs were created
       const docsDir = join(fixturePath, 'docs');
       expect(existsSync(docsDir)).toBe(true);
-      expect(existsSync(join(docsDir, 'index.html'))).toBe(true);
+      expect(existsSync(join(docsDir, 'content/docs/overview.mdx'))).toBe(true);
+      expect(existsSync(join(docsDir, 'content/docs/application-map.mdx'))).toBe(true);
+      expect(existsSync(join(docsDir, 'content/docs/meta.json'))).toBe(true);
+      expect(existsSync(join(docsDir, 'search-index.json'))).toBe(true);
+      // The bundled TanStack Start + Fumadocs preview app in @peria/renderer now
+      // owns source.config.ts and lib/source.ts; peria build no longer emits them.
+      expect(existsSync(join(docsDir, 'source.config.ts'))).toBe(false);
+      expect(existsSync(join(docsDir, 'lib/source.ts'))).toBe(false);
+      expect(existsSync(join(docsDir, 'pages/application-map.md'))).toBe(true);
       expect(existsSync(join(docsDir, 'wiki-manifest.json'))).toBe(true);
+      expect(existsSync(join(fixturePath, 'llms.txt'))).toBe(true);
+      expect(existsSync(join(fixturePath, '.peria/application-map.json'))).toBe(true);
+
+      const wikiManifest = JSON.parse(readFileSync(join(docsDir, 'wiki-manifest.json'), 'utf-8'));
+      expect(
+        wikiManifest.pages.some((page: { slug: string }) => page.slug === 'application-map')
+      ).toBe(true);
+
+      const searchIndex = JSON.parse(readFileSync(join(docsDir, 'search-index.json'), 'utf-8'));
+      expect(searchIndex.some((entry: { slug: string }) => entry.slug === 'application-map')).toBe(
+        true
+      );
+
+      const appMap = JSON.parse(
+        readFileSync(join(fixturePath, '.peria/application-map.json'), 'utf-8')
+      );
+      expect(appMap.summary.routes).toBeGreaterThan(0);
+      expect(appMap.routes.length).toBeGreaterThan(0);
+      expect(appMap.areas.length).toBeGreaterThan(0);
+      expect(appMap.claimStatus.total).toBeGreaterThan(0);
+      expect(appMap.claimStatus.sourced).toBe(appMap.claimStatus.total);
+      expect(appMap.releaseSignals.length).toBeGreaterThan(0);
+      expect(appMap.recentChanges).toBeDefined();
+
+      const applicationMapPage = readFileSync(
+        join(fixturePath, 'docs/pages/application-map.md'),
+        'utf-8'
+      );
+      expect(applicationMapPage).toContain('## Release Signals');
+      expect(applicationMapPage).toContain('## Claim Quality');
+      expect(applicationMapPage).toContain('## Application Areas');
+
+      const wikiUiPage = readFileSync(join(fixturePath, 'docs/pages/wiki-ui.md'), 'utf-8');
+      expect(wikiUiPage).toContain('The bundled `@peria/renderer` preview app owns');
+      expect(wikiUiPage).not.toContain('`source.config.ts` and `lib/source.ts` provide');
 
       const manifest = JSON.parse(readFileSync(join(fixturePath, '.peria/manifest.json'), 'utf-8'));
       expect(manifest.routes?.length).toBeGreaterThan(0);
+    });
+
+    it('should reject unsupported renderer modes', async () => {
+      const fixturePath = createFixtureCopy('nestjs-basic');
+
+      await runCli(['scan'], fixturePath);
+
+      const result = await runCli(['build', '--renderer', 'static'], fixturePath);
+      expect(result.exitCode).not.toBe(0);
+      expect(result.stderr).toContain('Unsupported renderer "static"');
     });
 
     // Skip test that creates docs without scan (implementation detail)
   });
 
   describe('check command', () => {
-    it('should check a NestJS fixture and output findings', async () => {
+    it('should check a NestJS fixture and pass when generated docs are current', async () => {
       const fixturePath = createFixtureCopy('nestjs-basic');
 
       // First scan and build
@@ -150,7 +204,7 @@ describe('CLI Integration Tests', () => {
 
       // Then check
       const result = await runCli(['check'], fixturePath);
-      expect(result.exitCode).toBe(1);
+      expect(result.exitCode).toBe(0);
       expect(result.stdout).toContain('Peria Check');
     });
 
@@ -163,13 +217,14 @@ describe('CLI Integration Tests', () => {
 
       // Check with JSON output
       const result = await runCli(['check', '--json'], fixturePath);
-      expect(result.exitCode).toBe(1);
+      expect(result.exitCode).toBe(0);
 
       // Output should start with valid JSON object
       const trimmed = result.stdout.trim();
       expect(trimmed).toMatch(/^\{/);
       const parsed = JSON.parse(trimmed);
       expect(parsed.version).toBe('1.0.0');
+      expect(parsed.passed).toBe(true);
       expect(Array.isArray(parsed.checks)).toBe(true);
     });
 
@@ -180,12 +235,13 @@ describe('CLI Integration Tests', () => {
       await runCli(['build'], fixturePath);
 
       const result = await runCli(['check', '--json', '--severity', 'error'], fixturePath);
-      expect(result.exitCode).toBe(1);
+      expect(result.exitCode).toBe(0);
 
       // Output should be valid JSON
       const trimmed = result.stdout.trim();
       expect(trimmed).toMatch(/^\{/);
-      expect(() => JSON.parse(trimmed)).not.toThrow();
+      const parsed = JSON.parse(trimmed);
+      expect(parsed.summary.errors).toBe(0);
     });
   });
 
@@ -216,6 +272,9 @@ describe('CLI Integration Tests', () => {
       // Verify diagrams directory was created
       const diagramsDir = join(fixturePath, '.peria/diagrams');
       expect(existsSync(diagramsDir)).toBe(true);
+      expect(
+        existsSync(join(diagramsDir, 'route-flow/diagram-route-flow-system-overview.mmd'))
+      ).toBe(true);
     });
   });
 
@@ -226,6 +285,134 @@ describe('CLI Integration Tests', () => {
       // --help should exit with 0
       expect(result.exitCode).toBe(0);
       expect(result.stdout).toContain('Usage');
+    });
+  });
+
+  describe('github auth status command', () => {
+    it('reports GITHUB_TOKEN without leaking the token value', async () => {
+      const result = await runCli(['github', 'auth', 'status'], MONOREPO_ROOT, {
+        GITHUB_TOKEN: 'secret-token-value',
+        PATH: '',
+      });
+
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toContain('GITHUB_TOKEN environment variable');
+      expect(result.stdout).not.toContain('secret-token-value');
+    });
+
+    it('reports local config without leaking the token value', async () => {
+      const fixturePath = createFixtureCopy('nestjs-basic');
+      mkdirSync(join(fixturePath, '.peria'), { recursive: true });
+      writeFileSync(
+        join(fixturePath, '.peria/github.local.json'),
+        JSON.stringify({ token: 'local-secret-token' })
+      );
+
+      const result = await runCli(['github', 'auth', 'status'], fixturePath, {
+        GITHUB_TOKEN: '',
+        PATH: '',
+      });
+
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toContain('.peria/github.local.json');
+      expect(result.stdout).not.toContain('local-secret-token');
+    });
+
+    it('suggests actionable fixes when no credential is available', async () => {
+      const result = await runCli(['github', 'auth', 'status'], MONOREPO_ROOT, {
+        GITHUB_TOKEN: '',
+        PATH: '',
+      });
+
+      expect(result.exitCode).toBe(1);
+      expect(result.stdout).toContain('Checked: GITHUB_TOKEN');
+      expect(result.stdout).toContain('export GITHUB_TOKEN');
+      expect(result.stdout).toContain('gh auth login');
+    });
+  });
+
+  describe('github cache command', () => {
+    it('writes a GitHub cache from the scanned manifest', async () => {
+      const fixturePath = createFixtureCopy('nestjs-basic');
+
+      await runCli(['scan'], fixturePath);
+
+      const result = await runCli(['github', 'cache', 'write'], fixturePath);
+
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toContain('Wrote');
+
+      const cachePath = join(fixturePath, '.peria/github.json');
+      expect(existsSync(cachePath)).toBe(true);
+
+      const cache = JSON.parse(readFileSync(cachePath, 'utf-8'));
+      expect(cache.cacheVersion).toBe('0.1.0');
+      expect(cache.repository.name).toBe(fixturePath.split('/').at(-1));
+      expect(Array.isArray(cache.commits)).toBe(true);
+      expect(Array.isArray(cache.relations)).toBe(true);
+    });
+
+    it('fails with an actionable message when manifest is missing', async () => {
+      const fixturePath = join(tempDir, 'missing-manifest');
+      mkdirSync(fixturePath, { recursive: true });
+
+      const result = await runCli(['github', 'cache', 'write'], fixturePath);
+
+      expect(result.exitCode).toBe(1);
+      expect(result.stderr).toContain('Could not find .peria/manifest.json');
+      expect(result.stdout).toContain('Run "peria scan"');
+    });
+  });
+
+  describe('github issues command', () => {
+    it('creates deduplicated cached issues from check findings and exposes them in docs', async () => {
+      const fixturePath = createFixtureCopy('nestjs-basic');
+
+      await runCli(['scan'], fixturePath);
+      await runCli(['build'], fixturePath);
+
+      const first = await runCli(
+        ['github', 'issues', 'create-from-check', '--label', 'team-docs'],
+        fixturePath
+      );
+      expect(first.exitCode).toBe(0);
+      expect(first.stdout).toContain('created');
+
+      const cachePath = join(fixturePath, '.peria/github.json');
+      const firstCache = JSON.parse(readFileSync(cachePath, 'utf-8'));
+      expect(firstCache.issues.length).toBeGreaterThan(0);
+      expect(firstCache.issues[0].labels).toEqual(
+        expect.arrayContaining(['peria', 'docs-drift', 'team-docs'])
+      );
+      expect(firstCache.issues[0].body).toContain('## Source');
+      expect(firstCache.issues[0].body).toContain('peria check --json');
+
+      const second = await runCli(
+        ['github', 'issues', 'create-from-check', '--label', 'team-docs'],
+        fixturePath
+      );
+      const secondCache = JSON.parse(readFileSync(cachePath, 'utf-8'));
+
+      expect(second.exitCode).toBe(0);
+      expect(secondCache.issues).toHaveLength(firstCache.issues.length);
+
+      await runCli(['build'], fixturePath);
+
+      const issuesPage = readFileSync(join(fixturePath, 'docs/pages/github-issues.md'), 'utf-8');
+      expect(issuesPage).toContain('# GitHub Issues');
+      expect(issuesPage).toContain(firstCache.issues[0].title);
+
+      const githubMapPage = readFileSync(join(fixturePath, 'docs/pages/github-map.md'), 'utf-8');
+      expect(githubMapPage).toContain('# GitHub Map');
+      expect(githubMapPage).toContain('## Relationship Diagram');
+      expect(githubMapPage).toContain('```mermaid');
+
+      const wikiManifest = JSON.parse(
+        readFileSync(join(fixturePath, 'docs/wiki-manifest.json'), 'utf-8')
+      );
+      expect(wikiManifest.pages.some((page: { slug: string }) => page.slug === 'github-map')).toBe(
+        true
+      );
     });
   });
 

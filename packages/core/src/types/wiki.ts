@@ -20,9 +20,12 @@ export interface PackageSummary {
   directory: string;
   manifestPath: string;
   description?: string;
+  private: boolean;
+  publishAccess?: string;
   scripts: Record<string, string>;
   dependencies: string[];
   exports: string[];
+  bins: string[];
 }
 
 export interface ExportSummary {
@@ -93,6 +96,7 @@ export interface WikiManifest {
   tagline: string;
   generatedAt: string;
   manifestVersion: string;
+  periaVersion: string;
   commit?: string;
   git: GitMetadata;
   project: Required<ProjectProfile>;

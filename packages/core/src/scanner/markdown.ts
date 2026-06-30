@@ -24,7 +24,10 @@ const MARKDOWN_EXTENSIONS = new Set(['.md', '.mdx']);
 /**
  * Find markdown files matching patterns
  */
-export async function findMarkdownFiles(cwd: string): Promise<string[]> {
+export async function findMarkdownFiles(
+  cwd: string,
+  patterns: string[] = ['**/*.md']
+): Promise<string[]> {
   const files: string[] = [];
   const seen = new Set<string>();
 
@@ -42,7 +45,7 @@ export async function findMarkdownFiles(cwd: string): Promise<string[]> {
       const ext = extname(entry.name);
       if (MARKDOWN_EXTENSIONS.has(ext)) {
         const relPath = relative(cwd, join(dir, entry.name));
-        if (!seen.has(relPath)) {
+        if (!seen.has(relPath) && matchesAnyPattern(relPath, patterns)) {
           seen.add(relPath);
           files.push(relPath);
         }
@@ -54,16 +57,35 @@ export async function findMarkdownFiles(cwd: string): Promise<string[]> {
   return files;
 }
 
+function matchesAnyPattern(path: string, patterns: string[]): boolean {
+  return patterns.some((pattern) => matchesPattern(path, pattern));
+}
+
+function matchesPattern(path: string, pattern: string): boolean {
+  if (pattern === path) {
+    return true;
+  }
+
+  const escaped = pattern
+    .replace(/[.+^${}()|[\]\\]/g, '\\$&')
+    .replace(/\*\*\//g, 'DOUBLE_STAR_SLASH')
+    .replace(/\*\*/g, 'DOUBLE_STAR')
+    .replace(/\*/g, '[^/]*')
+    .replace(/DOUBLE_STAR_SLASH/g, '(?:.*/)?')
+    .replace(/DOUBLE_STAR/g, '.*');
+  return new RegExp(`^${escaped}$`).test(path);
+}
+
 /**
  * Scan documentation files
  */
 export async function scanDocs(
   cwd: string,
-  _config: ResolvedPeriaConfig,
+  config: ResolvedPeriaConfig,
   warnings: ScanWarning[]
 ): Promise<Array<{ path: string; content: Awaited<ReturnType<typeof parseMarkdown>> }>> {
   const results: Array<{ path: string; content: Awaited<ReturnType<typeof parseMarkdown>> }> = [];
-  const docPaths = await findMarkdownFiles(cwd);
+  const docPaths = await findMarkdownFiles(cwd, config.sources.markdown);
 
   for (const docPath of docPaths) {
     const fullPath = join(cwd, docPath);

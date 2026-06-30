@@ -4,72 +4,98 @@ Git context gives generated docs a date and ownership anchor. The wiki records t
 
 ## Current Revision
 
-- Branch: `feat/self-documentation-bootstrap`
-- Commit: `d0a5f2266d97a31e0c775cc8a67e92a44c5b6d46`
-- Subject: fix: harden npm publish readiness
+- Branch: `feat/planning`
+- Commit: `6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6`
+- Subject: feat(renderer): render Mermaid diagrams in preview app
 - Author: Gabriel Bezerra Rodrigues <gabrielbrodrigues1@gmail.com>
-- Authored at: 2026-06-26T13:52:38-03:00
-- Working tree: 28 changed files
+- Authored at: 2026-06-29T15:54:00-03:00
+- Working tree: 54 changed files
 
 ## Working Tree Changes
 
+- `M .github/workflows/ci.yml`
+- `M .github/workflows/publish.yml`
+- `M .peria/github.json`
 - `M .peria/manifest.json`
-- `M CLAUDE.md`
-- `M CONTRIBUTING.md`
+- `M CHANGELOG.md`
 - `M PUBLISHING.md`
 - `M README.md`
-- `M bun.lock`
+- `M TASKS.md`
+- `M docs/content/docs/ai-context.mdx`
+- `M docs/content/docs/application-map.mdx`
+- `M docs/content/docs/development-map.mdx`
+- `M docs/content/docs/diagrams.mdx`
+- `M docs/content/docs/github-issues.mdx`
+- `M docs/content/docs/history.mdx`
+- `M docs/content/docs/known-gaps.mdx`
+- `M docs/content/docs/meta.json`
+- `M docs/content/docs/modules.mdx`
+- `M docs/content/docs/overview.mdx`
+- `M docs/content/docs/packages.mdx`
+- `M docs/content/docs/release-status.mdx`
+- `M docs/content/docs/wiki-ui.mdx`
+- `M docs/pages/ai-context.md`
+- `M docs/pages/application-map.md`
+- `M docs/pages/development-map.md`
+- `M docs/pages/diagrams.md`
+- `M docs/pages/github-issues.md`
+- `M docs/pages/history.md`
+- `M docs/pages/known-gaps.md`
+- `M docs/pages/modules.md`
+- `M docs/pages/overview.md`
+- `M docs/pages/packages.md`
+- `M docs/pages/release-status.md`
+- `M docs/pages/wiki-ui.md`
+- `M docs/search-index.json`
+- `M docs/wiki-manifest.json`
 - `M package.json`
-- `M packages/adapters/README.md`
-- `M packages/adapters/package.json`
-- `D packages/adapters/src/elysia.ts`
-- `D packages/adapters/src/hono.ts`
-- `M packages/adapters/src/index.ts`
-- `M packages/adapters/tsup.config.ts`
 - `M packages/api-reference/package.json`
-- `M packages/cli/bin/peria.js`
-- `M packages/cli/package.json`
-- `M packages/cli/src/index.ts`
-- `M packages/core/package.json`
+- `M packages/cli/src/__tests__/integration.test.ts`
+- `M packages/cli/src/commands/build.ts`
+- `M packages/cli/src/commands/serve.ts`
+- `M packages/core/src/__tests__/github.test.ts`
+- `M packages/core/src/__tests__/markdown-parser.test.ts`
+- `M packages/core/src/application-map.ts`
+- `M packages/core/src/audit/docs-routes.ts`
+- `M packages/core/src/audit/openapi-docs.ts`
+- `M packages/core/src/audit/routes-undocumented.ts`
+- `M packages/core/src/audit/schema-coverage.ts`
+- `M packages/core/src/audit/stale-openapi.ts`
+- `M packages/core/src/github/relations.ts`
+- `M packages/core/src/parsers/markdown.ts`
+- `M packages/core/src/scanner/markdown.ts`
+- `M packages/core/src/types/wiki.ts`
+- `M packages/core/src/wiki/collectors/packages.ts`
 - `M packages/core/src/wiki/pages.ts`
-- `D packages/docs-ui/package.json`
-- `D packages/docs-ui/src/index.ts`
-- `D packages/docs-ui/tsconfig.json`
-- `D packages/docs-ui/tsup.config.ts`
-- `M packages/renderer/package.json`
-- `M packages/sdk/package.json`
-- `M peria.config.ts`
-- `?? packages/cli/peria-cli-0.1.0.tgz`
-- `?? packages/core/peria-core-0.1.0.tgz`
 
 ## Recent Commits
 
 | Commit | Date | Author | Subject |
 | --- | --- | --- | --- |
-| `d0a5f22` | 2026-06-26 | Gabriel Bezerra Rodrigues | fix: harden npm publish readiness |
-| `d7924b0` | 2026-06-26 | Gabriel Bezerra Rodrigues | fix(lint): resolve all remaining warnings |
-| `8e5fb17` | 2026-06-26 | Gabriel Bezerra Rodrigues | fix: critical blockers for npm release |
-| `21a3220` | 2026-06-26 | Gabriel Bezerra Rodrigues | docs: update README with current status |
-| `5f7b4b9` | 2026-06-26 | Gabriel Bezerra Rodrigues | feat(audit): add 3 new drift checks |
-| `76892cf` | 2026-06-26 | Gabriel Bezerra Rodrigues | test(cli): add integration tests for all commands |
-| `b8dc2b8` | 2026-06-26 | Gabriel Bezerra Rodrigues | feat(scanner): integrate ts-morph for proper AST extraction |
-| `b3813e1` | 2026-06-26 | Gabriel Bezerra Rodrigues | refactor: archive ROADMAP.md and simplify README |
-| `83fa4bf` | 2026-06-26 | Gabriel Bezerra Rodrigues | feat: fix typecheck, lint, adapters, check --json, and add CLI tests |
-| `2df5d5d` | 2026-06-26 | Gabriel Bezerra Rodrigues | feat: implement documentation server for Fastify and NestJS adapters with static file support |
-| `ea322dd` | 2026-06-25 | Gabriel Bezerra Rodrigues | test(core): add tests for context-packs and mermaid modules |
-| `c47bcfe` | 2026-06-25 | Gabriel Bezerra Rodrigues | feat(cli): add context and diagram commands |
+| `6e3e5b5` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(renderer): render Mermaid diagrams in preview app |
+| `18e9c5e` | 2026-06-29 | Gabriel Bezerra Rodrigues | chore(docs): regenerate wiki artifacts |
+| `c23ceab` | 2026-06-29 | Gabriel Bezerra Rodrigues | docs: update TASKS and PUBLISHING for preview app |
+| `591a8b2` | 2026-06-29 | Gabriel Bezerra Rodrigues | test(cli): drop removed artifact assertions |
+| `31abbba` | 2026-06-29 | Gabriel Bezerra Rodrigues | fix(renderer): drop emitted source.config/lib/source and duplicate h1 |
+| `ba78017` | 2026-06-29 | Gabriel Bezerra Rodrigues | fix(cli): clean source.config.ts and lib/ from old builds |
+| `83ee570` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(cli): rewrite serve to spawn preview app |
+| `7715d31` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(renderer): support ./preview subpath export |
+| `b15170c` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(renderer): add TanStack Start + Fumadocs preview app |
+| `27958d0` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(cli): add milestones sync command |
+| `3e377d3` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(core): add roadmap milestone sync |
+| `67ac65b` | 2026-06-29 | Gabriel Bezerra Rodrigues | feat(github): draft drift issues from checks |
 
 ## Raw Log Snapshot
 
-- d0a5f22 2026-06-26 fix: harden npm publish readiness
-- d7924b0 2026-06-26 fix(lint): resolve all remaining warnings
-- 8e5fb17 2026-06-26 fix: critical blockers for npm release
-- 21a3220 2026-06-26 docs: update README with current status
-- 5f7b4b9 2026-06-26 feat(audit): add 3 new drift checks
-- 76892cf 2026-06-26 test(cli): add integration tests for all commands
-- b8dc2b8 2026-06-26 feat(scanner): integrate ts-morph for proper AST extraction
-- b3813e1 2026-06-26 refactor: archive ROADMAP.md and simplify README
-- 83fa4bf 2026-06-26 feat: fix typecheck, lint, adapters, check --json, and add CLI tests
-- 2df5d5d 2026-06-26 feat: implement documentation server for Fastify and NestJS adapters with static file support
-- ea322dd 2026-06-25 test(core): add tests for context-packs and mermaid modules
-- c47bcfe 2026-06-25 feat(cli): add context and diagram commands
+- 6e3e5b5 2026-06-29 feat(renderer): render Mermaid diagrams in preview app
+- 18e9c5e 2026-06-29 chore(docs): regenerate wiki artifacts
+- c23ceab 2026-06-29 docs: update TASKS and PUBLISHING for preview app
+- 591a8b2 2026-06-29 test(cli): drop removed artifact assertions
+- 31abbba 2026-06-29 fix(renderer): drop emitted source.config/lib/source and duplicate h1
+- ba78017 2026-06-29 fix(cli): clean source.config.ts and lib/ from old builds
+- 83ee570 2026-06-29 feat(cli): rewrite serve to spawn preview app
+- 7715d31 2026-06-29 feat(renderer): support ./preview subpath export
+- b15170c 2026-06-29 feat(renderer): add TanStack Start + Fumadocs preview app
+- 27958d0 2026-06-29 feat(cli): add milestones sync command
+- 3e377d3 2026-06-29 feat(core): add roadmap milestone sync
+- 67ac65b 2026-06-29 feat(github): draft drift issues from checks

@@ -49,7 +49,7 @@ export interface GitMetadata {
   changedFiles: string[];
   recentChanges: Pick<
     GitChange,
-    'id' | 'path' | 'type' | 'commit' | 'author' | 'date' | 'subject'
+    'id' | 'path' | 'type' | 'status' | 'commit' | 'author' | 'date' | 'subject'
   >[];
 }
 

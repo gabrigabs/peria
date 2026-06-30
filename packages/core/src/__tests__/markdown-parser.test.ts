@@ -33,6 +33,17 @@ Some content here.
     expect(mentions.length).toBeGreaterThan(0);
   });
 
+  it('normalizes route mentions in inline code and skips URLs', async () => {
+    const content = `Document \`GET /users/:id\` and open http://127.0.0.1:3000/api/users.`;
+
+    const result = await parseMarkdown('api.md', content);
+    const mentions = (result.metadata as { routeMentions: Array<{ path: string }> })
+      .routeMentions;
+
+    expect(mentions.map((mention) => mention.path)).toContain('/users/:id');
+    expect(mentions.map((mention) => mention.path)).not.toContain('//127');
+  });
+
   it('extracts schema references', async () => {
     const content = `Create a user with CreateUserRequest.`;
 

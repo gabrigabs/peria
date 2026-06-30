@@ -11,6 +11,8 @@ export type {
   ModuleEntity,
   RepoContext,
 } from './adapters/types.js';
+export type { ApplicationMap } from './application-map.js';
+export { buildApplicationMap } from './application-map.js';
 // Audit module (Phase 5)
 export { AUDIT_CHECKS, getAuditCheck, listAuditChecks, runAuditChecks } from './audit/index.js';
 export { CLIReporter, createCLIReporter } from './audit/reporters/cli.js';
@@ -63,6 +65,39 @@ export {
   saveEnrichedOpenAPI,
   summarizeEnrichment,
 } from './generators/index.js';
+export type {
+  CreateDriftIssuesOptions,
+  CreateDriftIssuesResult,
+  CreateGitHubCacheOptions,
+  CreateGitHubRelationsInput,
+  GitHubIssueProgressStatus,
+  GitHubMilestoneProgress,
+  GitHubCache,
+  GitHubCommit,
+  GitHubIssue,
+  GitHubIssueState,
+  GitHubMilestone,
+  GitHubMilestoneState,
+  GitHubPullRequest,
+  GitHubPullRequestState,
+  GitHubRelation,
+  GitHubRelationType,
+  GitHubRepository,
+  RoadmapSyncResult,
+} from './github/index.js';
+export {
+  createDriftIssueFingerprint,
+  createDriftIssuesFromFindings,
+  createGitHubCacheFromManifest,
+  createGitHubRelations,
+  createMilestoneProgress,
+  createRoadmapEntitiesFromTasks,
+  GITHUB_CACHE_PATH,
+  GITHUB_CACHE_VERSION,
+  readGitHubCache,
+  syncRoadmapMilestonesFromTasks,
+  writeGitHubCache,
+} from './github/index.js';
 export type { MatchingResult, MatchType, RouteOpenAPIMatch } from './matcher/index.js';
 // Matcher (Phase 3)
 export { matchRoutesToOpenAPI, summarizeMatching } from './matcher/index.js';
@@ -182,3 +217,4 @@ export type {
 } from './types/wiki.js';
 // Wiki builder
 export { buildWiki } from './wiki/builder.js';
+export { createLlmsText } from './wiki/llms-text.js';

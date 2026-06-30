@@ -8,9 +8,9 @@ Agents should treat the human wiki as the durable knowledge layer. `llms.txt` is
 
 ## Current Git Context
 
-- Branch: `feat/self-documentation-bootstrap`
-- Commit: `d0a5f2266d97a31e0c775cc8a67e92a44c5b6d46`
-- Working tree: 28 changed files
+- Branch: `feat/planning`
+- Commit: `6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6`
+- Working tree: 54 changed files
 
 ## Reading Order
 

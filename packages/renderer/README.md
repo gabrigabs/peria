@@ -1,6 +1,8 @@
 # @peria/renderer
 
-Static wiki renderer for Peria documentation using Fumadocs.
+Fumadocs-compatible renderer for Peria documentation.
+
+The renderer converts Peria wiki pages into MDX content, sidebar metadata, and Fumadocs source configuration.
 
 ## Installation
 
@@ -10,12 +12,21 @@ npm install @peria/renderer
 
 ## Usage
 
-```typescript
-import { createPeriaRenderer } from '@peria/renderer';
+The renderer is typically used through the CLI:
 
-const renderer = createPeriaRenderer({
+```bash
+peria build
+```
+
+Or programmatically:
+
+```typescript
+import { generateFumadocsContent } from '@peria/renderer';
+
+const fumadocsOutput = generateFumadocsContent({
   manifest: manifest,
-  outputDir: './docs',
+  pages: pages,
+  baseUrl: '/docs',
 });
 ```
 

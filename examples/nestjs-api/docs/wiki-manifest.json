@@ -1,0 +1,300 @@
+{
+  "title": "Peria NestJS API Example Wiki",
+  "tagline": "A small API used to validate Peria end to end.",
+  "generatedAt": "2026-06-29T21:28:14.881Z",
+  "periaVersion": "0.1.0",
+  "manifestVersion": "0.1.0",
+  "commit": "6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6",
+  "git": {
+    "branch": "feat/planning",
+    "commit": "6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6",
+    "shortCommit": "6e3e5b5",
+    "author": "Gabriel Bezerra Rodrigues",
+    "authorEmail": "gabrielbrodrigues1@gmail.com",
+    "authoredAt": "2026-06-29T15:54:00-03:00",
+    "subject": "feat(renderer): render Mermaid diagrams in preview app",
+    "isDirty": true,
+    "changedFiles": [
+      "M ../../.github/workflows/ci.yml",
+      "M ../../.github/workflows/publish.yml",
+      "M ../../.peria/github.json",
+      "M ../../.peria/manifest.json",
+      "M ../../CHANGELOG.md",
+      "M ../../PUBLISHING.md",
+      "M ../../README.md",
+      "M ../../TASKS.md",
+      "M ../../docs/content/docs/ai-context.mdx",
+      "M ../../docs/content/docs/application-map.mdx",
+      "M ../../docs/content/docs/development-map.mdx",
+      "M ../../docs/content/docs/diagrams.mdx",
+      "M ../../docs/content/docs/github-issues.mdx",
+      "M ../../docs/content/docs/history.mdx",
+      "M ../../docs/content/docs/known-gaps.mdx",
+      "M ../../docs/content/docs/meta.json",
+      "M ../../docs/content/docs/modules.mdx",
+      "M ../../docs/content/docs/overview.mdx",
+      "M ../../docs/content/docs/packages.mdx",
+      "M ../../docs/content/docs/release-status.mdx",
+      "M ../../docs/content/docs/wiki-ui.mdx",
+      "M ../../docs/pages/ai-context.md",
+      "M ../../docs/pages/application-map.md",
+      "M ../../docs/pages/development-map.md",
+      "M ../../docs/pages/diagrams.md",
+      "M ../../docs/pages/github-issues.md",
+      "M ../../docs/pages/history.md",
+      "M ../../docs/pages/known-gaps.md",
+      "M ../../docs/pages/modules.md",
+      "M ../../docs/pages/overview.md",
+      "M ../../docs/pages/packages.md",
+      "M ../../docs/pages/release-status.md",
+      "M ../../docs/pages/wiki-ui.md",
+      "M ../../docs/search-index.json",
+      "M ../../docs/wiki-manifest.json",
+      "M ../../package.json",
+      "M ../../packages/api-reference/package.json",
+      "M ../../packages/cli/src/__tests__/integration.test.ts",
+      "M ../../packages/cli/src/commands/build.ts",
+      "M ../../packages/cli/src/commands/serve.ts",
+      "M ../../packages/core/src/__tests__/github.test.ts",
+      "M ../../packages/core/src/__tests__/markdown-parser.test.ts",
+      "M ../../packages/core/src/application-map.ts",
+      "M ../../packages/core/src/audit/docs-routes.ts",
+      "M ../../packages/core/src/audit/openapi-docs.ts",
+      "M ../../packages/core/src/audit/routes-undocumented.ts",
+      "M ../../packages/core/src/audit/schema-coverage.ts",
+      "M ../../packages/core/src/audit/stale-openapi.ts",
+      "M ../../packages/core/src/github/relations.ts",
+      "M ../../packages/core/src/parsers/markdown.ts",
+      "M ../../packages/core/src/scanner/markdown.ts",
+      "M ../../packages/core/src/types/wiki.ts",
+      "M ../../packages/core/src/wiki/collectors/packages.ts",
+      "M ../../packages/core/src/wiki/pages.ts"
+    ],
+    "recentCommits": [
+      {
+        "hash": "6e3e5b5",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(renderer): render Mermaid diagrams in preview app"
+      },
+      {
+        "hash": "18e9c5e",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "chore(docs): regenerate wiki artifacts"
+      },
+      {
+        "hash": "c23ceab",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "docs: update TASKS and PUBLISHING for preview app"
+      },
+      {
+        "hash": "591a8b2",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "test(cli): drop removed artifact assertions"
+      },
+      {
+        "hash": "31abbba",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "fix(renderer): drop emitted source.config/lib/source and duplicate h1"
+      },
+      {
+        "hash": "ba78017",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "fix(cli): clean source.config.ts and lib/ from old builds"
+      },
+      {
+        "hash": "83ee570",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(cli): rewrite serve to spawn preview app"
+      },
+      {
+        "hash": "7715d31",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(renderer): support ./preview subpath export"
+      },
+      {
+        "hash": "b15170c",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(renderer): add TanStack Start + Fumadocs preview app"
+      },
+      {
+        "hash": "27958d0",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(cli): add milestones sync command"
+      },
+      {
+        "hash": "3e377d3",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(core): add roadmap milestone sync"
+      },
+      {
+        "hash": "67ac65b",
+        "date": "2026-06-29",
+        "author": "Gabriel Bezerra Rodrigues",
+        "subject": "feat(github): draft drift issues from checks"
+      }
+    ]
+  },
+  "project": {
+    "name": "Peria NestJS API Example",
+    "tagline": "A small API used to validate Peria end to end.",
+    "description": "This example shows how Peria maps NestJS routes, DTOs, OpenAPI operations, generated docs, and adapter-served wiki assets.",
+    "audience": "Engineers evaluating Peria on a real backend shape.",
+    "tone": "Direct, technical, and provenance-first.",
+    "problem": "A new user needs one small project that proves the scanner, wiki generator, drift checks, and docs adapter work together.",
+    "currentFocus": "Keep the example minimal while still exercising routes, schemas, OpenAPI, Fumadocs output, and adapter serving.",
+    "highlights": [
+      "Routes are declared in NestJS controllers.",
+      "OpenAPI source is checked against generated docs.",
+      "The NestJS adapter serves the generated wiki under /docs."
+    ],
+    "packageContexts": {
+      "peria-example-nestjs-api": {
+        "role": "Example application",
+        "audience": "New Peria users and release validators",
+        "responsibilities": [
+          "Expose a small NestJS route surface.",
+          "Carry OpenAPI and DTO sources for scanner coverage.",
+          "Serve generated Peria docs through the NestJS adapter."
+        ]
+      }
+    }
+  },
+  "pages": [
+    {
+      "title": "Peria NestJS API Example Overview",
+      "slug": "overview",
+      "description": "This example shows how Peria maps NestJS routes, DTOs, OpenAPI operations, generated docs, and adapter-served wiki assets.",
+      "path": "pages/overview.md"
+    },
+    {
+      "title": "Packages",
+      "slug": "packages",
+      "description": "Workspace packages, manifests, scripts, dependencies, and package exports.",
+      "path": "pages/packages.md"
+    },
+    {
+      "title": "CLI Commands",
+      "slug": "cli",
+      "description": "Registered Peria CLI commands and their command registry provenance.",
+      "path": "pages/cli.md"
+    },
+    {
+      "title": "TypeScript Modules",
+      "slug": "modules",
+      "description": "Source files, imports, and exported declarations extracted with ts-morph.",
+      "path": "pages/modules.md"
+    },
+    {
+      "title": "Adapters",
+      "slug": "adapters",
+      "description": "Framework adapters that expose the generated docs in application runtimes.",
+      "path": "pages/adapters.md"
+    },
+    {
+      "title": "Configuration And Features",
+      "slug": "configuration",
+      "description": "Resolved config, enabled features, and config provenance.",
+      "path": "pages/configuration.md"
+    },
+    {
+      "title": "Fumadocs Output",
+      "slug": "wiki-ui",
+      "description": "Fumadocs-compatible documentation generated into /docs and backed by markdown pages.",
+      "path": "pages/wiki-ui.md"
+    },
+    {
+      "title": "History",
+      "slug": "history",
+      "description": "Recent Git history captured as dated provenance for the generated wiki.",
+      "path": "pages/history.md"
+    },
+    {
+      "title": "AI Context Map",
+      "slug": "ai-context",
+      "description": "A compact reading map for agents, derived from the human wiki.",
+      "path": "pages/ai-context.md"
+    },
+    {
+      "title": "Diagrams",
+      "slug": "diagrams",
+      "description": "Mermaid diagrams generated by the same engine used by the peria diagram command.",
+      "path": "pages/diagrams.md"
+    },
+    {
+      "title": "Application Map",
+      "slug": "application-map",
+      "description": "Aggregate map of project packages, modules, entrypoints, docs, and Git context.",
+      "path": "pages/application-map.md"
+    },
+    {
+      "title": "Development Map",
+      "slug": "development-map",
+      "description": "Maintenance-oriented map of packages, modules, entrypoints, and likely change areas.",
+      "path": "pages/development-map.md"
+    },
+    {
+      "title": "Release Status",
+      "slug": "release-status",
+      "description": "Generated release-readiness summary based on package metadata and wiki output.",
+      "path": "pages/release-status.md"
+    },
+    {
+      "title": "Known Gaps",
+      "slug": "known-gaps",
+      "description": "Detected gaps that keep the generated wiki from being a complete adoption artifact.",
+      "path": "pages/known-gaps.md"
+    }
+  ],
+  "tree": [
+    {
+      "title": "Start here",
+      "pages": [
+        "overview",
+        "ai-context"
+      ]
+    },
+    {
+      "title": "Product surface",
+      "pages": [
+        "packages",
+        "cli",
+        "configuration"
+      ]
+    },
+    {
+      "title": "Code map",
+      "pages": [
+        "modules",
+        "adapters",
+        "wiki-ui",
+        "diagrams",
+        "application-map"
+      ]
+    },
+    {
+      "title": "Maintenance",
+      "pages": [
+        "development-map",
+        "release-status",
+        "known-gaps"
+      ]
+    },
+    {
+      "title": "Provenance",
+      "pages": [
+        "history"
+      ]
+    }
+  ]
+}

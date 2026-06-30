@@ -1,0 +1,21 @@
+---
+title: "Fumadocs Output"
+description: "Fumadocs-compatible documentation generated into /docs and backed by markdown pages."
+---
+
+The generated wiki is written into `docs` as source-backed markdown plus Fumadocs-compatible MDX content.
+
+## Contract
+
+- Markdown pages remain the source of truth.
+- `content/docs/**/*.mdx` contains the Fumadocs-compatible page content.
+- `content/docs/meta.json` carries sidebar ordering from the wiki manifest.
+- The bundled `@peria/renderer` preview app owns `source.config.ts` and the Fumadocs loader bridge.
+- `search-index.json` provides a compact index of page titles, headings, URLs, and source paths.
+- `wiki-manifest.json` remains the Peria-owned page registry for agents and tooling.
+
+
+## Sources
+
+- `packages/renderer/src/index.ts`
+- `packages/cli/src/commands/build.ts`

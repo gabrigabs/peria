@@ -35,3 +35,21 @@ jobs:
 
       - name: Test
         run: bun run test
+
+      - name: Check generated docs drift
+        run: bun run docs:check
+
+      - name: Validate package contents
+        run: bun run pack:check
+
+      - name: Dogfood preview app from packed packages
+        run: bun run dogfood:preview
+
+      - name: Dogfood NestJS adapter from packed packages
+        run: bun run dogfood:nest
+
+      - name: Validate public NestJS example
+        run: bun run example:nest
+
+      - name: Dogfood published npm CLI
+        run: bun run dogfood:npm

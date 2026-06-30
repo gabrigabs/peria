@@ -1,0 +1,187 @@
+---
+title: "Packages"
+description: "Workspace packages, manifests, scripts, dependencies, and package exports."
+---
+
+Packages are documented as ownership boundaries, not just manifest rows. Each section combines package.json metadata, TypeScript source coverage, internal imports, and configured editorial context.
+
+## peria
+
+**Role:** Workspace orchestration root
+
+**Audience:** Contributors running repo-wide build, typecheck, test, and release preparation commands.
+
+**Responsibilities:**
+
+- Coordinate Bun workspaces.
+- Expose root scripts that validate every package.
+- Carry the self-documentation config for this repository.
+
+**Why it matters:**
+
+This package contributes 0 source modules and 0 exported declarations to the generated knowledge graph. Its manifest lives at `package.json`, so package metadata and scripts remain traceable to source.
+
+**Surface:**
+
+- Directory: `.`
+- Version: 0.1.0
+- Publish status: private/deferred
+- Scripts: `build`, `lint`, `typecheck`, `test`, `dev`, `docs:generate`, `docs:check`, `docs:serve`, `dogfood:npm`, `dogfood:preview`, `dogfood:nest`, `example:nest`, `pack:check`, `release:patch`, `release:minor`, `release:major`, `release:dry`
+- Package exports: none
+- CLI bins: none
+- Internal package imports: none detected
+- External dependencies: `@biomejs/biome`, `@peria/core`, `@peria/renderer`, `vitest`
+
+## @peria/adapters
+
+**Role:** Runtime integration layer
+
+**Audience:** API teams embedding generated docs in framework applications.
+
+**Responsibilities:**
+
+- Expose framework-specific entrypoints for Express, Fastify, and NestJS.
+- Keep adapter contracts thin until generated artifacts are stable.
+
+**Why it matters:**
+
+This package contributes 6 source modules and 24 exported declarations to the generated knowledge graph. Its manifest lives at `packages/adapters/package.json`, so package metadata and scripts remain traceable to source.
+
+**Surface:**
+
+- Directory: `packages/adapters`
+- Version: 0.1.1
+- Publish status: public
+- Scripts: `build`, `typecheck`, `test`, `dev`
+- Package exports: `.`, `./express`, `./fastify`, `./nest`
+- CLI bins: none
+- Internal package imports: none detected
+- External dependencies: `@fastify/static`, `@nestjs/common`, `@nestjs/core`, `@types/express`, `@types/node`, `express`, `fastify`, `tsup`, `typescript`, `vitest`
+
+## @peria/api-reference
+
+**Role:** Deferred API reference integration for future Peria OpenAPI rendering.
+
+**Audience:** Contributors working in this package.
+
+**Why it matters:**
+
+This package contributes 2 source modules and 0 exported declarations to the generated knowledge graph. Its manifest lives at `packages/api-reference/package.json`, so package metadata and scripts remain traceable to source.
+
+**Surface:**
+
+- Directory: `packages/api-reference`
+- Version: 0.1.0
+- Publish status: private/deferred
+- Scripts: `build`, `dev`, `typecheck`
+- Package exports: `.`
+- CLI bins: none
+- Internal package imports: none detected
+- External dependencies: `@stoplight/elements`, `@stoplight/elements-core`, `@types/react`, `react`, `typescript`
+
+## @peria/cli
+
+**Role:** Operator interface
+
+**Audience:** Developers running Peria locally or wiring it into scripts.
+
+**Responsibilities:**
+
+- Initialize project configuration.
+- Build the wiki and artifacts.
+- Generate Fumadocs-compatible documentation locally.
+
+**Why it matters:**
+
+This package contributes 18 source modules and 35 exported declarations to the generated knowledge graph. Its manifest lives at `packages/cli/package.json`, so package metadata and scripts remain traceable to source.
+
+**Surface:**
+
+- Directory: `packages/cli`
+- Version: 0.1.2
+- Publish status: public
+- Scripts: `build`, `typecheck`, `test`, `dev`, `prepublishOnly`
+- Package exports: none
+- CLI bins: `peria`
+- Internal package imports: `@peria/core`, `@peria/renderer`, `@peria/renderer/preview`
+- External dependencies: `@clack/prompts`, `@peria/core`, `@peria/renderer`, `@types/node`, `cac`, `chalk`, `tsup`, `typescript`, `vitest`
+
+## @peria/core
+
+**Role:** Knowledge engine
+
+**Audience:** Contributors changing extraction, graph, config, or wiki generation behavior.
+
+**Responsibilities:**
+
+- Resolve configuration and defaults.
+- Extract packages, modules, exports, commands, adapters, features, context files, and Git metadata.
+- Generate markdown pages, manifest data, llms.txt content, and graph artifacts.
+
+**Why it matters:**
+
+This package contributes 127 source modules and 633 exported declarations to the generated knowledge graph. Its manifest lives at `packages/core/package.json`, so package metadata and scripts remain traceable to source.
+
+**Surface:**
+
+- Directory: `packages/core`
+- Version: 0.1.1
+- Publish status: public
+- Scripts: `build`, `typecheck`, `test`, `test:run`, `dev`
+- Package exports: `.`, `./build`, `./config`, `./detectors`
+- CLI bins: none
+- Internal package imports: none detected
+- External dependencies: `@apidevtools/swagger-parser`, `@types/node`, `remark`, `remark-frontmatter`, `remark-parse`, `ts-morph`, `tsup`, `typescript`, `unified`, `vitest`, `zod`
+
+## @peria/renderer
+
+**Role:** Fumadocs-compatible documentation renderer for Peria generated wikis
+
+**Audience:** Contributors working in this package.
+
+**Why it matters:**
+
+This package contributes 11 source modules and 105 exported declarations to the generated knowledge graph. Its manifest lives at `packages/renderer/package.json`, so package metadata and scripts remain traceable to source.
+
+**Surface:**
+
+- Directory: `packages/renderer`
+- Version: 0.1.1
+- Publish status: public
+- Scripts: `build`, `typecheck`, `dev`, `test`
+- Package exports: `.`, `./preview`
+- CLI bins: none
+- Internal package imports: `@peria/core`
+- External dependencies: `@peria/core`, `@types/node`, `highlight.js`, `marked`, `tsup`, `typescript`
+
+## @peria/sdk
+
+**Role:** Programmatic API surface
+
+**Audience:** Tools that need to call Peria without going through the CLI.
+
+**Responsibilities:**
+
+- Define SDK instance contracts.
+- Prepare for embedded server and graph/search access.
+
+**Why it matters:**
+
+This package contributes 1 source modules and 2 exported declarations to the generated knowledge graph. Its manifest lives at `packages/sdk/package.json`, so package metadata and scripts remain traceable to source.
+
+**Surface:**
+
+- Directory: `packages/sdk`
+- Version: 0.1.0
+- Publish status: private/deferred
+- Scripts: `build`, `typecheck`, `test`, `dev`
+- Package exports: `.`
+- CLI bins: none
+- Internal package imports: none detected
+- External dependencies: `@types/node`, `tsup`, `typescript`
+
+
+## Sources
+
+- `package.json`
+- `packages/*/package.json`

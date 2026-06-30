@@ -17,6 +17,14 @@ function generateId(prefix: string, index: number): string {
   return `audit-${prefix}-${Date.now().toString(36)}-${index}`;
 }
 
+function routeKey(method: string | undefined, path: string): string {
+  return `${method || 'GET'}:${normalizePath(path)}`.toLowerCase();
+}
+
+function normalizePath(path: string): string {
+  return path.replace(/\{([^}]+)\}/g, ':$1').replace(/[`'",.;:]+$/g, '');
+}
+
 /**
  * Health check path patterns to skip
  */
@@ -56,7 +64,7 @@ export const runRoutesUndocumentedCheck: AuditCheck = {
     const documentedRoutes = new Set<string>();
     for (const page of manifest.docsPages ?? []) {
       for (const mention of page.routeMentions ?? []) {
-        const key = `${mention.method ?? ''}:${mention.path}`.toLowerCase();
+        const key = routeKey(mention.method, mention.path);
         documentedRoutes.add(key);
       }
     }
@@ -73,8 +81,8 @@ export const runRoutesUndocumentedCheck: AuditCheck = {
         continue;
       }
 
-      const routeKey = `${route.method}:${route.path}`.toLowerCase();
-      if (!documentedRoutes.has(routeKey)) {
+      const key = routeKey(route.method, route.path);
+      if (!documentedRoutes.has(key)) {
         findings.push({
           id: generateId('route-undocumented', index++),
           severity: 'warning',

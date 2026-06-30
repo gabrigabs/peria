@@ -8,6 +8,12 @@ export interface DocsConfig {
   enabled?: boolean;
   route?: string;
   outputDir?: string;
+  /**
+   * Renderer mode for documentation output
+   * @default 'fumadocs'
+   * - 'fumadocs': Fumadocs-compatible MDX output
+   */
+  renderer?: 'fumadocs';
 }
 
 export interface SourcesConfig {
@@ -98,6 +104,7 @@ export const DEFAULT_DOCS: Required<DocsConfig> = {
   enabled: true,
   route: '/docs',
   outputDir: 'docs',
+  renderer: 'fumadocs',
 };
 
 export const DEFAULT_PROJECT: Required<ProjectProfile> & {

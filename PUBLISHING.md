@@ -18,13 +18,26 @@ This guide covers publishing Peria packages to the npm registry.
 
 The monorepo uses scoped packages (`@peria/*`):
 
-| Package | Full Name | Status |
-|---------|-----------|--------|
-| CLI | `@peria/cli` | Primary install target |
-| Core | `@peria/core` | Dependency |
-| Renderer | `@peria/renderer` | Dependency |
-| Adapters | `@peria/adapters` | Future |
-| SDK | `@peria/sdk` | Future |
+| Package  | Full Name         | Status                 |
+| -------- | ----------------- | ---------------------- |
+| CLI      | `@peria/cli`      | Primary install target |
+| Core     | `@peria/core`     | Dependency             |
+| Renderer | `@peria/renderer` | Dependency             |
+| Adapters | `@peria/adapters` | Published ✅           |
+| SDK      | `@peria/sdk`      | Private / deferred     |
+
+## Current Published Versions
+
+Verified on 2026-06-29:
+
+| Package           | npm version | Local manifest |
+| ----------------- | ----------- | -------------- |
+| `@peria/core`     | `0.1.1`     | `0.1.1`        |
+| `@peria/cli`      | `0.1.2`     | `0.1.2`        |
+| `@peria/renderer` | `0.1.1`     | `0.1.1`        |
+| `@peria/adapters` | `0.1.1`     | `0.1.1`        |
+
+Do not publish `@peria/sdk` or `@peria/api-reference` until their public contracts are stable and covered by external-consumer tests. `@peria/sdk` is marked private locally to enforce this.
 
 ## Step 1: Reserve the @peria Organization (One-time)
 
@@ -78,14 +91,19 @@ npm view @peria/core
 
 ## Step 5: Publish @peria/renderer
 
-Renderer must be published before CLI (CLI depends on it):
+Renderer must be published before CLI (CLI depends on it).
+
+The renderer ships a bundled TanStack Start + Fumadocs preview app in
+`app-template/`. `peria serve` copies it to `.peria/preview-app/`, installs
+deps and runs `vite dev` against the generated `content/docs`. Ensure
+`npm pack --dry-run` lists `app-template/**` alongside `dist/**`.
 
 ```sh
 cd packages/renderer
 
 # Version must match core and CLI
 
-# Dry run
+# Dry run (confirm dist/** and app-template/** are included)
 npm pack --dry-run
 
 # Publish
@@ -95,7 +113,24 @@ npm publish --access public
 npm view @peria/renderer
 ```
 
-## Step 6: Publish @peria/cli
+## Step 6: Publish @peria/adapters
+
+Adapters can be published after their framework smoke tests pass:
+
+```sh
+cd packages/adapters
+
+# Dry run
+npm pack --dry-run
+
+# Publish
+npm publish --access public
+
+# Verify
+npm view @peria/adapters
+```
+
+## Step 7: Publish @peria/cli
 
 ```sh
 cd packages/cli
@@ -112,7 +147,7 @@ npm publish --access public
 npm view @peria/cli
 ```
 
-## Step 7: Test the Installation
+## Step 8: Test the Installation
 
 From a fresh directory:
 
@@ -125,9 +160,78 @@ npm install -D @peria/cli
 npx peria --help
 ```
 
+### Latest Published Fresh Install Check
+
+Verified on 2026-06-29 in a temporary npm project outside the monorepo:
+
+- `npm install -D @peria/cli@latest` installed without workspace links.
+- `npx peria --help` exited successfully.
+- `npx peria --version` returned `peria/0.1.2`.
+- `npx peria scan`, `npx peria build`, a second `npx peria scan`, and `npx peria check --json` completed.
+- `peria check --json` returned `passed: true` with one informational stale-page finding for `docs/index.html`, which reflects the currently published static renderer. The local branch now replaces that path with Fumadocs-compatible output.
+
+`peria init` remains interactive and should be validated manually or with a TTY harness before marking init dogfood fully automated.
+
+The repeatable npm dogfood command is:
+
+```sh
+bun run dogfood:npm
+```
+
+It installs `@peria/cli@latest` in a temporary project, copies the NestJS fixture, runs `scan`, `build`, `scan`, and `check --json`, and validates generated artifacts without workspace links.
+
+The repeatable local preview-app dogfood command is:
+
+```sh
+bun run dogfood:preview
+```
+
+It packs the local `@peria/core`, `@peria/renderer`, and `@peria/cli` packages into a temporary fixture, asserts the renderer tarball includes `app-template/**` and `dist/preview.js`, generates Fumadocs output, runs `peria serve` from the packed CLI, then validates `/docs/overview` and `/api/search`.
+
+The repeatable package-content validation command is:
+
+```sh
+bun run pack:check
+```
+
+It runs `npm pack --dry-run --json` for the current publishable packages and verifies required files such as the CLI bin, core declarations, adapter entrypoints, and renderer preview app are present before publish.
+
+The repeatable local NestJS adapter dogfood command is:
+
+```sh
+bun run dogfood:nest
+```
+
+It packs the local `@peria/core`, `@peria/renderer`, `@peria/cli`, and `@peria/adapters` packages into a temporary NestJS fixture, generates Fumadocs output, compiles and starts the app, then validates `/docs`, `/docs/wiki-manifest.json`, `/docs/llms.txt`, a generated MDX artifact, a global API prefix, a docs subpath, and common missing/unreadable docs errors.
+
+The repeatable public example validation command is:
+
+```sh
+bun run example:nest
+```
+
+It copies `examples/nestjs-api` to a temporary directory, installs local packed Peria packages, regenerates docs, runs `peria check --json`, compiles and starts the NestJS app, then validates `/api/users`, `/docs`, `/docs/wiki-manifest.json`, `/docs/content/docs/overview.mdx`, and `/docs/llms.txt`.
+
 ## Versioning Strategy
 
-For experimental releases, use:
+Until changesets or release automation exist, versioning is manual and must follow this policy:
+
+1. Check npm before editing manifests:
+   ```sh
+   npm view @peria/core version
+   npm view @peria/renderer version
+   npm view @peria/adapters version
+   npm view @peria/cli version
+   ```
+2. Bump each package that will be published to a version greater than npm.
+3. Update internal published dependencies before packing:
+   - `@peria/cli` depends on the published `@peria/core` and `@peria/renderer` versions.
+   - `@peria/renderer` depends on the published `@peria/core` version.
+4. Run `bun install` so `bun.lock` reflects the manifest changes.
+5. Run build, typecheck, tests, `dogfood:preview`, `dogfood:nest`, `example:nest`, and `npm pack --dry-run` for every publishable package.
+6. Publish dependencies first, then dependents.
+
+For experimental semver, use:
 
 ```
 0.0.1  - First experimental
@@ -200,22 +304,25 @@ Then in GitHub Settings > Secrets, add `NPM_TOKEN` with an npm automation token.
 
 ## Current Status
 
-As of Phase 8 completion:
-- Package metadata is prepared ✅
-- Build works ✅
-- CLI binary works ✅
-- Core, renderer, and CLI are the publishable packages for the first npm release ✅
-- SDK and API Reference remain future package targets
+As of 2026-06-29:
+
+- Package metadata is reconciled with npm for `@peria/core`, `@peria/cli`, `@peria/renderer`, and `@peria/adapters`.
+- Build and typecheck pass locally.
+- CLI binary works from the built package.
+- Core, renderer, adapters, and CLI are the current publishable packages.
+- SDK is private/deferred; API Reference remains a future package target.
 
 To publish when ready:
+
 ```sh
 bun run build
-npm pack --pack-destination /tmp packages/core packages/renderer packages/cli
+npm pack --pack-destination /tmp packages/core packages/renderer packages/adapters packages/cli
 # Test tarball installation
-cd /tmp && npm install peria-core-*.tgz peria-renderer-*.tgz peria-cli-*.tgz
+cd /tmp && npm install peria-core-*.tgz peria-renderer-*.tgz peria-adapters-*.tgz peria-cli-*.tgz
 npx peria --help
 # If tests pass, publish:
 cd packages/core && npm publish --access public
 cd packages/renderer && npm publish --access public
+cd packages/adapters && npm publish --access public
 cd packages/cli && npm publish --access public
 ```

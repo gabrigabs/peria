@@ -1,0 +1,53 @@
+---
+title: "Release Status"
+description: "Generated release-readiness summary based on package metadata and wiki output."
+---
+
+This generated status is intentionally conservative. It reports what the current repository can prove from package manifests and generated wiki output.
+
+## Snapshot
+
+- Generated at: 2026-06-29T21:34:30.993Z
+- Git branch: `feat/planning`
+- Git commit: `6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6`
+- Working tree: 54 changed files
+- Documentation pages: 16
+- Renderer: `fumadocs`
+- Claim provenance: 1009/1009 claims have source provenance.
+
+## Package Surface
+
+| Package | Directory | Surface | Dependencies |
+| --- | --- | --- | --- |
+| peria | `.` | private/deferred | 4 |
+| @peria/adapters | `packages/adapters` | public exports | 10 |
+| @peria/api-reference | `packages/api-reference` | private/deferred | 5 |
+| @peria/cli | `packages/cli` | CLI bin | 9 |
+| @peria/core | `packages/core` | public exports | 11 |
+| @peria/renderer | `packages/renderer` | public exports | 6 |
+| @peria/sdk | `packages/sdk` | private/deferred | 3 |
+
+## Generated Release Signals
+
+| Signal | Status | Detail |
+| --- | --- | --- |
+| Public package exports | ready | 4/4 releasable packages expose exports or CLI bins. |
+| CLI command handlers | ready | 2/2 CLI commands have implemented handlers. |
+| Adapter placeholders | ready | No placeholder adapters detected. |
+| Route coverage | missing | No routes are present in the latest scan manifest. |
+| Schema coverage | missing | No schemas are present in the latest scan manifest. |
+| OpenAPI coverage | missing | No OpenAPI operations are present in the latest scan manifest. |
+
+## Release Gates Still Worth Checking
+
+- Fresh npm install outside the monorepo.
+- `npm pack --dry-run` for every package intended for publication.
+- Published tarball validation for the bundled Fumadocs preview app.
+- Dogfood docs drift check in CI.
+
+
+## Sources
+
+- `package.json`
+- `packages/*/package.json`
+- `TASKS.md`

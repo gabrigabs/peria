@@ -1,0 +1,171 @@
+# Application Map
+
+The application map is the compact artifact for answering what exists, where it lives, how mature it is, and how the current wiki output is connected.
+
+## Project
+
+- Name: Peria
+- Framework: `other`
+- Entrypoint: `packages/cli/src/index.ts`
+- Generated at: 2026-06-29T21:34:30.993Z
+
+## Summary
+
+| Area | Count |
+| --- | --- |
+| packages | 7 |
+| modules | 165 |
+| routes | 0 |
+| schemas | 0 |
+| commands | 2 |
+| adapters | 5 |
+| pages | 16 |
+| claims | 1009 |
+
+## Release Signals
+
+| Signal | Status | Detail |
+| --- | --- | --- |
+| Public package exports | ready | 4/4 releasable packages expose exports or CLI bins. |
+| CLI command handlers | ready | 2/2 CLI commands have implemented handlers. |
+| Adapter placeholders | ready | No placeholder adapters detected. |
+| Route coverage | missing | No routes are present in the latest scan manifest. |
+| Schema coverage | missing | No schemas are present in the latest scan manifest. |
+| OpenAPI coverage | missing | No OpenAPI operations are present in the latest scan manifest. |
+
+## Claim Quality
+
+| Metric | Count |
+| --- | --- |
+| Total claims | 1009 |
+| Sourced claims | 1009 |
+| Unsourced claims | 0 |
+| High confidence | 1000 |
+| Medium confidence | 9 |
+| Low confidence | 0 |
+
+## Application Areas
+
+| Area | Directory | Modules | Exports | Internal dependencies |
+| --- | --- | --- | --- | --- |
+| peria | `.` | 0 | 0 | none |
+| @peria/adapters | `packages/adapters` | 6 | 24 | none |
+| @peria/api-reference | `packages/api-reference` | 2 | 0 | none |
+| @peria/cli | `packages/cli` | 18 | 35 | `@peria/core`, `@peria/renderer`, `@peria/renderer/preview` |
+| @peria/core | `packages/core` | 127 | 633 | none |
+| @peria/renderer | `packages/renderer` | 11 | 105 | `@peria/core` |
+| @peria/sdk | `packages/sdk` | 1 | 2 | none |
+
+## Entrypoints
+
+- CLI commands: `init`, `serve`
+- Adapters: `express`, `fastify`, `nest`, `shared`, `smoke.test`
+
+## Packages
+
+| Package | Directory | Publish | Dependencies | Exports | Bins |
+| --- | --- | --- | --- | --- | --- |
+| peria | `.` | private | 4 | 0 | none |
+| @peria/adapters | `packages/adapters` | public | 10 | 4 | none |
+| @peria/api-reference | `packages/api-reference` | private | 5 | 1 | none |
+| @peria/cli | `packages/cli` | public | 9 | 0 | `peria` |
+| @peria/core | `packages/core` | public | 11 | 4 | none |
+| @peria/renderer | `packages/renderer` | public | 6 | 2 | none |
+| @peria/sdk | `packages/sdk` | private | 3 | 1 | none |
+
+## Modules
+
+| Module | Package | Imports | Exports |
+| --- | --- | --- | --- |
+| `packages/adapters/src/__tests__/smoke.test.ts` | @peria/adapters | 5 | 0 |
+| `packages/adapters/src/express.ts` | @peria/adapters | 2 | 2 |
+| `packages/adapters/src/fastify.ts` | @peria/adapters | 3 | 3 |
+| `packages/adapters/src/index.ts` | @peria/adapters | 0 | 9 |
+| `packages/adapters/src/nest.ts` | @peria/adapters | 3 | 3 |
+| `packages/adapters/src/shared.ts` | @peria/adapters | 3 | 7 |
+| `packages/api-reference/src/index.ts` | @peria/api-reference | 0 | 0 |
+| `packages/api-reference/src/types/stoplight.d.ts` | @peria/api-reference | 0 | 0 |
+| `packages/cli/src/__tests__/integration.test.ts` | @peria/cli | 6 | 0 |
+| `packages/cli/src/__tests__/smoke.test.ts` | @peria/cli | 1 | 0 |
+| `packages/cli/src/commands/build.ts` | @peria/cli | 6 | 1 |
+| `packages/cli/src/commands/check.ts` | @peria/cli | 3 | 1 |
+| `packages/cli/src/commands/context.ts` | @peria/cli | 3 | 1 |
+| `packages/cli/src/commands/diagram.ts` | @peria/cli | 3 | 1 |
+| `packages/cli/src/commands/github.ts` | @peria/cli | 7 | 9 |
+| `packages/cli/src/commands/init.ts` | @peria/cli | 9 | 4 |
+| `packages/cli/src/commands/scan.ts` | @peria/cli | 4 | 1 |
+| `packages/cli/src/commands/serve.ts` | @peria/cli | 8 | 1 |
+| `packages/cli/src/generators/config.ts` | @peria/cli | 3 | 2 |
+| `packages/cli/src/index.ts` | @peria/cli | 10 | 0 |
+| `packages/cli/src/prompts/entrypoint.ts` | @peria/cli | 2 | 1 |
+| `packages/cli/src/prompts/features.ts` | @peria/cli | 1 | 3 |
+| `packages/cli/src/prompts/framework.ts` | @peria/cli | 2 | 2 |
+| `packages/cli/src/prompts/route.ts` | @peria/cli | 2 | 1 |
+| `packages/cli/src/utils/logger.ts` | @peria/cli | 1 | 3 |
+| `packages/cli/src/utils/manifest.ts` | @peria/cli | 3 | 4 |
+| `packages/core/fixtures/nestjs-api/src/app.module.ts` | @peria/core | 2 | 1 |
+| `packages/core/fixtures/nestjs-api/src/main.ts` | @peria/core | 3 | 0 |
+| `packages/core/fixtures/nestjs-api/src/users/dto/approve-user-request.dto.ts` | @peria/core | 0 | 1 |
+| `packages/core/fixtures/nestjs-api/src/users/users.controller.ts` | @peria/core | 2 | 1 |
+| `packages/core/fixtures/nestjs-api/src/users/users.module.ts` | @peria/core | 2 | 1 |
+| `packages/core/fixtures/nestjs-basic/src/app.module.ts` | @peria/core | 3 | 1 |
+| `packages/core/fixtures/nestjs-basic/src/auth/auth.controller.ts` | @peria/core | 2 | 1 |
+| `packages/core/fixtures/nestjs-basic/src/auth/auth.module.ts` | @peria/core | 3 | 1 |
+| `packages/core/fixtures/nestjs-basic/src/auth/auth.service.ts` | @peria/core | 1 | 3 |
+| `packages/core/fixtures/nestjs-basic/src/auth/guards/jwt-auth.guard.ts` | @peria/core | 2 | 1 |
+| `packages/core/fixtures/nestjs-basic/src/main.ts` | @peria/core | 2 | 0 |
+| `packages/core/fixtures/nestjs-basic/src/users/dto/create-user.dto.ts` | @peria/core | 0 | 1 |
+| `packages/core/fixtures/nestjs-basic/src/users/dto/update-user.dto.ts` | @peria/core | 0 | 1 |
+| `packages/core/fixtures/nestjs-basic/src/users/users.controller.ts` | @peria/core | 5 | 1 |
+
+## Routes
+
+_No entries found._
+
+## Schemas
+
+_No entries found._
+
+## OpenAPI Operations
+
+_No entries found._
+
+## Documentation Pages
+
+| Title | Slug | Path |
+| --- | --- | --- |
+| Peria Overview | `overview` | `pages/overview.md` |
+| Packages | `packages` | `pages/packages.md` |
+| CLI Commands | `cli` | `pages/cli.md` |
+| TypeScript Modules | `modules` | `pages/modules.md` |
+| Adapters | `adapters` | `pages/adapters.md` |
+| Configuration And Features | `configuration` | `pages/configuration.md` |
+| Fumadocs Output | `wiki-ui` | `pages/wiki-ui.md` |
+| History | `history` | `pages/history.md` |
+| AI Context Map | `ai-context` | `pages/ai-context.md` |
+| Diagrams | `diagrams` | `pages/diagrams.md` |
+| Application Map | `application-map` | `pages/application-map.md` |
+| Development Map | `development-map` | `pages/development-map.md` |
+| Release Status | `release-status` | `pages/release-status.md` |
+| Known Gaps | `known-gaps` | `pages/known-gaps.md` |
+| GitHub Map | `github-map` | `pages/github-map.md` |
+| GitHub Issues | `github-issues` | `pages/github-issues.md` |
+
+## Recent Changes
+
+| Commit | Date | Author | Issue refs | Subject |
+| --- | --- | --- | --- | --- |
+| `6e3e5b5` | 2026-06-29 | Gabriel Bezerra Rodrigues | none | feat(renderer): render Mermaid diagrams in preview app |
+| `18e9c5e` | 2026-06-29 | Gabriel Bezerra Rodrigues | none | chore(docs): regenerate wiki artifacts |
+| `c23ceab` | 2026-06-29 | Gabriel Bezerra Rodrigues | none | docs: update TASKS and PUBLISHING for preview app |
+| `591a8b2` | 2026-06-29 | Gabriel Bezerra Rodrigues | none | test(cli): drop removed artifact assertions |
+| `31abbba` | 2026-06-29 | Gabriel Bezerra Rodrigues | none | fix(renderer): drop emitted source.config/lib/source and duplicate h1 |
+| `ba78017` | 2026-06-29 | Gabriel Bezerra Rodrigues | none | fix(cli): clean source.config.ts and lib/ from old builds |
+| `83ee570` | 2026-06-29 | Gabriel Bezerra Rodrigues | none | feat(cli): rewrite serve to spawn preview app |
+| `7715d31` | 2026-06-29 | Gabriel Bezerra Rodrigues | none | feat(renderer): support ./preview subpath export |
+
+## Git Context
+
+- Branch: `feat/planning`
+- Commit: `6e3e5b5b63e6992e799f9088f9a636ddbd0bbec6`
+- Working tree: 54 changed files

@@ -1,7 +1,7 @@
 {
   "name": "@peria/renderer",
   "version": "0.1.1",
-  "description": "Documentation renderer for Peria with support for static HTML generation",
+  "description": "Fumadocs-compatible documentation renderer for Peria generated wikis",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -9,10 +9,15 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./preview": {
+      "types": "./dist/preview.d.ts",
+      "import": "./dist/preview.js"
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "app-template"
   ],
   "scripts": {
     "build": "tsup",

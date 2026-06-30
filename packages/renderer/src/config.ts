@@ -4,7 +4,19 @@
 
 import type { DocsMetadata, NavItem, NavSection } from './types.js';
 
+/**
+ * Renderer mode - how to generate documentation output
+ */
+export type RendererMode = 'fumadocs';
+
 export interface RendererConfigOptions {
+  /**
+   * Renderer mode
+   * @default 'fumadocs'
+   * - 'fumadocs': Generate Fumadocs-compatible content for Next.js apps
+   */
+  mode?: RendererMode;
+
   /**
    * Base URL for the documentation
    * @default ''
@@ -60,6 +72,7 @@ export interface RendererConfigOptions {
  */
 export function createRendererConfig(options: RendererConfigOptions = {}): RendererConfigOptions {
   return {
+    mode: options.mode ?? 'fumadocs',
     baseUrl: options.baseUrl ?? '',
     docsRootPath: options.docsRootPath ?? '/docs',
     projectName: options.projectName ?? 'Peria',

@@ -1,6 +1,6 @@
 {
   "name": "@peria/api-reference",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Deferred API reference integration for future Peria OpenAPI rendering.",
   "type": "module",

@@ -1,6 +1,6 @@
 {
   "name": "@peria/cli",
-  "version": "0.1.2",
+  "version": "0.1.1",
   "description": "Local-first source-backed knowledge graph CLI for backend and API repositories.",
   "type": "module",
   "bin": {

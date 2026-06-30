@@ -1,6 +1,8 @@
 {
   "name": "@peria/sdk",
   "version": "0.1.1",
+  "private": true,
+  "description": "Deferred programmatic SDK placeholder for future Peria scan/build/check APIs.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
